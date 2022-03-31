@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "dj2addons",
+    "name": "Dj2addons",
+    "description": "A repository of mixins and mods to support the Divine Journey 2 modpack.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "ByThePowerOfScience"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

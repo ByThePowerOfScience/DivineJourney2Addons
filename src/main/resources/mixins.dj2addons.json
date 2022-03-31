@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "org.btpos.dj2addons.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.dj2addons.refmap.json",
+  "mixins": [
+  
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}
