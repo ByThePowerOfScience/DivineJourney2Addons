@@ -7,10 +7,15 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenRegister
 @ZenClass("mods.dj2addons.bloodmagic.HellfireForge")
-public class ZenHellfireForge {
+public class ZenSoulForge {
 	
 	@ZenMethod
 	public static void modifyTicksRequired(int ticksRequired) {
 		HellfireForgeValues.setTicksRequired(ticksRequired);
+	}
+	
+	@ZenMethod
+	public static void modifyWorldWillTransferRate(double transferRate) {
+		HellfireForgeValues.setWorldWillTransferRate(transferRate);
 	}
 }

@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.dj2addons.refmap.json",
   "mixins": [
-    "bloodmagic.MixinHellfireForge"
+    "bloodmagic.MSoulForge",
+    "bloodmagic.MTileInventory"
   ],
   "client": [
   ],

@@ -1,7 +1,7 @@
 [
   {
     "modid": "dj2addons",
-    "name": "Dj2addons",
+    "name": "Divine Journey 2 Addons",
     "description": "A collection of mixins and mods to support the Divine Journey 2 modpack.",
     "version": "${version}",
     "mcversion": "${mcversion}",

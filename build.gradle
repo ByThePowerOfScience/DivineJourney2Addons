@@ -32,9 +32,11 @@ minecraft {
     mappings channel: 'stable', version: '39-1.12'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
+    
     runs {
         client {
+            args '--username', 'Dev'
+            
             workingDirectory project.file('run')
             
             // Recommended logging data for a userdev environment
@@ -43,12 +45,12 @@ minecraft {
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
+            
             // Recommended logging level for the console
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
+            
             mods {
                 dj2addons {
                     source sourceSets.main
@@ -58,7 +60,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
+            
             // Recommended logging data for a userdev environment
             // The markers can be added/removed as needed separated by commas.
             // "SCAN": For mods scan.
@@ -101,27 +103,29 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation 'org.spongepowered:mixin:0.8.5'
+    compileOnly 'org.spongepowered:mixin:0.8.5'
+    
     
     implementation(
-            fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+            fg.deobf("curse.maven:BloodMagic-224791:2822288"),
+            fg.deobf("curse.maven:GuideAPI-228832:2645992")
     )
     
-    compileOnly(
-            fg.deobf("curse.maven:BloodMagic-224791:2822288")
-    ) {
-        because "Mixins applied to these mods."
-    }
+    
     
     compileOnly(
+            fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+"),
             fg.deobf("CraftTweaker2:CraftTweaker2-API:4.1.+"),
             fg.deobf("CraftTweaker2:ZenScript:4.1.+")
-            
     )
     
     runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
         because "Shades Mixin library."
     }
+    
+    runtimeOnly(
+            'curse.maven:CraftTweaker-239197:3642364'
+    )
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
