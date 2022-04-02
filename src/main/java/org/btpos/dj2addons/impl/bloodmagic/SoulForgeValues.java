@@ -12,6 +12,10 @@ public class SoulForgeValues {
 	}
 	
 	
+	
+	
+	private static double worldWillTransferRate = 1;
+	
 	public static double getWorldWillTransferRate() {
 		return worldWillTransferRate;
 	}
@@ -20,7 +24,7 @@ public class SoulForgeValues {
 		SoulForgeValues.worldWillTransferRate = worldWillTransferRate;
 	}
 	
-	private static double worldWillTransferRate = 1;
+	
 	
 	
 	private static boolean craftWithAllWillTypes = false;

@@ -31,10 +31,10 @@ public class ZenSoulForge {
 	/**
 	 * Allows any Will type to be used in crafting in place of Raw. Default is false.
 	 *
-	 * @param b
+	 * @param enabled True to enable.
 	 */
 	@ZenMethod
-	public static void setCraftWithAllWillTypes(boolean b) {
-		SoulForgeValues.setCraftWithAllWillTypes(b);
+	public static void setCraftWithAllWillTypes(boolean enabled) {
+		SoulForgeValues.setCraftWithAllWillTypes(enabled);
 	}
 }

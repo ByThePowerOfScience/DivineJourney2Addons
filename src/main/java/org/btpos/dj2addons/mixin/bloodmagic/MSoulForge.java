@@ -29,6 +29,11 @@ public abstract class MSoulForge extends MTileInventory {
 		return SoulForgeValues.getTicksRequired();
 	}
 	
+	@ModifyConstant(method = "update", constant = @Constant(intValue = TileSoulForge.ticksRequired + 10))
+	private int updateModifyTicksRequired2(int value) {
+		return SoulForgeValues.getTicksRequired() + 10;
+	}
+	
 	@ModifyConstant(method = "getProgressForGui", remap = false, constant = @Constant(doubleValue = TileSoulForge.ticksRequired))
 	private double guiModifyTicksRequired(double value) {
 		return SoulForgeValues.getTicksRequired();
