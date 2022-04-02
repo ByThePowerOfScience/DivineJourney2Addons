@@ -1,50 +1,44 @@
 package org.btpos.dj2addons.mixin.bloodmagic;
 
 
-import WayofTime.bloodmagic.tile.TileInventory;
+import WayofTime.bloodmagic.item.soul.ItemSoulGem;
+import WayofTime.bloodmagic.soul.EnumDemonWillType;
+import WayofTime.bloodmagic.soul.IDemonWill;
+import WayofTime.bloodmagic.soul.IDemonWillGem;
 import WayofTime.bloodmagic.tile.TileSoulForge;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.btpos.dj2addons.impl.bloodmagic.HellfireForgeValues;
-import org.spongepowered.asm.mixin.Intrinsic;
+import org.btpos.dj2addons.impl.bloodmagic.SoulForgeValues;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.SoftOverride;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TileSoulForge.class)
 public abstract class MSoulForge extends MTileInventory {
-	/*
-		TODO:
-			-Allow modification of Hellfire Forge crafting speed through CraftTweaker
-				DONE, need to test
-			-Stop items being input into output slot
-				DONE
-			-Allow crafting with other types of demon will
-	 */
+	@Shadow(remap = false)
+	@Final
+	public static int soulSlot;
 	
-	@ModifyConstant(method="update()V", constant=@Constant(intValue=TileSoulForge.ticksRequired))
+	@ModifyConstant(method = "update", constant = @Constant(intValue = TileSoulForge.ticksRequired))
 	private int updateModifyTicksRequired(int value) {
-		return HellfireForgeValues.getTicksRequired();
+		return SoulForgeValues.getTicksRequired();
 	}
 	
-	@ModifyConstant(method="getProgressForGui()D", remap=false, constant=@Constant(intValue=TileSoulForge.ticksRequired))
-	private int guiModifyTicksRequired(int value) {
-		return HellfireForgeValues.getTicksRequired();
+	@ModifyConstant(method = "getProgressForGui", remap = false, constant = @Constant(doubleValue = TileSoulForge.ticksRequired))
+	private double guiModifyTicksRequired(double value) {
+		return SoulForgeValues.getTicksRequired();
 	}
 	
 	
-	
-	@ModifyConstant(method="update()V", constant=@Constant(doubleValue=TileSoulForge.worldWillTransferRate))
+	@ModifyConstant(method = "update", constant = @Constant(doubleValue = TileSoulForge.worldWillTransferRate))
 	private double updateModifyWorldWillTransferRate(double value) {
-		return HellfireForgeValues.getWorldWillTransferRate();
+		return SoulForgeValues.getWorldWillTransferRate();
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	// Prevents inserters from inputting into the output slot.
@@ -52,4 +46,34 @@ public abstract class MSoulForge extends MTileInventory {
 	public void isItemValidHandler(int index, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
 		cir.setReturnValue(index != TileSoulForge.outputSlot);
 	}
+	
+	
+	@ModifyArg(method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;getWill(LWayofTime/bloodmagic/soul/EnumDemonWillType;)D"), index = 0)
+	private EnumDemonWillType modifyDemonWillTypeUsed(EnumDemonWillType type) {
+		if (SoulForgeValues.shouldCraftWithAllWillTypes()) {
+			ItemStack soulStack = getStackInSlot(soulSlot);
+			Item soul = soulStack.getItem();
+			if (soul instanceof ItemSoulGem)
+				return ((ItemSoulGem) soul).getCurrentType(soulStack);
+			if (soul instanceof IDemonWill)
+				return ((IDemonWill)soul).getType(soulStack);
+		}
+		return type;
+	}
+	
+	@ModifyArg(method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;consumeSouls(LWayofTime/bloodmagic/soul/EnumDemonWillType;D)D"))
+	private EnumDemonWillType modifyConsumeSoulsType(EnumDemonWillType type) {
+		if (SoulForgeValues.shouldCraftWithAllWillTypes()) {
+			ItemStack soulStack = getStackInSlot(TileSoulForge.soulSlot);
+			Item soul = soulStack.getItem();
+			if (soul instanceof IDemonWill)
+				return ((IDemonWill) soul).getType(soulStack);
+			if (soul instanceof ItemSoulGem) {
+				return ((ItemSoulGem) soul).getCurrentType(soulStack);
+			}
+		}
+		return type;
+	}
+	
+	
 }
