@@ -5,6 +5,7 @@ import WayofTime.bloodmagic.item.soul.ItemSoulGem;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.soul.IDemonWill;
 import WayofTime.bloodmagic.soul.IDemonWillGem;
+import WayofTime.bloodmagic.tile.TileInventory;
 import WayofTime.bloodmagic.tile.TileSoulForge;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,9 +21,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TileSoulForge.class)
 public abstract class MSoulForge extends MTileInventory {
+	
+	
 	@Shadow(remap = false)
 	@Final
 	public static int soulSlot;
+	
+	
 	
 	@ModifyConstant(method = "update", constant = @Constant(intValue = TileSoulForge.ticksRequired))
 	private int updateModifyTicksRequired(int value) {

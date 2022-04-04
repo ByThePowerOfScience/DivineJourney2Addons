@@ -21,7 +21,7 @@ apply plugin: 'wtf.gofancy.fancygradle'
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'org.btpos.dj2addons'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 java {
     archivesBaseName = 'dj2addons'
@@ -137,7 +137,12 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "ByThePowerOfScience",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+
+                "FMLCorePluginContainsFMLMod": "true",
+                "FMLCorePlugin"              : "org.btpos.dj2addons.bootstrapper.core.DJ2ALoadingPlugin",
+                "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
+                "ForceLoadAsMod"             : "true",
         ])
     }
 }
