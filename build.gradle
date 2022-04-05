@@ -105,10 +105,18 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     compileOnly 'org.spongepowered:mixin:0.8.5'
     
+    implementation(
+            fg.deobf("curse.maven:Forgelin-248453:2785465"),
+            fg.deobf("curse.maven:TeslaCoreLib-254602:3438487"),
+            fg.deobf("curse.maven:IndustrialForegoing-266515:2745321"),
+            
+            fg.deobf("curse.maven:AgriCraft-225635:3317747"),
+            fg.deobf("curse.maven:InfinityLib-251396:3317119")
+    )
     
     implementation(
             fg.deobf("curse.maven:BloodMagic-224791:2822288"),
-            fg.deobf("curse.maven:GuideAPI-228832:2645992")
+            fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
     
     

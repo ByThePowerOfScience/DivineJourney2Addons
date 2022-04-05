@@ -5,7 +5,8 @@
   "refmap": "mixins.dj2addons.refmap.json",
   "mixins": [
     "bloodmagic.MSoulForge",
-    "bloodmagic.MTileInventory"
+    "bloodmagic.MTileInventory",
+    "industrialforegoing.MPlantInteractor"
   ],
   "client": [
   ],
