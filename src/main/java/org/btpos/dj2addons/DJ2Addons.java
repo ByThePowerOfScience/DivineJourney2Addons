@@ -3,12 +3,14 @@ package org.btpos.dj2addons;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +38,7 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-	
+		LOGGER.log(Level.INFO, "Bewitchment: " + (Loader.isModLoaded("bewitchment") ? "IS LOADED" : "not loaded dammit"));
 	}
 	
 	/**

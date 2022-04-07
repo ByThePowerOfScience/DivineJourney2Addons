@@ -6,7 +6,8 @@
   "mixins": [
     "bloodmagic.MSoulForge",
     "bloodmagic.MTileInventory",
-    "industrialforegoing.MPlantInteractor"
+    "industrialforegoing.MPlantInteractor",
+    "moretweaker.MInputs"
   ],
   "client": [
   ],

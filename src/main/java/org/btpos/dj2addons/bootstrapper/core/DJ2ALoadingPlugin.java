@@ -13,12 +13,12 @@ import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion(ForgeVersion.mcVersion)
 @IFMLLoadingPlugin.SortingIndex(-8000)
-@IFMLLoadingPlugin.Name("Divine Journey 2 Addons Loading Plugin")
+@IFMLLoadingPlugin.Name("Divine Journey 2 Addons Mixin Bootstrapper")
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	public static Logger logger = LogManager.getLogger("DJ2Addons Core");
 	
 	public DJ2ALoadingPlugin() {
-		logger.info("Bootstrapping mixins and plugins.");
+		logger.info("Bootstrapping mixins.");
 		MixinBootstrap.init();
 		Mixins.addConfiguration("mixins.dj2addons.loader.json");
 	}

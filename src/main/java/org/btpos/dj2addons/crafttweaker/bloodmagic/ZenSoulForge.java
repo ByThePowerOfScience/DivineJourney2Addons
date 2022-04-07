@@ -6,7 +6,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenRegister
-@ZenClass("mods.dj2addons.bloodmagic.HellfireForge")
+@ZenClass("dj2addons.bloodmagic.HellfireForge")
 public class ZenSoulForge {
 	/**
 	 * Sets the speed for all Hellfire Forge crafts. Default is 100.
