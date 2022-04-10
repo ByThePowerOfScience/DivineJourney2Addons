@@ -8,7 +8,7 @@ my_core_mods = ["org.btpos.dj2addons.bootstrapper.core.DJ2ALoadingPlugin"]
 def getDepsFromBuildScript():
 	bpattern = re.compile("(?:implementation|runtimeOnly)(?:\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+)")
 	deps = []
-	with open("./build.gradle") as file:
+	with open("../build.gradle") as file:
 		buildscript = file.read()
 		blocks = re.findall(bpattern, buildscript)
 		dep_pattern = re.compile(".*['\"]([\\w:.\\-\\n]+)[\"']")
@@ -54,14 +54,14 @@ def getCoreMods(files):
 
 coremods_prop = "coremods="
 def setCoreMods(s):
-	with open("./gradle.properties", "r") as file:
+	with open("../gradle.properties", "r") as file:
 		data = file.readlines()
 	
 	for i in range(len(data)):
 		if (coremods_prop in data[i]):
 			data[i] = coremods_prop + s + (' ' * (len(data[i]) - (len(s) + len(coremods_prop)))) + '\n'
 	
-	with open("gradle.properties", "w") as file:
+	with open("../gradle.properties", "w") as file:
 		file.writelines(data)
 
 

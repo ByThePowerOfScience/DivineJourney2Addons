@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.minecraft.item.crafting.Ingredient.EMPTY;
-
 @Mixin(Inputs.class)
 public abstract class MInputs {
 	

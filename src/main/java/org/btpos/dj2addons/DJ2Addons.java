@@ -24,7 +24,7 @@ public class DJ2Addons {
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
 	public static final String VERSION = "1.0.1";
-	public static final Logger LOGGER = LogManager.getLogger("DJ2Addons");
+	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
 	/**
 	 * This is the instance of your mod as created by Forge. It will never be null.
@@ -46,7 +46,7 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-	
+		LOGGER.log(Level.INFO, "Voted \"Most Likely to be Factorio!\"");
 	}
 	
 	/**
