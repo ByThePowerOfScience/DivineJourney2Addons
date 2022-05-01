@@ -1,5 +1,7 @@
 package org.btpos.dj2addons;
 
+import com.bewitchment.common.ritual.RitualBiomeShift;
+import com.bewitchment.registry.ModRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,7 +40,7 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		LOGGER.log(Level.INFO, "Bewitchment: " + (Loader.isModLoaded("bewitchment") ? "IS LOADED" : "not loaded dammit"));
+		
 	}
 	
 	/**
@@ -46,7 +48,14 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		LOGGER.log(Level.INFO, "Voted \"Most Likely to be Factorio!\"");
+		LOGGER.log(Level.INFO, "Voted \"Most Likely to be Factorio\"!");
+//		try {
+//			LOGGER.log(Level.INFO, "Removing Ritual of Biome Shift.");
+//			ModRecipes.ritualRecipes.remove(new RitualBiomeShift());
+//		} catch (Exception e) {
+//			LOGGER.log(Level.WARN, "Failed to remove Ritual of Biome Shift.");
+//		}
+		
 	}
 	
 	/**

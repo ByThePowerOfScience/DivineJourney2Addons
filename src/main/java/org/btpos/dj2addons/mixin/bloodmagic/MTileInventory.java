@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WayofTime.bloodmagic.tile.TileInventory.class)
 public abstract class MTileInventory {
-	@Shadow(aliases={"func_70301_a", "getStackInSlot"}) // ????????????????????????????????? WHY IS THIS NECESSARY???? ASDLASBNDLASNDLKA
+	@Shadow(aliases={"func_70301_a", "getStackInSlot"})
 	public abstract ItemStack getStackInSlot(int index);
 	
-	@Inject(method = "isItemValidForSlot", at = @At("RETURN"))
+	@Inject(method = "isItemValidForSlot", at = @At("RETURN"), cancellable=true)
 	public void isItemValidHandler(int index, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
 	}
 	

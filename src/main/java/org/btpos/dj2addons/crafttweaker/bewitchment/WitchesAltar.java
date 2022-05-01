@@ -14,7 +14,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.dj2addons.bewitchment.WitchesAltar")
-@ZenRegister //@ModOnly("bewitchment")
+@ZenRegister @ModOnly("bewitchment")
 public class WitchesAltar {
 	
 	

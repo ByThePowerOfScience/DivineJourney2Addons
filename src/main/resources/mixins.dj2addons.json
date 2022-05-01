@@ -2,12 +2,14 @@
   "required": true,
   "package": "org.btpos.dj2addons.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "mixins.dj2addons.refmap.json",
+  "plugin": "org.btpos.dj2addons.bootstrapper.core.DJ2AMixinConfig",
   "mixins": [
+    "bewitchment.MModRecipes",
     "bloodmagic.MSoulForge",
     "bloodmagic.MTileInventory",
     "industrialforegoing.MPlantInteractor",
-    "moretweaker.MInputs"
+    "moretweaker.MInputs",
+    "roots.MUnendingBowlItemHandler"
   ],
   "client": [
   ],

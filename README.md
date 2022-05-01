@@ -27,4 +27,3 @@ Changes:
 * Roots
   * Tweaks
     * Unending Bowl now checks if the requested liquid type is valid before giving the requester infinite of it. (Not needed in Roots 3.1.5+)
-  * 

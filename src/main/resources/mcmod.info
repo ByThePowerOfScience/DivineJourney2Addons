@@ -3,9 +3,9 @@
     "modid": "dj2addons",
     "name": "Divine Journey 2 Addons",
     "description": "A collection of mixins and mods to support the Divine Journey 2 modpack.",
-    "version": "${version}",
-    "mcversion": "${mcversion}",
-    "url": "",
+    "version": "1.0.1",
+    "mcversion": "1.12.2",
+    "url": "https://www.curseforge.com/project/605280",
     "updateUrl": "",
     "authorList": [
       "ByThePowerOfScience"
