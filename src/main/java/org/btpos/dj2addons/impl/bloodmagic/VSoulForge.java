@@ -1,6 +1,6 @@
 package org.btpos.dj2addons.impl.bloodmagic;
 
-public class SoulForgeValues {
+public class VSoulForge {
 	private static int ticksRequired = 100;
 	
 	public static void setTicksRequired(int ticks) {
@@ -21,7 +21,7 @@ public class SoulForgeValues {
 	}
 	
 	public static void setWorldWillTransferRate(double worldWillTransferRate) {
-		SoulForgeValues.worldWillTransferRate = worldWillTransferRate;
+		VSoulForge.worldWillTransferRate = worldWillTransferRate;
 	}
 	
 	
@@ -34,6 +34,6 @@ public class SoulForgeValues {
 	}
 	
 	public static void setCraftWithAllWillTypes(boolean craftWithAllWillTypes) {
-		SoulForgeValues.craftWithAllWillTypes = craftWithAllWillTypes;
+		VSoulForge.craftWithAllWillTypes = craftWithAllWillTypes;
 	}
 }

@@ -80,7 +80,7 @@ def generateModpackZip(tuples):
 	with zipfile.ZipFile("./DJ2AddonsTest.zip", 'w') as file:
 		file.write("./out/temp/manifest.json", "manifest.json")
 		file.write(glob.glob("./build/libs/dj2addons-*.jar")[0], "/overrides/mods/dj2addons.jar")
-		file.write("./out/temp/Test.zs", "/overrides/scripts/Test.zs")
+		file.write("./Test.zs", "/overrides/scripts/Test.zs")
 
 
 

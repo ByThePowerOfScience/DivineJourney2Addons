@@ -5,6 +5,7 @@
   "plugin": "org.btpos.dj2addons.bootstrapper.core.DJ2AMixinConfig",
   "mixins": [
     "bewitchment.MModRecipes",
+    "bewitchment.MRitual",
     "bloodmagic.MSoulForge",
     "bloodmagic.MTileInventory",
     "industrialforegoing.MPlantInteractor",

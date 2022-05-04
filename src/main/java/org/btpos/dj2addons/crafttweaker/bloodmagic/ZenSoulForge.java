@@ -2,7 +2,7 @@ package org.btpos.dj2addons.crafttweaker.bloodmagic;
 
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
-import org.btpos.dj2addons.impl.bloodmagic.SoulForgeValues;
+import org.btpos.dj2addons.impl.bloodmagic.VSoulForge;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -17,7 +17,7 @@ public class ZenSoulForge {
 	 */
 	@ZenMethod
 	public static void setCraftingTicksRequired(int ticksRequired) {
-		SoulForgeValues.setTicksRequired(ticksRequired);
+		VSoulForge.setTicksRequired(ticksRequired);
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class ZenSoulForge {
 	 */
 	@ZenMethod
 	public static void setWorldWillTransferRate(double transferRate) {
-		SoulForgeValues.setWorldWillTransferRate(transferRate);
+		VSoulForge.setWorldWillTransferRate(transferRate);
 	}
 	
 	/**
@@ -37,6 +37,6 @@ public class ZenSoulForge {
 	 */
 	@ZenMethod
 	public static void setCraftWithAllWillTypes(boolean enabled) {
-		SoulForgeValues.setCraftWithAllWillTypes(enabled);
+		VSoulForge.setCraftWithAllWillTypes(enabled);
 	}
 }

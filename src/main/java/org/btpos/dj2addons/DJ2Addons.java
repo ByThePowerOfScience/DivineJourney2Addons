@@ -1,11 +1,8 @@
 package org.btpos.dj2addons;
 
-import com.bewitchment.common.ritual.RitualBiomeShift;
-import com.bewitchment.registry.ModRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -25,7 +22,7 @@ public class DJ2Addons {
 	
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
-	public static final String VERSION = "1.0.1";
+	public static final String VERSION = "1.1";
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
 	/**

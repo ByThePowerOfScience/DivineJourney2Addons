@@ -10,18 +10,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+import org.btpos.dj2addons.impl.bewitchment.VModRecipes;
 
-import static org.spongepowered.asm.mixin.injection.At.Shift.BY;
+import java.util.List;
 
 @Mixin(ModRecipes.class)
 public class MModRecipes {
 	@Shadow
 	public static List<Ritual> ritualRecipes;
 	
-	
-	@Inject(remap=false,method="addRitualRecipe()V", at=@At(target="com/bewitchment/common/ritual/RitualBiomeShift", value="NEW", shift=BY, by=5))
-	private static void removeBiomeShift(CallbackInfo ci) {
-		ritualRecipes.remove(new RitualBiomeShift());
+	@Inject(remap=false,method="addRitualRecipe()V", at=@At("TAIL"))
+	private static void removeRitualRecipes(CallbackInfo ci) {
+		ritualRecipes.removeAll(VModRecipes.getRitualsToRemove());
 	}
 }

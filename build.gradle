@@ -25,7 +25,7 @@ apply plugin: 'idea'
 
 
 group = 'org.btpos.dj2addons'
-version = '1.0.1'
+version = '1.1'
 
 java {
     archivesBaseName = 'dj2addons'
@@ -121,9 +121,12 @@ dependencies {
             fg.deobf("curse.maven:MTLib-253211:3308160")
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:Patchouli-306770:3162874"),
             fg.deobf("curse.maven:Baubles-227083:2518667"),
+    )
+    
+    compileOnly(
             fg.deobf("curse.maven:Roots-246183:3484394"),
             fg.deobf("curse.maven:MysticalWorld-282940:3460961"),
             fg.deobf("curse.maven:MysticalLib-277064:3483816")
@@ -142,7 +145,9 @@ dependencies {
 //            fg.deobf("curse.maven:Aether-255308:3280119")
 //    )
     
-    implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+    compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+    
+    runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
     
     runtimeOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
     runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
@@ -174,8 +179,9 @@ task customRunClient(type: Exec) {
     commandLine("python3", "./python/CustomRunClient.py")
 }
 
-build {
-    dependsOn(customRunClient)
+task updateModpack(type: Exec) {
+    dependsOn(build)
+    commandLine("python3", "./python/UpdateModpack.py")
 }
 
 fancyGradle {

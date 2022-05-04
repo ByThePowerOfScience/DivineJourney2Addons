@@ -1,0 +1,1 @@
+mods.dj2addons.bewitchment.Rituals.removeRitual("biome_shift");
