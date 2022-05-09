@@ -17,7 +17,7 @@ import java.util.Set;
 public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public void onLoad(String mixinPackage) {
-		
+		logger.info("Loading mixins from " + mixinPackage);
 	}
 	
 	@Override
@@ -55,6 +55,6 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		DJ2ALoadingPlugin.logger.log(Level.INFO, "Applied " + mixinClassName + " to " + targetClassName);
+		DJ2ALoadingPlugin.logger.info( "Applied " + mixinClassName + " to " + targetClassName);
 	}
 }

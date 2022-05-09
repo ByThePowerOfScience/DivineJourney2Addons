@@ -22,7 +22,8 @@ public class DJ2Addons {
 	
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
-	public static final String VERSION = "1.1";
+	public static final String VERSION = "@VERSION@";
+	
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
 	/**

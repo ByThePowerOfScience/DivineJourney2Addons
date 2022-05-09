@@ -74,6 +74,11 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+//    maven {
+//        name = "Su5ed LegacyDev Fork"
+//        url = "https://su5ed.jfrog.io/artifactory/maven/"
+//    }
+    
     maven {
         name = "BlameJared"
         url = "https://maven.blamejared.com/"
@@ -104,34 +109,35 @@ dependencies {
             fg.deobf("curse.maven:TeslaCoreLib-254602:3438487"),
             fg.deobf("curse.maven:IndustrialForegoing-266515:2745321"),
     )
-    
+
     compileOnly(
             fg.deobf("curse.maven:AgriCraft-225635:3317747"),
             fg.deobf("curse.maven:InfinityLib-251396:3317119")
     )
-    
+
     compileOnly(
             fg.deobf("curse.maven:BloodMagic-224791:2822288"),
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
-    
-    implementation(
+
+    compileOnly(
             fg.deobf("curse.maven:Bewitchment-285439:3256343"),
             fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
             fg.deobf("curse.maven:MTLib-253211:3308160")
     )
     
+
     implementation(
             fg.deobf("curse.maven:Patchouli-306770:3162874"),
             fg.deobf("curse.maven:Baubles-227083:2518667"),
     )
-    
+
     compileOnly(
             fg.deobf("curse.maven:Roots-246183:3484394"),
             fg.deobf("curse.maven:MysticalWorld-282940:3460961"),
             fg.deobf("curse.maven:MysticalLib-277064:3483816")
     )
-    
+
     compileOnly(
             fg.deobf("curse.maven:EnderIO-64578:3328811"),
             fg.deobf("curse.maven:ProjectIntelligence-306028:2833640"),
@@ -141,14 +147,18 @@ dependencies {
             "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
     )
     
-//    implementation(
-//            fg.deobf("curse.maven:Aether-255308:3280119")
-//    )
-    
+    implementation(
+            fg.deobf("curse.maven:Botania-225643:3330934")
+    )
+
+    implementation(
+            fg.deobf("curse.maven:Aether-255308:3280119")
+    )
+
     compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
-    
+
     runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
-    
+
     runtimeOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
     runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
         because "Shades Mixin library."
@@ -171,6 +181,9 @@ jar {
                 "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
                 "ForceLoadAsMod"             : "true"
         ])
+    }
+    metaInf {
+        from "libs" include "thaumicenergistics-v2.2.3-delfayne-fork-SNAPSHOT-2.jar" into "libraries"
     }
 }
 jar.finalizedBy('reobfJar')
@@ -195,8 +208,8 @@ fancyGradle {
 
 mixin {
     add sourceSets.main, 'mixins.dj2addons.refmap.json'
-    //config 'mixins.dj2addons.json'
-    
+//    config 'mixins.dj2addons.json'
+
     debug.verbose = true
     debug.export = true
 }

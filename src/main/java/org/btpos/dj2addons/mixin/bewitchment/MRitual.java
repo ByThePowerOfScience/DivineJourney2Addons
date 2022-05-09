@@ -11,9 +11,6 @@ import java.util.Objects;
 public class MRitual {
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Ritual)
-			if (!Objects.equals(((Ritual) o).getRegistryName(), ((Ritual) (Object) this).getRegistryName()))
-				DJ2Addons.LOGGER.log(Level.DEBUG, ((Ritual) o).getRegistryName() + " does not equal " + ((Ritual)(Object)this).getRegistryName());
 		return (o instanceof Ritual)
 				&& Objects.equals(((Ritual) o).getRegistryName(), ((Ritual)(Object)this).getRegistryName());
 	}
