@@ -1,28 +1,25 @@
 import dj2addons.botania.Brews;
+import dj2addons.botania.Brew;
 import crafttweaker.item.IItemStack;
 
 var meats as IItemStack[] = [<minecraft:cooked_beef>,
                          	<minecraft:nether_wart>];
 
-Brews.addBrewRecipe(
-	Brews.addBrew(
-		"luck",
-		200,
-		true,
-		false,
-		1,
-		1800,
-		<potion:minecraft:luck>),
-	meats);
+val b1 as Brew = Brews.makeBrew(
+                 		"luck",
+                 		200,
+                 		<potion:minecraft:luck>.makePotionEffect(10000, 0));
 
 Brews.addBrewRecipe(
-	Brews.addBrew(
+	b1,
+	meats);
+
+val b2 as Brew = Brews.makeBrew(
 		"saturation",
 		200,
-		true,
-		false,
-		1,
-		1800,
-		<potion:minecraft:saturation>),
+		<potion:minecraft:saturation>.makePotionEffect(10000, 0));
+
+Brews.addBrewRecipe(
+	b2,
 	<minecraft:sand>);
 

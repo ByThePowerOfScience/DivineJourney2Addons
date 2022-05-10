@@ -2,6 +2,7 @@ package org.btpos.dj2addons.impl.bewitchment;
 
 import com.bewitchment.Util;
 import com.bewitchment.api.registry.Ritual;
+import com.bewitchment.registry.ModRecipes;
 import com.google.common.collect.ImmutableList;
 import org.apache.logging.log4j.Level;
 import org.btpos.dj2addons.DJ2Addons;
@@ -18,6 +19,10 @@ public class VModRecipes {
 	
 	public static List<Ritual> getRitualsToRemove() {
 		return ritualsToRemove;
+	}
+	
+	public static List<Ritual> getAllRituals() {
+		return ImmutableList.copyOf(ModRecipes.ritualRecipes);
 	}
 	
 	public static class DummyRitual extends Ritual {

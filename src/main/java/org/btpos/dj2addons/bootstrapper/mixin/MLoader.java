@@ -4,7 +4,9 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModClassLoader;
 import net.minecraftforge.fml.common.ModContainer;
+import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
@@ -20,7 +22,6 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import static org.btpos.dj2addons.bootstrapper.core.DJ2ALoadingPlugin.logger;
 
 
 /**
@@ -79,7 +80,7 @@ public abstract class MLoader {
 				prepareConfigsMethod.setAccessible(true);
 				prepareConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment());
 			} catch (NoSuchMethodException e) {
-				logger.log(Level.WARN, "Mixin version 0.7+ detected. Other mods using this type of loader may break.");
+				LogManager.getLogger("DJ2Addons Mixin").log(Level.WARN, "Mixin version 0.7+ detected. Other mods using this type of Mixin loader may break.");
 				
 				prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class, Extensions.class);
 				prepareConfigsMethod.setAccessible(true);

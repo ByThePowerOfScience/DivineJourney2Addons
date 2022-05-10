@@ -24,28 +24,19 @@ public class BrewHandler {
 		return b;
 	}
 	
-	private static Brew buildBrew(String name, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, PotionEffect... potionEffects) {
-		Brew b = new BrewMod(name, cost, potionEffects);
-		if (!shouldInfuseBloodPendant) {
-			b.setNotBloodPendantInfusable();
-		}
-		
-		if (!shouldInfuseIncenseStick) {
-			b.setNotIncenseInfusable();
-		}
-		
-		return b;
+	public static Brew buildBrew(String key, String name, int color, int cost, PotionEffect[] effects) {
+		return new Brew(key, name, color, cost, effects);
 	}
 	
-	public static Brew registerBrew(String key, String name, int color, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, PotionEffect... potionEffects) {
-		Brew b = buildBrew(key, name, color, cost, shouldInfuseBloodPendant, shouldInfuseIncenseStick, potionEffects);
+	public static Brew buildBrew(String name, int cost,  PotionEffect... potionEffects) {
+		return new BrewMod(name, cost, potionEffects);
+	}
+	
+	public static void registerBrew(Brew b) {
 		BotaniaAPI.registerBrew(b);
-		return b;
 	}
 	
-	public static Brew registerBrew(String name, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, PotionEffect... potionEffects) {
-		return buildBrew(name, cost, shouldInfuseBloodPendant, shouldInfuseIncenseStick, potionEffects);
-	}
+	
 	
 	public static void registerBrewRecipe(Brew brew, ItemStack[] objects) {
 		BotaniaAPI.registerBrewRecipe(brew, (Object[])objects);

@@ -7,7 +7,9 @@ package org.btpos.dj2addons.mixin.aether;
 
 import com.gildedgames.the_aether.AetherEventHandler;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import org.btpos.dj2addons.DJ2Addons;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,26 +22,25 @@ public class MPatchAerogel {
 	
 	@Redirect(
 			remap = false,
-			method = {"onFillBucket"},
+			method = "onFillBucket",
 			at = @At(
 					target = "Lnet/minecraftforge/event/entity/player/FillBucketEvent;setResult(Lnet/minecraftforge/fml/common/eventhandler/Event$Result;)V",
-					value = "INVOKE"
+					value = "INVOKE",
+					ordinal = 1
 			)
 	)
-	private void removeEventResultLine(FillBucketEvent instance, Result result) {
-		return;
-	}
+	private void removeEventResultLine(FillBucketEvent instance, Result result) {}
 	
 	@Inject(
 			remap = false,
-			method = {"onFillBucket"},
-			at = {@At(
-					target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Z",
-					value = "INVOKE",
-					shift = Shift.AFTER
-			)}
+			method = "onFillBucket",
+			at = @At(
+					target = "Lnet/minecraft/entity/player/EntityPlayer;playSound(Lnet/minecraft/util/SoundEvent;FF)V",
+					value = "INVOKE"
+			)
 	)
 	private void addEventResult(FillBucketEvent event, CallbackInfo ci) {
+		DJ2Addons.LOGGER.debug("Aether patch fired");
 		event.setResult(Result.ALLOW);
 	}
 }
