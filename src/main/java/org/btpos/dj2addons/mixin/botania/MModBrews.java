@@ -17,14 +17,8 @@ public class MModBrews {
 	public MModBrews() {
 	}
 	
-	@Redirect(
-			remap = false,
-			method = {"initTC()V"},
-			at = @At(
-					target = "Lvazkii/botania/common/brew/BrewMod;setNotBloodPendantInfusable()Lvazkii/botania/api/brew/Brew;",
-					value = "INVOKE"
-			)
-	)
+	@Redirect(remap = false, method = "initTC()V",
+			at = @At(target = "Lvazkii/botania/common/brew/BrewMod;setNotBloodPendantInfusable()Lvazkii/botania/api/brew/Brew;", value = "INVOKE"))
 	private static Brew enableWarpWardPendant(BrewMod instance) {
 		return instance;
 	}

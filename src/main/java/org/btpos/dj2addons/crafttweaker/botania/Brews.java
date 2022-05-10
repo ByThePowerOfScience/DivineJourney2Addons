@@ -20,28 +20,15 @@ import vazkii.botania.api.brew.Brew;
 @ZenRegister
 @ZenClass("dj2addons.botania.Brews") @ModOnly("botania")
 public class Brews {
-	public Brews() {
-	}
-	
-	public static Brew addBrew(String name, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, int amplifier, int duration, Potion... potionEffects) {
-		List<PotionEffect> effects = new ArrayList<>();
-		
-		for (Potion p : potionEffects) {
-			effects.add(new PotionEffect(p, duration, amplifier));
-		}
-		
-		return BrewHandler.registerBrew(name, cost, shouldInfuseBloodPendant, shouldInfuseIncenseStick, effects.toArray(new PotionEffect[0]));
-	}
-	
 	@ZenMethod
-	public static Brew addBrew(IAny name, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, int amplifier, int duration, IPotion... potionEffects) {
+	public static Brew addBrew(String name, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, int amplifier, int duration, IPotion... potionEffects) {
 		List<PotionEffect> effects = new ArrayList<>();
 		
 		for (IPotion p : potionEffects) {
 			effects.add(CraftTweakerMC.getPotionEffect(p.makePotionEffect(duration, amplifier)));
 		}
 		
-		return BrewHandler.registerBrew(name.asString(), cost, shouldInfuseBloodPendant, shouldInfuseIncenseStick, effects.toArray(new PotionEffect[0]));
+		return BrewHandler.registerBrew(name, cost, shouldInfuseBloodPendant, shouldInfuseIncenseStick, effects.toArray(new PotionEffect[0]));
 	}
 	
 	@ZenMethod

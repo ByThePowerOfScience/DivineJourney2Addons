@@ -27,15 +27,16 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		try {
-			Class<?> clz = Class.forName(targetClassName);
-			 //Make sure class is loaded
-			logger.info("Should initialize: {}", clz.getName());
-			return true;
-		} catch (ClassNotFoundException e) {
-			logger.debug("Skipped {}", mixinClassName);
-			return false;
-		}
+//		try {
+//			Class<?> clz = Class.forName(targetClassName);
+//			 //Make sure class is loaded
+//			logger.info("Should initialize: {}", clz.getName());
+//			return true;
+//		} catch (ClassNotFoundException e) {
+//			logger.debug("Skipped {}", mixinClassName);
+//			return false;
+//		}
+		return true;
 	}
 	
 	@Override

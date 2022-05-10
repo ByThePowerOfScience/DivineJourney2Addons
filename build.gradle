@@ -26,6 +26,7 @@ apply plugin: 'idea'
 
 group = 'org.btpos.dj2addons'
 version = '1.1'
+project.ext.version_mc = "${version_minecraft}-${version_forge}"
 
 java {
     archivesBaseName = 'dj2addons'
@@ -98,8 +99,7 @@ repositories {
 
 dependencies {
     //runtimeOnly gradleApi()
-    
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    minecraft "net.minecraftforge:forge:${version_mc}"
     
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     compileOnly 'org.spongepowered:mixin:0.8.5'
@@ -115,7 +115,7 @@ dependencies {
             fg.deobf("curse.maven:InfinityLib-251396:3317119")
     )
 
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:BloodMagic-224791:2822288"),
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
@@ -165,6 +165,19 @@ dependencies {
     }
 }
 
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.version_mc
+    
+    // replace stuff in mcmod.info, nothing else
+    filesMatching("mcmod.info") {
+        expand 'version':project.version, 'mcversion':project.version_mc
+    }
+}
+
+
+
 jar {
     manifest {
         attributes([
@@ -208,6 +221,7 @@ fancyGradle {
 
 mixin {
     add sourceSets.main, 'mixins.dj2addons.refmap.json'
+    config 'mixins.dj2addons.loader.json'
 //    config 'mixins.dj2addons.json'
 
     debug.verbose = true

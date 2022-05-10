@@ -12,5 +12,6 @@ def main():
 	
 	
 	shutil.copyfile(glob.glob("./build/libs/dj2addons-*.jar")[0], mods_path + "/dj2addons.jar")
+	shutil.copyfile("./Test.zs", mods_path + "../scripts/Test.zs")
 
 main()

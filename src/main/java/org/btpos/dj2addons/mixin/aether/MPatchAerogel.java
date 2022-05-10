@@ -17,16 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin({AetherEventHandler.class})
 public class MPatchAerogel {
-	public MPatchAerogel() {
-	}
-	
-	@Inject(
-			method = {"<init>()V"},
-			at = {@At("TAIL")}
-	)
-	private void injectarbitrary(CallbackInfo ci) {
-		System.out.println("Constructor was initialized");
-	}
 	
 	@Redirect(
 			remap = false,
@@ -37,6 +27,7 @@ public class MPatchAerogel {
 			)
 	)
 	private void removeEventResultLine(FillBucketEvent instance, Result result) {
+		return;
 	}
 	
 	@Inject(
@@ -50,14 +41,5 @@ public class MPatchAerogel {
 	)
 	private void addEventResult(FillBucketEvent event, CallbackInfo ci) {
 		event.setResult(Result.ALLOW);
-	}
-	
-	@Inject(
-			remap = false,
-			method = {"onFillBucket"},
-			at = {@At("HEAD")}
-	)
-	private void inject(FillBucketEvent event, CallbackInfo ci) {
-		System.out.println("Mixin merged properly");
 	}
 }

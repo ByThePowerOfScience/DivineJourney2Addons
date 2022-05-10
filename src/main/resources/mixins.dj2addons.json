@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "org.btpos.dj2addons.bootstrapper.core.DJ2AMixinConfig",
   "mixins": [
+    "aether.MAerogelBlock",
     "aether.MPatchAerogel",
     "bewitchment.MModRecipes",
     "bewitchment.MRitual",
@@ -16,5 +17,8 @@
   ],
   "client": [
   ],
-  "minVersion": "0.6"
+  "minVersion": "0.6",
+  "injectors": {
+    "maxShiftBy": 10
+  }
 }
