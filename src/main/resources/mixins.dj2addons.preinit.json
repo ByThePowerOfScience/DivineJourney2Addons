@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "org.btpos.dj2addons.mixin.custom",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.dj2addons.refmap.json",
+  "target": "@env(PREINIT)",
+  "mixins": [],
+  "client": [
+    "MSatuRegen",
+    "OverlayHandler"
+  ],
+  "minVersion": "0.6",
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

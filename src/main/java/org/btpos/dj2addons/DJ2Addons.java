@@ -1,7 +1,14 @@
 package org.btpos.dj2addons;
 
+import com.buuz135.industrial.api.straw.StrawHandler;
+import com.buuz135.industrial.proxy.StrawRegistry;
+import crafttweaker.mc1120.commands.CTChatCommand;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -12,6 +19,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.btpos.dj2addons.crafttweaker.CommandHandler;
+import org.btpos.dj2addons.impl.botania.BrewHandler;
+import vazkii.botania.api.brew.Brew;
 
 @Mod(
 		modid = DJ2Addons.MOD_ID,
@@ -38,7 +48,7 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		
+		CTChatCommand.registerCommand(new CommandHandler());
 	}
 	
 	/**
@@ -53,7 +63,11 @@ public class DJ2Addons {
 //		} catch (Exception e) {
 //			LOGGER.log(Level.WARN, "Failed to remove Ritual of Biome Shift.");
 //		}
-		
+		Brew b = BrewHandler.buildBrew("saturationTest", 200, new PotionEffect(MobEffects.SATURATION, 1000, 3), new PotionEffect(MobEffects.ABSORPTION, 1000,3));
+		BrewHandler.registerBrew(b);
+		BrewHandler.registerBrewRecipe(b, new ItemStack[] {
+				new ItemStack(net.minecraft.init.Items.COOKED_BEEF)
+		});
 	}
 	
 	/**

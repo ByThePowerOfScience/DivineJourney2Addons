@@ -115,12 +115,12 @@ dependencies {
             fg.deobf("curse.maven:InfinityLib-251396:3317119")
     )
 
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:BloodMagic-224791:2822288"),
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
 
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Bewitchment-285439:3256343"),
             fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
             fg.deobf("curse.maven:MTLib-253211:3308160")
@@ -131,8 +131,6 @@ dependencies {
             fg.deobf("curse.maven:Patchouli-306770:3162874"),
             fg.deobf("curse.maven:Baubles-227083:2518667"),
     )
-    
-    runtimeOnly fg.deobf("curse.maven:Roots-246183:3484394")
     
     compileOnly(
             fg.deobf("curse.maven:Roots-246183:3484394"),
@@ -147,6 +145,10 @@ dependencies {
             fg.deobf("curse.maven:BrandonsCore-231382:3408276"),
             fg.deobf("curse.maven:CodeChickenLib-242818:2779848"),
             "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+    )
+    
+    implementation(
+            fg.deobf("curse.maven:AppleSkin-248787:2987247")
     )
     
     implementation(
@@ -229,7 +231,8 @@ fancyGradle {
 
 mixin {
 //    add sourceSets.main, 'mixins.dj2addons.refmap.json'
-    config 'mixins.dj2addons.loader.json'
+    
+    config 'mixins.dj2addons.preinit.json'
 //    config 'mixins.dj2addons.json'
 
     debug.verbose = true
