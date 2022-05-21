@@ -1,9 +1,0 @@
-
-
-
-
-
-
-
-dj2addons.commands.desc=§2/ct roots_recipes [category] §3Dumps data relevant to CraftTweaker extensions.
-dj2addons.commands.usage=Usage: §2/ct dj2addons [mod] Mods: all | bewitchment

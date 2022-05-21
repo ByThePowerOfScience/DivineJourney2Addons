@@ -1,38 +1,31 @@
 package org.btpos.dj2addons;
 
-import com.buuz135.industrial.api.straw.StrawHandler;
-import com.buuz135.industrial.proxy.StrawRegistry;
 import crafttweaker.mc1120.commands.CTChatCommand;
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.Potion;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
-import org.btpos.dj2addons.impl.botania.BrewHandler;
-import vazkii.botania.api.brew.Brew;
+import org.btpos.dj2addons.registry.Potions;
 
 @Mod(
 		modid = DJ2Addons.MOD_ID,
 		name = DJ2Addons.MOD_NAME,
-		version = DJ2Addons.VERSION
+		version = DJ2Addons.VERSION,
+		dependencies = DJ2Addons.DEPENDENCIES
 )
 public class DJ2Addons {
 	
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
 	public static final String VERSION = "@VERSION@";
+	public static final String DEPENDENCIES = "after:botania";
 	
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
@@ -57,17 +50,13 @@ public class DJ2Addons {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		LOGGER.log(Level.INFO, "Voted \"Most Likely to be Factorio\"!");
-//		try {
-//			LOGGER.log(Level.INFO, "Removing Ritual of Biome Shift.");
-//			ModRecipes.ritualRecipes.remove(new RitualBiomeShift());
-//		} catch (Exception e) {
-//			LOGGER.log(Level.WARN, "Failed to remove Ritual of Biome Shift.");
-//		}
-		Brew b = BrewHandler.buildBrew("saturationTest", 200, new PotionEffect(MobEffects.SATURATION, 1000, 3), new PotionEffect(MobEffects.ABSORPTION, 1000,3));
-		BrewHandler.registerBrew(b);
-		BrewHandler.registerBrewRecipe(b, new ItemStack[] {
-				new ItemStack(net.minecraft.init.Items.COOKED_BEEF)
-		});
+		
+//		Brew b = BrewHandler.buildBrew("saturationTest", 500, new PotionEffect(Objects.requireNonNull(Potions.Registered.saturegen), 1000, 3));
+//		BrewHandler.registerBrew(b);
+//		BrewHandler.registerBrewRecipe(b, new ItemStack[] {
+//				new ItemStack(net.minecraft.init.Items.COOKED_BEEF)
+//		});
+		
 	}
 	
 	/**
@@ -78,62 +67,22 @@ public class DJ2Addons {
 	
 	}
 	
-	/**
-	 * Forge will automatically look up and bind blocks to the fields in this class
-	 * based on their registry name.
-	 */
-	@GameRegistry.ObjectHolder(MOD_ID)
-	public static class Blocks {
-      /*
-          public static final MySpecialBlock mySpecialBlock = null; // placeholder for special block below
-      */
-	}
+//	@GameRegistry.ObjectHolder(MOD_ID)
+//	public static class Blocks {
+//      public static final Block resourcename = null;
+//	}
+
 	
-	/**
-	 * Forge will automatically look up and bind items to the fields in this class
-	 * based on their registry name.
-	 */
-	@GameRegistry.ObjectHolder(MOD_ID)
-	public static class Items {
-      /*
-          public static final ItemBlock mySpecialBlock = null; // itemblock for the block above
-          public static final MySpecialItem mySpecialItem = null; // placeholder for special item below
-      */
-	}
+	
 	
 	/**
 	 * This is a special class that listens to registry events, to allow creation of mod blocks and items at the proper time.
 	 */
-	@Mod.EventBusSubscriber
+	@Mod.EventBusSubscriber(modid=DJ2Addons.MOD_ID)
 	public static class ObjectRegistryHandler {
-		/**
-		 * Listen for the register event for creating custom items
-		 */
 		@SubscribeEvent
-		public static void addItems(RegistryEvent.Register<Item> event) {
-           /*
-             event.getRegistry().register(new ItemBlock(Blocks.myBlock).setRegistryName(MOD_ID, "myBlock"));
-             event.getRegistry().register(new MySpecialItem().setRegistryName(MOD_ID, "mySpecialItem"));
-            */
-		}
-		
-		/**
-		 * Listen for the register event for creating custom blocks
-		 */
-		@SubscribeEvent
-		public static void addBlocks(RegistryEvent.Register<Block> event) {
-           /*
-             event.getRegistry().register(new MySpecialBlock().setRegistryName(MOD_ID, "mySpecialBlock"));
-            */
+		public static void addPotions(RegistryEvent.Register<Potion> evt) {
+			Potions.init(evt);
 		}
 	}
-    /* EXAMPLE ITEM AND BLOCK - you probably want these in separate files
-    public static class MySpecialItem extends Item {
-
-    }
-
-    public static class MySpecialBlock extends Block {
-
-    }
-    */
 }

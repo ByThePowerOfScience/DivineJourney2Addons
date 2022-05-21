@@ -2,6 +2,7 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
+        mavenLocal()
         maven {
             name 'FancyGradle'
             url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
@@ -79,11 +80,7 @@ repositories {
 //        name = "Su5ed LegacyDev Fork"
 //        url = "https://su5ed.jfrog.io/artifactory/maven/"
 //    }
-    
-    maven {
-        name = "BlameJared"
-        url = "https://maven.blamejared.com/"
-    }
+    mavenLocal()
     maven {
         name = "CurseMaven"
         url = "https://cursemaven.com"
@@ -92,13 +89,16 @@ repositories {
         }
     }
     maven {
+        name = "BlameJared"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
         name = "CoFH Maven"
         url = "https://maven.covers1624.net"
     }
 }
 
 dependencies {
-    //runtimeOnly gradleApi()
     minecraft "net.minecraftforge:forge:${version_mc}"
     
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
@@ -114,19 +114,19 @@ dependencies {
             fg.deobf("curse.maven:AgriCraft-225635:3317747"),
             fg.deobf("curse.maven:InfinityLib-251396:3317119")
     )
-
+    
     compileOnly(
             fg.deobf("curse.maven:BloodMagic-224791:2822288"),
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
-
+    
     compileOnly(
             fg.deobf("curse.maven:Bewitchment-285439:3256343"),
             fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
             fg.deobf("curse.maven:MTLib-253211:3308160")
     )
     
-
+    
     implementation(
             fg.deobf("curse.maven:Patchouli-306770:3162874"),
             fg.deobf("curse.maven:Baubles-227083:2518667"),
@@ -137,7 +137,7 @@ dependencies {
             fg.deobf("curse.maven:MysticalWorld-282940:3460961"),
             fg.deobf("curse.maven:MysticalLib-277064:3483816")
     )
-
+    
     compileOnly(
             fg.deobf("curse.maven:EnderIO-64578:3328811"),
             fg.deobf("curse.maven:ProjectIntelligence-306028:2833640"),
@@ -154,15 +154,38 @@ dependencies {
     implementation(
             fg.deobf("curse.maven:Botania-225643:3330934")
     )
-
+    
     compileOnly(
             fg.deobf("curse.maven:Aether-255308:3280119")
     )
-
+    
+    implementation(
+            fg.deobf("curse.maven:Totemic-237541:2700798")
+    )
+    
+    compileOnly(
+            fg.deobf("curse.maven:ExtremeReactors-250277:3194746"),
+            fg.deobf("curse.maven:ZeroCore-247921:3194743"),
+            fg.deobf("curse.maven:ExtraUtils2-225561:2678374")
+    )
+    
+    compileOnly(
+            fg.deobf("curse.maven:AstralSorcery-241721:3044416")
+    )
+    compileOnly(
+            fg.deobf("curse.maven:Evilcraft-74610:2811267"),
+            fg.deobf("curse.maven:CyclopsCore-232758:3159497")
+    )
+    /*
+    implementation(
+            fg.deobf("curse.maven:")
+    )
+    */
+    
     compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
-
+    
     runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
-
+    
     runtimeOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
     runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
         because "Shades Mixin library."
@@ -173,18 +196,18 @@ task copyTestZS(type: Copy) {
     from "./" include "Test.zs" into "./run/scripts"
 }
 
-processResources {
-    dependsOn(copyTestZS)
-    
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.version_mc
-    
-    // replace stuff in mcmod.info, nothing else
-    filesMatching("mcmod.info") {
-        expand 'version':project.version, 'mcversion':project.version_mc
-    }
-}
+//processResources {
+//    dependsOn(copyTestZS)
+//
+//    // this will ensure that this task is redone when the versions change.
+//    inputs.property "version", project.version
+//    inputs.property "mcversion", project.version_mc
+//
+//    // replace stuff in mcmod.info, nothing else
+//    filesMatching("mcmod.info") {
+//        expand 'version':project.version, 'mcversion':project.version_mc
+//    }
+//}
 
 
 
@@ -230,14 +253,14 @@ fancyGradle {
 }
 
 mixin {
-//    add sourceSets.main, 'mixins.dj2addons.refmap.json'
+    add sourceSets.main, 'mixins.dj2addons.refmap.json'
     
     config 'mixins.dj2addons.preinit.json'
+    config 'mixins.dj2addons.loader.json'
 //    config 'mixins.dj2addons.json'
 
     debug.verbose = true
     debug.export = true
-    setHotSwap(true)
 }
 
 idea {

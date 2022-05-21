@@ -1,26 +1,32 @@
 package org.btpos.dj2addons.impl.custom;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
+import org.btpos.dj2addons.DJ2Addons;
+import org.btpos.dj2addons.registry.Potions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class StatusEffects {
-	public static Potion SATUREGENTRIGGER = MobEffects.REGENERATION;
+	public static final Potion SATUREGENTRIGGER = Potions.Registered.saturegen;
+	
 	public static class SatuRegen extends Potion {
-		private static final int COLOR = 0xFFFFFF;
+		private static final int COLOR = MobEffects.SATURATION.getLiquidColor();
 		
-		protected SatuRegen() {
+		public SatuRegen() {
 			super(false, COLOR);
+			this.setRegistryName(new ResourceLocation(DJ2Addons.MOD_ID, "saturegen"));
+			this.setPotionName(DJ2Addons.MOD_ID + ".effect.regenerateHunger");
+			setIconIndex(7, 0); //TODO assign hunger shank icon
+			setEffectiveness(0.25D);
 		}
 		
 		@Override
 		public void performEffect(@NotNull EntityLivingBase entityLivingBaseIn, int amplifier) {
 			if (entityLivingBaseIn instanceof EntityPlayer) {
-				((EntityPlayer)entityLivingBaseIn).getFoodStats().addStats(amplifier + 1, 1.0F);
+				((EntityPlayer)entityLivingBaseIn).getFoodStats().addStats(amplifier, 1.0F);
 			}
 		}
 		
