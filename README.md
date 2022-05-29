@@ -3,10 +3,9 @@ Various Mixins and mod-tweaks for the purpose of supporting the Divine Journey 2
 Changes:
 * Custom
   * Added "Saturegen" status effect: an effect similar to Regeneration but it affects Hunger instead of Health.
-* Blood Magic:
+* Blood Magic
   * Hellfire Forge
-    * Tweaks
-      * Can no longer input into the output slot of the forge.
+    * Items can no longer be input into the output slot of the forge.
     * Added CraftTweaker methods for crafting time, will transfer rate, and crafting with all will types.
 * Bewitchment
   * Added CraftTweaker hook to remove Rituals by name.
