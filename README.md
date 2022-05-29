@@ -19,8 +19,7 @@ Changes:
   * Unending Bowl now checks if the requested liquid type is valid before giving the requester infinite of it. (Automatically disabled in Roots 3.1.5+)
 * Botania
   * Added CraftTweaker Brew creation API that allows incense sticks and blood pendants.
-  * Added Brew of Saturation that uses the new "Saturegen" status effect.
 * Aether
-  * Fixed crashes when automating turning lava into Aerogel.
+  * Fixed crashes when automating turning lava into Aerogel (hopefully).
 * Totemic
   * Added CraftTweaker hook to change the default Instrument music values.
