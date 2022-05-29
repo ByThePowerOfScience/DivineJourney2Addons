@@ -26,7 +26,7 @@ public class StatusEffects {
 		@Override
 		public void performEffect(@NotNull EntityLivingBase entityLivingBaseIn, int amplifier) {
 			if (entityLivingBaseIn instanceof EntityPlayer) {
-				((EntityPlayer)entityLivingBaseIn).getFoodStats().addStats(amplifier, 1.0F);
+				((EntityPlayer)entityLivingBaseIn).getFoodStats().addStats(amplifier + 1, 1.0F);
 			}
 		}
 		

@@ -7,4 +7,6 @@ dj2addons.effect.regenerateHunger=Nourishment
 
 # Commands
 dj2addons.commands.desc=§2/ct dj2addons [category] §3Dumps data relevant to CraftTweaker extensions.
-dj2addons.commands.usage=Usage: §2/ct dj2addons [mod] Mods: all | bewitchment
+dj2addons.commands.usage=Usage: §2/ct dj2addons [mod] §3Mods: all | bewitchment | totemic
+dj2addons.commands.header.bewitchment.rituals=Bewitchment ritual IDs:
+dj2addons.commands.header.totemic.instruments=Totemic instrument IDs:

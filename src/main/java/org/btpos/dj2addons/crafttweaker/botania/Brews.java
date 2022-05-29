@@ -2,39 +2,32 @@
 package org.btpos.dj2addons.crafttweaker.botania;
 
 import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.api.potions.IPotion;
-import java.util.ArrayList;
-import java.util.List;
-
 import crafttweaker.api.potions.IPotionEffect;
-import crafttweaker.mc1120.potions.MCPotion;
 import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.botania.BrewHandler;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import stanhebben.zenscript.annotations.ZenMethodStatic;
-import stanhebben.zenscript.annotations.ZenSetter;
-import stanhebben.zenscript.value.IAny;
 import vazkii.botania.api.brew.Brew;
 
-@ZenDocAppend("docs/include/brews.example.md")
+import java.util.ArrayList;
+import java.util.List;
+
+@ZenDocAppend({"docs/zs/brew.md", "docs/include/brews.example.md"})
 @ZenRegister @ModOnly("botania")
 @ZenClass(DJ2Addons.MOD_ID + ".botania.Brews") @ZenDocClass(DJ2Addons.MOD_ID + ".botania.Brews")
 public class Brews {
 	
 	@ZenRegister @ModOnly("botania")
-	@ZenClass(DJ2Addons.MOD_ID + ".botania.Brew")
+	@ZenClass(DJ2Addons.MOD_ID + ".botania.Brew") @ZenDocClass(value=DJ2Addons.MOD_ID + ".botania.Brew")
 	public static class ZenBrew {
 		private final Brew internal;
 		private ZenBrew(Brew brew) {
@@ -42,14 +35,14 @@ public class Brews {
 			BrewHandler.registerBrew(internal);
 		}
 		
-		@ZenMethod("disableBloodPendant")
-		public static void setDisableBloodPendant(ZenBrew instance) {
-			instance.getInternal().setNotBloodPendantInfusable();
+		@ZenMethod("disableBloodPendant") @ZenDocMethod(order=1, description = "Disables the Tainted Blood Pendant recipe for this brew.")
+		public void setDisableBloodPendant() {
+			getInternal().setNotBloodPendantInfusable();
 		}
 		
-		@ZenMethod("disableIncenseStick")
-		public static void setDisableIncenseStick(ZenBrew instance) {
-			instance.getInternal().setNotIncenseInfusable();
+		@ZenMethod("disableIncenseStick") @ZenDocMethod(order=2, description = "Disables the Incense Stick recipe for this brew.")
+		public void setDisableIncenseStick() {
+			getInternal().setNotIncenseInfusable();
 		}
 		
 		public Brew getInternal() {

@@ -1,3 +1,4 @@
+### Example
 ```zenscript
 import dj2addons.botania.Brews;
 import dj2addons.botania.Brew;

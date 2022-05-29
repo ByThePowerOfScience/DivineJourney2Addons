@@ -2,13 +2,15 @@ package org.btpos.dj2addons.crafttweaker;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
-import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.bewitchment.VModRecipes;
+import pokefenn.totemic.api.music.MusicInstrument;
 
 public class CommandHandler extends CraftTweakerCommand {
 	
@@ -22,7 +24,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		all, bewitchment
+		all, bewitchment, totemic
 	}
 	
 	@Override
@@ -37,13 +39,19 @@ public class CommandHandler extends CraftTweakerCommand {
 			switch (command.get()) {
 				case all:
 				case bewitchment:
-					CraftTweakerAPI.getLogger().logInfo("Bewitchment ritual IDs:");
-					VModRecipes.getAllRituals().forEach(r -> {
-						CraftTweakerAPI.getLogger().logInfo("  -" + r.getRegistryName());
-					});
+					sender.sendMessage(new TextComponentTranslation("dj2addons.commands.header.bewitchment.rituals"));
+					VModRecipes.getAllRituals()
+							   .forEach(r -> sender.sendMessage(new TextComponentString("  -" + r.getRegistryName())));
 					if (command.get().equals(SubCommand.bewitchment))
 						break;
+				case totemic:
+					sender.sendMessage(new TextComponentTranslation("dj2addons.commands.header.totemic.instruments"));
+					GameRegistry.findRegistry(MusicInstrument.class).forEach(i -> sender.sendMessage(new TextComponentString("  -" + i.getRegistryName())));
+					if (command.get().equals(SubCommand.totemic))
+						break;
 			}
+		} else {
+			sender.sendMessage(new TextComponentTranslation("dj2addons.commands.usage"));
 		}
 		
 	}

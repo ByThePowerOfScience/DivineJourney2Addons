@@ -11,20 +11,7 @@ public class BrewHandler {
 	public BrewHandler() {
 	}
 	
-	private static Brew buildBrew(String key, String name, int color, int cost, boolean shouldInfuseBloodPendant, boolean shouldInfuseIncenseStick, PotionEffect... potionEffects) {
-		Brew b = new Brew(key, name, color, cost, potionEffects);
-		if (!shouldInfuseBloodPendant) {
-			b.setNotBloodPendantInfusable();
-		}
-		
-		if (!shouldInfuseIncenseStick) {
-			b.setNotIncenseInfusable();
-		}
-		
-		return b;
-	}
-	
-	public static Brew buildBrew(String key, String name, int color, int cost, PotionEffect[] effects) {
+	public static Brew buildBrew(String key, String name, int color, int cost, PotionEffect... effects) {
 		return new Brew(key, name, color, cost, effects);
 	}
 	

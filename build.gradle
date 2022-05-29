@@ -7,9 +7,6 @@ buildscript {
             name 'FancyGradle'
             url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
         }
-        maven {
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
-        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
@@ -26,7 +23,7 @@ apply plugin: 'idea'
 
 
 group = 'org.btpos.dj2addons'
-version = '1.1'
+version = '1.1.0'
 project.ext.version_mc = "${version_minecraft}-${version_forge}"
 
 java {
@@ -132,7 +129,7 @@ dependencies {
             fg.deobf("curse.maven:Baubles-227083:2518667"),
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:Roots-246183:3484394"),
             fg.deobf("curse.maven:MysticalWorld-282940:3460961"),
             fg.deobf("curse.maven:MysticalLib-277064:3483816")
@@ -151,7 +148,7 @@ dependencies {
             fg.deobf("curse.maven:AppleSkin-248787:2987247")
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Botania-225643:3330934")
     )
     
@@ -177,37 +174,55 @@ dependencies {
             fg.deobf("curse.maven:CyclopsCore-232758:3159497")
     )
     /*
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:")
     )
     */
     
     compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
     
-    runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
     
+    runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
+
     runtimeOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
     runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
         because "Shades Mixin library."
     }
 }
 
+
+
+task generateModpackZip(type: Exec, group: 'buildruns') {
+    commandLine("python3", "./python/CustomRunClient.py")
+}
+
+task updateModpack(type: Exec, group: 'buildruns') {
+    dependsOn(build)
+    commandLine("python3", "./python/UpdateModpack.py")
+}
+
 task copyTestZS(type: Copy) {
     from "./" include "Test.zs" into "./run/scripts"
 }
 
-//processResources {
-//    dependsOn(copyTestZS)
-//
-//    // this will ensure that this task is redone when the versions change.
-//    inputs.property "version", project.version
-//    inputs.property "mcversion", project.version_mc
-//
-//    // replace stuff in mcmod.info, nothing else
-//    filesMatching("mcmod.info") {
-//        expand 'version':project.version, 'mcversion':project.version_mc
-//    }
-//}
+task zendoc(type: JavaExec, group: 'documentation') {
+    
+    classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath
+    mainClass = 'ExportZenDocs'
+}
+
+processResources {
+    dependsOn(copyTestZS)
+    
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.version_mc
+    
+    // replace stuff in mcmod.info, nothing else
+    filesMatching("mcmod.info") {
+        expand 'version':project.version, 'mcversion':project.version_mc
+    }
+}
 
 
 
@@ -234,14 +249,7 @@ jar {
 }
 jar.finalizedBy('reobfJar')
 
-task customRunClient(type: Exec) {
-    commandLine("python3", "./python/CustomRunClient.py")
-}
 
-task updateModpack(type: Exec) {
-    dependsOn(build)
-    commandLine("python3", "./python/UpdateModpack.py")
-}
 
 fancyGradle {
     patches {
