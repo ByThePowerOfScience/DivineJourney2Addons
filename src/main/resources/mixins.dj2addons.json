@@ -12,7 +12,6 @@
     "botania.MModBrews",
     "industrialforegoing.MPlantInteractor",
     "moretweaker.MInputs",
-    "roots.MUnendingBowlItemHandler",
     "totemic.MModContent"
   ],
   "client": [

@@ -148,7 +148,7 @@ dependencies {
             fg.deobf("curse.maven:AppleSkin-248787:2987247")
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:Botania-225643:3330934")
     )
     

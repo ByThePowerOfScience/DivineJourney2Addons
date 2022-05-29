@@ -7,14 +7,11 @@ package org.btpos.dj2addons.mixin.aether;
 
 import com.gildedgames.the_aether.AetherEventHandler;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import org.btpos.dj2addons.DJ2Addons;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin({AetherEventHandler.class})
@@ -40,7 +37,6 @@ public class MPatchAerogel {
 			)
 	)
 	private void addEventResult(FillBucketEvent event, CallbackInfo ci) {
-		DJ2Addons.LOGGER.debug("Aether patch fired");
 		event.setResult(Result.ALLOW);
 	}
 }

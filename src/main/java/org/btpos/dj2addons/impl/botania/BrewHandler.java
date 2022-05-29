@@ -15,8 +15,8 @@ public class BrewHandler {
 		return new Brew(key, name, color, cost, effects);
 	}
 	
-	public static Brew buildBrew(String name, int cost,  PotionEffect... potionEffects) {
-		return new BrewMod(name, cost, potionEffects);
+	public static Brew buildBrew(String key, int cost,  PotionEffect... potionEffects) {
+		return new BrewMod(key, cost, potionEffects);
 	}
 	
 	public static void registerBrew(Brew b) {

@@ -2,12 +2,8 @@ package org.btpos.dj2addons;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CTChatCommand;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -17,9 +13,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
-import org.btpos.dj2addons.impl.botania.BrewHandler;
 import org.btpos.dj2addons.registry.Potions;
-import vazkii.botania.api.brew.Brew;
 
 @Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
 public class DJ2Addons {
@@ -56,7 +50,6 @@ public class DJ2Addons {
 	public void init(FMLInitializationEvent event) {
 		LOGGER.log(Level.INFO, "Voted \"Most Likely to be Factorio\"!");
 		
-		
 	}
 	
 	/**
@@ -64,13 +57,13 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void postinit(FMLPostInitializationEvent event) {
-		if (Loader.isModLoaded("botania")) {
-			Brew b = BrewHandler.buildBrew("dj2addons","saturation", MobEffects.SATURATION.getLiquidColor(), 500, new PotionEffect(Potions.Registered.saturegen, 1000, 3));
-			BrewHandler.registerBrew(b);
-			BrewHandler.registerBrewRecipe(b, new ItemStack[] {
-					new ItemStack(net.minecraft.init.Items.COOKED_BEEF)
-			});
-		}
+//		if (Loader.isModLoaded("botania")) {
+//			Brew b = BrewHandler.buildBrew("saturegen","dj2addons.brew.saturegen", MobEffects.SATURATION.getLiquidColor(), 500, new PotionEffect(Potions.Registered.saturegen, 1000, 3));
+//			BrewHandler.registerBrew(b);
+//			BrewHandler.registerBrewRecipe(b, new ItemStack[] {
+//					new ItemStack(net.minecraft.init.Items.COOKED_BEEF)
+//			});
+//		}
 	}
 	
 //	@GameRegistry.ObjectHolder(MOD_ID)
