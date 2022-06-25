@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
         mavenLocal()
@@ -12,15 +13,21 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'wtf.gofancy.fancygradle', name: 'wtf.gofancy.fancygradle.gradle.plugin', version: '1.1.+'
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
+        classpath "se.bjurr.gitchangelog:git-changelog-gradle-plugin:+"
     }
 }
+
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'wtf.gofancy.fancygradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'idea'
+apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
-
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    file = file("CHANGELOG.md");
+    templateContent = """"""; //TODO
+}
 
 group = 'org.btpos.dj2addons'
 version = '1.1.0'
@@ -243,9 +250,9 @@ jar {
 //                "ForceLoadAsMod"             : "true"
         ])
     }
-    metaInf {
-        from "libs" include "thaumicenergistics-v2.2.3-delfayne-fork-SNAPSHOT-2.jar" into "libraries"
-    }
+//    metaInf {
+//        from "libs" include "thaumicenergistics-v2.2.3-delfayne-fork-SNAPSHOT-2.jar" into "libraries"
+//    }
 }
 jar.finalizedBy('reobfJar')
 
