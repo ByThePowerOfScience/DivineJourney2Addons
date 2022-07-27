@@ -136,7 +136,7 @@ dependencies {
             fg.deobf("curse.maven:Baubles-227083:2518667"),
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Roots-246183:3484394"),
             fg.deobf("curse.maven:MysticalWorld-282940:3460961"),
             fg.deobf("curse.maven:MysticalLib-277064:3483816")
@@ -155,7 +155,7 @@ dependencies {
             fg.deobf("curse.maven:AppleSkin-248787:2987247")
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Botania-225643:3330934")
     )
     
@@ -163,7 +163,7 @@ dependencies {
             fg.deobf("curse.maven:Aether-255308:3280119")
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Totemic-237541:2700798")
     )
     
@@ -179,6 +179,12 @@ dependencies {
     compileOnly(
             fg.deobf("curse.maven:Evilcraft-74610:2811267"),
             fg.deobf("curse.maven:CyclopsCore-232758:3159497")
+    )
+    
+    compileOnly(
+            fg.deobf("curse.maven:ModularMachinery-270790:2713714"),
+            fg.deobf("curse.maven:ModularMagic-324318:2737623"),
+            fg.deobf("curse.maven:Thaumcraft-223628:2629023")
     )
     /*
     compileOnly(
@@ -213,7 +219,6 @@ task copyTestZS(type: Copy) {
 }
 
 task zendoc(type: JavaExec, group: 'documentation') {
-    
     classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath
     mainClass = 'ExportZenDocs'
 }
@@ -227,8 +232,12 @@ processResources {
     
     // replace stuff in mcmod.info, nothing else
     filesMatching("mcmod.info") {
-        expand 'version':project.version, 'mcversion':project.version_mc
+        it.expand 'version':project.version, 'mcversion':project.version_mc
     }
+}
+
+build {
+
 }
 
 
