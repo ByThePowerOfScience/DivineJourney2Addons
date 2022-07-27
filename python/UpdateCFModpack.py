@@ -2,7 +2,7 @@ import glob
 import os
 import shutil
 
-mods_path = "/Applications/MultiMC.app/Data/instances/DJ2AddonsTest/minecraft/mods/"
+mods_path = "/Users/caitlynbrandt/Documents/curseforge/minecraft/Instances/Divine Journey 2 (1)/mods/"
 
 def main():
 	try:

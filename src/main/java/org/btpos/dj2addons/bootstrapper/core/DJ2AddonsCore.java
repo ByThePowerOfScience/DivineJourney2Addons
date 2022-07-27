@@ -11,7 +11,7 @@ public class DJ2AddonsCore {
 		LOGGER.info("DJ2Addons loaded!");
 	}
 	
-	public static void verifyCoreLoaded() throws Error {
+	public static void verifyCoreLoaded() {
 		if (!coreLoaded) {
 			throw new Error("DJ2Addons Mixins are not loaded!");
 		}
