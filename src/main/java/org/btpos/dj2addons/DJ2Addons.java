@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
 import org.btpos.dj2addons.registry.Potions;
 
@@ -19,7 +20,7 @@ import org.btpos.dj2addons.registry.Potions;
 public class DJ2Addons {
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
-	public static final String VERSION = "1.1.0";
+	public static final String VERSION = "${version}";
 	
 	public static final String DEPENDENCIES = 	"required-after:crafttweaker;" +
 												"before:totemic;" +
@@ -39,6 +40,7 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
+		DJ2AddonsCore.verifyCoreLoaded();
 		CTChatCommand.registerCommand(new CommandHandler());
 		CraftTweakerAPI.tweaker.loadScript(false, "dj2addons");
 	}

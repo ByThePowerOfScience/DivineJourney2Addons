@@ -4,9 +4,9 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModClassLoader;
 import net.minecraftforge.fml.common.ModContainer;
-import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
@@ -98,5 +98,6 @@ public abstract class MLoader {
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
+		DJ2AddonsCore.onLoadCore();
 	}
 }
