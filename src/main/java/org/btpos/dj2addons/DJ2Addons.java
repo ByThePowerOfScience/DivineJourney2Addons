@@ -20,11 +20,13 @@ import org.btpos.dj2addons.registry.Potions;
 public class DJ2Addons {
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
-	public static final String VERSION = "${version}";
+	public static final String VERSION = "1.1.2";
 	
-	public static final String DEPENDENCIES = 	"required-after:crafttweaker;" +
-												"before:totemic;" +
-												"after:botania";
+	public static final String DEPENDENCIES =
+			"required-after:crafttweaker;" +
+			"before:totemic;" +
+			"after:botania;" +
+			"before:bewitchment";
 	
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
@@ -46,7 +48,7 @@ public class DJ2Addons {
 	}
 	
 	/**
-	 * This is the second initialization event. Register custom recipes
+	 * This is the second initialization event. Register custom recipes.
 	 */
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {

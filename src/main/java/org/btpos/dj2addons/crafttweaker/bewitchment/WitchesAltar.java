@@ -5,15 +5,11 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.api.oredict.IOreDict;
 import crafttweaker.api.oredict.IOreDictEntry;
-import crafttweaker.mc1120.CraftTweaker;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.dj2addons.bewitchment.WitchesAltar")
+@ZenClass("dj2addons.bewitchment.WitchesAltar")
 @ZenRegister @ModOnly("bewitchment")
 public class WitchesAltar {
 	

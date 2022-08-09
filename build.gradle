@@ -41,12 +41,12 @@ java {
 minecraft {
     mappings channel: 'stable', version: '39-1.12'
     
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+//    accessTransformer = file('src/main/resources/META-INF/dj2addons_at.cfg')
     
     runs {
         client {
             args '--username', 'Dev'
-//            jvmArgs "-Dfml.coreMods.load=${project.coremods}"
+//            jvmArgs "-Dfml.coreMods.load=${coremods}"
             
             workingDirectory project.file('run')
             
@@ -106,7 +106,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${version_mc}"
     
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly 'org.spongepowered:mixin:0.8.5'
+    implementation 'org.spongepowered:mixin:0.8.5'
     
     compileOnly(
             fg.deobf("curse.maven:Forgelin-248453:2785465"),
@@ -130,7 +130,6 @@ dependencies {
             fg.deobf("curse.maven:MTLib-253211:3308160")
     )
     
-    
     implementation(
             fg.deobf("curse.maven:Patchouli-306770:3162874"),
             fg.deobf("curse.maven:Baubles-227083:2518667"),
@@ -151,7 +150,7 @@ dependencies {
             "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:AppleSkin-248787:2987247")
     )
     
@@ -159,7 +158,7 @@ dependencies {
             fg.deobf("curse.maven:Botania-225643:3330934")
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:Aether-255308:3280119")
     )
     
@@ -186,6 +185,11 @@ dependencies {
             fg.deobf("curse.maven:ModularMagic-324318:2737623"),
             fg.deobf("curse.maven:Thaumcraft-223628:2629023")
     )
+    
+    compileOnly(
+            fg.deobf("curse.maven:PackagedAuto-308380:3614585")
+    )
+    
     /*
     compileOnly(
             fg.deobf("curse.maven:")
@@ -193,14 +197,12 @@ dependencies {
     */
     
     compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
-    
-    
     runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
-
-    runtimeOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
-    runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
-        because "Shades Mixin library."
-    }
+    
+    compileOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
+//    runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
+//        because "Shades Mixin library."
+//    }
 }
 
 
@@ -259,14 +261,11 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 
                 "FMLCorePluginContainsFMLMod": "true",
-                "FMLCorePlugin"              : "org.btpos.dj2addons.bootstrapper.core.DJ2ALoadingPlugin",
+                "FMLCorePlugin"              : coremods,
                 "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
                 "ForceLoadAsMod"             : "true"
         ])
     }
-//    metaInf {
-//        from "libs" include "thaumicenergistics-v2.2.3-delfayne-fork-SNAPSHOT-2.jar" into "libraries"
-//    }
 }
 jar.finalizedBy('reobfJar')
 
@@ -284,12 +283,13 @@ fancyGradle {
 mixin {
     add sourceSets.main, 'mixins.dj2addons.refmap.json'
     
-    config 'mixins.dj2addons.preinit.json'
-    //config 'mixins.dj2addons.loader.json'
+//    config 'mixins.dj2addons.init.json'
+    config 'mixins.dj2addons.loader.json'
 //    config 'mixins.dj2addons.json'
 
     debug.verbose = true
     debug.export = true
+    hotSwap = true
 }
 
 idea {

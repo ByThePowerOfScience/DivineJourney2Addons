@@ -1,8 +1,7 @@
-package org.btpos.dj2addons.mixin.bewitchment;
+package org.btpos.dj2addons.mixin.def.bewitchment;
 
 
 import com.bewitchment.api.registry.Ritual;
-import com.bewitchment.common.ritual.RitualBiomeShift;
 import com.bewitchment.registry.ModRecipes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

@@ -12,7 +12,6 @@ import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.botania.BrewHandler;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -23,11 +22,11 @@ import java.util.List;
 
 @ZenDocAppend({"docs/zs/brew.md", "docs/include/brews.example.md"})
 @ZenRegister @ModOnly("botania")
-@ZenClass(DJ2Addons.MOD_ID + ".botania.Brews") @ZenDocClass(DJ2Addons.MOD_ID + ".botania.Brews")
+@ZenClass("dj2addons.botania.Brews") @ZenDocClass("dj2addons.botania.Brews")
 public class Brews {
 	
 	@ZenRegister @ModOnly("botania")
-	@ZenClass(DJ2Addons.MOD_ID + ".botania.Brew") @ZenDocClass(value=DJ2Addons.MOD_ID + ".botania.Brew")
+	@ZenClass("dj2addons.botania.Brew") @ZenDocClass(value="dj2addons.botania.Brew")
 	public static class ZenBrew {
 		private final Brew internal;
 		private ZenBrew(Brew brew) {

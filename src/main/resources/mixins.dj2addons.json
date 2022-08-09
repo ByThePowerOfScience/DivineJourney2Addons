@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "org.btpos.dj2addons.mixin",
+  "package": "org.btpos.dj2addons.mixin.def",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.dj2addons.refmap.json",
   "mixins": [
@@ -10,8 +10,10 @@
     "bloodmagic.MSoulForge",
     "bloodmagic.MTileInventory",
     "botania.MModBrews",
+    "custom.OverlayHandler",
     "industrialforegoing.MPlantInteractor",
     "moretweaker.MInputs",
+    "thaumcraft.MTileEssentiaOutput",
     "totemic.MModContent"
   ],
   "client": [

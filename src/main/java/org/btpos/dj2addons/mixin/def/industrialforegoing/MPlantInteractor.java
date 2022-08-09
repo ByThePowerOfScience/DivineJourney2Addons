@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.industrialforegoing;
+package org.btpos.dj2addons.mixin.def.industrialforegoing;
 
 import com.buuz135.industrial.tile.agriculture.PlantInteractorTile;
 import com.infinityraider.agricraft.api.v1.misc.IAgriHarvestable;
@@ -17,10 +17,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Mixin(PlantInteractorTile.class)
 public class MPlantInteractor {
 	@Shadow
 	private ItemStackHandler outItems;
+	
 	
 	@Shadow @Final
 	public static List WORKING_TILES;

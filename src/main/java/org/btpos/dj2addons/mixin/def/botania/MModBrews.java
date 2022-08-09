@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package org.btpos.dj2addons.mixin.botania;
+package org.btpos.dj2addons.mixin.def.botania;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

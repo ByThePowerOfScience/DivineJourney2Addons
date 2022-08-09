@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.bloodmagic;
+package org.btpos.dj2addons.mixin.def.bloodmagic;
 
 
 import WayofTime.bloodmagic.item.soul.ItemSoulGem;

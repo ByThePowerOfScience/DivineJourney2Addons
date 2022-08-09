@@ -2,18 +2,16 @@ package org.btpos.dj2addons.crafttweaker.bloodmagic;
 
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
-import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
-import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.bloodmagic.VSoulForge;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 
 @ZenRegister @ModOnly("bloodmagic")
-@ZenClass(DJ2Addons.MOD_ID + ".bloodmagic.HellfireForge") @ZenDocClass(DJ2Addons.MOD_ID + ".bloodmagic.HellfireForge")
+@ZenClass("dj2addons.bloodmagic.HellfireForge") @ZenDocClass("dj2addons.bloodmagic.HellfireForge")
 public class ZenSoulForge {
 	/**
 	 * Sets the speed for all Hellfire Forge crafts. Default is 100.

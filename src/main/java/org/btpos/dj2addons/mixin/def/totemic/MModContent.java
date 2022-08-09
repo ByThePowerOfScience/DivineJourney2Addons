@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.totemic;
+package org.btpos.dj2addons.mixin.def.totemic;
 
 import com.mojang.realmsclient.util.Pair;
 import org.btpos.dj2addons.impl.totemic.VInstruments;

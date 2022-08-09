@@ -1,13 +1,13 @@
 {
   "required": true,
-  "package": "org.btpos.dj2addons.mixin.custom",
+  "package": "org.btpos.dj2addons.mixin.init",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.dj2addons.refmap.json",
-  "target": "@env(PREINIT)",
+  "target": "@env(INIT)",
   "mixins": [],
   "client": [
-    "MSatuRegen",
-    "OverlayHandler"
+    "custom.MSatuRegen",
+    "aether.MLavaPlaceBehavior"
   ],
   "minVersion": "0.6",
   "injectors": {

@@ -48,8 +48,28 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 //		LOGGER.debug("Attempting to apply mixin {} to target class {}", mixinClassName, targetClassName);
+	
 	}
 	
 	@Override
-	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
+	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+		// TODO
+		/*String output = null;
+		switch (mixinInfo.getClassName()) {
+			case "MPatchAerogel":
+				output = "Cooling down Aether atmosphere.";
+				break;
+			case "":
+				break;
+			case "":
+				break;
+			case "":
+				break;
+			case "":
+				break;
+			default:
+				return;
+		}
+		LOGGER.info(output);*/
+	}
 }
