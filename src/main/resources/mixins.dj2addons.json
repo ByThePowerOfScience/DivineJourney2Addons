@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.dj2addons.refmap.json",
   "mixins": [
-    "aether.MPatchAerogel",
+    "aether.aerogel.MPatchAerogel",
     "bewitchment.MModRecipes",
     "bewitchment.MRitual",
     "bloodmagic.MSoulForge",

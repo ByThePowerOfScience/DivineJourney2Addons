@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package org.btpos.dj2addons.mixin.def.aether;
+package org.btpos.dj2addons.mixin.def.aether.aerogel;
 
 import com.gildedgames.the_aether.AetherConfig;
 import com.gildedgames.the_aether.AetherEventHandler;

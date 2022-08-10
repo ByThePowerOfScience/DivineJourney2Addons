@@ -54,10 +54,11 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		// TODO
-		/*String output = null;
+		/*
+		String output = null;
 		switch (mixinInfo.getClassName()) {
 			case "MPatchAerogel":
-				output = "Cooling down Aether atmosphere.";
+				output = "Sprinkling aerogel dust in lava buckets.";
 				break;
 			case "":
 				break;
@@ -70,6 +71,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 			default:
 				return;
 		}
-		LOGGER.info(output);*/
+		LOGGER.info(output);
+		*/
 	}
 }

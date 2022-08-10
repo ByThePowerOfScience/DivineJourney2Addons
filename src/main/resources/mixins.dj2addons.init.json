@@ -4,10 +4,13 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.dj2addons.refmap.json",
   "target": "@env(INIT)",
-  "mixins": [],
+  "mixins": [
+    "aether.MLavaPlaceBehavior",
+    "bootstrapper.MLoader",
+    "minecraft.aerogel.MWorld"
+  ],
   "client": [
-    "custom.MSatuRegen",
-    "aether.MLavaPlaceBehavior"
+    "custom.MSatuRegen"
   ],
   "minVersion": "0.6",
   "injectors": {

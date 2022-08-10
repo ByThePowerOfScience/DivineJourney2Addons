@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.bootstrapper.mixin;
+package org.btpos.dj2addons.mixin.init.bootstrapper;
 
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 
-
 /**
  * This code original licensed under the terms of the MIT License
  * <p>Authorship of the file is visible here: https://github.com/DimensionalDevelopment/JustEnoughIDs/commits/master/src/main/java/org/dimdev/jeid/mixin/init/MixinLoader.java
@@ -34,7 +33,7 @@ public abstract class MLoader {
 	private ModClassLoader modClassLoader;
 	
 	/**
-	 * @reason Load all mods now and load mod support mixin configs. This can't be done later
+	 * Load all mods now and load mod support mixin configs. This can't be done later
 	 * since constructing mods loads classes from them.
 	 */
 	@SuppressWarnings("ALL")
@@ -51,6 +50,11 @@ public abstract class MLoader {
 		
 		// Add and reload mixin configs
 		Mixins.addConfiguration("mixins.dj2addons.json");
+//		Mixins.addConfiguration("mixins.dj2addons.init.json");
+		
+		
+		
+		
 		
 		Proxy mixinProxy = (Proxy) Launch.classLoader.getTransformers().stream().filter(transformer -> transformer instanceof Proxy).findFirst().get();
 		try {
@@ -77,7 +81,7 @@ public abstract class MLoader {
 				prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class);
 				prepareConfigsMethod.setAccessible(true);
 				prepareConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment());
-			} catch (NoSuchMethodException e) {
+			} catch (ReflectiveOperationException e) {
 				DJ2AddonsCore.LOGGER.warn("Mixin version 0.7+ detected. Other mods using this type of Mixin loader may break.");
 				
 				prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class, Extensions.class);

@@ -2,7 +2,7 @@ package org.btpos.dj2addons.bootstrapper.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.btpos.dj2addons.bootstrapper.mixin.MLoader;
+import org.btpos.dj2addons.mixin.init.bootstrapper.MLoader;
 
 public class DJ2AddonsCore {
 	private static boolean coreLoaded = false;

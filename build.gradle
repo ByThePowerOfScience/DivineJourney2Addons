@@ -189,6 +189,9 @@ dependencies {
     compileOnly(
             fg.deobf("curse.maven:PackagedAuto-308380:3614585")
     )
+    implementation(
+            fg.deobf("curse.maven:ActuallyAdditions-228404:3117927")
+    )
     
     /*
     compileOnly(
@@ -243,10 +246,6 @@ processResources {
     }
 }
 
-build {
-
-}
-
 
 
 jar {
@@ -260,10 +259,10 @@ jar {
                 "Implementation-Vendor"   : "ByThePowerOfScience",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 
-                "FMLCorePluginContainsFMLMod": "true",
-                "FMLCorePlugin"              : coremods,
+//                "FMLCorePluginContainsFMLMod": "true",
+//                "FMLCorePlugin"              : coremods,
                 "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
-                "ForceLoadAsMod"             : "true"
+//                "ForceLoadAsMod"             : "true"
         ])
     }
 }
@@ -283,13 +282,12 @@ fancyGradle {
 mixin {
     add sourceSets.main, 'mixins.dj2addons.refmap.json'
     
-//    config 'mixins.dj2addons.init.json'
-    config 'mixins.dj2addons.loader.json'
+    config 'mixins.dj2addons.init.json'
 //    config 'mixins.dj2addons.json'
 
     debug.verbose = true
     debug.export = true
-    hotSwap = true
+//    hotSwap = true
 }
 
 idea {

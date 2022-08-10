@@ -78,7 +78,7 @@ def generateModpackZip(tuples):
 	# 	file.write("import mods.dj2addons.*;")
 	#
 	with zipfile.ZipFile("./DJ2AddonsTest.zip", 'w') as file:
-		file.write("./out/temp/manifest.json", "manifest.json")
+		file.write("./manifest/manifest.json", "manifest.json")
 		file.write(glob.glob("./build/libs/dj2addons-*.jar")[0], "/overrides/mods/dj2addons.jar")
 		file.write("./Test.zs", "/overrides/scripts/Test.zs")
 
@@ -86,11 +86,11 @@ def generateModpackZip(tuples):
 
 def generateManifestJson(tuples):
 	try:
-		os.remove("./out/temp/manifest.json")
+		os.remove("./manifest/manifest.json")
 	except FileNotFoundError:
 		pass
 	
-	with open("./out/temp/manifest.json", "x") as file:
+	with open("./manifest/manifest.json", "x") as file:
 		files = []
 		for t in tuples:
 			files.append(files_template % (t[1], t[2]))
