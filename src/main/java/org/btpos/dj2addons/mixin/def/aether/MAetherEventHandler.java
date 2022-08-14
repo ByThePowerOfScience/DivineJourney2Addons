@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package org.btpos.dj2addons.mixin.def.aether.aerogel;
+package org.btpos.dj2addons.mixin.def.aether;
 
 import com.gildedgames.the_aether.AetherConfig;
 import com.gildedgames.the_aether.AetherEventHandler;
@@ -15,8 +15,11 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin({AetherEventHandler.class})
-public class MPatchAerogel {
+public class MAetherEventHandler {
 	
+	/**
+	 * Optimization by checking the dimension of the FillBucketEvent FIRST instead of later.
+	 */
 	@Inject(remap=false, method="onFillBucket", at=@At("HEAD"), cancellable = true)
 	private void checkDimensionFirst(FillBucketEvent event, CallbackInfo ci) {
 		if (event.getEntityPlayer().dimension != 0 && event.getEntityPlayer().dimension != AetherConfig.dimension.aether_dimension_id)

@@ -124,7 +124,7 @@ dependencies {
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:Bewitchment-285439:3256343"),
             fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
             fg.deobf("curse.maven:MTLib-253211:3308160")
@@ -189,9 +189,9 @@ dependencies {
     compileOnly(
             fg.deobf("curse.maven:PackagedAuto-308380:3614585")
     )
-    implementation(
-            fg.deobf("curse.maven:ActuallyAdditions-228404:3117927")
-    )
+//    implementation(
+//            fg.deobf("curse.maven:ActuallyAdditions-228404:3117927")
+//    )
     
     /*
     compileOnly(
@@ -206,6 +206,15 @@ dependencies {
 //    runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
 //        because "Shades Mixin library."
 //    }
+    
+    constraints {
+        implementation('net.minecraftforge:legacydev') {
+            version {
+                require '0.2.4.0'
+            }
+            because 'Working version.'
+        }
+    }
 }
 
 
@@ -278,6 +287,7 @@ fancyGradle {
         codeChickenLib
     }
 }
+
 
 mixin {
     add sourceSets.main, 'mixins.dj2addons.refmap.json'

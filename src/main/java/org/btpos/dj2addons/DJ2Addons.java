@@ -28,6 +28,7 @@ public class DJ2Addons {
 			"after:botania;" +
 			"before:bewitchment";
 	
+	
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
 	/**
