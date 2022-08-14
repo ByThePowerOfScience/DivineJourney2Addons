@@ -124,7 +124,7 @@ dependencies {
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Bewitchment-285439:3256343"),
             fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
             fg.deobf("curse.maven:MTLib-253211:3308160")
@@ -162,7 +162,7 @@ dependencies {
             fg.deobf("curse.maven:Aether-255308:3280119")
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:Totemic-237541:2700798")
     )
     
@@ -220,7 +220,7 @@ dependencies {
 
 
 task generateModpackZip(type: Exec, group: 'buildruns') {
-    commandLine("python3", "./python/CustomRunClient.py")
+    commandLine("python3", "./python/GenerateModpackZip.py")
 }
 
 task updateModpack(type: Exec, group: 'buildruns') {

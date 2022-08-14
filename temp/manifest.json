@@ -1,0 +1,43 @@
+{
+  "minecraft": {
+    "version": "1.12.2",
+    "modLoaders": [
+      {
+        "id": "forge-14.23.5.2860",
+        "primary": true
+      }
+    ]
+  },
+  "manifestType": "minecraftModpack",
+  "manifestVersion": 1,
+  "name": "DJ2 Addons Test",
+  "version": "0.0",
+  "author": "ABadHaiku",
+  "files": [
+    {
+      "projectID": 306770,
+      "fileID": 3162874,
+      "required": true
+    },
+{
+      "projectID": 227083,
+      "fileID": 2518667,
+      "required": true
+    },
+{
+      "projectID": 255308,
+      "fileID": 3280119,
+      "required": true
+    },
+{
+      "projectID": 239197,
+      "fileID": 3642364,
+      "required": true
+    },
+{
+      "projectID": 400488,
+      "fileID": 3024769,
+      "required": true
+    }
+  ]
+}

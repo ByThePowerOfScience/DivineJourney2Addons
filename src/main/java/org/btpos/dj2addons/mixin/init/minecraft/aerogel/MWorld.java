@@ -1,6 +1,5 @@
 package org.btpos.dj2addons.mixin.init.minecraft.aerogel;
 
-import com.gildedgames.the_aether.blocks.BlocksAether;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -24,8 +23,8 @@ public class MWorld {
 			)
 	)
 	private IBlockState addLavaAetherCase(Chunk chunk, BlockPos pos, IBlockState newState) {
-		if (((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId() && Blocks.LAVA.getDefaultState().equals(newState)) {
-			return chunk.setBlockState(pos, BlocksAether.aerogel.getDefaultState());
+		if (AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId() && Blocks.LAVA.getDefaultState().equals(newState)) {
+			return chunk.setBlockState(pos, AetherValues.getAerogelBlock().getDefaultState());
 		} else {
 			return chunk.setBlockState(pos, newState);
 		}
@@ -40,7 +39,7 @@ public class MWorld {
 			locals=LocalCapture.CAPTURE_FAILSOFT
 	)
 	private void addLavaAetherSound(BlockPos pos, IBlockState newState, int flags, CallbackInfoReturnable<Boolean> cir) {
-		if (((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId() && Blocks.LAVA.getDefaultState().equals(newState)) {
+		if (AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId() && Blocks.LAVA.getDefaultState().equals(newState)) {
 			AetherValues.playFizzleSound((World)(Object)this, pos);
 		}
 	}

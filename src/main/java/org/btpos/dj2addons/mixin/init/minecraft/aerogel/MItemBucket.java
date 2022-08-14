@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.init.aether;
+package org.btpos.dj2addons.mixin.init.minecraft.aerogel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ItemBucket.class)
-abstract class MLavaPlaceBehavior {
+abstract class MItemBucket {
 	@Shadow
 	@Final
 	private Block containedBlock;
@@ -31,14 +31,12 @@ abstract class MLavaPlaceBehavior {
 			)
 	)
 	private void changeLavaSound(World world, EntityPlayer player, BlockPos pos, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
-		if (world.provider.getDimension() == AetherValues.getDimensionId()) {
+		if (AetherValues.aetherIsLoaded && world.provider.getDimension() == AetherValues.getDimensionId()) {
 			world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 		} else {
 			world.playSound(player, pos, soundIn, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		}
 	}
-	
-	
 	
 	
 	@Redirect(
@@ -49,7 +47,7 @@ abstract class MLavaPlaceBehavior {
 			)
 	)
 	private boolean changeLavaPlaceBehavior(World world, BlockPos blockPos, IBlockState oldState, int oldLight) {
-		if (world.provider.getDimension() == AetherValues.getDimensionId()) {
+		if (AetherValues.aetherIsLoaded && world.provider.getDimension() == AetherValues.getDimensionId()) {
 			return world.setBlockState(blockPos, AetherValues.getAerogelBlock().getDefaultState(), 11);
 		} else {
 			return world.setBlockState(blockPos, this.containedBlock.getDefaultState(), 11);

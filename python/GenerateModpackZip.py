@@ -7,7 +7,7 @@ from typing import List
 
 
 def getDepsFromBuildScript():
-	bpattern = re.compile("(?:implementation|runtimeOnly)(?:\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+)")
+	bpattern = re.compile("(?:implementation|runtimeOnly)\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+")
 	deps = []
 	with open("./build.gradle") as file:
 		buildscript = file.read()
@@ -64,9 +64,7 @@ def generateModpackZip(tuples):
 	try:
 		os.remove("./DJ2AddonsTest.zip")
 		# os.remove("/Applications/MultiMC.app/Data/instances/DJ2AddonsTest")
-	except FileNotFoundError:
-		pass
-	except PermissionError:
+	except FileNotFoundError or PermissionError:
 		pass
 	
 	# try:
@@ -78,7 +76,7 @@ def generateModpackZip(tuples):
 	# 	file.write("import mods.dj2addons.*;")
 	#
 	with zipfile.ZipFile("./DJ2AddonsTest.zip", 'w') as file:
-		file.write("./manifest/manifest.json", "manifest.json")
+		file.write("./temp/manifest.json", "manifest.json")
 		file.write(glob.glob("./build/libs/dj2addons-*.jar")[0], "/overrides/mods/dj2addons.jar")
 		file.write("./Test.zs", "/overrides/scripts/Test.zs")
 
@@ -86,11 +84,11 @@ def generateModpackZip(tuples):
 
 def generateManifestJson(tuples):
 	try:
-		os.remove("./manifest/manifest.json")
+		os.remove("./temp/manifest.json")
 	except FileNotFoundError:
 		pass
 	
-	with open("./manifest/manifest.json", "x") as file:
+	with open("./temp/manifest.json", "x") as file:
 		files = []
 		for t in tuples:
 			files.append(files_template % (t[1], t[2]))

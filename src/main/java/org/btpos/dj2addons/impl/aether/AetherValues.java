@@ -8,9 +8,12 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 import org.jetbrains.annotations.Nullable;
 
 public class AetherValues {
+	public static boolean aetherIsLoaded = Loader.isModLoaded("aether_legacy");
+	
 	public static int getDimensionId() {
 		return AetherConfig.dimension.aether_dimension_id;
 	}

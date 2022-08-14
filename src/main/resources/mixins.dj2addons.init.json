@@ -5,7 +5,7 @@
   "refmap": "mixins.dj2addons.refmap.json",
   "target": "@env(INIT)",
   "mixins": [
-    "aether.MLavaPlaceBehavior",
+    "minecraft.aerogel.MItemBucket",
     "bootstrapper.MLoader",
     "minecraft.aerogel.MWorld"
   ],
