@@ -124,8 +124,11 @@ dependencies {
             fg.deobf("curse.maven:GuideAPI-228832:2645992"),
     )
     
+    compileOnly(fg.deobf("curse.maven:Bewitchment-285439:3256343")) {
+        exclude group: "org.spongepowered"
+    }
+    
     compileOnly(
-            fg.deobf("curse.maven:Bewitchment-285439:3256343"),
             fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
             fg.deobf("curse.maven:MTLib-253211:3308160")
     )
@@ -158,15 +161,15 @@ dependencies {
             fg.deobf("curse.maven:Botania-225643:3330934")
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Aether-255308:3280119")
     )
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:Totemic-237541:2700798")
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:ExtremeReactors-250277:3194746"),
             fg.deobf("curse.maven:ZeroCore-247921:3194743"),
             fg.deobf("curse.maven:ExtraUtils2-225561:2678374")

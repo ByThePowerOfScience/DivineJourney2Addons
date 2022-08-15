@@ -5,6 +5,7 @@ import org.btpos.dj2addons.crafttweaker.bewitchment.Rituals;
 import org.btpos.dj2addons.crafttweaker.bewitchment.WitchesAltar;
 import org.btpos.dj2addons.crafttweaker.bloodmagic.ZenSoulForge;
 import org.btpos.dj2addons.crafttweaker.botania.Brews;
+import org.btpos.dj2addons.crafttweaker.extremereactors.CTExtremeReactors;
 import org.btpos.dj2addons.crafttweaker.totemic.Instruments;
 import stanhebben.zenscript.annotations.Optional;
 
@@ -39,7 +40,8 @@ public class ExportZenDocs {
 				ZenSoulForge.class,
 				Brews.class,
 				Brews.ZenBrew.class,
-				Instruments.class
+				Instruments.class,
+				CTExtremeReactors.class
 		}; //TODO automate this
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);
