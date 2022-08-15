@@ -6,11 +6,12 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import org.btpos.dj2addons.DJ2Addons;
-import org.btpos.dj2addons.registry.Potions;
+import org.btpos.dj2addons.registry.ModPotions;
 import org.jetbrains.annotations.NotNull;
 
 public class StatusEffects {
-	public static final Potion SATUREGENTRIGGER = Potions.Registered.saturegen;
+	public static final Potion SATUREGENTRIGGER = ModPotions.Registered.saturegen;
+	
 	
 	public static class SatuRegen extends Potion {
 		private static final int COLOR = MobEffects.SATURATION.getLiquidColor();

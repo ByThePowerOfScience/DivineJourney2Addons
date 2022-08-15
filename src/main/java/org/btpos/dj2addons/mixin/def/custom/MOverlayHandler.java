@@ -15,7 +15,7 @@ import squeek.appleskin.client.HUDOverlayHandler;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(HUDOverlayHandler.class)
-abstract class OverlayHandler {
+abstract class MOverlayHandler {
 	
 	private static int i = -1;
 	private static int regen = -1;

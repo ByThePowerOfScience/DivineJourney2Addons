@@ -7,7 +7,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.custom.StatusEffects;
 
-public class Potions {
+public class ModPotions {
 	@GameRegistry.ObjectHolder(DJ2Addons.MOD_ID)
 	public static class Registered {
 		public static final Potion saturegen = null;

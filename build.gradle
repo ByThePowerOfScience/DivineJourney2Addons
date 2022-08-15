@@ -175,6 +175,7 @@ dependencies {
     compileOnly(
             fg.deobf("curse.maven:AstralSorcery-241721:3044416")
     )
+    
     compileOnly(
             fg.deobf("curse.maven:Evilcraft-74610:2811267"),
             fg.deobf("curse.maven:CyclopsCore-232758:3159497")

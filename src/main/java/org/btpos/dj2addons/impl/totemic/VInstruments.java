@@ -1,6 +1,7 @@
 package org.btpos.dj2addons.impl.totemic;
 
-import com.mojang.realmsclient.util.Pair;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.btpos.dj2addons.util.Util;
 
 import java.util.HashMap;
@@ -17,8 +18,8 @@ public class VInstruments {
 	public static Pair<Integer, Integer> getValuesForInstrument(String name, int baseOutput, int musicMaximum) {
 		Pair<? extends Number, ? extends Number> vals = VInstruments.INSTRUMENT_MAP.get(name);
 		if (vals != null) {
-			baseOutput = setOrMult(vals.first(), baseOutput);
-			musicMaximum = setOrMult(vals.second(), musicMaximum);
+			baseOutput = setOrMult(vals.getLeft(), baseOutput);
+			musicMaximum = setOrMult(vals.getRight(), musicMaximum);
 		}
 		return Pair.of(baseOutput, musicMaximum);
 	}

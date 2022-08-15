@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
-import org.btpos.dj2addons.registry.Potions;
+import org.btpos.dj2addons.registry.ModPotions;
 
 @Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
 public class DJ2Addons {
@@ -25,8 +25,9 @@ public class DJ2Addons {
 	public static final String DEPENDENCIES =
 			"required-after:crafttweaker;" +
 			"before:totemic;" +
-			"after:botania;" +
-			"before:bewitchment";
+			"before:bloodmagic;" +
+			"before:bewitchment;" +
+			"after:botania";
 	
 	
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
@@ -54,22 +55,13 @@ public class DJ2Addons {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		LOGGER.log(Level.INFO, "Voted \"Most Likely to be Factorio\"!");
-		
 	}
 	
 	/**
 	 * This is the final initialization event. Register actions from other mods here
 	 */
 	@Mod.EventHandler
-	public void postinit(FMLPostInitializationEvent event) {
-//		if (Loader.isModLoaded("botania")) {
-//			Brew b = BrewHandler.buildBrew("saturegen","dj2addons.brew.saturegen", MobEffects.SATURATION.getLiquidColor(), 500, new PotionEffect(Potions.Registered.saturegen, 1000, 3));
-//			BrewHandler.registerBrew(b);
-//			BrewHandler.registerBrewRecipe(b, new ItemStack[] {
-//					new ItemStack(net.minecraft.init.Items.COOKED_BEEF)
-//			});
-//		}
-	}
+	public void postinit(FMLPostInitializationEvent event) {}
 	
 //	@GameRegistry.ObjectHolder(MOD_ID)
 //	public static class Blocks {
@@ -86,7 +78,7 @@ public class DJ2Addons {
 	public static class ObjectRegistryHandler {
 		@SubscribeEvent
 		public static void addPotions(RegistryEvent.Register<Potion> evt) {
-			Potions.init(evt);
+			ModPotions.init(evt);
 		}
 	}
 }
