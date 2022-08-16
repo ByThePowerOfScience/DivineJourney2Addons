@@ -10,8 +10,8 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenRegister
-@ZenClass("dj2addons.extremereactors.ExtremeReactors")
-@ZenDocClass(value="dj2addons.extremereactors.ExtremeReactors", description = {
+@ZenClass("dj2addons.extremereactors.Misc")
+@ZenDocClass(value="dj2addons.extremereactors.Misc", description = {
 		"Handles ExtremeReactors tweaks.",
 		"Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file."
 }) @ZenDocAppend("docs/include/extremereactors.example.md")

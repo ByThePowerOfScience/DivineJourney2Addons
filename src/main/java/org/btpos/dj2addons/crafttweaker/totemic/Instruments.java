@@ -1,5 +1,6 @@
 package org.btpos.dj2addons.crafttweaker.totemic;
 
+import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
@@ -10,7 +11,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenRegister
-@ZenClass("dj2addons.totemic.Instruments")
+@ZenClass("dj2addons.totemic.Instruments") @ModOnly("totemic")
 @ZenDocClass(value="dj2addons.totemic.Instruments", description = {
 		"Handles musical instruments in Totemic.",
 		"Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file."

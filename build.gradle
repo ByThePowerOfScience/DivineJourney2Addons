@@ -168,11 +168,11 @@ dependencies {
     compileOnly(
             fg.deobf("curse.maven:Totemic-237541:2700798")
     )
+    compileOnly(fg.deobf("curse.maven:ExtraUtils2-225561:2678374"))
     
     implementation(
             fg.deobf("curse.maven:ExtremeReactors-250277:3194746"),
-            fg.deobf("curse.maven:ZeroCore-247921:3194743"),
-            fg.deobf("curse.maven:ExtraUtils2-225561:2678374")
+            fg.deobf("curse.maven:ZeroCore-247921:3194743")
     )
     
     compileOnly(

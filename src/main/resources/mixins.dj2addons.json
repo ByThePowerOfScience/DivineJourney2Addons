@@ -13,6 +13,7 @@
     "botania.MModBrews",
     "custom.MOverlayHandler",
     "extremereactors.MPowerSystem",
+    "extremereactors.MReactorInteriorData",
     "industrialforegoing.MPlantInteractor",
     "moretweaker.MInputs",
     "thaumcraft.MTileEssentiaOutput",

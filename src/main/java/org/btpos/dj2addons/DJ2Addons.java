@@ -27,6 +27,7 @@ public class DJ2Addons {
 			"before:totemic;" +
 			"before:bloodmagic;" +
 			"before:bewitchment;" +
+			"after:extremereactors;" +
 			"after:botania";
 	
 	
