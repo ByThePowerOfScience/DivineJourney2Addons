@@ -1,6 +1,7 @@
 import epicsquid.roots.util.StringHelper;
 import epicsquid.roots.util.zen.*;
 import org.apache.commons.lang3.StringUtils;
+import org.btpos.dj2addons.crafttweaker.astralsorcery.CTCelestialCrystals;
 import org.btpos.dj2addons.crafttweaker.bewitchment.Rituals;
 import org.btpos.dj2addons.crafttweaker.bewitchment.WitchesAltar;
 import org.btpos.dj2addons.crafttweaker.bloodmagic.ZenSoulForge;
@@ -43,7 +44,9 @@ public class ExportZenDocs {
 				Brews.ZenBrew.class,
 				Instruments.class,
 				CTExtremeReactors.class,
-				CTReactorInterior.class
+				CTReactorInterior.class,
+				CTReactorInterior.HeatConductivity.class,
+				CTCelestialCrystals.class
 		}; //TODO automate this
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);

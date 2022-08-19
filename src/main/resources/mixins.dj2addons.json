@@ -6,6 +6,7 @@
   "mixins": [
     "aether.MAetherEventHandler",
     "aether.MEnchanter",
+    "astralsorcery.MTileCelestialCrystals",
     "bewitchment.MModRecipes",
     "bewitchment.MRitual",
     "bloodmagic.MSoulForge",

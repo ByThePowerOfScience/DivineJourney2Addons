@@ -5,7 +5,7 @@
 import dj2addons.extremereactors.ExtremeReactors;
 ```
 
-Handles ExtremeReactors tweaks.
+Handles general ExtremeReactors tweaks.
 
 Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file.
 
@@ -28,6 +28,6 @@ Sets the maximum energy the reactor can store in its output buffer.
 #loader dj2addons
 import dj2addons.extremereactors.ExtremeReactors;
 
-// Changes the maximum energy stored in the output buffer to 250.
+// Changes the output buffer capacity to 250 RF/Tesla.
 ExtremeReactors.setMaxEnergyStored(250);
 ```

@@ -23,13 +23,10 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("dj2addons.extremereactors.ReactorInterior")
 @ZenDocClass(
 		value = "dj2addons.extremereactors.ReactorInterior",
-		description = {"Handles ExtremeReactors tweaks.", "Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file."}
+		description = {"Exposes API for interior blocks/fluids."}
 )
-@ZenDocAppend({"docs/include/extremereactors.example.md", "docs/zs/heatconductivity.md"})
-
+@ZenDocAppend({"docs/include/extremereactors.reactorinterior.example.md", "docs/zs/heatconductivity.md"})
 public final class CTReactorInterior {
-
-
 	@ZenMethod
 	@ZenDocMethod(
 			order = 1,
@@ -49,7 +46,7 @@ public final class CTReactorInterior {
 					info = "How well this material moderates radiation. This is a divisor; should not be below 1."
 			), @ZenDocArg(
 					arg = "heatConductivity",
-					info = "How well this material conducts heat to other blocks. Use "
+					info = "How well this material conducts heat to other blocks. Use `ReactorInterior.HeatConductivity`."
 			)}
 	)
 	public static void registerBlock(@NotNull IOreDictEntry oreDictEntry, float absorption, float heatEfficiency, float moderation, float heatConductivity) {
@@ -59,7 +56,8 @@ public final class CTReactorInterior {
 	@ZenMethod
 	@ZenDocMethod(
 			order = 2,
-			description = {"Deregisters a previously-registered valid reactor interior block."}
+			description = {"Deregisters a previously-registered valid reactor interior block."},
+			args = @ZenDocArg(arg="oreDict", info="The oredict entry to remove.")
 	)
 	public static void deregisterBlock(@NotNull IOreDictEntry oreDict) {
 		ReactorInterior.deregisterBlock(oreDict.getName());
@@ -94,7 +92,8 @@ public final class CTReactorInterior {
 	@ZenMethod
 	@ZenDocMethod(
 			order = 4,
-			description = {"Deregisters a previously-registered valid reactor interior block."}
+			description = {"Deregisters a previously-valid coolant fluid."},
+			args = @ZenDocArg(arg="fluid", info="The fluid to deregister.")
 	)
 	public static void deregisterFluid(@NotNull ILiquidStack fluid) {
 		ReactorInterior.deregisterFluid(fluid.getName());
@@ -103,36 +102,40 @@ public final class CTReactorInterior {
 	@ZenMethod
 	@ZenDocMethod(
 			order = 5,
-			description = {"Logs data in crafttweaker.log."}
+			description = {"Gets the registered attributes for a given oredict tag.", "Logs data in crafttweaker.log."},
+			args = @ZenDocArg(arg="oreDict", info="The oredict entry to retrieve the registered data for.")
 	)
 	public static void getBlockData(@NotNull IOreDictEntry oreDict) {
-		ReactorInteriorData var10000 = ReactorInterior.getBlockData(oreDict.getName());
-		CraftTweakerAPI.logInfo(var10000 != null ? var10000.toString() : null);
+		ReactorInteriorData rid = ReactorInterior.getBlockData(oreDict.getName());
+		CraftTweakerAPI.logInfo(rid != null ? rid.toString() : null);
 	}
 
 	@ZenMethod
 	@ZenDocMethod(
 			order = 6,
-			description = {"Logs data in crafttweaker.log."}
+			description = {"Gets the registered attributes for a given itemstack.", "Logs data in crafttweaker.log."},
+			args = @ZenDocArg(arg="stack", info="The item to retrieve the registered data for.")
+	
 	)
 	public static void getBlockData(@NotNull IItemStack stack) {
-		ReactorInteriorData var10000 = ReactorInterior.getBlockData(CraftTweakerMC.getItemStack(stack));
-		CraftTweakerAPI.logInfo(var10000 != null ? var10000.toString() : null);
+		ReactorInteriorData rid = ReactorInterior.getBlockData(CraftTweakerMC.getItemStack(stack));
+		CraftTweakerAPI.logInfo(rid != null ? rid.toString() : null);
 	}
 
 	@ZenMethod
 	@ZenDocMethod(
 			order = 7,
-			description = {"Logs data in crafttweaker.log."}
+			description = {"Logs data in crafttweaker.log."},
+			args = @ZenDocArg(arg="fluid", info="The fluid to retrieve the registered data for.")
 	)
 	public static void getFluidData(@NotNull ILiquidStack fluid) {
-		ReactorInteriorData var10000 = ReactorInterior.getFluidData(fluid.getName());
-		CraftTweakerAPI.logInfo(var10000 != null ? var10000.toString() : null);
+		ReactorInteriorData rid = ReactorInterior.getFluidData(fluid.getName());
+		CraftTweakerAPI.logInfo(rid != null ? rid.toString() : null);
 	}
 
 
 	@ZenRegister
-	@ModOnly("extremereactors")
+	@ModOnly("bigreactors")
 	@ZenClass("dj2addons.extremereactors.ReactorInterior.HeatConductivity")
 	@ZenDocClass("dj2addons.extremereactors.ReactorInterior.HeatConductivity")
 	public static class HeatConductivity {
@@ -142,62 +145,62 @@ public final class CTReactorInterior {
 		}
 
 		@ZenGetter
-		public static float conductivityAir() {
+		public static float air() {
 			return 0.05F;
 		}
 
 		@ZenGetter
-		public static float conductivityRubber() {
+		public static float rubber() {
 			return 0.01F;
 		}
 
 		@ZenGetter
-		public static float conductivityWater() {
+		public static float water() {
 			return 0.1F;
 		}
 
 		@ZenGetter
-		public static float conductivityStone() {
+		public static float stone() {
 			return 0.15F;
 		}
 
 		@ZenGetter
-		public static float conductivityGlass() {
+		public static float glass() {
 			return 0.3F;
 		}
 
 		@ZenGetter
-		public static float conductivityIron() {
+		public static float iron() {
 			return 0.6F;
 		}
 
 		@ZenGetter
-		public static float conductivityCopper() {
+		public static float copper() {
 			return 1.0F;
 		}
 
 		@ZenGetter
-		public static float conductivitySilver() {
+		public static float silver() {
 			return 1.5F;
 		}
 
 		@ZenGetter
-		public static float conductivityGold() {
+		public static float gold() {
 			return 2.0F;
 		}
 
 		@ZenGetter
-		public static float conductivityEmerald() {
+		public static float emerald() {
 			return 2.5F;
 		}
 
 		@ZenGetter
-		public static float conductivityDiamond() {
+		public static float diamond() {
 			return 3.0F;
 		}
 
 		@ZenGetter
-		public static float conductivityGraphene() {
+		public static float graphene() {
 			return 5.0F;
 		}
 	}

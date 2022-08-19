@@ -30,7 +30,7 @@ task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 }
 
 group = 'org.btpos.dj2addons'
-version = '1.1.1'
+version = '1.2.0'
 project.ext.version_mc = "${version_minecraft}-${version_forge}"
 
 java {
@@ -170,12 +170,12 @@ dependencies {
     )
     compileOnly(fg.deobf("curse.maven:ExtraUtils2-225561:2678374"))
     
-    implementation(
+    compileOnly(
             fg.deobf("curse.maven:ExtremeReactors-250277:3194746"),
             fg.deobf("curse.maven:ZeroCore-247921:3194743")
     )
     
-    compileOnly(
+    implementation(
             fg.deobf("curse.maven:AstralSorcery-241721:3044416")
     )
     
