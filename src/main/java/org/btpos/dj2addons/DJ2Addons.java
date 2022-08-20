@@ -10,11 +10,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
 import org.btpos.dj2addons.registry.ModPotions;
+
+import static org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore.LOGGER;
 
 @Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
 public class DJ2Addons {
@@ -29,9 +29,6 @@ public class DJ2Addons {
 			"before:bewitchment;" +
 			"after:extremereactors;" +
 			"after:botania";
-	
-	
-	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2");
 	
 	/**
 	 * This is the instance of your mod as created by Forge. It will never be null.

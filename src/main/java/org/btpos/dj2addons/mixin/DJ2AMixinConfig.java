@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-import static org.btpos.dj2addons.DJ2Addons.LOGGER;
+import static org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore.LOGGER;
 
 public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override

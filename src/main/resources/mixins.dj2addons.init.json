@@ -2,7 +2,7 @@
   "required": true,
   "package": "org.btpos.dj2addons.mixin.init",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "mixins.dj2addons.refmap.json",
+  "plugin": "org.btpos.dj2addons.mixin.DJ2AMixinConfig",
   "target": "@env(INIT)",
   "mixins": [
     "minecraft.aerogel.MItemBucket",
