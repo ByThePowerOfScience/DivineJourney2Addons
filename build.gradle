@@ -1,80 +1,46 @@
 buildscript {
-    repositories {
-        gradlePluginPortal()
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-        mavenLocal()
-        maven {
-            name 'FancyGradle'
-            url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
-        }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'wtf.gofancy.fancygradle', name: 'wtf.gofancy.fancygradle.gradle.plugin', version: '1.1.+'
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
-        classpath "se.bjurr.gitchangelog:git-changelog-gradle-plugin:+"
-    }
+	repositories {
+		gradlePluginPortal()
+		maven { url = 'https://maven.minecraftforge.net' }
+		maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+	}
+	dependencies {
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '2.3-SNAPSHOT', changing: true
+		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.6+'
+	}
 }
 
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'wtf.gofancy.fancygradle'
+apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'idea'
-apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
-task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-    file = file("CHANGELOG.md");
-    templateContent = """"""; //TODO
-}
-
+archivesBaseName = 'dj2addons'
 group = 'org.btpos.dj2addons'
 version = '1.2.0'
-project.ext.version_mc = "${version_minecraft}-${version_forge}"
 
-java {
-    archivesBaseName = 'dj2addons'
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+	sourceCompatibility = targetCompatibility = '1.8'
+}
+
+
+runClient {
+	args "--username=Dev"
 }
 
 minecraft {
-    mappings channel: 'stable', version: '39-1.12'
-    
-//    accessTransformer = file('src/main/resources/META-INF/dj2addons_at.cfg')
-    
-    runs {
-        client {
-            args '--username', 'Dev'
-//            jvmArgs "-Dfml.coreMods.load=${coremods}"
-            
-            workingDirectory project.file('run')
-            
-            property 'forge.logging.markers', 'REGISTRIES'
-            
-            property 'forge.logging.console.level', 'debug'
-            
-            mods {
-                dj2addons {
-                    source sourceSets.main
-                }
-            }
-        }
-        
-        server {
-            workingDirectory project.file('run')
-            
-            property 'forge.logging.markers', 'REGISTRIES'
-            
-            property 'forge.logging.console.level', 'debug'
-            
-            mods {
-                dj2addons {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+	version = "1.12.2-14.23.5.2847"
+	runDir = "run"
+	
+	mappings = "stable_39"
+	
+	replace "@VERSION@", project.version
+	replaceIn "DJ2Addons.java"
+	replace "@DEPENDENCIES@", project.deps
+	
+	
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -84,231 +50,187 @@ repositories {
 //        name = "Su5ed LegacyDev Fork"
 //        url = "https://su5ed.jfrog.io/artifactory/maven/"
 //    }
-    mavenLocal()
-    maven {
-        name = "CurseMaven"
-        url = "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name = "BlameJared"
-        url = "https://maven.blamejared.com/"
-    }
-    maven {
-        name = "CoFH Maven"
-        url = "https://maven.covers1624.net"
-    }
+	mavenLocal()
+	maven {
+		name = "CurseMaven"
+		url = "https://cursemaven.com"
+	}
+	maven {
+		name = "BlameJared"
+		url = "https://maven.blamejared.com/"
+	}
+	maven {
+		name = "CoFH Maven"
+		url = "https://maven.covers1624.net"
+	}
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${version_mc}"
-    
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation 'org.spongepowered:mixin:0.8.5'
-    
-    compileOnly(
-            fg.deobf("curse.maven:Forgelin-248453:2785465"),
-            fg.deobf("curse.maven:TeslaCoreLib-254602:3438487"),
-            fg.deobf("curse.maven:IndustrialForegoing-266515:2745321"),
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:AgriCraft-225635:3317747"),
-            fg.deobf("curse.maven:InfinityLib-251396:3317119")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:BloodMagic-224791:2822288"),
-            fg.deobf("curse.maven:GuideAPI-228832:2645992"),
-    )
-    
-    compileOnly(fg.deobf("curse.maven:Bewitchment-285439:3256343")) {
-        exclude group: "org.spongepowered"
-    }
-    
-    compileOnly(
-            fg.deobf("curse.maven:MoreTweaker-336569:3226142"),
-            fg.deobf("curse.maven:MTLib-253211:3308160")
-    )
-    
-    implementation(
-            fg.deobf("curse.maven:Patchouli-306770:3162874"),
-            fg.deobf("curse.maven:Baubles-227083:2518667"),
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:Roots-246183:3484394"),
-            fg.deobf("curse.maven:MysticalWorld-282940:3460961"),
-            fg.deobf("curse.maven:MysticalLib-277064:3483816")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:EnderIO-64578:3328811"),
-            fg.deobf("curse.maven:ProjectIntelligence-306028:2833640"),
-            fg.deobf("curse.maven:EnderCore-231868:2972849"),
-            fg.deobf("curse.maven:BrandonsCore-231382:3408276"),
-            fg.deobf("curse.maven:CodeChickenLib-242818:2779848"),
-            "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:AppleSkin-248787:2987247")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:Botania-225643:3330934")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:Aether-255308:3280119")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:Totemic-237541:2700798")
-    )
-    compileOnly(fg.deobf("curse.maven:ExtraUtils2-225561:2678374"))
-    
-    compileOnly(
-            fg.deobf("curse.maven:ExtremeReactors-250277:3194746"),
-            fg.deobf("curse.maven:ZeroCore-247921:3194743")
-    )
-    
-    implementation(
-            fg.deobf("curse.maven:AstralSorcery-241721:3044416")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:Evilcraft-74610:2811267"),
-            fg.deobf("curse.maven:CyclopsCore-232758:3159497")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:ModularMachinery-270790:2713714"),
-            fg.deobf("curse.maven:ModularMagic-324318:2737623"),
-            fg.deobf("curse.maven:Thaumcraft-223628:2629023")
-    )
-    
-    compileOnly(
-            fg.deobf("curse.maven:PackagedAuto-308380:3614585")
-    )
-//    implementation(
-//            fg.deobf("curse.maven:ActuallyAdditions-228404:3117927")
-//    )
-    
-    /*
-    compileOnly(
-            fg.deobf("curse.maven:")
-    )
-    */
-    
-    compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
-    runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
-    
-    compileOnly(fg.deobf("curse.maven:Erebus-220698:3211974"))
-//    runtimeOnly(fg.deobf("curse.maven:ErebusFix-400488:3024769")) {
-//        because "Shades Mixin library."
-//    }
-    
-    constraints {
-        implementation('net.minecraftforge:legacydev') {
-            version {
-                require '0.2.4.0'
-            }
-            because 'Working version.'
-        }
-    }
+	implementation 'org.spongepowered:mixin:0.8.5'
+	
+	compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+	runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
+	
+	
+	// **CRAFTTWEAKER HOOKS**
+	deobfCompile(
+			"curse.maven:Patchouli-306770:3162874",
+			"curse.maven:Baubles-227083:2518667"
+	)
+	
+	deobfCompile(
+			"curse.maven:Roots-246183:3484394",
+			"curse.maven:MysticalWorld-282940:3460961",
+			"curse.maven:MysticalLib-277064:3483816"
+	)
+	
+	deobfCompile("curse.maven:AstralSorcery-241721:3044416")
+	
+	deobfCompile("curse.maven:Botania-225643:3330934")
+	
+	deobfCompile(
+			"curse.maven:BloodMagic-224791:2822288",
+			"curse.maven:GuideAPI-228832:2645992"
+	)
+	
+	deobfProvided("curse.maven:Totemic-237541:2700798")
+	
+	deobfCompile(
+			"curse.maven:ExtremeReactors-250277:3194746",
+			"curse.maven:ZeroCore-247921:3194743"
+	)
+	
+	deobfCompile("curse.maven:Bewitchment-285439:3256343") {
+		exclude group: "org.spongepowered"
+	}
+	
+	
+	
+	// **TWEAKS**
+	deobfProvided(
+			"curse.maven:Forgelin-248453:2785465",
+			"curse.maven:TeslaCoreLib-254602:3438487",
+			"curse.maven:IndustrialForegoing-266515:2745321"
+	)
+	
+	deobfProvided(
+			"curse.maven:AgriCraft-225635:3317747",
+			"curse.maven:InfinityLib-251396:3317119"
+	)
+	
+	deobfProvided(
+			"curse.maven:MoreTweaker-336569:3226142",
+			"curse.maven:MTLib-253211:3308160"
+	)
+	
+	
+	deobfProvided(
+			"curse.maven:EnderIO-64578:3328811",
+			"curse.maven:ProjectIntelligence-306028:2833640",
+			"curse.maven:EnderCore-231868:2972849",
+			"curse.maven:BrandonsCore-231382:3408276",
+			"curse.maven:CodeChickenLib-242818:2779848"
+	)
+	compileOnly "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	
+	deobfProvided("curse.maven:AppleSkin-248787:2987247")
+	
+	
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
+	
+	deobfProvided(
+			"curse.maven:ModularMachinery-270790:2713714",
+			"curse.maven:ModularMagic-324318:2737623",
+			"curse.maven:Thaumcraft-223628:2629023"
+	)
+	
+	deobfProvided("curse.maven:Aether-255308:3280119")
+	
+	deobfProvided(
+			"curse.maven:Evilcraft-74610:2811267",
+			"curse.maven:CyclopsCore-232758:3159497"
+	)
+	
+	
+	deobfProvided("curse.maven:PackagedAuto-308380:3614585")
+	
 }
-
 
 
 task generateModpackZip(type: Exec, group: 'buildruns') {
-    commandLine("python3", "./python/GenerateModpackZip.py")
+	commandLine("python3", "./python/GenerateModpackZip.py")
 }
 
 task updateModpack(type: Exec, group: 'buildruns') {
-    dependsOn(build)
-    commandLine("python3", "./python/UpdateModpack.py")
+	dependsOn(build)
+	commandLine("python3", "./python/UpdateModpack.py")
 }
 
 task updateCFModpack(type: Exec, group: 'buildruns') {
-    dependsOn(build)
-    commandLine("python3", "./python/UpdateCFModpack.py")
+	dependsOn(build)
+	commandLine("python3", "./python/UpdateCFModpack.py")
 }
 
 task copyTestZS(type: Copy) {
-    from "./" include "Test.zs" into "./run/scripts"
+	from "./" include "Test.zs" into "./run/scripts"
 }
 
 task zendoc(type: JavaExec, group: 'documentation') {
-    classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath
-    mainClass = 'ExportZenDocs'
+	classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath
+	main = 'ExportZenDocs'
 }
 
 processResources {
-    dependsOn(copyTestZS)
-    
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.version_mc
-    
-    // replace stuff in mcmod.info, nothing else
-    filesMatching("mcmod.info") {
-        it.expand 'version':project.version, 'mcversion':project.version_mc
-    }
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+	
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+		
+		// replace version and mcversion
+		expand 'version': project.version, 'mcversion': project.minecraft.version
+	}
+	
+	// copy everything else except the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
+	
+	rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 
-
 jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "dj2addons",
-                "Specification-Vendor"    : "ByThePowerOfScience",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "ByThePowerOfScience",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                
-//                "FMLCorePluginContainsFMLMod": "true",
+	manifest {
+		attributes(
+				
+				
+				"FMLCorePluginContainsFMLMod": "true",
 //                "FMLCorePlugin"              : coremods,
-                "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
-//                "ForceLoadAsMod"             : "true"
-        ])
-    }
+				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+				"ForceLoadAsMod": "true",
+				"MixinConfigs": 'mixins.dj2addons.init.json'
+		)
+	}
 }
 jar.finalizedBy('reobfJar')
 
 
-
-fancyGradle {
-    patches {
-        resources
-        coremods
-        asm
-        codeChickenLib
-    }
-}
-
-
 mixin {
-    add sourceSets.main, 'mixins.dj2addons.refmap.json'
-    
-    config 'mixins.dj2addons.init.json'
-//    config 'mixins.dj2addons.json'
+	add sourceSets.main, 'mixins.dj2addons.refmap.json'
 
-    debug.verbose = true
-    debug.export = true
+//    config 'mixins.dj2addons.json'
 //    hotSwap = true
 }
 
 idea {
-    module {
-        downloadSources = false
-        downloadJavadoc = true
-    }
+	module {
+		inheritOutputDirs = true
+		downloadSources = false
+		downloadJavadoc = true
+	}
 }
 
 

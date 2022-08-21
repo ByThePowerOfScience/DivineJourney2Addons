@@ -7,7 +7,7 @@ from typing import List
 
 
 def getDepsFromBuildScript():
-	bpattern = re.compile("(?:implementation|runtimeOnly)\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+")
+	bpattern = re.compile("(?:deobfCompile|runtimeOnly)\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+")
 	deps = []
 	with open("./build.gradle") as file:
 		buildscript = file.read()
@@ -77,7 +77,7 @@ def generateModpackZip(tuples):
 	#
 	with zipfile.ZipFile("./DJ2AddonsTest.zip", 'w') as file:
 		file.write("./temp/manifest.json", "manifest.json")
-		file.write(glob.glob("./build/libs/dj2addons-*.jar")[0], "/overrides/mods/dj2addons.jar")
+		file.write(glob.glob("./build/libs/dj2addons-*.jar")[1], "/overrides/mods/dj2addons.jar")
 		file.write("./Test.zs", "/overrides/scripts/Test.zs")
 
 
