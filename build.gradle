@@ -68,9 +68,7 @@ repositories {
 dependencies {
 	implementation 'org.spongepowered:mixin:0.8.5'
 	
-	compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
-	runtimeOnly("curse.maven:CraftTweaker-239197:3642364")
-	
+	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
@@ -131,7 +129,7 @@ dependencies {
 			"curse.maven:BrandonsCore-231382:3408276",
 			"curse.maven:CodeChickenLib-242818:2779848"
 	)
-	compileOnly "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	
 	deobfProvided("curse.maven:AppleSkin-248787:2987247")
 	
@@ -181,6 +179,7 @@ task zendoc(type: JavaExec, group: 'documentation') {
 }
 
 processResources {
+	dependsOn(copyTestZS)
 	// this will ensure that this task is redone when the versions change.
 	inputs.property "version", project.version
 	inputs.property "mcversion", project.minecraft.version

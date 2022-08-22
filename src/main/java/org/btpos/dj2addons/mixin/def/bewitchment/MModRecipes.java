@@ -21,5 +21,6 @@ public class MModRecipes {
 	@Inject(remap=false,method="addRitualRecipe()V", at=@At("TAIL"))
 	private static void removeRitualRecipes(CallbackInfo ci) {
 		ritualRecipes.removeAll(VModRecipes.getRitualsToRemove());
+		ritualRecipes.addAll(VModRecipes.getRitualsToRemove());
 	}
 }
