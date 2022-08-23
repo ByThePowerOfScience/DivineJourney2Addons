@@ -1,6 +1,5 @@
 package org.btpos.dj2addons;
 
-import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CTChatCommand;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.RegistryEvent;
@@ -44,7 +43,6 @@ public class DJ2Addons {
 	public void preinit(FMLPreInitializationEvent event) {
 		DJ2AddonsCore.verifyCoreLoaded();
 		CTChatCommand.registerCommand(new CommandHandler());
-		CraftTweakerAPI.tweaker.loadScript(false, "dj2addons");
 	}
 	
 	/**

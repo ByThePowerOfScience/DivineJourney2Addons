@@ -6,5 +6,5 @@ dj2addons.brew.saturegen=Fullness
 
 
 # Commands
-dj2addons.commands.desc=§2/ct dj2addons [category] §3Dumps data relevant to CraftTweaker extensions.
-dj2addons.commands.usage=Usage: §2/ct dj2addons [arg] §3Args: hand | mods | bewitchment | totemic
+dj2addons.commands.desc=§2/ct dj2addons [category] §3Prints data relevant to CraftTweaker extensions.
+dj2addons.commands.usage=Usage: §2/ct dj2addons [arg] §3Args: hand | mods | bewitchment | extrautils | totemic

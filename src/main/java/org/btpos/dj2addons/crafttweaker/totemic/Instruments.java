@@ -14,7 +14,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("dj2addons.totemic.Instruments") @ModOnly("totemic")
 @ZenDocClass(value="dj2addons.totemic.Instruments", description = {
 		"Handles musical instruments in Totemic.",
-		"Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file."
+		"Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file."
 }) @ZenDocAppend("docs/include/instruments.example.md")
 public class Instruments {
 	@ZenDocMethod(order=1, description = {

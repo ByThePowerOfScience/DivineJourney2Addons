@@ -62,41 +62,6 @@ Deregisters a previously-valid coolant fluid.
 ---
 
 
-```zenscript
-void getBlockData(
-  IOreDictEntry oreDict // The oredict entry to retrieve the registered data for.
-);
-```
-
-Gets the registered attributes for a given oredict tag.
-Logs data in crafttweaker.log.
-
----
-
-
-```zenscript
-void getBlockData(
-  IItemStack stack // The item to retrieve the registered data for.
-);
-```
-
-Gets the registered attributes for a given itemstack.
-Logs data in crafttweaker.log.
-
----
-
-
-```zenscript
-void getFluidData(
-  ILiquidStack fluid // The fluid to retrieve the registered data for.
-);
-```
-
-Logs data in crafttweaker.log.
-
----
-
-
 ### Example
 ```zenscript
 import dj2addons.extremereactors.ReactorInterior;
@@ -108,6 +73,36 @@ ReactorInterior.registerBlock(<ore:blockStone>, 0.5, 0.5, 0.5, HeatConductivity.
 ### Class
 
 ```zenscript
-import dj2addons.extremereactors.ReactorInterior.HeatConductivity;
+import dj2addons.extremereactors.HeatConductivity;
 ```
 
+### Static Properties
+
+```zenscript
+HeatConductivity.ambientHeat // 
+
+HeatConductivity.air // 
+
+HeatConductivity.rubber // 
+
+HeatConductivity.water // 
+
+HeatConductivity.stone // 
+
+HeatConductivity.glass // 
+
+HeatConductivity.iron // 
+
+HeatConductivity.copper // 
+
+HeatConductivity.silver // 
+
+HeatConductivity.gold // 
+
+HeatConductivity.emerald // 
+
+HeatConductivity.diamond // 
+
+HeatConductivity.graphene // 
+
+```

@@ -2,6 +2,8 @@ package org.btpos.dj2addons.crafttweaker;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
+import com.rwtema.extrautils2.blocks.BlockPassiveGenerator;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -23,6 +25,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.commons.lang3.StringUtils;
 import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.bewitchment.VModRecipes;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +34,7 @@ import pokefenn.totemic.api.music.MusicInstrument;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CommandHandler extends CraftTweakerCommand {
@@ -50,7 +54,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, mods, bewitchment, totemic
+		hand, mods, bewitchment, extrautils, totemic
 	}
 	
 	@Override
@@ -79,6 +83,10 @@ public class CommandHandler extends CraftTweakerCommand {
 					totemicHandler(sender, player);
 					if (command.get().equals(SubCommand.totemic))
 						break;
+				case extrautils:
+					extrautilsHandler(sender, player);
+					if (command.get().equals(SubCommand.extrautils))
+						break;
 			}
 			switch (command.get()) {
 				case mods:
@@ -94,31 +102,40 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	
 	private void bewitchmentHandler(ICommandSender sender, EntityPlayer player) {
-		sender.sendMessage(new TextComponentString("§3Ritual IDs:"));
+		Messages.sendHeading(sender, "Rituals:");
 		CraftTweakerAPI.logInfo("Bewitchment Rituals:");
-		VModRecipes.getAllRituals().stream().filter(r -> !(r instanceof VModRecipes.DummyRitual))
-				.forEach(r -> {
-					CraftTweakerAPI.logInfo("- " + r.getRegistryName());
-					if (player != null)
-						ClipboardHelper.sendMessageWithCopy(player, "    §e- §b" + r.getRegistryName(), r.getRegistryName() + "");
-					else
-						sender.sendMessage(new TextComponentString("    §e- §b" + r.getRegistryName()));
-				});
-		
-		if (VModRecipes.getRitualsToRemove().size() == 0) {
-			sender.sendMessage(new TextComponentString("§3No removed rituals."));
-			CraftTweakerAPI.logInfo("\nNo removed rituals.");
-		} else {
-			sender.sendMessage(new TextComponentString("§3Removed rituals:"));
-			CraftTweakerAPI.logInfo("\nRemoved rituals:");
-			VModRecipes.getRitualsToRemove()
+		if (player != null) {
+			VModRecipes.getAllRituals().stream().filter(r -> !(r instanceof VModRecipes.DummyRitual))
 					.forEach(r -> {
 						CraftTweakerAPI.logInfo("- " + r.getRegistryName());
-						if (player != null)
-							ClipboardHelper.sendMessageWithCopy(player, "    §e- §b" + r.getRegistryName(), r.getRegistryName() + "");
-						else
-							sender.sendMessage(new TextComponentString("    §e- §b" + r.getRegistryName()));
+						Messages.sendPropertyWithCopy(player, null, r.getRegistryName() + "");
 					});
+		} else {
+			VModRecipes.getAllRituals().stream().filter(r -> !(r instanceof VModRecipes.DummyRitual))
+					.forEach(r -> {
+						CraftTweakerAPI.logInfo("- " + r.getRegistryName());
+						Messages.sendProperty(sender, null, r.getRegistryName() + "");
+					});
+		}
+		
+		if (VModRecipes.getRitualsToRemove().size() == 0) {
+			Messages.sendHeading(sender, "§3No removed rituals.");
+			CraftTweakerAPI.logInfo("\nNo removed rituals.");
+		} else {
+			Messages.sendHeading(sender, "Removed rituals:");
+			CraftTweakerAPI.logInfo("\nRemoved rituals:");
+			if (player != null) {
+				VModRecipes.getRitualsToRemove()
+						.forEach(r -> {
+							CraftTweakerAPI.logInfo("- " + r.getRegistryName());
+							Messages.sendPropertyWithCopy(player, null, r.getRegistryName() + "");
+						});
+			} else {
+				VModRecipes.getRitualsToRemove().forEach(r -> {
+					CraftTweakerAPI.logInfo("- " + r.getRegistryName());
+					Messages.sendProperty(sender, null, r.getRegistryName() + "");
+				});
+			}
 		}
 	}
 	
@@ -129,15 +146,30 @@ public class CommandHandler extends CraftTweakerCommand {
 		GameRegistry.findRegistry(MusicInstrument.class).forEach(i -> {
 			CraftTweakerAPI.logInfo("- " + i.getRegistryName() + " [baseOutput: " + i.getBaseOutput() + ", musicMaximum: " + i.getMusicMaximum() + "]");
 			if (player != null) {
-				ClipboardHelper.sendMessageWithCopy(player, "    §e- §b" + i.getRegistryName(), i.getRegistryName() + "");
-				ClipboardHelper.sendMessageWithCopy(player, "        §e- §2baseOutput: " + i.getBaseOutput(), i.getBaseOutput() + "");
-				ClipboardHelper.sendMessageWithCopy(player, "        §e- §2musicMaximum: " + i.getMusicMaximum(), i.getMusicMaximum() + "");
+				Messages.sendPropertyWithCopy(player, null, i.getRegistryName() + "");
+				Messages.sendPropertyWithCopy(player, "baseOutput", String.valueOf(i.getBaseOutput()), 1);
+				Messages.sendPropertyWithCopy(player, "musicMaximum", String.valueOf(i.getMusicMaximum()), 1);
 			} else {
-				sender.sendMessage(new TextComponentString("    §e- §b" + i.getRegistryName()));
-				sender.sendMessage(new TextComponentString("        §e- §2baseOutput: " + i.getBaseOutput()));
-				sender.sendMessage(new TextComponentString("        §e- §2musicMaximum: " + i.getMusicMaximum()));
+				Messages.sendProperty(sender, null, i.getRegistryName() + "");
+				Messages.sendProperty(sender, "baseOutput", String.valueOf(i.getBaseOutput()), 1);
+				Messages.sendProperty(sender, "musicMaximum", String.valueOf(i.getMusicMaximum()), 1);
 			}
 		});
+	}
+	
+	// Prints list of mill names
+	private void extrautilsHandler(ICommandSender sender, EntityPlayer player) {
+		Set<String> generators = Arrays.stream(BlockPassiveGenerator.GeneratorType.values()).map(Enum::name).collect(ImmutableSet.toImmutableSet());
+		if (generators.size() != 0) {
+			Messages.sendHeading(sender,"GP Mills:");
+			if (player != null) {
+				generators.forEach(name -> Messages.sendPropertyWithCopy(player, null, name));
+			} else {
+				generators.forEach(name -> Messages.sendProperty(sender, null, name));
+			}
+		} else {
+			Messages.sendHeading(sender, "No GP mills found.");
+		}
 	}
 	
 	private static void executeHandCommand(MinecraftServer server, ICommandSender sender, String[] args) {
@@ -157,7 +189,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					if (nbt.length() > 0)
 						withNBT = ".withTag(" + nbt + ")";
 				}
-				ClipboardHelper.sendMessageWithCopy(player, "Item \u00A72" + itemName + "\u00A7a" + withNBT, itemName + withNBT);
+				ClipboardHelper.sendMessageWithCopy(player, "Item §2" + itemName + "§a" + withNBT, itemName + withNBT);
 				
 				// adds liquid the item contains
 				printLiquidInfo(sender, player, heldItem);
@@ -179,7 +211,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					int meta = block.getBlock().getMetaFromState(block);
 					String blockName = "<" + block.getBlock().getRegistryName() + (meta == 0 ? "" : ":" + meta) + ">";
 					
-					ClipboardHelper.sendMessageWithCopy(player, "Block \u00A72" + blockName + " \u00A7rat \u00A79[" + blockPos.getX() + ", " + blockPos.getY() + ", " + blockPos.getZ() + "]\u00A7r", blockName);
+					ClipboardHelper.sendMessageWithCopy(player, "Block §2" + blockName + " §rat §9[" + blockPos.getX() + ", " + blockPos.getY() + ", " + blockPos.getZ() + "]§r", blockName);
 					
 					// adds the oreDict names if it has some
 					try {
@@ -187,11 +219,11 @@ public class CommandHandler extends CraftTweakerCommand {
 						printOreDictInfo(sender, player, oreDictNames);
 						
 					} catch (IllegalArgumentException e) { // catches if it couldn't create a valid ItemStack for the Block
-						sender.sendMessage(new TextComponentString("\u00A73No OreDict Entries."));
+						Messages.sendHeading(sender, "No OreDict Entries.");
 					}
 					
 				} else {
-					sender.sendMessage(new TextComponentString("\u00A74Please hold an Item in your hand or look at a Block."));
+					Messages.send(sender,"§4Please hold an Item in your hand or look at a Block.");
 				}
 			}
 		} else {
@@ -203,25 +235,27 @@ public class CommandHandler extends CraftTweakerCommand {
 		ILiquidStack liquidStack = CraftTweakerMC.getILiquidStack(FluidUtil.getFluidContained(heldItem));
 		if (liquidStack != null) {
 			String liquidCommandString = liquidStack.toCommandString();
-			ClipboardHelper.sendMessageWithCopy(player, "Contains Liquid \u00A72" + liquidCommandString, liquidCommandString);
+			ClipboardHelper.sendMessageWithCopy(player, "Contains Liquid §2" + liquidCommandString, liquidCommandString);
 			if (!printFluidReactorInteriorData(sender, player, liquidStack.getName()))
-				sender.sendMessage(new TextComponentString("§3No Reactor Interior Data."));
+				Messages.sendHeading(sender, "No Reactor Interior Data.");
 		}
 	}
 	
 	private static void printOreDictInfo(ICommandSender sender, EntityPlayer player, List<String> oreDictNames) {
 		if (!oreDictNames.isEmpty()) {
-			sender.sendMessage(new TextComponentString("\u00A73OreDict Entries:"));
+			Messages.sendHeading(sender, "OreDict Entries:");
 			
 			for (String oreName : oreDictNames) {
-				ClipboardHelper.sendMessageWithCopy(player, "    \u00A7e- \u00A7b" + oreName, "<ore:" + oreName + ">");
+				Messages.sendPropertyWithCopy(player, null, oreName, "<ore:" + oreName + ">");
 				if (!printOreDictReactorInteriorData(sender, player, oreName))
-					sender.sendMessage(new TextComponentString("§3No Reactor Interior Data."));
+					Messages.sendHeading(sender,"No Reactor Interior Data.");
 			}
 		} else {
-			sender.sendMessage(new TextComponentString("\u00A73No OreDict Entries"));
+			Messages.sendHeading(sender,"No OreDict Entries");
 		}
 	}
+	
+	
 	
 	private static boolean printOreDictReactorInteriorData(ICommandSender sender, EntityPlayer player, String oreName) {
 		ReactorInteriorData rid = ReactorInterior.getBlockData(oreName);
@@ -235,13 +269,63 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	private static boolean printReactorInteriorData(ICommandSender sender, EntityPlayer player, ReactorInteriorData rid) {
 		if (rid != null) {
-			sender.sendMessage(new TextComponentString("§3Reactor Interior Data:"));
-			ClipboardHelper.sendMessageWithCopy(player, "    §e- absorption: §b" + rid.absorption, String.valueOf(rid.absorption));
-			ClipboardHelper.sendMessageWithCopy(player, "    §e- moderation: §b" + rid.moderation, String.valueOf(rid.moderation));
-			ClipboardHelper.sendMessageWithCopy(player, "    §e- heatEfficiency: §b" + rid.heatEfficiency, String.valueOf(rid.heatEfficiency));
-			ClipboardHelper.sendMessageWithCopy(player, "    §e- heatConductivity: §b" + rid.heatConductivity, String.valueOf(rid.heatConductivity));
+			Messages.sendHeading(sender, "Reactor Interior Data:");
+			Messages.sendPropertyWithCopy(player, "absorption", String.valueOf(rid.absorption));
+			Messages.sendPropertyWithCopy(player, "moderation", String.valueOf(rid.moderation));
+			Messages.sendPropertyWithCopy(player, "heatEfficiency", String.valueOf(rid.heatEfficiency));
+			Messages.sendPropertyWithCopy(player, "heatConductivity", String.valueOf(rid.heatConductivity));
 			return true;
 		}
 		return false;
+	}
+	
+	
+	
+	private static class Messages {
+		private static final String INDENT = "    ";
+		private static final char[] HIGHLIGHTING = {'b', '2'};
+		
+		private static String indent(int level) {
+			return StringUtils.repeat(INDENT, level + 1);
+		}
+		
+		static void send(ICommandSender sender, String message) {
+			sender.sendMessage(new TextComponentString(message));
+		}
+		
+		static void sendHeading(ICommandSender sender, String s) {
+			send(sender, "§3" + s);
+		}
+		
+		static void sendPropertyWithCopy(EntityPlayer player, String property, String value) {
+			sendPropertyWithCopy(player, property, value, 0);
+		}
+		
+		static void sendPropertyWithCopy(EntityPlayer player, String property, String value, int indent) {
+			sendPropertyWithCopy(player, property, value, value, indent);
+		}
+		
+		static void sendPropertyWithCopy(EntityPlayer player, String property, String value, String toCopy) {
+			sendPropertyWithCopy(player, property, value, toCopy, 0);
+		}
+		
+		static void sendPropertyWithCopy(EntityPlayer player, String property, String value, String toCopy, int indent) {
+			ClipboardHelper.sendMessageWithCopy(player, getPropertyMessage(property, value, indent), toCopy);
+		}
+		static void sendProperty(ICommandSender sender, String property, String value) {
+			sendProperty(sender, property, value, 0);
+		}
+		
+		static void sendProperty(ICommandSender sender, String property, String value, int indent) {
+			send(sender, getPropertyMessage(property, value, indent));
+		}
+		
+		static String getPropertyMessage(String property, String value, int indent) {
+			if (property == null || property.equals(""))
+				property = "";
+			else
+				property += ": ";
+			return indent(indent) + "§e- " + property + "§" + HIGHLIGHTING[indent] + value;
+		}
 	}
 }

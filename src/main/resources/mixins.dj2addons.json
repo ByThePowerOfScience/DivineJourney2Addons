@@ -13,6 +13,7 @@
     "bloodmagic.MTileInventory",
     "botania.MModBrews",
     "custom.MOverlayHandler",
+    "extrautils.MGeneratorType",
     "extremereactors.MPowerSystem",
     "extremereactors.MReactorInteriorData",
     "industrialforegoing.MPlantInteractor",

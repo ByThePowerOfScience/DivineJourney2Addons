@@ -1,15 +1,11 @@
 package org.btpos.dj2addons.crafttweaker.extremereactors;
 
-import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import epicsquid.roots.util.zen.*;
-import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import org.jetbrains.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -96,38 +92,7 @@ public final class CTReactorInterior {
 		ReactorInterior.deregisterFluid(fluid.getName());
 	}
 	
-	@ZenMethod
-	@ZenDocMethod(
-			order = 5,
-			description = {"Gets the registered attributes for a given oredict tag.", "Logs data in crafttweaker.log."},
-			args = @ZenDocArg(arg="oreDict", info="The oredict entry to retrieve the registered data for.")
-	) @ZenDoc("Logs block data in crafttweaker.log.")
-	public static void getBlockData(@NotNull IOreDictEntry oreDict) {
-		ReactorInteriorData rid = ReactorInterior.getBlockData(oreDict.getName());
-		CraftTweakerAPI.logInfo(rid != null ? rid.toString() : null);
-	}
 	
-	@ZenMethod
-	@ZenDocMethod(
-			order = 6,
-			description = {"Gets the registered attributes for a given itemstack.", "Logs data in crafttweaker.log."},
-			args = @ZenDocArg(arg="stack", info="The item to retrieve the registered data for.")
-	) @ZenDoc("Logs block data in crafttweaker.log.")
-	public static void getBlockData(@NotNull IItemStack stack) {
-		ReactorInteriorData rid = ReactorInterior.getBlockData(CraftTweakerMC.getItemStack(stack));
-		CraftTweakerAPI.logInfo(rid != null ? rid.toString() : null);
-	}
-	
-	@ZenMethod
-	@ZenDocMethod(
-			order = 7,
-			description = {"Logs data in crafttweaker.log."},
-			args = @ZenDocArg(arg="fluid", info="The fluid to retrieve the registered data for.")
-	) @ZenDoc("Logs fluid data in crafttweaker.log.")
-	public static void getFluidData(@NotNull ILiquidStack fluid) {
-		ReactorInteriorData rid = ReactorInterior.getFluidData(fluid.getName());
-		CraftTweakerAPI.logInfo(rid != null ? rid.toString() : null);
-	}
 	
 	
 	@ZenRegister

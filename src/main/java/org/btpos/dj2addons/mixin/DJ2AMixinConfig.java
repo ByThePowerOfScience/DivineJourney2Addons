@@ -53,25 +53,48 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		// TODO
-		/*
-		String output = null;
+		String output;
 		switch (mixinInfo.getClassName()) {
-			case "MPatchAerogel":
+			case "MItemBucket":
 				output = "Sprinkling aerogel dust in lava buckets.";
 				break;
-			case "":
+			case "MEnchanter":
+				output = "Disabling Skyroot bucket mitosis.";
 				break;
-			case "":
+			case "MTileCelestialCrystals":
+				output = "De-ironing starmetal/crystal interactions.";
 				break;
-			case "":
+			case "MModRecipes":
+				output = "This server is WAC-secured. [Witch Anti-Cheat]";
 				break;
-			case "":
+			case "MSoulForge":
+				output = "Giving demons a pep rally.";
 				break;
+			case "MPowerSystem":
+				output = "Embiggening reactor buffer.";
+				break;
+			case "MPlantInteractor":
+				output = "Enabling interdimensional access of Crop Things™.";
+				break;
+			case "MOverlayHandler":
+				output = "Teaching hunger shanks to do The Wave.";
+				break;
+			case "MInputs":
+				output = "It's Florbin' Time.";
+				break;
+			case "MTileEssentiaOutput":
+				output = "Sealing those pesky leaks in the modular magical machineries.";
+				break;
+			case "MModContent":
+				output = "Bass-boosting totemic instruments.";
+				break;
+//			case "":
+//				output = "";
+//				break;
 			default:
 				return;
 		}
 		LOGGER.info(output);
-		*/
+		
 	}
 }
