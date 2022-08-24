@@ -5,8 +5,8 @@
   "plugin": "org.btpos.dj2addons.mixin.DJ2AMixinConfig",
   "target": "@env(INIT)",
   "mixins": [
-    "minecraft.aerogel.MItemBucket",
     "bootstrapper.MLoader",
+    "minecraft.aerogel.MItemBucket",
     "minecraft.aerogel.MWorld"
   ],
   "client": [

@@ -19,7 +19,9 @@
     "industrialforegoing.MPlantInteractor",
     "moretweaker.MInputs",
     "thaumcraft.MTileEssentiaOutput",
-    "totemic.MModContent"
+    "totemic.MModContent",
+    "tweaks.thaumcraft.MArcanePedestal",
+    "tweaks.thaumcraft.TileThaumcraftInventoryAccessor"
   ],
   "client": [
   ],
