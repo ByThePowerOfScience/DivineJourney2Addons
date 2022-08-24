@@ -2,8 +2,6 @@ package org.btpos.dj2addons.crafttweaker;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
-import com.rwtema.extrautils2.blocks.BlockPassiveGenerator;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -23,18 +21,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.bewitchment.VModRecipes;
+import org.btpos.dj2addons.impl.extrautilities.VExtraUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pokefenn.totemic.api.music.MusicInstrument;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CommandHandler extends CraftTweakerCommand {
@@ -54,7 +56,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, mods, bewitchment, extrautils, totemic
+		hand, mods, bewitchment, extrautils2, totemic
 	}
 	
 	@Override
@@ -83,9 +85,9 @@ public class CommandHandler extends CraftTweakerCommand {
 					totemicHandler(sender, player);
 					if (command.get().equals(SubCommand.totemic))
 						break;
-				case extrautils:
+				case extrautils2:
 					extrautilsHandler(sender, player);
-					if (command.get().equals(SubCommand.extrautils))
+					if (command.get().equals(SubCommand.extrautils2))
 						break;
 			}
 			switch (command.get()) {
@@ -159,18 +161,26 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	// Prints list of mill names
 	private void extrautilsHandler(ICommandSender sender, EntityPlayer player) {
-		Set<String> generators = Arrays.stream(BlockPassiveGenerator.GeneratorType.values()).map(Enum::name).collect(ImmutableSet.toImmutableSet());
+		Map<String, float[]> generators = VExtraUtilities.getCurrentScaling();
 		if (generators.size() != 0) {
 			Messages.sendHeading(sender,"GP Mills:");
 			if (player != null) {
-				generators.forEach(name -> Messages.sendPropertyWithCopy(player, null, name));
+				generators.forEach((name, scaling) -> {
+					Messages.sendPropertyWithCopy(player, null, name, "Mills.setScaling(" + name + ", " + Messages.listToAssociativeArrayPretty(Arrays.asList(ArrayUtils.toObject(scaling)), true, 0) + ");");
+				});
 			} else {
-				generators.forEach(name -> Messages.sendProperty(sender, null, name));
+				generators.forEach((name, scaling) -> {
+					Messages.sendProperty(sender, null, name);
+					Messages.sendProperty(sender, "Scaling", Messages.listToAssociativeArrayPretty(Arrays.asList(ArrayUtils.toObject(scaling)), true, 2), 1);
+				});
 			}
 		} else {
 			Messages.sendHeading(sender, "No GP mills found.");
 		}
 	}
+	
+	
+	
 	
 	private static void executeHandCommand(MinecraftServer server, ICommandSender sender, String[] args) {
 		if (sender.getCommandSenderEntity() instanceof EntityPlayer) {
@@ -326,6 +336,45 @@ public class CommandHandler extends CraftTweakerCommand {
 			else
 				property += ": ";
 			return indent(indent) + "§e- " + property + "§" + HIGHLIGHTING[indent] + value;
+		}
+		
+		static String listToAssociativeArrayPretty(List<Object> list, boolean raw, int indent) {
+			StringBuilder sb = new StringBuilder();
+			
+			Map<Object, Object> map = new HashMap<>();
+			for (int i = 0; i < list.size(); i+=2) {
+				Object o1 = list.get(i);
+				Object o2;
+				try {
+					o2 = list.get(i+1);
+				} catch (Exception e) {
+					o2 = null;
+				}
+				map.put(o1, o2);
+			}
+			return mapToAssociativeArrayPretty(map, raw, indent);
+		}
+		
+		static String mapToAssociativeArrayPretty(Map<Object, Object> map, boolean raw, int indent) {
+			StringBuilder sb = new StringBuilder();
+			if (!raw)
+				sb.append(TextFormatting.YELLOW);
+			sb.append("{\n");
+			if (!raw)
+				sb.append(indent(indent));
+			map.forEach((x, y) -> {
+				if (raw) {
+					sb.append("\t").append(x).append(": ").append(y).append(",\r\n");
+				} else {
+					sb.append(INDENT)
+							.append(TextFormatting.GREEN).append(x).append(TextFormatting.YELLOW).append(": ")
+							.append(TextFormatting.AQUA).append(y).append(TextFormatting.YELLOW).append(",\n").append(indent(indent));
+				}
+			});
+			if (!raw)
+				sb.append(indent(indent)).append(TextFormatting.YELLOW);
+			sb.append("}");
+			return sb.toString();
 		}
 	}
 }

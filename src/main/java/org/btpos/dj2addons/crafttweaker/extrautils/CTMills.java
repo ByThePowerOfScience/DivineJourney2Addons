@@ -3,6 +3,7 @@ package org.btpos.dj2addons.crafttweaker.extrautils;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
+import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
@@ -14,12 +15,15 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @ZenRegister @ModOnly("extrautils2")
-@ZenClass("dj2addons.extrautils.Mills") @ZenDocClass(value="dj2addons.extrautils.Mills",description = {
+@ZenClass("dj2addons.extrautils2.Mills") @ZenDocClass(value="dj2addons.extrautils2.Mills",description = {
 		"Handles Grid Power (GP) generator (mill) tweaks.",
 		"Must be run with the preinit loader, specified with `#loader preinit` at the top of the file."
-})
+}) @ZenDocAppend("extrautils.example.md")
 public class CTMills {
-	@ZenMethod @ZenDocMethod(description = "Sets mill power scaling. See the example.", args= {
+	@ZenMethod @ZenDocMethod(description = {
+			"Sets mill power scaling. See the example.",
+			"Use `/dj2addons extrautils2` in-game to print all mill names."
+	}, args= {
 			@ZenDocArg(arg="millName", info="The name of the mill to change."),
 			@ZenDocArg(arg="values", info="An associative array of [Grid Power threshold : production percentage].")
 	}) @ZenDoc("Sets mill power scaling. See docs on GitHub.")

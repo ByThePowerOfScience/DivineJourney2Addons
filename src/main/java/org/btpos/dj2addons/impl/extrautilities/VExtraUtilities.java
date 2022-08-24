@@ -10,13 +10,15 @@ public class VExtraUtilities {
 		scalingMap.put(millName, values);
 	}
 	
-	public static float[] getFromMapOrOriginal(String s, float[] scaling) {
+	public static float[] getFromMapOrOriginal(String s, float[] original) {
 		float[] arr = scalingMap.get(s);
 		if (arr != null)
 			return arr;
-		return scaling;
+		scalingMap.put(s, original);
+		return original;
 	}
 	
-	
-	private static final Map<String, Float> basePowerMap = new HashMap<>();
+	public static Map<String, float[]> getCurrentScaling() {
+		return scalingMap;
+	}
 }
