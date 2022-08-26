@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.totemic;
+package org.btpos.dj2addons.mixin.def.api.totemic;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.btpos.dj2addons.impl.totemic.VInstruments;

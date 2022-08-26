@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.moretweaker;
+package org.btpos.dj2addons.mixin.def.tweaks.moretweaker;
 
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.minecraft.CraftTweakerMC;

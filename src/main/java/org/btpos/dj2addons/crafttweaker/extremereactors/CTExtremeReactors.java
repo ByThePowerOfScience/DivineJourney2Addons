@@ -1,5 +1,6 @@
 package org.btpos.dj2addons.crafttweaker.extremereactors;
 
+import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
@@ -9,7 +10,7 @@ import org.btpos.dj2addons.impl.extremereactors.VExtremeReactors;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenRegister
+@ZenRegister @ModOnly("bigreactors")
 @ZenClass("dj2addons.extremereactors.ExtremeReactors")
 @ZenDocClass(value="dj2addons.extremereactors.ExtremeReactors", description = {
 		"Handles general ExtremeReactors tweaks.",

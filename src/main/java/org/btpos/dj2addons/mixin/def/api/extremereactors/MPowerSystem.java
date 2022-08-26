@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.extremereactors;
+package org.btpos.dj2addons.mixin.def.api.extremereactors;
 
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import org.btpos.dj2addons.impl.extremereactors.VExtremeReactors;

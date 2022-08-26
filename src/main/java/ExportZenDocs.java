@@ -6,6 +6,7 @@ import org.btpos.dj2addons.crafttweaker.bewitchment.Rituals;
 import org.btpos.dj2addons.crafttweaker.bewitchment.WitchesAltar;
 import org.btpos.dj2addons.crafttweaker.bloodmagic.ZenSoulForge;
 import org.btpos.dj2addons.crafttweaker.botania.Brews;
+import org.btpos.dj2addons.crafttweaker.extrautils.CTMills;
 import org.btpos.dj2addons.crafttweaker.extremereactors.CTExtremeReactors;
 import org.btpos.dj2addons.crafttweaker.extremereactors.CTReactorInterior;
 import org.btpos.dj2addons.crafttweaker.totemic.Instruments;
@@ -46,7 +47,8 @@ public class ExportZenDocs {
 				CTExtremeReactors.class,
 				CTReactorInterior.class,
 				CTReactorInterior.HeatConductivity.class,
-				CTCelestialCrystals.class
+				CTCelestialCrystals.class,
+				CTMills.class
 		}; //TODO automate this
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);

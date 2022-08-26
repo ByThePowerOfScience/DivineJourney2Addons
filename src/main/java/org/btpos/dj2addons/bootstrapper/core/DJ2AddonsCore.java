@@ -3,6 +3,7 @@ package org.btpos.dj2addons.bootstrapper.core;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.mixin.init.bootstrapper.MLoader;
+import org.spongepowered.asm.mixin.transformer.throwables.MixinTransformerError;
 
 public class DJ2AddonsCore {
 	private static boolean coreLoaded = false;
@@ -18,7 +19,7 @@ public class DJ2AddonsCore {
 	
 	public static void verifyCoreLoaded() {
 		if (!coreLoaded) {
-			throw new Error("DJ2Addons Mixins are not loaded!");
+			throw new MixinTransformerError("DJ2Addons Mixins are not loaded! The config mixins.dj2addons.init.json was not executed.");
 		}
 	}
 }

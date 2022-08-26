@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.thaumcraft;
+package org.btpos.dj2addons.mixin.def.tweaks.thaumcraft;
 
 import fr.frinn.modularmagic.common.tile.TileAspectProvider;
 import net.minecraft.tileentity.TileEntity;

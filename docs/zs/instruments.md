@@ -7,7 +7,7 @@ import dj2addons.totemic.Instruments;
 
 Handles musical instruments in Totemic.
 
-Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file.
+Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file.
 
 
 #### Methods

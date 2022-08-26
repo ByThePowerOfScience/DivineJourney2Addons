@@ -18,10 +18,10 @@ import java.util.Map;
 @ZenClass("dj2addons.extrautils2.Mills") @ZenDocClass(value="dj2addons.extrautils2.Mills",description = {
 		"Handles Grid Power (GP) generator (mill) tweaks.",
 		"Must be run with the preinit loader, specified with `#loader preinit` at the top of the file."
-}) @ZenDocAppend("extrautils.example.md")
+}) @ZenDocAppend("docs/include/extrautils.example.md")
 public class CTMills {
 	@ZenMethod @ZenDocMethod(description = {
-			"Sets mill power scaling. See the example.",
+			"Sets mill power scaling.",
 			"Use `/dj2addons extrautils2` in-game to print all mill names."
 	}, args= {
 			@ZenDocArg(arg="millName", info="The name of the mill to change."),

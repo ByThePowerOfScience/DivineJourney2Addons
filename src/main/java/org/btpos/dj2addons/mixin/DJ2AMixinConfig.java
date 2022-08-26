@@ -1,6 +1,7 @@
 package org.btpos.dj2addons.mixin;
 
 import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.fml.common.Loader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -23,16 +24,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-//		try {
-//			Class<?> clz = Class.forName(targetClassName);
-//			 //Make sure class is loaded
-//			logger.info("Should initialize: {}", clz.getName());
-//			return true;
-//		} catch (ClassNotFoundException e) {
-//			logger.debug("Skipped {}", mixinClassName);
-//			return false;
-//		}
-		return true;
+		return !mixinClassName.contains("JEI") || Loader.isModLoaded("jei");
 	}
 	
 	@Override
@@ -53,8 +45,9 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+		String[] splitName = mixinClassName.split("\\.");
 		String output;
-		switch (mixinInfo.getClassName()) {
+		switch (splitName[splitName.length - 1]) {
 			case "MItemBucket":
 				output = "Sprinkling aerogel dust in lava buckets.";
 				break;
@@ -88,7 +81,13 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 			case "MModContent":
 				output = "Bass-boosting totemic instruments.";
 				break;
-//			case "":
+			case "MArcanePedestal":
+				output = "Making arcane pedestals bigger (on the inside).";
+				break;
+ 			case "MModBrews":
+				output = "Turning rivers into bacon.";
+				break;
+// 			case "":
 //				output = "";
 //				break;
 			default:

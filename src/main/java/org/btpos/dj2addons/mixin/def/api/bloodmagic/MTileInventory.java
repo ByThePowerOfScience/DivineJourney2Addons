@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.bloodmagic;
+package org.btpos.dj2addons.mixin.def.api.bloodmagic;
 
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.bloodmagic;
+package org.btpos.dj2addons.mixin.def.api.bloodmagic;
 
 
 import WayofTime.bloodmagic.item.soul.ItemSoulGem;
@@ -15,18 +15,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TileSoulForge.class)
-public abstract class MSoulForge extends MTileInventory {
-	
-	
-	@Shadow(remap = false)
-	@Final
-	public static int soulSlot;
-	
-	
-	
+public abstract class MTileSoulForge {
 	@ModifyConstant(method = "update", constant = @Constant(intValue = TileSoulForge.ticksRequired))
 	private int updateModifyTicksRequired(int value) {
 		return VSoulForge.getTicksRequired();
@@ -49,17 +40,16 @@ public abstract class MSoulForge extends MTileInventory {
 	}
 	
 	
-	// Prevents inserters from inputting into the output slot.
-	@Override
-	public void isItemValidHandler(int index, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue(index != TileSoulForge.outputSlot);
-	}
 	
+	@Shadow(remap = false)
+	@Final
+	public static int soulSlot;
 	
 	@ModifyArg(method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;getWill(LWayofTime/bloodmagic/soul/EnumDemonWillType;)D"), index = 0)
 	private EnumDemonWillType modifyDemonWillTypeUsed(EnumDemonWillType type) {
 		if (VSoulForge.shouldCraftWithAllWillTypes()) {
-			ItemStack soulStack = getStackInSlot(soulSlot);
+			
+			ItemStack soulStack = ((TileSoulForge)(Object)this).getStackInSlot(soulSlot);
 			Item soul = soulStack.getItem();
 			if (soul instanceof ItemSoulGem)
 				return ((ItemSoulGem) soul).getCurrentType(soulStack);
@@ -72,7 +62,7 @@ public abstract class MSoulForge extends MTileInventory {
 	@ModifyArg(method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;consumeSouls(LWayofTime/bloodmagic/soul/EnumDemonWillType;D)D"))
 	private EnumDemonWillType modifyConsumeSoulsType(EnumDemonWillType type) {
 		if (VSoulForge.shouldCraftWithAllWillTypes()) {
-			ItemStack soulStack = getStackInSlot(TileSoulForge.soulSlot);
+			ItemStack soulStack = ((TileSoulForge)(Object)this).getStackInSlot(TileSoulForge.soulSlot);
 			Item soul = soulStack.getItem();
 			if (soul instanceof IDemonWill)
 				return ((IDemonWill) soul).getType(soulStack);

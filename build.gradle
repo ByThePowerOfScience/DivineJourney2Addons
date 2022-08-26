@@ -28,6 +28,7 @@ compileJava {
 
 runClient {
 	args "--username=Dev"
+	jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
 }
 
 minecraft {
@@ -56,6 +57,10 @@ repositories {
 		url = "https://cursemaven.com"
 	}
 	maven {
+		name = "JEI Maven"
+		url = "https://dvs1.progwml6.com/files/maven"
+	}
+	maven {
 		name = "BlameJared"
 		url = "https://maven.blamejared.com/"
 	}
@@ -69,6 +74,8 @@ dependencies {
 	implementation 'org.spongepowered:mixin:0.8.5'
 	
 	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+	
+	compile("mezz.jei:jei_1.12.2:4.16.1.302")
 	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
@@ -91,7 +98,7 @@ dependencies {
 			"curse.maven:GuideAPI-228832:2645992"
 	)
 	
-	deobfProvided("curse.maven:Totemic-237541:2700798")
+	deobfCompile("curse.maven:Totemic-237541:2700798")
 	
 	deobfCompile(
 			"curse.maven:ExtremeReactors-250277:3194746",
@@ -102,7 +109,9 @@ dependencies {
 		exclude group: "org.spongepowered"
 	}
 	
+	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
 	
+	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
 	// **TWEAKS**
 	deobfProvided(
@@ -134,7 +143,6 @@ dependencies {
 	deobfProvided("curse.maven:AppleSkin-248787:2987247")
 	
 	
-	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	deobfProvided(
 			"curse.maven:ModularMachinery-270790:2713714",
@@ -178,6 +186,10 @@ task zendoc(type: JavaExec, group: 'documentation') {
 	main = 'ExportZenDocs'
 }
 
+task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
+	commandLine("zip -d -r ~/.gradle/caches/minecraft/deobfedDeps/deobf/curse/maven/Bewitchment-285439/3256343/Bewitchment-285439-3256343.jar org/\\*")
+}
+
 processResources {
 	dependsOn(copyTestZS)
 	// this will ensure that this task is redone when the versions change.
@@ -219,7 +231,6 @@ jar.finalizedBy('reobfJar')
 
 mixin {
 	add sourceSets.main, 'mixins.dj2addons.refmap.json'
-
 //    config 'mixins.dj2addons.json'
 //    hotSwap = true
 }

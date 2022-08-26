@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.aether;
+package org.btpos.dj2addons.mixin.def.tweaks.aether;
 
 import com.gildedgames.the_aether.tile_entities.TileEntityEnchanter;
 import net.minecraft.item.Item;

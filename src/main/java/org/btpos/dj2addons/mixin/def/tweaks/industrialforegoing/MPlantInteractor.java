@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.industrialforegoing;
+package org.btpos.dj2addons.mixin.def.tweaks.industrialforegoing;
 
 import com.buuz135.industrial.tile.agriculture.PlantInteractorTile;
 import net.minecraft.block.state.IBlockState;

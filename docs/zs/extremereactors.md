@@ -7,7 +7,7 @@ import dj2addons.extremereactors.ExtremeReactors;
 
 Handles general ExtremeReactors tweaks.
 
-Must be run with the DJ2Addons loader, specified with `#loader dj2addons` at the top of the ZS file.
+Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file.
 
 
 #### Methods

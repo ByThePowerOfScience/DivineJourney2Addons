@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.astralsorcery;
+package org.btpos.dj2addons.mixin.def.api.astralsorcery;
 
 import hellfirepvp.astralsorcery.common.tile.TileCelestialCrystals;
 import net.minecraft.block.state.IBlockState;

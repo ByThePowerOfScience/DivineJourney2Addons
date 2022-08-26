@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.bewitchment;
+package org.btpos.dj2addons.mixin.def.api.bewitchment;
 
 import com.bewitchment.api.registry.Ritual;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.extrautils;
+package org.btpos.dj2addons.mixin.def.api.extrautils;
 
 import com.rwtema.extrautils2.blocks.BlockPassiveGenerator;
 import org.btpos.dj2addons.impl.extrautilities.VExtraUtilities;

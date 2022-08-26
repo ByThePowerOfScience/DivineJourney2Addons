@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.mixin.def.extremereactors;
+package org.btpos.dj2addons.mixin.def.api.extremereactors;
 
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
 import org.spongepowered.asm.mixin.Mixin;
