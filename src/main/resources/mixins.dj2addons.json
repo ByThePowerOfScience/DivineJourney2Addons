@@ -17,6 +17,7 @@
     "custom.MOverlayHandler",
     "tweaks.aether.MAetherEventHandler",
     "tweaks.aether.MEnchanter",
+    "tweaks.bewitchment.MPoppetHandler",
     "tweaks.bloodmagic.MSoulForge",
     "tweaks.botania.MModBrews",
     "tweaks.industrialforegoing.MPlantInteractor",

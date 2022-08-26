@@ -182,12 +182,12 @@ task copyTestZS(type: Copy) {
 }
 
 task zendoc(type: JavaExec, group: 'documentation') {
-	classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath
+	classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath + sourceSets.test.output.classesDirs
 	main = 'ExportZenDocs'
 }
 
 task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
-	commandLine("zip -d -r ~/.gradle/caches/minecraft/deobfedDeps/deobf/curse/maven/Bewitchment-285439/3256343/Bewitchment-285439-3256343.jar org/\\*")
+	commandLine("python3", "./python/RemoveShadedMixinLibraries.py")
 }
 
 processResources {
@@ -209,7 +209,7 @@ processResources {
 		exclude 'mcmod.info'
 	}
 	
-	rename '(.+_at.cfg)', 'META-INF/$1'
+//	rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 
