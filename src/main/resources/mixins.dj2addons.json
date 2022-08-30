@@ -22,6 +22,7 @@
     "tweaks.botania.MModBrews",
     "tweaks.industrialforegoing.MPlantInteractor",
     "tweaks.moretweaker.MInputs",
+    "tweaks.rftools.MNBTMatchingRecipe",
     "tweaks.thaumcraft.MArcanePedestal",
     "tweaks.thaumcraft.MTileEssentiaOutput",
     "tweaks.thaumcraft.TileThaumcraftInventoryAccessor"

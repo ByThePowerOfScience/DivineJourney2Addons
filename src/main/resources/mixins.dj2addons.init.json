@@ -7,7 +7,8 @@
   "mixins": [
     "bootstrapper.MLoader",
     "minecraft.aerogel.MItemBucket",
-    "minecraft.aerogel.MWorld"
+    "minecraft.aerogel.MWorld",
+    "minecraftforge.IngredientNBTAccessor"
   ],
   "client": [
     "custom.MSatuRegen"
