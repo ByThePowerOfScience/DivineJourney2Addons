@@ -10,7 +10,6 @@ buildscript {
 	}
 }
 
-
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'idea'
@@ -27,8 +26,8 @@ compileJava {
 
 
 runClient {
-	args "--username=Dev"
-	jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
+	args "--username=Dev", "--mixin.config=mixins.dj2addons.init.json"
+	jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
 }
 
 minecraft {
@@ -113,7 +112,8 @@ dependencies {
 	
 	// **TWEAKS**
 	deobfProvided(
-			"curse.maven:RFTools-224641:2861573"
+			"curse.maven:RFTools-224641:2861573",
+			"curse.maven:McJtyLib-233105:2745846"
 	)
 	
 	deobfProvided(
