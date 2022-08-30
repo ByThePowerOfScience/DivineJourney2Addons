@@ -6,7 +6,7 @@ import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
-import org.btpos.dj2addons.impl.totemic.VInstruments;
+import org.btpos.dj2addons.impl.api.totemic.VInstruments;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

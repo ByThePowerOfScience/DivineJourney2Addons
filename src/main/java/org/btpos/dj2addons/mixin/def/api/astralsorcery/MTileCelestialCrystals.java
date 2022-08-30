@@ -2,7 +2,7 @@ package org.btpos.dj2addons.mixin.def.api.astralsorcery;
 
 import hellfirepvp.astralsorcery.common.tile.TileCelestialCrystals;
 import net.minecraft.block.state.IBlockState;
-import org.btpos.dj2addons.impl.astralsorcery.VAstralSorcery;
+import org.btpos.dj2addons.impl.api.astralsorcery.VAstralSorcery;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;

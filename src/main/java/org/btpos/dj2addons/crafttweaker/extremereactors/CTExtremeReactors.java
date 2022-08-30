@@ -6,7 +6,7 @@ import epicsquid.roots.util.zen.ZenDocAppend;
 import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
-import org.btpos.dj2addons.impl.extremereactors.VExtremeReactors;
+import org.btpos.dj2addons.impl.api.extremereactors.VExtremeReactors;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
