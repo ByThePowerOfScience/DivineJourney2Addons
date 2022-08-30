@@ -5,7 +5,7 @@ deobf_path = os.path.expanduser("~/.gradle/caches/minecraft/deobfedDeps/deobf/")
 offenders = [
 	"curse/maven/Bewitchment-285439/3256343/Bewitchment-285439-3256343.jar"
 ]
-lib_path = "org/spongepowered/\\*"
+lib_path = "org/spongepowered/*"
 
 cmd_template = ["zip", "-d"]
 

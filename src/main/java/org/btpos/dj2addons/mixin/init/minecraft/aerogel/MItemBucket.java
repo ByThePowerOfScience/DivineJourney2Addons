@@ -9,7 +9,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.btpos.dj2addons.impl.aether.AetherValues;
+import org.btpos.dj2addons.impl.classrefs.CAetherLegacy;
+import org.btpos.dj2addons.impl.classrefs.IsModLoaded;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,7 +32,7 @@ abstract class MItemBucket {
 			)
 	)
 	private void changeLavaSound(World world, EntityPlayer player, BlockPos pos, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
-		if (AetherValues.aetherIsLoaded && world.provider.getDimension() == AetherValues.getDimensionId()) {
+		if (IsModLoaded.aether_legacy && world.provider.getDimension() == CAetherLegacy.getDimensionId()) {
 			world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 		} else {
 			world.playSound(player, pos, soundIn, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -47,8 +48,8 @@ abstract class MItemBucket {
 			)
 	)
 	private boolean changeLavaPlaceBehavior(World world, BlockPos blockPos, IBlockState oldState, int oldLight) {
-		if (AetherValues.aetherIsLoaded && world.provider.getDimension() == AetherValues.getDimensionId()) {
-			return world.setBlockState(blockPos, AetherValues.getAerogelBlock().getDefaultState(), 11);
+		if (IsModLoaded.aether_legacy && world.provider.getDimension() == CAetherLegacy.getDimensionId()) {
+			return world.setBlockState(blockPos, CAetherLegacy.getAerogelBlock().getDefaultState(), 11);
 		} else {
 			return world.setBlockState(blockPos, this.containedBlock.getDefaultState(), 11);
 		}

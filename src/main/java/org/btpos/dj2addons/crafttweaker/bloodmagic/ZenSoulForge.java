@@ -5,7 +5,7 @@ import crafttweaker.annotations.ZenRegister;
 import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
-import org.btpos.dj2addons.impl.bloodmagic.VSoulForge;
+import org.btpos.dj2addons.impl.api.bloodmagic.VSoulForge;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

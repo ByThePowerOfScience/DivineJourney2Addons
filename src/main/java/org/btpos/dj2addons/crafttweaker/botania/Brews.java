@@ -12,7 +12,7 @@ import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import org.btpos.dj2addons.impl.botania.BrewHandler;
+import org.btpos.dj2addons.impl.api.botania.BrewHandler;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.brew.Brew;

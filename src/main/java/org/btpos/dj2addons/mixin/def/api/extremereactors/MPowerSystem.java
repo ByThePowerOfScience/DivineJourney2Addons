@@ -1,7 +1,7 @@
 package org.btpos.dj2addons.mixin.def.api.extremereactors;
 
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
-import org.btpos.dj2addons.impl.extremereactors.VExtremeReactors;
+import org.btpos.dj2addons.impl.api.extremereactors.VExtremeReactors;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;

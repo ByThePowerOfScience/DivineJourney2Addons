@@ -1,6 +1,7 @@
 package org.btpos.dj2addons.mixin.def.tweaks.thaumcraft;
 
 import net.minecraft.item.ItemStack;
+import org.btpos.dj2addons.mixin.def.accessors.thaumcraft.TileThaumcraftInventoryAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import thaumcraft.common.tiles.TileThaumcraftInventory;

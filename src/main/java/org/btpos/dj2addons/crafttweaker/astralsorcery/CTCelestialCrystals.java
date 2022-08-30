@@ -9,7 +9,7 @@ import epicsquid.roots.util.zen.ZenDocArg;
 import epicsquid.roots.util.zen.ZenDocClass;
 import epicsquid.roots.util.zen.ZenDocMethod;
 import net.minecraft.block.Block;
-import org.btpos.dj2addons.impl.astralsorcery.VAstralSorcery;
+import org.btpos.dj2addons.impl.api.astralsorcery.VAstralSorcery;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
