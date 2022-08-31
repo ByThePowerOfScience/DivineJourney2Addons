@@ -160,6 +160,17 @@ dependencies {
 	
 	deobfProvided("curse.maven:PackagedAuto-308380:3614585")
 	
+	
+	deobfProvided(
+			"curse.maven:ThermalExpansion-69163:2926431",
+			"curse.maven:ThermalFoundation-222880:2926428",
+			"curse.maven:CoFHCore-69162:2920433"
+	)
+	
+	deobfProvided(
+			"curse.maven:Mekanism-268560:2835175"
+	)
+	
 }
 
 

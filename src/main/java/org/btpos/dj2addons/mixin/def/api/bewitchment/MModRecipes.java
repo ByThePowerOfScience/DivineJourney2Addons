@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import org.btpos.dj2addons.impl.api.bewitchment.VModRecipes;
+import org.btpos.dj2addons.crafttweaker.impl.bewitchment.VModRecipes;
 
 import java.util.List;
 

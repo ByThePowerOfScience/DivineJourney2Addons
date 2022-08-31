@@ -1,7 +1,7 @@
 package org.btpos.dj2addons.mixin.def.api.totemic;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.btpos.dj2addons.impl.api.totemic.VInstruments;
+import org.btpos.dj2addons.crafttweaker.impl.totemic.VInstruments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

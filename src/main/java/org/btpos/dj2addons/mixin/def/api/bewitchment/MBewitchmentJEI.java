@@ -3,7 +3,7 @@ package org.btpos.dj2addons.mixin.def.api.bewitchment;
 import com.bewitchment.api.registry.Ritual;
 import com.bewitchment.client.integration.jei.BewitchmentJEI;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.btpos.dj2addons.impl.api.bewitchment.VModRecipes;
+import org.btpos.dj2addons.crafttweaker.impl.bewitchment.VModRecipes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

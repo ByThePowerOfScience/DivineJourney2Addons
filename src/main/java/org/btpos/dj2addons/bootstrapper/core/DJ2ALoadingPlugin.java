@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+@Deprecated
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	public DJ2ALoadingPlugin() {
 		registerMixins();
@@ -22,7 +23,7 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 			Method createConfiguration = mixins.getDeclaredMethod("createConfiguration", String.class, MixinEnvironment.class);
 			createConfiguration.setAccessible(true);
 //			createConfiguration.invoke(null, "mixins.dj2addons.loader.json", MixinEnvironment.getEnvironment(MixinEnvironment.Phase.INIT));
-			createConfiguration.invoke(null, "mixins.dj2addons.init.json", MixinEnvironment.getEnvironment(MixinEnvironment.Phase.DEFAULT));
+			createConfiguration.invoke(null, "mixins.dj2addons.init.json", MixinEnvironment.getEnvironment(MixinEnvironment.Phase.INIT));
 		} catch (ReflectiveOperationException e) {
 			throw new NoClassDefFoundError("DJ2Addons Mixins Not Loaded! " + e.getMessage());
 		}

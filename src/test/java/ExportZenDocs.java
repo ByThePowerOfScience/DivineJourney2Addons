@@ -1,15 +1,15 @@
 import epicsquid.roots.util.StringHelper;
 import epicsquid.roots.util.zen.*;
 import org.apache.commons.lang3.StringUtils;
-import org.btpos.dj2addons.crafttweaker.astralsorcery.CTCelestialCrystals;
-import org.btpos.dj2addons.crafttweaker.bewitchment.Rituals;
-import org.btpos.dj2addons.crafttweaker.bewitchment.WitchesAltar;
-import org.btpos.dj2addons.crafttweaker.bloodmagic.ZenSoulForge;
-import org.btpos.dj2addons.crafttweaker.botania.Brews;
-import org.btpos.dj2addons.crafttweaker.extrautils.CTMills;
-import org.btpos.dj2addons.crafttweaker.extremereactors.CTExtremeReactors;
-import org.btpos.dj2addons.crafttweaker.extremereactors.CTReactorInterior;
-import org.btpos.dj2addons.crafttweaker.totemic.Instruments;
+import org.btpos.dj2addons.crafttweaker.zen.astralsorcery.CTCelestialCrystals;
+import org.btpos.dj2addons.crafttweaker.zen.bewitchment.Rituals;
+import org.btpos.dj2addons.crafttweaker.zen.bewitchment.WitchesAltar;
+import org.btpos.dj2addons.crafttweaker.zen.bloodmagic.ZenSoulForge;
+import org.btpos.dj2addons.crafttweaker.zen.botania.Brews;
+import org.btpos.dj2addons.crafttweaker.zen.extrautils.CTMills;
+import org.btpos.dj2addons.crafttweaker.zen.extremereactors.CTExtremeReactors;
+import org.btpos.dj2addons.crafttweaker.zen.extremereactors.CTReactorInterior;
+import org.btpos.dj2addons.crafttweaker.zen.totemic.Instruments;
 import stanhebben.zenscript.annotations.Optional;
 
 import java.io.IOException;

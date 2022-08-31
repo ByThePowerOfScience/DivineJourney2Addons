@@ -7,7 +7,7 @@ import WayofTime.bloodmagic.soul.IDemonWill;
 import WayofTime.bloodmagic.tile.TileSoulForge;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.btpos.dj2addons.impl.api.bloodmagic.VSoulForge;
+import org.btpos.dj2addons.crafttweaker.impl.bloodmagic.VSoulForge;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

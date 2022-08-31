@@ -1,7 +1,7 @@
 package org.btpos.dj2addons.mixin.def.api.extrautils;
 
 import com.rwtema.extrautils2.blocks.BlockPassiveGenerator;
-import org.btpos.dj2addons.impl.api.extrautilities.VExtraUtilities;
+import org.btpos.dj2addons.crafttweaker.impl.extrautilities.VExtraUtilities;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
