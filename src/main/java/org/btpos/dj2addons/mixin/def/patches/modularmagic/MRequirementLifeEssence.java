@@ -13,6 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @SuppressWarnings("rawtypes")
 @Mixin(RequirementLifeEssence.class)
 public abstract class MRequirementLifeEssence {
+	/**
+	 * Fixes crash when removing a blood orb before the craft finishes.
+	 * <p>Fixes <a href="https://github.com/Divine-Journey-2/Divine-Journey-2/issues/668">Divine-Journey-2#668</a></p>
+	 */
 	@Inject(
 			remap = false,
 			method = "finishCrafting",
