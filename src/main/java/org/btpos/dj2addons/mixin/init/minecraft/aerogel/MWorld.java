@@ -23,7 +23,7 @@ public class MWorld {
 			)
 	)
 	private IBlockState addLavaAetherCase(Chunk chunk, BlockPos pos, IBlockState newState) {
-		if (AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId() && Blocks.LAVA.getDefaultState().equals(newState)) {
+		if (Blocks.LAVA.getDefaultState().equals(newState) && AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId()) {
 			return chunk.setBlockState(pos, AetherValues.getAerogelBlock().getDefaultState());
 		} else {
 			return chunk.setBlockState(pos, newState);
@@ -39,7 +39,7 @@ public class MWorld {
 			locals=LocalCapture.CAPTURE_FAILSOFT
 	)
 	private void addLavaAetherSound(BlockPos pos, IBlockState newState, int flags, CallbackInfoReturnable<Boolean> cir) {
-		if (AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId() && Blocks.LAVA.getDefaultState().equals(newState)) {
+		if (Blocks.LAVA.getDefaultState().equals(newState) && AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId()) {
 			AetherValues.playFizzleSound((World)(Object)this, pos);
 		}
 	}
