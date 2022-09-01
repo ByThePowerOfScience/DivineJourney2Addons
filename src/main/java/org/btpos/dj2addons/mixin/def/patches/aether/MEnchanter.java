@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(TileEntityEnchanter.class)
 public abstract class MEnchanter {
+	/**
+	 * Makes the enchanter consume buckets in crafting like it should.
+	 */
 	@Redirect(
 			method="update()V",
 			at=@At(

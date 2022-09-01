@@ -8,7 +8,7 @@
     "bootstrapper.MLoader",
     "minecraft.aerogel.MItemBucket",
     "minecraft.aerogel.MWorld",
-    "minecraftforge.IngredientNBTAccessor"
+    "accessors.minecraftforge.IngredientNBTAccessor"
   ],
   "client": [
     "custom.MSatuRegen"

@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.impl.classrefs;
+package org.btpos.dj2addons.impl.modrefs;
 
 import com.gildedgames.the_aether.AetherConfig;
 import com.gildedgames.the_aether.blocks.BlocksAether;

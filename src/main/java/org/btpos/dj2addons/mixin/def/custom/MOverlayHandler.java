@@ -14,6 +14,9 @@ import squeek.appleskin.client.HUDOverlayHandler;
 
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
+/**
+ * AppleSkin part of {@link org.btpos.dj2addons.mixin.init.custom.MSatuRegen MSatuRegen}.
+ */
 @Mixin(HUDOverlayHandler.class)
 abstract class MOverlayHandler {
 	

@@ -51,6 +51,9 @@ public class MAetherEventHandler {
 	}
 	*/
 	
+	/**
+	 * Removes lava behavior due to this being handled by {@link net.minecraft.world.World#setBlockState World.setBlockState} through {@link org.btpos.dj2addons.mixin.init.minecraft.aerogel.MWorld MWorld}.
+	 */
 	@ModifyVariable(
 			remap = false,
 			method = "onFillBucket",

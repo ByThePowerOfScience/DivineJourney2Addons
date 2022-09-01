@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.impl.classrefs;
+package org.btpos.dj2addons.impl.modrefs;
 
 import com.infinityraider.agricraft.api.v1.misc.IAgriHarvestable;
 import net.minecraft.tileentity.TileEntity;

@@ -8,8 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import org.btpos.dj2addons.impl.classrefs.IsModLoaded;
-import org.btpos.dj2addons.impl.classrefs.CAgricraft;
+import org.btpos.dj2addons.impl.modrefs.IsModLoaded;
+import org.btpos.dj2addons.impl.modrefs.CAgricraft;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,6 +29,10 @@ public class MPlantInteractor {
 	
 	private static final IBlockState DUMMY = Blocks.AIR.getDefaultState();
 	
+	/**
+	 * Allows Plant Interactors to access the drops from AgriCraft crops directly without having to drop them on the ground.
+	 * <p>Removes lag from FakePlayer usage and item drops.</p>
+	 */
 	@Redirect(method="work()F", at=@At(value="INVOKE", target="Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
 	private IBlockState handleAgriCraftCrops(World world, BlockPos pos) {
 		if (!IsModLoaded.agricraft)

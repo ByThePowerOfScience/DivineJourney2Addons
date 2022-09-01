@@ -10,6 +10,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * Forces MoreTweaker to use CraftTweaker's API, fixing it not checking NBT data when crafting.
+ */
 @Mixin(Inputs.class)
 public abstract class MInputs {
 	
