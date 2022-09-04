@@ -121,4 +121,8 @@ run/
 
 Test.zs
 manifest/
-libs/*
+libs/
+temp/
+venv/
+gradlew
+gradlew.bat
