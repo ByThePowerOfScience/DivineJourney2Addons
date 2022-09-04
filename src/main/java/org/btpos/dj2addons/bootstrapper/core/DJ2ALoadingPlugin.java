@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+@Deprecated
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	public DJ2ALoadingPlugin() {
 		registerMixins();

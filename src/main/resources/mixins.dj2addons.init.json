@@ -6,7 +6,6 @@
   "target": "@env(INIT)",
   "mixins": [
     "bootstrapper.MLoader",
-    "minecraft.aerogel.MItemBucket",
     "minecraft.aerogel.MWorld",
     "accessors.minecraftforge.IngredientNBTAccessor"
   ],

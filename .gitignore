@@ -121,3 +121,4 @@ run/
 
 Test.zs
 manifest/
+libs/*

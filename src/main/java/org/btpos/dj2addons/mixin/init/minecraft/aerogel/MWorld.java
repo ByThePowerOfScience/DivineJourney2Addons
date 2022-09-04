@@ -5,7 +5,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import org.btpos.dj2addons.impl.aether.AetherValues;
+import org.btpos.dj2addons.impl.modrefs.CAetherLegacy;
+import org.btpos.dj2addons.impl.modrefs.IsModLoaded;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(World.class)
-public class MWorld {
+public class MWorld { // TODO figure out why TickCentral breaks this
 	@Redirect(
 			method="setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;I)Z",
 			at=@At(
@@ -23,8 +24,8 @@ public class MWorld {
 			)
 	)
 	private IBlockState addLavaAetherCase(Chunk chunk, BlockPos pos, IBlockState newState) {
-		if (Blocks.LAVA.getDefaultState().equals(newState) && AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId()) {
-			return chunk.setBlockState(pos, AetherValues.getAerogelBlock().getDefaultState());
+		if (Blocks.LAVA.getDefaultState().equals(newState) && IsModLoaded.aether_legacy && ((World)(Object)this).provider.getDimension() == CAetherLegacy.getDimensionId()) {
+			return chunk.setBlockState(pos, CAetherLegacy.getAerogelBlock().getDefaultState());
 		} else {
 			return chunk.setBlockState(pos, newState);
 		}
@@ -39,8 +40,8 @@ public class MWorld {
 			locals=LocalCapture.CAPTURE_FAILSOFT
 	)
 	private void addLavaAetherSound(BlockPos pos, IBlockState newState, int flags, CallbackInfoReturnable<Boolean> cir) {
-		if (Blocks.LAVA.getDefaultState().equals(newState) && AetherValues.aetherIsLoaded && ((World)(Object)this).provider.getDimension() == AetherValues.getDimensionId()) {
-			AetherValues.playFizzleSound((World)(Object)this, pos);
+		if (Blocks.LAVA.getDefaultState().equals(newState) && IsModLoaded.aether_legacy && ((World)(Object)this).provider.getDimension() == CAetherLegacy.getDimensionId()) {
+			CAetherLegacy.playFizzleSound((World)(Object)this, pos);
 		}
 	}
 }
