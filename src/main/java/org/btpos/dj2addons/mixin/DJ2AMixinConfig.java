@@ -2,6 +2,7 @@ package org.btpos.dj2addons.mixin;
 
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
+import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -14,23 +15,36 @@ import static org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore.LOGGER;
 public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public void onLoad(String mixinPackage) {
-		LOGGER.info("Loading mixins from " + mixinPackage);
+		LOGGER.debug("Loading mixins from " + mixinPackage);
 	}
 	
 	@Override
 	public String getRefMapperConfig() {
 		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
+//		return "mixins.dj2addons.refmap.json";
 	}
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return !mixinClassName.contains("JEI") || Loader.isModLoaded("jei");
+		String[] split = mixinClassName.split("\\.");
+		String simplename = split[split.length - 1];
+		if (simplename.equals("MWorld")) {
+			try {
+				// TickCentral always loads before Mixin, so this should be a reliable method to knowing if it exists.
+				Class<?> c = Class.forName("org.minimallycorrect.tickprofiler.minecraft.CoreMod");
+				LOGGER.debug(c.getSimpleName() + " detected.");
+				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
+				DJ2AddonsCore.onDisableAerogelPatch();
+				return false;
+			} catch (ClassNotFoundException ignore) {
+				return true;
+			}
+		}
+		return !simplename.contains("JEI") || Loader.isModLoaded("jei");
 	}
 	
 	@Override
-	public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-		
-	}
+	public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
 	
 	@Override
 	public List<String> getMixins() {

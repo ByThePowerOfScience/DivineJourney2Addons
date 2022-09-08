@@ -21,7 +21,7 @@ public abstract class MOvenRecipe {
 					value = "INVOKE"
 			)
 	)
-	private static boolean fixSwappedParams(ItemStack stack0, ItemStack stack1) {
+	private boolean fixSwappedParams(ItemStack stack0, ItemStack stack1) {
 		return Util.canMerge(stack1, stack0);
 	}
 	

@@ -3,6 +3,7 @@
   "package": "org.btpos.dj2addons.mixin.init",
   "compatibilityLevel": "JAVA_8",
   "plugin": "org.btpos.dj2addons.mixin.DJ2AMixinConfig",
+  "refmap": "mixins.dj2addons.refmap.json",
   "target": "@env(INIT)",
   "mixins": [
     "bootstrapper.MLoader",

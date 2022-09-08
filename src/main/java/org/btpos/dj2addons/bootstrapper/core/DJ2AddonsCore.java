@@ -24,4 +24,12 @@ public class DJ2AddonsCore {
 			throw new MixinTransformerError("DJ2Addons Mixins are not loaded! The config mixins.dj2addons.init.json was not executed.");
 		}
 	}
+	
+	/**
+	 * Adds warnings to Aerogel block description.
+	 * <p>Called by {@link org.btpos.dj2addons.mixin.DJ2AMixinConfig#shouldApplyMixin DJ2AMixinConfig.shouldApplyMixin} if TickCentral is detected.
+	 */
+	public static void onDisableAerogelPatch() {
+	
+	}
 }

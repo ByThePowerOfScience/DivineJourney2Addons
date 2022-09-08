@@ -3,6 +3,7 @@
   "package": "org.btpos.dj2addons.mixin.def",
   "compatibilityLevel": "JAVA_8",
   "plugin": "org.btpos.dj2addons.mixin.DJ2AMixinConfig",
+  "refmap": "mixins.dj2addons.refmap.json",
   "mixins": [
     "api.astralsorcery.MTileCelestialCrystals",
     "api.bewitchment.MBewitchmentJEI",

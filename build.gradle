@@ -16,7 +16,7 @@ apply plugin: 'idea'
 
 archivesBaseName = 'dj2addons'
 group = 'org.btpos.dj2addons'
-version = '1.2.0.1'
+version = '1.2.1'
 
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -73,6 +73,10 @@ dependencies {
 	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
 	compile("mezz.jei:jei_1.12.2:4.16.1.302")
+	
+	deobfCompile(
+			"curse.maven:TickProfiler-270330:2912044"
+	)
 	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
@@ -150,7 +154,7 @@ dependencies {
 			"curse.maven:Thaumcraft-223628:2629023"
 	)
 	
-	deobfProvided("curse.maven:Aether-255308:3280119")
+	deobfCompile("curse.maven:Aether-255308:3280119")
 	
 //	deobfProvided(
 //			"curse.maven:Evilcraft-74610:2811267",
