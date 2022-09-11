@@ -6,9 +6,10 @@
   "refmap": "mixins.dj2addons.refmap.json",
   "target": "@env(INIT)",
   "mixins": [
+    "accessors.minecraftforge.IngredientNBTAccessor",
     "bootstrapper.MLoader",
-    "minecraft.aerogel.MWorld",
-    "accessors.minecraftforge.IngredientNBTAccessor"
+    "minecraft.aerogel.MItemBucket",
+    "minecraft.aerogel.MWorld"
   ],
   "client": [
     "custom.MSatuRegen"

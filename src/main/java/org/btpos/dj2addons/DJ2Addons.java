@@ -43,6 +43,8 @@ public class DJ2Addons {
 	public void preinit(FMLPreInitializationEvent event) {
 		DJ2AddonsCore.verifyCoreLoaded();
 		CTChatCommand.registerCommand(new CommandHandler());
+		if (DJ2AddonsCore.shouldWriteAerogelTooltip)
+			DJ2AddonsCore.writeAerogelTooltip();
 	}
 	
 	/**
