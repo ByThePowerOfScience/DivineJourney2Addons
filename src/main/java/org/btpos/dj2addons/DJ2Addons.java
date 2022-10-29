@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
+import org.btpos.dj2addons.impl.modrefs.CCraftTweaker;
 import org.btpos.dj2addons.registry.ModPotions;
 
 import static org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore.LOGGER;
@@ -43,8 +44,8 @@ public class DJ2Addons {
 	public void preinit(FMLPreInitializationEvent event) {
 		DJ2AddonsCore.verifyCoreLoaded();
 		CTChatCommand.registerCommand(new CommandHandler());
-		if (DJ2AddonsCore.shouldWriteAerogelTooltip)
-			DJ2AddonsCore.writeAerogelTooltip();
+		if (CCraftTweaker.shouldWriteAerogelTooltip)
+			CCraftTweaker.writeAerogelTooltip();
 	}
 	
 	/**
