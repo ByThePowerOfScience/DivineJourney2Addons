@@ -9,12 +9,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
-import org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore;
+import org.btpos.dj2addons.core.DJ2AddonsCore;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
-import org.btpos.dj2addons.impl.modrefs.CCraftTweaker;
 import org.btpos.dj2addons.registry.ModPotions;
 
-import static org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore.LOGGER;
+import static org.btpos.dj2addons.core.DJ2AddonsCore.LOGGER;
 
 @Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
 public class DJ2Addons {
@@ -24,6 +23,7 @@ public class DJ2Addons {
 	
 	public static final String DEPENDENCIES =
 			"required-after:crafttweaker;" +
+			"after:aether_legacy;" +
 			"before:totemic;" +
 			"before:bloodmagic;" +
 			"before:bewitchment;" +
@@ -44,8 +44,6 @@ public class DJ2Addons {
 	public void preinit(FMLPreInitializationEvent event) {
 		DJ2AddonsCore.verifyCoreLoaded();
 		CTChatCommand.registerCommand(new CommandHandler());
-		if (CCraftTweaker.shouldWriteAerogelTooltip)
-			CCraftTweaker.writeAerogelTooltip();
 	}
 	
 	/**

@@ -3,7 +3,7 @@ import subprocess
 import zipfile
 import fileinput
 
-my_core_mods = ["org.btpos.dj2addons.bootstrapper.core.DJ2ALoadingPlugin"]
+my_core_mods = ["org.btpos.dj2addons.core.DJ2ALoadingPlugin"]
 
 def getDepsFromBuildScript():
 	bpattern = re.compile("(?:implementation|runtimeOnly)(?:\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+)")

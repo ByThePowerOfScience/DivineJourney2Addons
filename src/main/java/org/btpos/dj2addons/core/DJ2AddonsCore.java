@@ -1,4 +1,4 @@
-package org.btpos.dj2addons.bootstrapper.core;
+package org.btpos.dj2addons.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.transformer.throwables.MixinTransformerError;
 public class DJ2AddonsCore {
 	private static boolean coreLoaded = false;
 	public static Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	public static boolean shouldWriteAerogelTooltip = false;
 	
 	/**
 	 * Called by {@link org.btpos.dj2addons.mixin.init.bootstrapper.MLoader#beforeConstructingMods MLoader.beforeConstructingMods}.
@@ -25,5 +26,10 @@ public class DJ2AddonsCore {
 		}
 	}
 	
-	
+	/**
+	 * Called by {@link org.btpos.dj2addons.mixin.DJ2AMixinConfig#shouldApplyMixin DJ2AMixinConfig.shouldApplyMixin} if TickCentral is detected.
+	 */
+	public static void onDisableAerogelPatch() {
+		shouldWriteAerogelTooltip = true;
+	}
 }

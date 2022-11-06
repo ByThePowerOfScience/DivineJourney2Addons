@@ -2,7 +2,7 @@ package org.btpos.dj2addons.mixin;
 
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
-import org.btpos.dj2addons.impl.modrefs.CCraftTweaker;
+import org.btpos.dj2addons.core.DJ2AddonsCore;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-import static org.btpos.dj2addons.bootstrapper.core.DJ2AddonsCore.LOGGER;
+import static org.btpos.dj2addons.core.DJ2AddonsCore.LOGGER;
 
 public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
@@ -34,7 +34,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				Class<?> c = Class.forName("org.minimallycorrect.tickprofiler.minecraft.CoreMod");
 				LOGGER.debug(c.getSimpleName() + " detected.");
 				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
-				CCraftTweaker.onDisableAerogelPatch();
+				DJ2AddonsCore.onDisableAerogelPatch();
 				return false;
 			} catch (ClassNotFoundException ignore) {
 				return true;
