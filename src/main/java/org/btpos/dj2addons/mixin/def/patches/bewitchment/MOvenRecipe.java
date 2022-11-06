@@ -13,18 +13,18 @@ import java.util.Random;
 @Mixin(OvenRecipe.class)
 public abstract class MOvenRecipe {
 	
-	@Redirect(
-			remap = false,
-			method = "isValid",
-			at = @At(
-					target = "Lcom/bewitchment/Util;canMerge(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z",
-					value = "INVOKE"
-			)
-	)
-	private boolean fixSwappedParams(ItemStack stack0, ItemStack stack1) {
-		return Util.canMerge(stack1, stack0);
-	}
-	
+//	@Redirect(
+//			remap = false,
+//			method = "isValid",
+//			at = @At(
+//					target = "Lcom/bewitchment/Util;canMerge(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z",
+//					value = "INVOKE"
+//			)
+//	)
+//	private boolean fixSwappedParams(ItemStack stack0, ItemStack stack1) {
+//		return Util.canMerge(stack1, stack0);
+//	}
+//
 	@Redirect(
 			remap = false,
 			method="giveOutput",
