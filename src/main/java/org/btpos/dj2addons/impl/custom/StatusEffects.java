@@ -10,7 +10,7 @@ import org.btpos.dj2addons.registry.ModPotions;
 import org.jetbrains.annotations.NotNull;
 
 public class StatusEffects {
-	public static final Potion SATUREGENTRIGGER = ModPotions.Registered.saturegen;
+	public static final Potion UIEffectTrigger_HungerShankWave = ModPotions.Registered.saturegen;
 	
 	
 	public static class SatuRegen extends Potion {
