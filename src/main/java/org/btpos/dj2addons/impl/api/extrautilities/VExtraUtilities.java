@@ -1,7 +1,11 @@
 package org.btpos.dj2addons.impl.api.extrautilities;
 
+import net.minecraft.util.ResourceLocation;
+
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class VExtraUtilities {
 	private static final Map<String, float[]> scalingMap = new HashMap<>();
@@ -20,5 +24,16 @@ public class VExtraUtilities {
 	
 	public static Map<String, float[]> getCurrentScaling() {
 		return scalingMap;
+	}
+	
+	
+	private static final Set<ResourceLocation> biomeMarker_excludedBiomes = new HashSet<>();
+	
+	public static void addExcludedBiome(ResourceLocation rl) {
+		biomeMarker_excludedBiomes.add(rl);
+	}
+	
+	public static Set<ResourceLocation> getExcludedBiomes() {
+		return biomeMarker_excludedBiomes;
 	}
 }

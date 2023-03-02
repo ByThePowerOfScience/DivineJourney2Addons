@@ -74,43 +74,43 @@ dependencies {
 	
 	compile("mezz.jei:jei_1.12.2:4.16.1.302")
 	
-	deobfCompile(
-			"curse.maven:TickProfiler-270330:2912044"
-	)
+//	deobfCompile(
+//			"curse.maven:TickProfiler-270330:2912044"
+//	)
 	
 	// **CRAFTTWEAKER HOOKS**
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Patchouli-306770:3162874",
 			"curse.maven:Baubles-227083:2518667"
 	)
 	
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Roots-246183:3484394",
 			"curse.maven:MysticalWorld-282940:3460961",
 			"curse.maven:MysticalLib-277064:3483816"
 	)
 	
-	deobfCompile("curse.maven:AstralSorcery-241721:3044416")
+	deobfProvided("curse.maven:AstralSorcery-241721:3044416")
 	
-	deobfCompile("curse.maven:Botania-225643:3330934")
+	deobfProvided("curse.maven:Botania-225643:3330934")
 	
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:BloodMagic-224791:2822288",
 			"curse.maven:GuideAPI-228832:2645992"
 	)
 	
-	deobfCompile("curse.maven:Totemic-237541:2700798")
+	deobfProvided("curse.maven:Totemic-237541:2700798")
 	
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:ExtremeReactors-250277:3194746",
 			"curse.maven:ZeroCore-247921:3194743"
 	)
 	
-	deobfCompile("curse.maven:Bewitchment-285439:3256343") {
+	deobfProvided("curse.maven:Bewitchment-285439:3256343") {
 		exclude group: "org.spongepowered"
 	}
 	
-	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
@@ -154,7 +154,7 @@ dependencies {
 			"curse.maven:Thaumcraft-223628:2629023"
 	)
 	
-	deobfCompile("curse.maven:Aether-255308:3280119")
+	deobfProvided("curse.maven:Aether-255308:3280119")
 	
 //	deobfProvided(
 //			"curse.maven:Evilcraft-74610:2811267",
@@ -175,6 +175,7 @@ dependencies {
 			"curse.maven:Mekanism-268560:2835175"
 	)
 }
+
 
 
 task generateModpackZip(type: Exec, group: 'buildruns') {
@@ -230,10 +231,10 @@ processResources {
 jar {
 	manifest {
 		attributes(
-				"FMLCorePluginContainsFMLMod": "true",
+//				"FMLCorePluginContainsFMLMod": "true",
 //                "FMLCorePlugin"              : coremods,
 				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"ForceLoadAsMod": "true",
+//				"ForceLoadAsMod": "true",
 				"MixinConfigs": 'mixins.dj2addons.init.json'
 		)
 	}

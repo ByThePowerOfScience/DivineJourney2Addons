@@ -9,8 +9,10 @@ import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.registry.ModPotions;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Function;
+
 public class StatusEffects {
-	public static final Potion UIEffectTrigger_HungerShankWave = ModPotions.Registered.saturegen;
+	public static final Function<Void, Potion> UIEffectTrigger_HungerShankWave = (v) -> ModPotions.Registered.saturegen;
 	
 	
 	public static class SatuRegen extends Potion {
@@ -21,6 +23,7 @@ public class StatusEffects {
 			this.setRegistryName(new ResourceLocation(DJ2Addons.MOD_ID, "saturegen"));
 			this.setPotionName(DJ2Addons.MOD_ID + ".effect.regenerateHunger");
 			setIconIndex(7, 0); //TODO assign hunger shank icon
+			setBeneficial();
 			setEffectiveness(0.25D);
 		}
 		

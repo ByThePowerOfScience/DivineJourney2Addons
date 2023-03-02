@@ -1,40 +1,35 @@
 package org.btpos.dj2addons.mixin.def.patches.packagedauto;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
-import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
-import it.unimi.dsi.fastutil.objects.ObjectBidirectionalIterator;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.lang3.tuple.Triple;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 import thelm.packagedauto.api.MiscUtil;
-
-import java.util.List;
 
 @Mixin(MiscUtil.class)
 public abstract class MMiscUtil {
 	private static NBTTagCompound tagcompound;
 	
-	@Inject(
+	@ModifyVariable(
 			remap=false,
-			method = "condenseStacks(Ljava/util/List;Z)Ljava/util/List;",
+			method="condenseStacks(Ljava/util/List;Z)Ljava/util/List;",
 			at = @At(
-					target="java/util/List.add(Ljava/lang/Object;)Z",
-					value="INVOKE",
-					ordinal = 0,
-					shift= Shift.BEFORE
+					value="STORE",
+					ordinal = 0
 			),
-			locals = LocalCapture.CAPTURE_FAILSOFT
+			slice = @Slice(
+					from = @At(
+							target = "it/unimi/dsi/fastutil/objects/Object2IntMap$Entry.getIntValue()I",
+							value = "INVOKE"
+					)
+			)
 	)
-	private static void injection(List<ItemStack> stacks, boolean ignoreStackSize, CallbackInfoReturnable<List<ItemStack>> cir, Object2IntRBTreeMap map, List list, ObjectBidirectionalIterator var4, Entry entry, Triple triple, int count, Item item, int meta, NBTTagCompound nbt) {
+	private static NBTTagCompound getNBTCompound(NBTTagCompound nbt) {
 		tagcompound = nbt;
+		return nbt;
 	}
 	
 	
@@ -48,9 +43,15 @@ public abstract class MMiscUtil {
 					target="java/util/List.add (Ljava/lang/Object;)Z",
 					value="INVOKE",
 					ordinal = 0
+			),
+			slice = @Slice(
+					from = @At(
+							target = "it/unimi/dsi/fastutil/objects/Object2IntMap$Entry.getIntValue()I",
+							value = "INVOKE"
+					)
 			)
 	)
-	private static Object foo(Object stack) {
+	private static Object addTagCompound(Object stack) {
 		if (stack instanceof ItemStack) {
 			ItemStack is = ((ItemStack)stack);
 			is.setTagCompound(tagcompound);

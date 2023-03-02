@@ -37,4 +37,6 @@ public class CTMills {
 		}
 		VExtraUtilities.setScaling(millName.toUpperCase().replace(" ", "_").trim(), arr);
 	}
+	
+	//TODO setBaseValue
 }

@@ -2,6 +2,8 @@ package org.btpos.dj2addons.mixin;
 
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.core.DJ2AddonsCore;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -10,9 +12,9 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-import static org.btpos.dj2addons.core.DJ2AddonsCore.LOGGER;
-
 public class DJ2AMixinConfig implements IMixinConfigPlugin {
+	public static Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	
 	@Override
 	public void onLoad(String mixinPackage) {
 		LOGGER.debug("Loading mixins from " + mixinPackage);
@@ -36,9 +38,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
 				DJ2AddonsCore.onDisableAerogelPatch();
 				return false;
-			} catch (ClassNotFoundException ignore) {
-				return true;
-			}
+			} catch (ClassNotFoundException ignore) {}
 		}
 		return !simplename.contains("JEI") || Loader.isModLoaded("jei");
 	}
