@@ -70,16 +70,16 @@ repositories {
 dependencies {
 	implementation 'org.spongepowered:mixin:0.8.5'
 	
-	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+	deobfProvided("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
-	compile("mezz.jei:jei_1.12.2:4.16.1.302")
+	provided("mezz.jei:jei_1.12.2:4.16.1.302")
 	
 //	deobfCompile(
 //			"curse.maven:TickProfiler-270330:2912044"
 //	)
 	
 	// **CRAFTTWEAKER HOOKS**
-	deobfProvided(
+	deobfCompile(
 			"curse.maven:Patchouli-306770:3162874",
 			"curse.maven:Baubles-227083:2518667"
 	)
@@ -110,7 +110,7 @@ dependencies {
 		exclude group: "org.spongepowered"
 	}
 	
-	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
+	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
 	
 	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
@@ -150,9 +150,11 @@ dependencies {
 	
 	deobfProvided(
 			"curse.maven:ModularMachinery-270790:2713714",
-			"curse.maven:ModularMagic-324318:2737623",
-			"curse.maven:Thaumcraft-223628:2629023"
+			"curse.maven:ModularMagic-324318:2737623"
+			
 	)
+	
+	deobfCompile("curse.maven:Thaumcraft-223628:2629023")
 	
 	deobfProvided("curse.maven:Aether-255308:3280119")
 	
