@@ -79,7 +79,7 @@ dependencies {
 //	)
 	
 	// **CRAFTTWEAKER HOOKS**
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Patchouli-306770:3162874",
 			"curse.maven:Baubles-227083:2518667"
 	)
@@ -110,7 +110,7 @@ dependencies {
 		exclude group: "org.spongepowered"
 	}
 	
-	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
@@ -118,6 +118,12 @@ dependencies {
 	deobfProvided(
 			"curse.maven:RFTools-224641:2861573",
 			"curse.maven:McJtyLib-233105:2745846"
+	)
+	
+	deobfCompile(
+			"curse.maven:CommonCapabilities-247007:3053017",
+			"curse.maven:CyclopsCore-232758:3159497",
+			"curse.maven:IntegratedDynamics-236307:3159505"
 	)
 	
 	deobfProvided(
@@ -154,7 +160,7 @@ dependencies {
 			
 	)
 	
-	deobfCompile("curse.maven:Thaumcraft-223628:2629023")
+	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
 	
 	deobfProvided("curse.maven:Aether-255308:3280119")
 	
