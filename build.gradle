@@ -78,6 +78,10 @@ dependencies {
 //			"curse.maven:TickProfiler-270330:2912044"
 //	)
 	
+	deobfProvided(
+			"curse.maven:ImmersiveEngineering-231951:2974106"
+	)
+	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
 			"curse.maven:Patchouli-306770:3162874",
@@ -110,7 +114,7 @@ dependencies {
 		exclude group: "org.spongepowered"
 	}
 	
-	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
