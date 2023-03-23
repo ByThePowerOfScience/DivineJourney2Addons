@@ -11,10 +11,20 @@ Adds upgrades to the Witches Altar.
 #### Methods
 
 ```zenscript
-void addUpgradeCup(
-  IItemStack itemStack, // The OreDict key to add.
-  int gain,             // Flat bonus to Magical Power.
-  double multiplier     // Multiplicative multiplier applied to MP.
+void addUpgradePentacle(
+  IOreDictEntry oreDict, // The OreDict key to add.
+  int bonus              // Flat bonus to Magical Power.
+);
+```
+
+
+---
+
+
+```zenscript
+void addUpgradePentacle(
+  IItemStack itemStack, // The Item to add.
+  int bonus             // Flat bonus to Magical Power.
 );
 ```
 
@@ -35,20 +45,10 @@ void addUpgradeCup(
 
 
 ```zenscript
-void addUpgradePentacle(
-  IItemStack itemStack, // The Item to add.
-  int bonus             // Flat bonus to Magical Power.
-);
-```
-
-
----
-
-
-```zenscript
-void addUpgradePentacle(
-  IOreDictEntry oreDict, // The OreDict key to add.
-  int bonus              // Flat bonus to Magical Power.
+void addUpgradeCup(
+  IItemStack itemStack, // The OreDict key to add.
+  int gain,             // Flat bonus to Magical Power.
+  double multiplier     // Multiplicative multiplier applied to MP.
 );
 ```
 
