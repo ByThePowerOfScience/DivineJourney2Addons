@@ -65,6 +65,7 @@ repositories {
 		name = "CoFH Maven"
 		url = "https://maven.covers1624.net"
 	}
+	mavenCentral()
 }
 
 dependencies {
@@ -110,7 +111,7 @@ dependencies {
 			"curse.maven:ZeroCore-247921:3194743"
 	)
 	
-	deobfProvided("curse.maven:Bewitchment-285439:3256343") {
+	deobfCompile("curse.maven:Bewitchment-285439:3256343") {
 		exclude group: "org.spongepowered"
 	}
 	
@@ -184,6 +185,12 @@ dependencies {
 	deobfProvided(
 			"curse.maven:Mekanism-268560:2835175"
 	)
+	
+	// Dev Tools
+	testImplementation( // For ZenDoc
+			"org.reflections:reflections:0.10.2",
+			"curse.maven:Roots-246183:3484394"
+	)
 }
 
 
@@ -207,7 +214,7 @@ task copyTestZS(type: Copy) {
 }
 
 task zendoc(type: JavaExec, group: 'documentation') {
-	classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath + sourceSets.test.output.classesDirs
+	classpath = sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath + sourceSets.test.output.classesDirs + sourceSets.test.runtimeClasspath
 	main = 'ExportZenDocs'
 }
 

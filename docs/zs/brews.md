@@ -9,9 +9,9 @@ import dj2addons.botania.Brews;
 
 ```zenscript
 Brew makeBrew(
-  string key,                   // The registry key to be assigned to the Brew.
-  int cost,                     // The base mana cost of the brew. Amplified automatically for flasks, etc.
-  IPotionEffect[] potionEffects // A/an array of potion effects.
+  string arg0,         
+  int arg1,            
+  IPotionEffect[] arg2,
 );
 ```
 
@@ -23,11 +23,11 @@ The key is set to "botania.brews.\<name\>" and the color is taken from the sourc
 
 ```zenscript
 Brew makeBrew(
-  string key,                   // The registry key to be assigned to the Brew.
-  string name,                  // The display name of the Brew. e.g. "Flask of <name>"
-  int cost,                     // The base mana cost of the brew. Amplified automatically for flasks, etc.
-  int color,                    // The hexadecimal color of the brew.
-  IPotionEffect[] potionEffects // A/an array of potion effects.
+  string arg0,         
+  string arg1,         
+  int arg2,            
+  int arg3,            
+  IPotionEffect[] arg4,
 );
 ```
 
@@ -38,8 +38,8 @@ Creates a Brew instance and registers its existence with Botania, then returns i
 
 ```zenscript
 void addBrewRecipe(
-  Brew brew,               // The Brew instance to register a recipe for.
-  IItemStack[] ingredients // An array of item ingredients to set as the recipe.
+  Brew arg0,        
+  IItemStack[] arg1,
 );
 ```
 

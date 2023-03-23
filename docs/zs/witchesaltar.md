@@ -11,20 +11,10 @@ Adds upgrades to the Witches Altar.
 #### Methods
 
 ```zenscript
-void addUpgradePentacle(
-  IOreDictEntry oreDict, // The OreDict key to add.
-  int bonus              // Flat bonus to Magical Power.
-);
-```
-
-
----
-
-
-```zenscript
-void addUpgradePentacle(
-  IItemStack itemStack, // The Item to add.
-  int bonus             // Flat bonus to Magical Power.
+void addUpgradeCup(
+  IItemStack arg0,
+  int arg1,       
+  double arg2,    
 );
 ```
 
@@ -34,9 +24,9 @@ void addUpgradePentacle(
 
 ```zenscript
 void addUpgradeCup(
-  IOreDictEntry oreDict, // The OreDict key to add.
-  int gain,              // Flat bonus to Magical Power.
-  double totalMult       // Multiplicative multiplier applied to MP.
+  IOreDictEntry arg0,
+  int arg1,          
+  double arg2,       
 );
 ```
 
@@ -45,10 +35,20 @@ void addUpgradeCup(
 
 
 ```zenscript
-void addUpgradeCup(
-  IItemStack itemStack, // The OreDict key to add.
-  int gain,             // Flat bonus to Magical Power.
-  double multiplier     // Multiplicative multiplier applied to MP.
+void addUpgradePentacle(
+  IItemStack arg0,
+  int arg1,       
+);
+```
+
+
+---
+
+
+```zenscript
+void addUpgradePentacle(
+  IOreDictEntry arg0,
+  int arg1,          
 );
 ```
 
@@ -58,8 +58,8 @@ void addUpgradeCup(
 
 ```zenscript
 void addUpgradeWand(
-  IOreDictEntry oreDict, // The OreDict key to add.
-  double multBoost       // Additive multiplier to MP.
+  IItemStack arg0,
+  double arg1,    
 );
 ```
 
@@ -69,8 +69,8 @@ void addUpgradeWand(
 
 ```zenscript
 void addUpgradeWand(
-  IItemStack itemStack, // The Item to add.
-  double multBoost      // Additive multiplier to MP.
+  IOreDictEntry arg0,
+  double arg1,       
 );
 ```
 
@@ -80,8 +80,8 @@ void addUpgradeWand(
 
 ```zenscript
 void addUpgradeSword(
-  IItemStack itemStack, // The Item to add.
-  double multiplier     // Additive multiplier to MP.
+  IItemStack arg0,
+  double arg1,    
 );
 ```
 
@@ -91,11 +91,44 @@ void addUpgradeSword(
 
 ```zenscript
 void addUpgradeSword(
-  IOreDictEntry oreDict, // The OreDict key to add.
-  double multiplier      // Additive multiplier to MP.
+  IOreDictEntry arg0,
+  double arg1,       
 );
 ```
 
+
+---
+
+
+```zenscript
+void removeUpgrade(
+  IItemStack arg0,
+);
+```
+
+Removes altar upgrades matching the item parameter.
+
+---
+
+
+```zenscript
+void removeUpgrade(
+  IOreDictEntry arg0,
+);
+```
+
+Removes altar upgrades matching an oredict entry.
+
+---
+
+
+```zenscript
+void removeUpgradeItem(
+  IItemStack arg0,
+);
+```
+
+Removes altar upgrades matching the default metadata of the given ItemStack parameter. Used if the default method does not work.
 
 ---
 

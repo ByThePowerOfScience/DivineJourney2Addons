@@ -10,8 +10,10 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.core.DJ2AddonsCore;
 import org.btpos.dj2addons.impl.modrefs.CCraftTweaker;
+import org.btpos.dj2addons.mixin.DJ2AMixinConfig;
 import org.btpos.dj2addons.proxy.CommonProxy;
 import org.btpos.dj2addons.registry.ModPotions;
 
@@ -29,6 +31,8 @@ public class DJ2Addons {
 			"before:bewitchment;" +
 			"after:extremereactors;" +
 			"after:botania";
+	
+	public static final Logger LOGGER = DJ2AMixinConfig.LOGGER;
 	
 	/**
 	 * This is the instance of your mod as created by Forge. It will never be null.

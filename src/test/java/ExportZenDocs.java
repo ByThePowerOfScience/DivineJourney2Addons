@@ -1,28 +1,24 @@
 import epicsquid.roots.util.StringHelper;
 import epicsquid.roots.util.zen.*;
 import org.apache.commons.lang3.StringUtils;
-import org.btpos.dj2addons.crafttweaker.astralsorcery.CTCelestialCrystals;
-import org.btpos.dj2addons.crafttweaker.bewitchment.Rituals;
-import org.btpos.dj2addons.crafttweaker.bewitchment.WitchesAltar;
-import org.btpos.dj2addons.crafttweaker.bloodmagic.ZenSoulForge;
-import org.btpos.dj2addons.crafttweaker.botania.Brews;
-import org.btpos.dj2addons.crafttweaker.extrautils.CTMills;
-import org.btpos.dj2addons.crafttweaker.extremereactors.CTExtremeReactors;
-import org.btpos.dj2addons.crafttweaker.extremereactors.CTReactorInterior;
-import org.btpos.dj2addons.crafttweaker.totemic.Instruments;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.AnnotationNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.reflections.Reflections;
 import stanhebben.zenscript.annotations.Optional;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,32 +26,26 @@ import java.util.stream.Collectors;
  * <p>https://github.com/MysticMods/Roots/blob/release/3.1.5/src/main/java/epicsquid/roots/ExportDocumentation.java
  * <p>https://github.com/MysticMods/Roots/blob/release/3.1.5/src/main/java/epicsquid/roots/util/zen/ZenDocExporter.java
  *
- * <p>Original author: MysticMods<p>
- * Seriously I didn't write a word of this; this incredible piece of code wouldn't even be copied if it didn't have some hardcoded paths.
+ * <p>Original author: Noobanidus from the MysticMods Team<p>
+ * Seriously, I didn't write a word of this. This incredible piece of code wouldn't even be copied if it didn't have some hardcoded paths.
  */
 public class ExportZenDocs {
 	public static void main(String[] args) {
 		String targetPath = "./docs/zs/";
-		
-		Class<?>[] classes = new Class[] {
-				Rituals.class,
-				WitchesAltar.class,
-				ZenSoulForge.class,
-				Brews.class,
-				Brews.ZenBrew.class,
-				Instruments.class,
-				CTExtremeReactors.class,
-				CTReactorInterior.class,
-				CTReactorInterior.HeatConductivity.class,
-				CTCelestialCrystals.class,
-				CTMills.class
-		}; //TODO automate this
+//		ClassPath.from(ClassLoader.getSystemClassLoader())
+//		         .getAllClasses()
+//		         .stream()
+//		         .filter(classInfo -> classInfo.getPackageName().contains("org.btpos.dj2addons.crafttweaker"))
+//		         .map(ResourceInfo::asByteSource)
+//				.map(bs -> );
+		Reflections reflections = new Reflections("org.btpos.dj2addons.crafttweaker");
+		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ZenDocClass.class);
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);
 		
 		try {
 			Files.createDirectories(path);
-			export.export(path, classes);
+			export.export(path, classes.toArray(new Class[0]));
 		} catch (IOException var6) {
 			var6.printStackTrace();
 		}
@@ -68,7 +58,7 @@ public class ExportZenDocs {
 		public ZenDocExporter() {
 		}
 		
-		public void export(Path path, Class<?>[] classes) {
+		public void export(Path path, Class<?>[] classes) throws IOException {
 			for(int i = 0; i < classes.length; ++i) {
 				className = "";
 				StringBuilder out = new StringBuilder();
@@ -98,7 +88,19 @@ public class ExportZenDocs {
 						out.append("\n");
 					}
 					
-					Method[] methods = classes[i].getDeclaredMethods();
+					
+					Method[] methods = new Method[0];
+					Collection<MethodDetails> methods1;
+					try {
+						methods = classes[i].getDeclaredMethods();
+					} catch (Error | Exception e) {
+						ClassNode classNode = new ClassNode();
+						ClassReader classReader = new ClassReader(classes[i].getCanonicalName());
+						classReader.accept(classNode, 0);
+						methods1 = classNode.methods.stream().map(MethodDetails::new).collect(Collectors.toSet());
+					}
+					
+					
 					List<MethodAnnotationPair> methodList = this.getSortedMethodList(methods);
 					Field[] fields = classes[i].getDeclaredFields();
 					List<PropertyAnnotationPair> fieldList = this.getSortedFieldList(fields);
@@ -172,83 +174,83 @@ public class ExportZenDocs {
 				
 				this.writeProperty(out, staticPropertyList.get(j).type, staticPropertyList.get(j).annotation);
 			}
-			
 		}
-		@SuppressWarnings("rawtypes")
+		
 		private void writeMethod(StringBuilder out, Method method, ZenDocMethod annotation) {
 			String methodName = method.getName();
 			Class<?> returnType = method.getReturnType();
 			String returnTypeString = this.getSimpleTypeString(returnType);
 			out.append("```zenscript").append("\n");
 			out.append(returnTypeString).append(" ").append(methodName).append("(");
-			Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-			Class[] types = method.getParameterTypes();
-			ZenDocArg[] args = annotation.args();
-			if (types.length != args.length) {
-				throw new IllegalStateException("Wrong number of parameter names found for type: " + methodName);
-			} else {
-				if (args.length > 0) {
-					out.append("\n");
-				}
-				
-				int largest = 0;
-				String[] parameterStrings = new String[types.length];
-				
-				int k;
-				String line;
-				for(k = 0; k < types.length; ++k) {
-					boolean optional = false;
-					boolean nullable = false;
-					Annotation[] var15 = parameterAnnotations[k];
-					
-					for (Annotation parameterAnnotation : var15) {
-						if (parameterAnnotation instanceof Optional) {
-							optional = true;
-						}
-						
-						if (parameterAnnotation instanceof ZenDocNullable) {
-							nullable = true;
-						}
-					}
-					
-					String optionalString = optional ? "@Optional " : "";
-					line = nullable ? "@Nullable " : "";
-					String typeString = this.getSimpleTypeString(types[k]);
-					String nameString = args[k].arg();
-					if (k < types.length - 1) {
-						parameterStrings[k] = "  " + optionalString + line + typeString + " " + nameString + ",";
-					} else {
-						parameterStrings[k] = "  " + optionalString + typeString + " " + nameString;
-					}
-					
-					if (parameterStrings[k].length() > largest) {
-						largest = parameterStrings[k].length();
-					}
-				}
-				
-				for(k = 0; k < parameterStrings.length; ++k) {
-					parameterStrings[k] = StringUtils.rightPad(parameterStrings[k], largest);
-					out.append(parameterStrings[k]);
-					if (!args[k].info().isEmpty()) {
-						out.append(" // ").append(args[k].info());
-					}
-					
-					out.append("\n");
-				}
-				
-				out.append(");\n");
-				out.append("```").append("\n\n");
-				String[] description = annotation.description();
-				if (description.length > 0) {
-					
-					for (String s : description) {
-						line = s;
-						out.append(this.parse(line));
-					}
-				}
-				
-				out.append("\n---\n\n");
+			
+			Parameter[] params = method.getParameters();
+			
+			Set<ZenDocArg> args = new HashSet<>(Arrays.asList(annotation.args()));
+			
+			if (params.length > 0) {
+				out.append("\n");
 			}
+			
+			int largest = 0;
+			List<String[]> parameterStrings = new ArrayList<>(params.length);
+			
+			String line;
+			for(Parameter p : params) {
+				boolean optional = false;
+				boolean nullable = false;
+				Annotation[] paramAnnotations = p.getAnnotations();
+				
+				for (Annotation a : paramAnnotations) {
+					if (a instanceof Optional) {
+						optional = true;
+					}
+					
+					if (a instanceof ZenDocNullable || a instanceof Nullable) {
+						nullable = true;
+					}
+				}
+				
+				String optionalString = optional ? "@Optional " : "";
+				line = nullable ? "@Nullable " : "";
+				String typeString = this.getSimpleTypeString(p.getType());
+				String nameString = p.getName();
+				
+				String outString = "  " + optionalString + line + typeString + " " + nameString + ",";
+				
+				if (outString.length() > largest) {
+					largest = outString.length();
+				}
+				
+				// get ZenDocArg description for arg
+				java.util.Optional<String> argInfo = args.stream()
+				                                         .filter(arg -> p.getName().equals(arg.arg()))
+				                                         .map(ZenDocArg::info)
+				                                         .findFirst();
+				
+				parameterStrings.add(new String[] {outString, argInfo.orElse(null)});
+			}
+		
+			for (String[] parameterString : parameterStrings) {
+				out.append(StringUtils.rightPad(parameterString[0], largest));
+				if (parameterString[1] != null) {
+					out.append(" // ").append(parameterString[1]);
+				}
+				
+				out.append("\n");
+			}
+			
+			out.append(");\n");
+			out.append("```").append("\n\n");
+			String[] description = annotation.description();
+			if (description.length > 0) {
+				
+				for (String s : description) {
+					line = s;
+					out.append(this.parse(line));
+				}
+			}
+			
+			out.append("\n---\n\n");
 		}
 		
 		private void writeProperty(StringBuilder out, Field field, ZenDocProperty annotation) {
@@ -309,7 +311,7 @@ public class ExportZenDocs {
 			return fieldList;
 		}
 		
-		private String getSimpleTypeString(Class type) {
+		private String getSimpleTypeString(Class<?> type) {
 			String result = type.getSimpleName();
 			if (result.startsWith("Zen")) {
 				result = result.substring(3);
@@ -339,6 +341,33 @@ public class ExportZenDocs {
 			private AnnotationPairBase(T type, V annotation) {
 				this.type = type;
 				this.annotation = annotation;
+			}
+		}
+		
+		private static class MethodDetails {
+			final String methodName;
+			final Map<String, Map<String, Object>> annotations; // [AnnotationName: [AnnotationProperty: Value]]
+			Map<String, String> params; // [ParamName: TypeName]
+			private MethodDetails(MethodNode node) {
+				methodName = node.name;
+				annotations = getAnnotations(node.visibleAnnotations);
+				
+			}
+			
+			public boolean hasAnnotations() {
+				return annotations != null;
+			}
+			
+			private static Map<String, Map<String, Object>> getAnnotations(@Nullable List<AnnotationNode> nodes) {
+				if (nodes == null)
+					return null;
+				return nodes.stream().collect(Collectors.toMap(a -> a.desc, a -> {
+					Map<String, Object> annotations = new HashMap<>();
+					for (int i = 0; i < a.values.size(); i+=2) {
+						annotations.put((String)a.values.get(i), a.values.get(i + 1));
+					}
+					return annotations;
+				}));
 			}
 		}
 	}

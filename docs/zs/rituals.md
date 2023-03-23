@@ -1,3 +1,4 @@
+
 ### Class
 
 ```zenscript
@@ -13,7 +14,7 @@ Must be run with the preinit loader, specified with `#loader preinit` at the top
 
 ```zenscript
 void removeRitual(
-  string name // The name of the ritual to remove. e.g. "biome_shift".
+  string arg0,
 );
 ```
 

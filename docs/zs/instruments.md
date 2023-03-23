@@ -14,9 +14,9 @@ Must be run with the preinit loader, specified with `#loader preinit` at the top
 
 ```zenscript
 void modifyMusicValues(
-  string instrumentName, // The resource name of the instrument, e.g. "totemic:flute".
-  Number baseOutput,     // Sets or scales the base output music of the instrument.
-  Number musicMaximum    // Sets or scales the cap on the total music this instrument type can produce.
+  string arg0,
+  Number arg1,
+  Number arg2,
 );
 ```
 

@@ -14,8 +14,8 @@ Must be run with the preinit loader, specified with `#loader preinit` at the top
 
 ```zenscript
 void setScaling(
-  string millName, // The name of the mill to change.
-  Map values       // An associative array of [Grid Power threshold : production percentage].
+  string arg0,
+  Map arg1,   
 );
 ```
 
