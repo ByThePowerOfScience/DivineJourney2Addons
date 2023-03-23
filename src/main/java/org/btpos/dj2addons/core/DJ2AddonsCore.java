@@ -3,7 +3,9 @@ package org.btpos.dj2addons.core;
 import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.mixin.DJ2AMixinConfig;
 
-
+/**
+ * Intermediary between the ASM phase and the Mod phase of loading.
+ */
 public class DJ2AddonsCore {
 	private static boolean coreLoaded = false;
 	public static Logger LOGGER = DJ2AMixinConfig.LOGGER;

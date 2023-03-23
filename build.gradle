@@ -70,7 +70,7 @@ repositories {
 dependencies {
 	implementation 'org.spongepowered:mixin:0.8.5'
 	
-	deobfProvided("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
 	provided("mezz.jei:jei_1.12.2:4.16.1.302")
 	
@@ -110,7 +110,7 @@ dependencies {
 		exclude group: "org.spongepowered"
 	}
 	
-	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
@@ -130,6 +130,10 @@ dependencies {
 			"curse.maven:AgriCraft-225635:3317747",
 			"curse.maven:InfinityLib-251396:3317119"
 	)
+	
+//	deobfProvided(
+//			"curse.maven:MysticalAgriculture-246640:2704562"
+//	)
 	
 	deobfProvided(
 			"curse.maven:MoreTweaker-336569:3226142",
@@ -154,7 +158,7 @@ dependencies {
 			
 	)
 	
-	deobfCompile("curse.maven:Thaumcraft-223628:2629023")
+	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
 	
 	deobfProvided("curse.maven:Aether-255308:3280119")
 	
