@@ -8,7 +8,7 @@ import org.btpos.dj2addons.mixin.DJ2AMixinConfig;
  */
 public class DJ2AddonsCore {
 	private static boolean coreLoaded = false;
-	public static Logger LOGGER = DJ2AMixinConfig.LOGGER;
+	
 	public static boolean shouldWriteAerogelTooltip = false;
 	
 	/**
@@ -16,7 +16,7 @@ public class DJ2AddonsCore {
 	 */
 	public static void onLoadCore() {
 		coreLoaded = true;
-		LOGGER.info("DJ2Addons loaded!");
+		DJ2AMixinConfig.LOGGER.info("DJ2Addons loaded!");
 	}
 	
 	/**
