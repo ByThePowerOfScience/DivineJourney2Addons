@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"unused","Inspection"})
 public class CommandHandler extends CraftTweakerCommand {
 	
 	public CommandHandler() {
@@ -71,6 +72,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	private enum SubCommand {
 		hand, tileinfo, mods, bewitchment, extrautils2, totemic
+//		,validate
 	}
 	
 	@Override
@@ -82,6 +84,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			return;
 		}
 		
+		//noinspection
 		Optional<SubCommand> command = Enums.getIfPresent(SubCommand.class, args[0]);
 		if (command.isPresent()) {
 			MessageHelper m = new MessageHelper(sender);
@@ -96,6 +99,9 @@ public class CommandHandler extends CraftTweakerCommand {
 				case tileinfo:
 					executeBlockDumpCommand(m.withChat().setUsage("dj2addons.commands.dumpblock.usage"), sender, args);
 					break;
+//				case validate:
+//					m.withChat().send(String.join("\n", VCraftTweaker.validate().toArray(new String[0])));
+//					break;
 				case mods:
 				case bewitchment:
 					if (Loader.isModLoaded("bewitchment"))
@@ -156,6 +162,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				listBlockCapabilitiesBySide(m.withLog(), te);
 				break;
 			case "dump":
+				m.setUsage("dj2addons.commands.dumpblock.dump.usage");
 				if (!sender.canUseCommand(4, "op")) {
 					m.sendError("You do not have access to this command.");
 					return;
@@ -165,11 +172,17 @@ public class CommandHandler extends CraftTweakerCommand {
 					m.sendError("No tile entity found at " + target);
 					return;
 				}
-				new Thread(() -> StringDumpUtils.dump(te2, m::log)).start();
+				new Thread(() -> {
+					try {
+						StringDumpUtils.dump(te2, m::log, args.length >= 2 ? Integer.parseInt(args[1]) : 0);
+						m.linkToLog();
+					} catch (NumberFormatException e) {
+						m.usage();
+					}
+				}).start();
 				break;
 			default:
 				m.usage();
-				return;
 		}
 	}
 	
@@ -498,8 +511,6 @@ public class CommandHandler extends CraftTweakerCommand {
 		}
 		
 		static String listToAssociativeArrayPretty(List<Object> list, boolean raw, int indent) {
-			StringBuilder sb = new StringBuilder();
-			
 			Map<Object, Object> map = new HashMap<>();
 			for (int i = 0; i < list.size(); i+=2) {
 				Object o1 = list.get(i);

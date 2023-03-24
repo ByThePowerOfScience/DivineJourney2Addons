@@ -160,6 +160,4 @@ public class CTWitchesAltar {
 	public static void removeAllUpgrades() {
 		BewitchmentAPI.ALTAR_UPGRADES.clear();
 	}
-	
-	
 }

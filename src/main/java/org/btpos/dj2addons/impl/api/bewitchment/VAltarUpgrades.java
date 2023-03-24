@@ -11,9 +11,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
-import org.btpos.dj2addons.DJ2Addons;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class VAltarUpgrades {
+	public static final Set<ItemStack> toRemove = new HashSet<>();
+	
 	public static void removeUpgrade(String oreDict) {
 		OreDictionary.getOres(oreDict).forEach(VAltarUpgrades::removeUpgrade);
 	}
@@ -23,9 +27,13 @@ public class VAltarUpgrades {
 	}
 	
 	public static void removeUpgrade(ItemStack is) {
-		BlockWorldState dummy = new DummyWorldState(is);
-		boolean removedUpgrade = BewitchmentAPI.ALTAR_UPGRADES.entrySet().removeIf(entry -> entry.getKey().test(dummy));
-		DJ2Addons.LOGGER.info("Removed " + is.getItem().getRegistryName() + " from altar upgrades: " + removedUpgrade);
+		toRemove.add(is);
+	}
+	
+	public static void executeUpgradeRemoval() {
+		toRemove.stream()
+		        .map(DummyWorldState::new)
+		        .forEach(dws -> BewitchmentAPI.ALTAR_UPGRADES.keySet().removeIf(p -> p.test(dws)));
 	}
 	
 	@SuppressWarnings("all")

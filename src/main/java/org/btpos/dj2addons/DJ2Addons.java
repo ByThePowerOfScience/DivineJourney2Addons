@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 import org.btpos.dj2addons.core.DJ2AddonsCore;
 import org.btpos.dj2addons.impl.modrefs.CCraftTweaker;
+import org.btpos.dj2addons.impl.modrefs.IsModLoaded;
 import org.btpos.dj2addons.mixin.DJ2AMixinConfig;
 import org.btpos.dj2addons.proxy.CommonProxy;
 import org.btpos.dj2addons.registry.ModPotions;
@@ -64,7 +65,11 @@ public class DJ2Addons {
 	 * This is the final initialization event. Register actions from other mods here
 	 */
 	@Mod.EventHandler
-	public void postinit(FMLPostInitializationEvent event) {}
+	public void postinit(FMLPostInitializationEvent event) {
+		if (IsModLoaded.crafttweaker) {
+			CCraftTweaker.postInit();
+		}
+	}
 	
 //	@GameRegistry.ObjectHolder(MOD_ID)
 //	public static class Blocks {

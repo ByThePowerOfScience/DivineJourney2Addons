@@ -1,15 +1,14 @@
 package org.btpos.dj2addons.util;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Stack;
-import java.util.TreeMap;
 import java.util.function.Consumer;
 
 /**
@@ -33,9 +32,12 @@ public class StringDumpUtils {
 		dump(object, System.out::println);
 	}
 	
-	static final Class<?>[] exclusions = new Class[] {
+	static final Class<?>[] fieldTypeExclusions = new Class[] {
 			World.class
 	};
+	static final Map<String, List<String>> fieldNameExclusions = ImmutableMap.of(
+			"net.minecraftforge.registries.RegistryDelegate", ImmutableList.of("type")
+	                                                                            );
 	
 	
 	/**
@@ -43,7 +45,11 @@ public class StringDumpUtils {
 	 * @param object the {@code Object} to dump
 	 */
 	public static void dump(Object object, Consumer<String> out) {
-		dump(object, false, out);
+		dump(object, false, out, -1);
+	}
+	
+	public static void dump(Object object, Consumer<String> out, int maxSupers) {
+		dump(object, false, out, maxSupers);
 	}
 	
 	/**
@@ -58,7 +64,7 @@ public class StringDumpUtils {
 	 * @param object       the {@code Object} to dump
 	 * @param isIncludingStatics {@code true} if {@code static} fields should be dumped, {@code false} to skip them
 	 */
-	public static void dump(Object object, boolean isIncludingStatics, Consumer<String> out) {
+	public static void dump(Object object, boolean isIncludingStatics, Consumer<String> out, int maxSupers) {
 		StringBuilder                   builder    = new StringBuilder();
 		Stack<Object[]>                 stack      = new Stack<>();
 		IdentityHashMap<Object, Object> visitorMap = new IdentityHashMap<>();
@@ -118,20 +124,28 @@ public class StringDumpUtils {
 					} else {
 						// enumerate the desired fields of the object before accessing
 						StringBuilder superPrefix = new StringBuilder();
+						int supersTraversed = 0;
 						for (Class<?> clazz = next.getClass(); clazz != null && !clazz.equals(Object.class); clazz = clazz.getSuperclass())
 						{
+							if (maxSupers != -1 && supersTraversed > maxSupers)
+								break;
 							Field[] fields = clazz.getDeclaredFields();
-							outer:
+							findFields:
 							for (Field field : fields) {
-								for (Class<?> exclusion : exclusions) {
+								for (Class<?> exclusion : fieldTypeExclusions) {
 									if (field.getType().isAssignableFrom(exclusion))
-										continue outer;
+										continue findFields;
+								}
+								List<String> exclusionsForClass = fieldNameExclusions.get(clazz.getName());
+								if (exclusionsForClass != null && exclusionsForClass.contains(field.getName())) {
+									continue findFields;
 								}
 								if (isIncludingStatics || !Modifier.isStatic(field.getModifiers())) {
 									fieldMap.put(superPrefix + field.getName(), field);
 								}
 							}
 							superPrefix.append(SUPER_PREFIX);
+							supersTraversed++;
 						}
 						// add in sorted order
 						fieldList.addAll(fieldMap.entrySet());
