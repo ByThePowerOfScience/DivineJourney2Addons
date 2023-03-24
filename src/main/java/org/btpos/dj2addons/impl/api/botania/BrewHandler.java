@@ -8,6 +8,8 @@ import vazkii.botania.api.brew.Brew;
 import vazkii.botania.common.brew.BrewMod;
 
 public class BrewHandler {
+	public static boolean shouldEnableWarpWardPendant = false;
+	
 	public BrewHandler() {
 	}
 	

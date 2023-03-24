@@ -97,4 +97,9 @@ public class Brews {
 		
 		BrewHandler.registerBrewRecipe(brew.getInternal(), itemStacks.toArray(new ItemStack[0]));
 	}
+	
+	@ZenMethod @ZenDocMethod(order=4, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is enabled.")
+	public static void enableWarpWardPendant() {
+		BrewHandler.shouldEnableWarpWardPendant = true;
+	}
 }

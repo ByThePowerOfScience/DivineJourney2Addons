@@ -8,6 +8,7 @@ dj2addons.brew.saturegen=Fullness
 
 # Commands
 dj2addons.commands.desc=§2/ct dj2addons [category] §3Prints data relevant to CraftTweaker extensions.
-dj2addons.commands.usage=Usage: §2/ct dj2addons [arg] §3Args: hand | tileinfo | mods | bewitchment | extrautils2 | totemic
-dj2addons.commands.dumpblock.usage=Usage: §2/ct dj2addons tileinfo [operation] (<X> <Y> <Z>) §3Operations: block | capabilities | dump (admins only)
-dj2addons.commands.dumpblock.dump.usage=Usage: §2/ct dj2addons tileinfo dump (<X> <Y> <Z>) (number of superclasses to scan [-1 = ∞])
+dj2addons.commands.usage=Usage: §2/ct dj2addons [arg] §3Args: hand | info | mods | bewitchment | extrautils2 | totemic
+dj2addons.commands.info.usage=Usage: §2/ct dj2addons info [operation] (<X> <Y> <Z>) §3Operations: blockmeta | capabilities | class | dumptile (admins only)
+dj2addons.commands.info.capabilities.usage=Usage: §2/ct dj2addons info capabilities (<X> <Y> <Z>) 
+dj2addons.commands.info.tile.dump.usage=Usage: §2/ct dj2addons info dumptile [number of superclasses to scan (-1 = ∞)] (<X> <Y> <Z>) 

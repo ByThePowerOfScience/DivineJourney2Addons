@@ -11,9 +11,11 @@ import crafttweaker.mc1120.commands.CommandUtils;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import crafttweaker.mc1120.data.NBTConverter;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -25,6 +27,7 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
@@ -71,7 +74,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, tileinfo, mods, bewitchment, extrautils2, totemic
+		hand, info, mods, bewitchment, extrautils2, totemic
 //		,validate
 	}
 	
@@ -84,20 +87,23 @@ public class CommandHandler extends CraftTweakerCommand {
 			return;
 		}
 		
+		List<String> params = Lists.newArrayList(args);
+		
 		//noinspection
-		Optional<SubCommand> command = Enums.getIfPresent(SubCommand.class, args[0]);
+		Optional<SubCommand> command = Enums.getIfPresent(SubCommand.class, params.remove(0));
 		if (command.isPresent()) {
 			MessageHelper m = new MessageHelper(sender);
-			List<String> strings = Lists.newArrayList(args);
-			strings.remove(0);
-			args = strings.toArray(new String[0]);
 			
 			switch (command.get()) {
 				case hand:
 					executeHandCommand(server, sender, args);
 					break;
-				case tileinfo:
-					executeBlockDumpCommand(m.withChat().setUsage("dj2addons.commands.dumpblock.usage"), sender, args);
+				case info:
+					m.setUsage("dj2addons.commands.info.usage");
+					if (params.size() < 1)
+						m.usage();
+					else
+						executeBlockInfoCommand(m.withChat(), sender, params);
 					break;
 //				case validate:
 //					m.withChat().send(String.join("\n", VCraftTweaker.validate().toArray(new String[0])));
@@ -133,60 +139,146 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	
 	
-	private static void executeBlockDumpCommand(MessageHelper m, ICommandSender sender, String[] args) {
-		if (args.length < 1) {
+	private static void executeBlockInfoCommand(MessageHelper m, ICommandSender sender, List<String> args) {
+		if (args.size() < 1) {
 			m.usage();
 			return;
 		}
-		BlockPos target;
-		try {
-			target = getTargetedPosition(sender, args, m);
-		} catch (Exception e) {
-			m.usage();
-			return;
-		}
-		if (target == null) {
-			m.sendError("Command must be executed with a block targeted.");
-			return;
-		}
-		switch (args[0]) {
-			case "block":
-				printBlockMeta(m.withLog(), target, sender.getEntityWorld().getBlockState(target));
+		
+		switch (args.remove(0).toLowerCase(Locale.ROOT)) {
+			case "blockmeta":
+				info_printBlockMeta(m.withLog(), sender, args);
+				break;
+			case "class":
+				info_printBlockClasses(m.withLog(), sender, args);
 				break;
 			case "capabilities":
-				TileEntity te = sender.getEntityWorld().getTileEntity(target);
-				if (te == null) {
-					m.sendError("No tile entity found at " + target);
-					return;
-				}
-				listBlockCapabilitiesBySide(m.withLog(), te);
+				printBlockCapabilitiesBySide(m.withLog(), sender, args);
 				break;
-			case "dump":
-				m.setUsage("dj2addons.commands.dumpblock.dump.usage");
+			case "dumptile":
 				if (!sender.canUseCommand(4, "op")) {
 					m.sendError("You do not have access to this command.");
 					return;
 				}
-				TileEntity te2 = sender.getEntityWorld().getTileEntity(target);
-				if (te2 == null) {
-					m.sendError("No tile entity found at " + target);
-					return;
+				try {
+					info_dumpTileCommand(m.withLog(), sender, args);
+				} catch (NumberFormatException | NumberInvalidException e) {
+					m.usage();
 				}
-				new Thread(() -> {
-					try {
-						StringDumpUtils.dump(te2, m::log, args.length >= 2 ? Integer.parseInt(args[1]) : 0);
-						m.linkToLog();
-					} catch (NumberFormatException e) {
-						m.usage();
-					}
-				}).start();
 				break;
 			default:
 				m.usage();
 		}
 	}
 	
-	private static void listBlockCapabilitiesBySide(MessageHelper m, TileEntity te) {
+	private static void info_printBlockMeta(MessageHelper m, ICommandSender sender, List<String> args) {
+		m.setUsage("dj2addons.commands.info.blockmeta.usage");
+		
+	}
+	
+	private static void info_dumpTileCommand(MessageHelper m, ICommandSender sender, List<String> args) throws NumberFormatException, NumberInvalidException {
+		m.setUsage("dj2addons.commands.info.dump.usage");
+		
+		final int numSupers;
+		final BlockPos target;
+		
+		if (args.size() == 1) {
+			numSupers = Integer.parseInt(args.get(0));
+			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
+				m.usage();
+				return;
+			}
+			target = getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
+			if (target == null) {
+				m.sendError("Command must specify coordinates or be executed while looking at a block.");
+				return;
+			}
+		} else if (args.size() == 4) {
+			numSupers = Integer.parseInt(args.remove(0));
+			target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 0, true);
+		} else {
+			m.usage();
+			return;
+		}
+		
+		TileEntity te = sender.getEntityWorld().getTileEntity(target);
+		if (te == null) {
+			m.sendError("No tile entity found at " + target);
+			return;
+		}
+		
+		new Thread(() -> {
+			StringDumpUtils.dump(te, m::log, numSupers);
+			m.linkToLog();
+		}).start();
+	}
+	
+	private static void info_printBlockClasses(MessageHelper m, ICommandSender sender, List<String> args) {
+		final BlockPos target;
+		if (args.size() >= 3) {
+			try {
+				target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 0, true);
+			} catch (NumberInvalidException e) {
+				m.usage();
+				return;
+			}
+		} else {
+			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
+				m.sendError("Command must either be run by a player looking at a block or must specify coordinates."); //TODO translate for OneOneTwoTwo
+				return;
+			}
+			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
+			if (target == null) {
+				m.sendError("Command must either be run by a player looking at a block or must specify coordinates.");
+				return;
+			}
+		}
+		Class<? extends Block> bc = sender.getEntityWorld().getBlockState(target).getBlock().getClass();
+		m.sendHeading("Block:");
+		m.sendPropertyWithCopy("Class", bc.getName());
+		if (bc.getDeclaringClass() != bc)
+			m.sendPropertyWithCopy("Declaring Class", bc.getDeclaringClass().getName());
+		m.sendProperty(null, "Implements Interfaces:");
+		Arrays.stream(bc.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
+		
+		TileEntity t = sender.getEntityWorld().getTileEntity(target);
+		if (t == null)
+			return;
+		m.sendHeading("Tile Entity:");
+		Class<? extends TileEntity> te = t.getClass();
+		m.sendPropertyWithCopy("Class", te.getName());
+		if (te.getDeclaringClass() != te)
+			m.sendPropertyWithCopy("Declaring Class", te.getDeclaringClass().getName());
+		m.sendProperty(null, "Implements Interfaces:");
+		Arrays.stream(te.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
+	}
+	
+	private static void printBlockCapabilitiesBySide(MessageHelper m, ICommandSender sender, List<String> args) {
+		final BlockPos target;
+		if (args.size() >= 3) {
+			try {
+				target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 0, true);
+			} catch (NumberInvalidException e) {
+				m.usage();
+				return;
+			}
+		} else {
+			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
+				m.sendError("Command must either be run by a player looking at a block or must specify coordinates."); //TODO translate for OneOneTwoTwo
+				return;
+			}
+			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
+			if (target == null) {
+				m.sendError("Command must either be run by a player looking at a block or must specify coordinates.");
+				return;
+			}
+		}
+		
+		TileEntity te = sender.getEntityWorld().getTileEntity(target);
+		if (te == null) {
+			m.sendError("No tile entity found at " + target);
+			return;
+		}
 		Map<EnumFacing, List<Capability<?>>> blockCapabilitiesBySide = getBlockCapabilitiesBySide(m, te);
 		if (blockCapabilitiesBySide == null)
 			return;
@@ -390,22 +482,6 @@ public class CommandHandler extends CraftTweakerCommand {
 		return null;
 	}
 	
-	@Nullable
-	private static BlockPos getTargetedPosition(ICommandSender sender, String[] args, MessageHelper m) throws Exception {
-		if (args.length == 1 && !(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
-			m.sendError("Command must be executed by a player or include coordinates.");
-			throw new Exception();
-		}
-		BlockPos target;
-		if (args.length >= 4) {
-			target = CommandBase.parseBlockPos(sender, args, 1, false);
-		} else {
-			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
-		}
-		
-		return target;
-	}
-	
 	
 	private static class MessageHelper {
 		private final ICommandSender sender;
@@ -505,6 +581,10 @@ public class CommandHandler extends CraftTweakerCommand {
 		static String getPropertyMessage(String property, String value, int indent) {
 			if (property == null || property.equals(""))
 				property = "";
+			else if (property.charAt(property.length() - 1) == ':') {
+				property += " ";
+			} else //noinspection StatementWithEmptyBody
+				if (property.charAt(property.length() - 2) == ':' && property.charAt(property.length() - 1) == ' ') {} // leave alone
 			else
 				property += ": ";
 			return indent(indent) + "§e- " + property + "§" + HIGHLIGHTING[indent] + value;
