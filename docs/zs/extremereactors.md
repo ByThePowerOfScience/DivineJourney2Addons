@@ -10,18 +10,19 @@ Handles general ExtremeReactors tweaks.
 Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file.
 
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void setMaxEnergyStored(
-  long arg0,
+  long value, // The maximum energy stored.
 );
 ```
 
 Sets the maximum energy the reactor can store in its output buffer.
 
----
 
+
+---
 
 ### Example
 ```zenscript

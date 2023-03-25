@@ -50,7 +50,7 @@ public class InfusionStabilizerClassTransformer implements IClassTransformer {
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES + ClassWriter.COMPUTE_MAXS);
 		node.accept(writer);
 		byte[] bytes = writer.toByteArray();
-		try (FileOutputStream fileOutputStream = new FileOutputStream("dj2addons" + File.separator + "out.class")) {
+		try (FileOutputStream fileOutputStream = new FileOutputStream("dj2addons" + File.separator + transformedName + ".class")) {
 			fileOutputStream.write(bytes);
 		} catch (IOException e) {
 			e.printStackTrace();

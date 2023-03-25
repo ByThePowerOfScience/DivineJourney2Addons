@@ -7,9 +7,9 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
-import epicsquid.roots.util.zen.ZenDocArg;
-import epicsquid.roots.util.zen.ZenDocClass;
-import epicsquid.roots.util.zen.ZenDocMethod;
+import org.btpos.dj2addons.util.zendoc.ZenDocArg;
+import org.btpos.dj2addons.util.zendoc.ZenDocClass;
+import org.btpos.dj2addons.util.zendoc.ZenDocMethod;
 import org.btpos.dj2addons.impl.api.bewitchment.VAltarUpgrades;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -142,20 +142,16 @@ public class CTWitchesAltar {
 	
 	
 	
-	@ZenMethod @ZenDocMethod(order=9,description = "Removes altar upgrades matching the item parameter.")
-	public static void removeUpgrade(IItemStack iis) {
-		VAltarUpgrades.removeUpgrade(CraftTweakerMC.getItemStack(iis));
+	@ZenMethod @ZenDocMethod(order=9,description = "Removes altar upgrades matching the item parameter.", args={@ZenDocArg(arg="iItemStack")})
+	public static void removeUpgrade(IItemStack iItemStack) {
+		VAltarUpgrades.removeUpgrade(CraftTweakerMC.getItemStack(iItemStack));
 	}
 	
-	@ZenMethod @ZenDocMethod(order=10,description = "Removes altar upgrades matching an oredict entry.")
+	@ZenMethod @ZenDocMethod(order=10,description = "Removes altar upgrades matching an oredict entry.", args=@ZenDocArg(arg="oreDictEntry"))
 	public static void removeUpgrade(IOreDictEntry oreDictEntry) {
 		VAltarUpgrades.removeUpgrade(oreDictEntry.getName());
 	}
 	
-	@ZenMethod @ZenDocMethod(order=11,description = "Removes altar upgrades matching the default metadata of the given ItemStack parameter. Used if the default method does not work.")
-	public static void removeUpgradeItem(IItemStack iis) {
-		VAltarUpgrades.removeUpgrade(CraftTweakerMC.getItemStack(iis).getItem());
-	}
 	
 	public static void removeAllUpgrades() {
 		BewitchmentAPI.ALTAR_UPGRADES.clear();

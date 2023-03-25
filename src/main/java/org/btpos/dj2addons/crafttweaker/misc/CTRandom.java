@@ -1,20 +1,20 @@
 package org.btpos.dj2addons.crafttweaker.misc;
 
 import crafttweaker.annotations.ZenRegister;
-import epicsquid.roots.util.zen.ZenDocArg;
-import epicsquid.roots.util.zen.ZenDocClass;
-import epicsquid.roots.util.zen.ZenDocMethod;
+import org.btpos.dj2addons.util.zendoc.ZenDocArg;
+import org.btpos.dj2addons.util.zendoc.ZenDocClass;
+import org.btpos.dj2addons.util.zendoc.ZenDocMethod;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Random;
 
 @ZenRegister
-@ZenClass("dj2addons.Random") @ZenDocClass(value="dj2addons.Random", description="Helper object for getting random numbers before world gen.")
+@ZenClass("dj2addons.Random") @ZenDocClass(value="dj2addons.Random", description="Helper object for getting random numbers before world load.")
 public class CTRandom {
 	private final java.util.Random rand;
 	
-	CTRandom(int seed) {
+	private CTRandom(int seed) {
 		this.rand = new Random(seed);
 	}
 	
@@ -24,31 +24,31 @@ public class CTRandom {
 		return new CTRandom(0x118999);
 	}
 	@ZenMethod
-	@ZenDocMethod(description = "Creates a new Random object with a set seed.")
+	@ZenDocMethod(order=1,description = "Creates a new Random object with a set seed.", args=@ZenDocArg(arg="seed"))
 	public static CTRandom newRandom(int seed) {
 		return new CTRandom(seed);
 	}
  
 	@ZenMethod
-	@ZenDocMethod(description="Gets the next random integer.")
+	@ZenDocMethod(order=2,description="Gets the next random integer.")
 	public int nextInt() {
 		return rand.nextInt();
 	}
 	
 	@ZenMethod
-	@ZenDocMethod(description="Gets the next random integer between 0 and the specified bound.",args=@ZenDocArg(arg="bound",info = "The maximum number the random int can be."))
+	@ZenDocMethod(order=3,description="Gets the next random integer between 0 and the specified bound.",args=@ZenDocArg(arg="bound",info = "The maximum number the random int can be."))
 	public int nextInt(int bound) {
 		return rand.nextInt(bound);
 	}
 	
 	@ZenMethod
-	@ZenDocMethod(description="Gets the next random boolean.")
+	@ZenDocMethod(order=4,description="Gets the next random boolean.")
 	public boolean nextBoolean() {
 		return rand.nextBoolean();
 	}
 	
 	@ZenMethod
-	@ZenDocMethod(description="Gets the next random float.")
+	@ZenDocMethod(order=5,description="Gets the next random float.")
 	public float nextFloat() {
 		return rand.nextFloat();
 	}

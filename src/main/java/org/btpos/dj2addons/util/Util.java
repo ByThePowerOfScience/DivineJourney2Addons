@@ -33,6 +33,17 @@ public class Util {
 		}
 	}
 	
+	public static class Strings {
+		public static String capitalizeFirstLetter(String input) {
+			return input.substring(0, 1).toLowerCase() + input.substring(1);
+		}
+		
+		public static String uncapitalizeFirstLetter(String input) {
+			return input.substring(0, 1).toLowerCase() + input.substring(1);
+		}
+		
+	}
+	
 	
 	public static ResourceLocation loc(String unitName) {
 		return new ResourceLocation(DJ2Addons.MOD_ID, unitName);

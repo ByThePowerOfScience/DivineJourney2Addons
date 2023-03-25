@@ -5,21 +5,10 @@
 import dj2addons.Random;
 ```
 
-Helper object for getting random numbers before world gen.
+Helper object for getting random numbers before world load.
 
 
-#### Methods
-
-```zenscript
-CTRandom newRandom(
-  int arg0,
-);
-```
-
-Creates a new Random object with a set seed.
-
----
-
+#### Static Methods
 
 ```zenscript
 CTRandom newRandom();
@@ -27,18 +16,15 @@ CTRandom newRandom();
 
 Creates a new Random object with a default seed.
 
----
-
 ```zenscript
-int nextInt(
-  int arg0,
+CTRandom newRandom(
+  int seed, // 
 );
 ```
 
-Gets the next random integer between 0 and the specified bound.
+Creates a new Random object with a set seed.
 
----
-
+#### Instance Methods
 
 ```zenscript
 int nextInt();
@@ -46,8 +32,13 @@ int nextInt();
 
 Gets the next random integer.
 
----
+```zenscript
+int nextInt(
+  int bound, // The maximum number the random int can be.
+);
+```
 
+Gets the next random integer between 0 and the specified bound.
 
 ```zenscript
 boolean nextBoolean();
@@ -55,14 +46,9 @@ boolean nextBoolean();
 
 Gets the next random boolean.
 
----
-
-
 ```zenscript
 float nextFloat();
 ```
 
 Gets the next random float.
-
----
 

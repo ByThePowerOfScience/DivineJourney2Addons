@@ -8,127 +8,87 @@ import dj2addons.bewitchment.WitchesAltar;
 Adds upgrades to the Witches Altar.
 
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void addUpgradeCup(
-  IItemStack arg0,
-  int arg1,       
-  double arg2,    
+  IItemStack itemStack, // The OreDict key to add.
+  int gain,             // Flat bonus to Magical Power.
+  double multiplier,    // Multiplicative multiplier applied to MP.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradeCup(
-  IOreDictEntry arg0,
-  int arg1,          
-  double arg2,       
+  IOreDictEntry oreDict, // The OreDict key to add.
+  int gain,              // Flat bonus to Magical Power.
+  double totalMult,      // Multiplicative multiplier applied to MP.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradePentacle(
-  IItemStack arg0,
-  int arg1,       
+  IItemStack itemStack, // The Item to add.
+  int bonus,            // Flat bonus to Magical Power.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradePentacle(
-  IOreDictEntry arg0,
-  int arg1,          
+  IOreDictEntry oreDict, // The OreDict key to add.
+  int bonus,             // Flat bonus to Magical Power.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradeWand(
-  IItemStack arg0,
-  double arg1,    
+  IItemStack itemStack, // The Item to add.
+  double multBoost,     // Additive multiplier to MP.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradeWand(
-  IOreDictEntry arg0,
-  double arg1,       
+  IOreDictEntry oreDict, // The OreDict key to add.
+  double multBoost,      // Additive multiplier to MP.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradeSword(
-  IItemStack arg0,
-  double arg1,    
+  IItemStack itemStack, // The Item to add.
+  double multiplier,    // Additive multiplier to MP.
 );
 ```
-
-
----
 
 
 ```zenscript
 void addUpgradeSword(
-  IOreDictEntry arg0,
-  double arg1,       
+  IOreDictEntry oreDict, // The OreDict key to add.
+  double multiplier,     // Additive multiplier to MP.
 );
 ```
-
-
----
 
 
 ```zenscript
 void removeUpgrade(
-  IItemStack arg0,
+  IItemStack iItemStack, // 
 );
 ```
 
 Removes altar upgrades matching the item parameter.
 
----
-
-
 ```zenscript
 void removeUpgrade(
-  IOreDictEntry arg0,
+  IOreDictEntry oreDictEntry, // 
 );
 ```
 
 Removes altar upgrades matching an oredict entry.
-
----
-
-
-```zenscript
-void removeUpgradeItem(
-  IItemStack arg0,
-);
-```
-
-Removes altar upgrades matching the default metadata of the given ItemStack parameter. Used if the default method does not work.
-
----
 
