@@ -5,7 +5,7 @@ import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
-import epicsquid.roots.util.zen.*;
+import org.btpos.dj2addons.util.zendoc.*;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import org.jetbrains.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -18,7 +18,7 @@ import stanhebben.zenscript.annotations.ZenProperty;
 		value = "dj2addons.extremereactors.ReactorInterior",
 		description = {"Exposes API for interior blocks/fluids."}
 )
-@ZenDocAppend({"docs/include/extremereactors.reactorinterior.example.md", "docs/zs/heatconductivity.md"})
+@ZenDocAppend({"docs/include/extremereactors.reactorinterior.example.md"}) @ZenDocInclude(CTReactorInterior.HeatConductivity.class)
 public final class CTReactorInterior {
 	@ZenMethod
 	@ZenDocMethod(
@@ -98,7 +98,7 @@ public final class CTReactorInterior {
 	@ZenRegister
 	@ModOnly("bigreactors")
 	@ZenClass("dj2addons.extremereactors.HeatConductivity")
-	@ZenDocClass("dj2addons.extremereactors.HeatConductivity")
+	@ZenDocClass(value = "dj2addons.extremereactors.HeatConductivity", onlyInOther = true)
 	public static class HeatConductivity {
 		@ZenProperty @ZenDocProperty
 		public static final float ambientHeat = 20.0F;

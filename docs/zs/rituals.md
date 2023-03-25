@@ -10,18 +10,19 @@ Handles Bewitchment ritual tweaks.
 Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file.
 
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void removeRitual(
-  string arg0,
+  string name, // The name of the ritual to remove. e.g. "biome_shift".
 );
 ```
 
 Removes a Bewitchment ritual by name.
 
----
 
+
+---
 
 ### Example
 ```zenscript

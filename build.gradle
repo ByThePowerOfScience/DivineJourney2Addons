@@ -188,8 +188,7 @@ dependencies {
 	
 	// Dev Tools
 	testImplementation( // For ZenDoc
-			"org.reflections:reflections:0.10.2",
-			"curse.maven:Roots-246183:3484394"
+			"org.reflections:reflections:0.10.2"
 	)
 }
 

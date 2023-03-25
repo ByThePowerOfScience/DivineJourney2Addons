@@ -1,9 +1,7 @@
-import epicsquid.roots.util.StringHelper;
-import epicsquid.roots.util.zen.*;
+import org.btpos.dj2addons.util.Util;
+import org.btpos.dj2addons.util.zendoc.*;
 import org.apache.commons.lang3.StringUtils;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.AnnotationNode;
-import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.reflections.Reflections;
 import stanhebben.zenscript.annotations.Optional;
@@ -27,9 +25,10 @@ import java.util.stream.Collectors;
  * <p>https://github.com/MysticMods/Roots/blob/release/3.1.5/src/main/java/epicsquid/roots/util/zen/ZenDocExporter.java
  *
  * <p>Original author: Noobanidus from the MysticMods Team<p>
- * Seriously, I didn't write a word of this. This incredible piece of code wouldn't even be copied if it didn't have some hardcoded paths.
+ * <p>This incredible piece of code wouldn't even be copied if it didn't have some hardcoded paths.
+ * <p>Revised somewhat by ByThePowerOfScience
  */
-public class ExportZenDocs {
+public class ExportZenDocs { //TODO turn this into an annotation processor
 	public static void main(String[] args) {
 		String targetPath = "./docs/zs/";
 //		ClassPath.from(ClassLoader.getSystemClassLoader())
@@ -40,6 +39,7 @@ public class ExportZenDocs {
 //				.map(bs -> );
 		Reflections reflections = new Reflections("org.btpos.dj2addons.crafttweaker");
 		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ZenDocClass.class);
+		System.out.println("Num classes: " + classes.size()); //debug
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);
 		
@@ -53,89 +53,42 @@ public class ExportZenDocs {
 	}
 	
 	private static class ZenDocExporter {
-		private static String className = "";
 		
 		public ZenDocExporter() {
 		}
 		
 		public void export(Path path, Class<?>[] classes) throws IOException {
 			for(int i = 0; i < classes.length; ++i) {
-				className = "";
 				StringBuilder out = new StringBuilder();
 				ZenDocClass zenClass = classes[i].getDeclaredAnnotation(ZenDocClass.class);
 				ZenDocAppend zenDocAppend = classes[i].getDeclaredAnnotation(ZenDocAppend.class);
-				if (zenClass != null) {
+				ZenDocInclude zenDocInclude = classes[i].getDeclaredAnnotation(ZenDocInclude.class);
+				if (zenClass != null && !zenClass.onlyInOther()) {
 					if (i > 0) {
 						out.append("\n");
 					}
+					System.out.println("Documenting " + classes[i].getName());
+					out.append(docClass(classes[i]));
 					
-					String[] h3 = zenClass.value().split("\\.");
-					String zenClassName = h3[h3.length - 1];
-					className = zenClass.value();
-					out.append("### Class\n");
-					out.append("\n");
-					out.append("```zenscript").append("\n");
-					out.append("import ").append(zenClass.value()).append(";").append("\n");
-					out.append("```").append("\n");
-					out.append("\n");
-					String[] description = zenClass.description();
-					if (description.length > 0) {
-						
-						for (String line : description) {
-							out.append(this.parse(line)).append("\n");
+					
+					if (zenDocInclude != null) {
+						Class<?>[] toAppend = zenDocInclude.value();
+						out.append('\n');
+						for (Class<?> c : toAppend) {
+							appendLineSeparator(out);
+							out.append(docClass(c));
 						}
-						
-						out.append("\n");
 					}
-					
-					
-					Method[] methods = new Method[0];
-					Collection<MethodDetails> methods1;
-					try {
-						methods = classes[i].getDeclaredMethods();
-					} catch (Error | Exception e) {
-						ClassNode classNode = new ClassNode();
-						ClassReader classReader = new ClassReader(classes[i].getCanonicalName());
-						classReader.accept(classNode, 0);
-						methods1 = classNode.methods.stream().map(MethodDetails::new).collect(Collectors.toSet());
-					}
-					
-					
-					List<MethodAnnotationPair> methodList = this.getSortedMethodList(methods);
-					Field[] fields = classes[i].getDeclaredFields();
-					List<PropertyAnnotationPair> fieldList = this.getSortedFieldList(fields);
-					List<MethodAnnotationPair> staticMethodList = methodList.stream().filter((pair) -> Modifier.isStatic(pair.type.getModifiers())).collect(Collectors.toList());
-					if (!methodList.isEmpty()) {
-						out.append("#### Methods\n");
-						out.append("\n");
-					}
-					
-					methodList = methodList.stream().filter((pair) -> !Modifier.isStatic(pair.type.getModifiers())).collect(Collectors.toList());
-					if (!staticMethodList.isEmpty()) {
-						this.writeMethodList(out, staticMethodList);
-					}
-					
-					if (!methodList.isEmpty()) {
-						this.writeMethodList(out, methodList);
-					}
-					
-					if (!fieldList.isEmpty()) {
-						out.append("### Static Properties\n");
-						out.append("\n```zenscript\n");
-						this.writePropertyList(out, fieldList);
-						out.append("\n```");
-					}
-					
 					if (zenDocAppend != null) {
 						String[] toAppend = zenDocAppend.value();
-						out.append("\n");
 						
 						for (String s : toAppend) {
+							
 							Path p = Paths.get("./" + s);
 							
 							try {
-								List<String> lines = Files.readAllLines(p);
-								
+								List<String> lines = Files.readAllLines(p); // Throws
+								appendLineSeparator(out);
 								for (String line : lines) {
 									out.append(line).append("\n");
 								}
@@ -145,7 +98,10 @@ public class ExportZenDocs {
 						}
 					}
 					
+					
 					try {
+						String[] h3 = zenClass.value().split("\\.");
+						String zenClassName = h3[h3.length - 1];
 						Files.write(path.resolve(zenClassName.toLowerCase() + ".md"), out.toString().getBytes());
 					} catch (IOException var24) {
 						var24.printStackTrace();
@@ -155,37 +111,114 @@ public class ExportZenDocs {
 			
 		}
 		
-		private void writeMethodList(StringBuilder out, List<MethodAnnotationPair> staticMethodList) {
-			for(int j = 0; j < staticMethodList.size(); ++j) {
+		private static String docClass(Class<?> clazz) {
+			ZenDocClass zenClass = clazz.getDeclaredAnnotation(ZenDocClass.class);
+			StringBuilder out = new StringBuilder();
+			String[] h3 = zenClass.value().split("\\.");
+			String zenTypeName = h3[h3.length - 1];
+			out.append("### Class\n");
+			out.append("\n");
+			out.append("```zenscript").append("\n");
+			out.append("import ").append(zenClass.value()).append(";").append("\n");
+			out.append("```").append("\n");
+			out.append("\n");
+			String[] description = zenClass.description();
+			if (description.length > 0) {
+				
+				for (String line : description) {
+					out.append(parse(line)).append("\n");
+				}
+				
+				out.append("\n");
+			}
+			
+			
+			Method[] methods = new Method[0];
+//			Collection<MethodDetails> methods1;
+			try {
+				methods = clazz.getDeclaredMethods();
+			} catch (Error | Exception e) {
+				e.printStackTrace();
+//				ClassNode classNode = new ClassNode(); //TODO retrieve method data through ASM if a referenced class doesn't exist
+//				ClassReader classReader = new ClassReader(clazz.getCanonicalName());
+//				classReader.accept(classNode, 0);
+//				methods1 = classNode.methods.stream().map(MethodDetails::new).collect(Collectors.toSet());
+			}
+			
+			
+			List<MethodAnnotationPair> allMethods = getSortedMethodList(methods);
+			List<MethodAnnotationPair> staticMethodList = allMethods.stream().filter((pair) -> Modifier.isStatic(pair.type.getModifiers())).collect(Collectors.toList());
+			
+			List<MethodAnnotationPair> methodList = allMethods.stream().filter((pair) -> !Modifier.isStatic(pair.type.getModifiers())).collect(Collectors.toList());
+			if (!staticMethodList.isEmpty()) {
+				out.append("#### Static Methods\n");
+				out.append('\n');
+				writeMethodList(out, staticMethodList);
+				out.append('\n');
+			}
+			
+			if (!methodList.isEmpty()) {
+				out.append("#### Instance Methods\n");
+				out.append('\n');
+				writeMethodList(out, methodList);
+				out.append('\n');
+			}
+			
+			
+			
+			
+			Field[] fields = clazz.getDeclaredFields();
+			List<PropertyAnnotationPair> fieldList = getSortedFieldList(fields);
+			if (!fieldList.isEmpty()) {
+				out.append('\n');
+				out.append("### Static Properties\n");
+				out.append("\n```zenscript\n");
+				writePropertyList(out, fieldList, zenTypeName);
+				out.append("\n```");
+			}
+			
+			return out.toString();
+		}
+		
+		private static void writeMethodList(StringBuilder out, List<MethodAnnotationPair> list) {
+			for(int j = 0; j < list.size(); ++j) {
 				if (j > 0) {
 					out.append("\n");
 				}
 				
-				this.writeMethod(out, staticMethodList.get(j).type, staticMethodList.get(j).annotation);
+				writeMethod(out, list.get(j).type, list.get(j).annotation);
+//				if (j != list.size() - 1) // I'm not sure I like the line separators between each method
+//					appendLineSeparator(out);
 			}
 			
 		}
 		
-		private void writePropertyList(StringBuilder out, List<PropertyAnnotationPair> staticPropertyList) {
+		private static void writePropertyList(StringBuilder out, List<PropertyAnnotationPair> staticPropertyList, String className) {
 			for(int j = 0; j < staticPropertyList.size(); ++j) {
 				if (j > 0) {
 					out.append("\n");
 				}
 				
-				this.writeProperty(out, staticPropertyList.get(j).type, staticPropertyList.get(j).annotation);
+				writeProperty(out, staticPropertyList.get(j).type, staticPropertyList.get(j).annotation, className);
+				if (j != staticPropertyList.size() - 1) {
+					out.append("\n");
+				}
 			}
 		}
 		
-		private void writeMethod(StringBuilder out, Method method, ZenDocMethod annotation) {
+		private static void writeMethod(StringBuilder out, Method method, ZenDocMethod annotation) {
 			String methodName = method.getName();
 			Class<?> returnType = method.getReturnType();
-			String returnTypeString = this.getSimpleTypeString(returnType);
+			String returnTypeString = getSimpleTypeString(returnType);
 			out.append("```zenscript").append("\n");
 			out.append(returnTypeString).append(" ").append(methodName).append("(");
 			
 			Parameter[] params = method.getParameters();
 			
-			Set<ZenDocArg> args = new HashSet<>(Arrays.asList(annotation.args()));
+			ZenDocArg[] args = annotation.args();
+			
+			if (params.length != args.length)
+				throw new IllegalStateException("Error in (" + method.getDeclaringClass().getName() + "#" + method.getName() + "): All arguments must have a corresponding ZenDocArg annotation!"); // I really tried to get rid of this, but the parameter names aren't saved by the compiler ;_;
 			
 			if (params.length > 0) {
 				out.append("\n");
@@ -195,7 +228,9 @@ public class ExportZenDocs {
 			List<String[]> parameterStrings = new ArrayList<>(params.length);
 			
 			String line;
-			for(Parameter p : params) {
+			for (int i = 0; i < params.length; i++) {
+				Parameter p = params[i];
+				ZenDocArg arg = args[i];
 				boolean optional = false;
 				boolean nullable = false;
 				Annotation[] paramAnnotations = p.getAnnotations();
@@ -212,8 +247,8 @@ public class ExportZenDocs {
 				
 				String optionalString = optional ? "@Optional " : "";
 				line = nullable ? "@Nullable " : "";
-				String typeString = this.getSimpleTypeString(p.getType());
-				String nameString = p.getName();
+				String typeString = getSimpleTypeString(p.getType());
+				String nameString = arg.arg();
 				
 				String outString = "  " + optionalString + line + typeString + " " + nameString + ",";
 				
@@ -222,12 +257,9 @@ public class ExportZenDocs {
 				}
 				
 				// get ZenDocArg description for arg
-				java.util.Optional<String> argInfo = args.stream()
-				                                         .filter(arg -> p.getName().equals(arg.arg()))
-				                                         .map(ZenDocArg::info)
-				                                         .findFirst();
 				
-				parameterStrings.add(new String[] {outString, argInfo.orElse(null)});
+				
+				parameterStrings.add(new String[]{outString, arg.info()});
 			}
 		
 			for (String[] parameterString : parameterStrings) {
@@ -246,29 +278,33 @@ public class ExportZenDocs {
 				
 				for (String s : description) {
 					line = s;
-					out.append(this.parse(line));
+					out.append(parse(line));
 				}
 			}
-			
-			out.append("\n---\n\n");
 		}
 		
-		private void writeProperty(StringBuilder out, Field field, ZenDocProperty annotation) {
+		private static void writeProperty(StringBuilder out, Field field, ZenDocProperty annotation, String className) {
 			String fieldName = field.getName();
 			String[] h3 = className.split("\\.");
 			String zenClassName = h3[h3.length - 1];
-			out.append(zenClassName).append(".").append(fieldName).append(" // ");
-			ZenDocProperty propertyAnnotation = field.getAnnotation(ZenDocProperty.class);
-			String[] var8 = propertyAnnotation.description();
+			String[] comments = annotation.description();
+			String fieldLine = zenClassName + "." + fieldName;
 			
-			for (String line : var8) {
-				out.append(line);
+			if (comments != null && comments.length > 0) {
+				if (comments.length == 1) {
+					out.append(fieldLine).append(" // ").append(comments[0]);
+				} else {
+					for (String comment : comments) {
+						out.append("\n// ").append(comment);
+					}
+					out.append(fieldLine);
+				}
+			} else {
+				out.append(fieldLine);
 			}
-			
-			out.append("\n");
 		}
 		
-		private String parse(String line) {
+		private static String parse(String line) {
 			if (!line.startsWith("@see")) {
 				return line + "\n";
 			} else {
@@ -283,7 +319,11 @@ public class ExportZenDocs {
 			}
 		}
 		
-		private List<MethodAnnotationPair> getSortedMethodList(Method[] methods) {
+		private static void appendLineSeparator(StringBuilder out) {
+			out.append("\n\n---\n\n");
+		}
+		
+		private static List<MethodAnnotationPair> getSortedMethodList(Method[] methods) {
 			List<MethodAnnotationPair> methodList = new ArrayList<>();
 			
 			for (Method method : methods) {
@@ -297,7 +337,7 @@ public class ExportZenDocs {
 			return methodList;
 		}
 		
-		private List<PropertyAnnotationPair> getSortedFieldList(Field[] fields) {
+		private static List<PropertyAnnotationPair> getSortedFieldList(Field[] fields) {
 			List<PropertyAnnotationPair> fieldList = new ArrayList<>();
 			
 			for (Field field : fields) {
@@ -311,12 +351,12 @@ public class ExportZenDocs {
 			return fieldList;
 		}
 		
-		private String getSimpleTypeString(Class<?> type) {
+		private static String getSimpleTypeString(Class<?> type) {
 			String result = type.getSimpleName();
 			if (result.startsWith("Zen")) {
 				result = result.substring(3);
 			} else if (result.startsWith("String")) {
-				result = StringHelper.lowercaseFirstLetter(result);
+				result = Util.Strings.uncapitalizeFirstLetter(result);
 			}
 			
 			return result;

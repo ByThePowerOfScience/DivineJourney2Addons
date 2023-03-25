@@ -10,20 +10,21 @@ Handles Grid Power (GP) generator (mill) tweaks.
 Must be run with the preinit loader, specified with `#loader preinit` at the top of the file.
 
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void setScaling(
-  string arg0,
-  Map arg1,   
+  string millName, // The name of the mill to change.
+  Map values,      // An associative array of [Grid Power threshold : production percentage].
 );
 ```
 
 Sets mill power scaling.
 Use `/dj2addons extrautils2` in-game to print all mill names.
 
----
 
+
+---
 
 ### Example
 ```zenscript
