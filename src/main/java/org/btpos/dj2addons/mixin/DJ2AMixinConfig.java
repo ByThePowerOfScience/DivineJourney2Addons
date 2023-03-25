@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public class DJ2AMixinConfig implements IMixinConfigPlugin {
-	public static Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	public static Logger LOGGER = DJ2AddonsCore.LOGGER;
 	
 	@Override
 	public void onLoad(String mixinPackage) {

@@ -1,12 +1,18 @@
 package org.btpos.dj2addons.core;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.btpos.dj2addons.asm.thaumcraft.InfusionStabilizerClassTransformer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-
-@Deprecated
+@SuppressWarnings({"ResultOfMethodCallIgnored"})
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
+	static { // Loads classes in the right order to avoid a circularity error.
+		DJ2AddonsCore.class.getName();
+		JankConfig.class.getName();
+		DJ2ASMPreStartHook.class.getName();
+		InfusionStabilizerClassTransformer.class.getName();
+	}
 //	public DJ2ALoadingPlugin() {
 //		registerMixins();
 //
@@ -27,7 +33,9 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[0];
+		return new String[] {
+				"org.btpos.dj2addons.asm.thaumcraft.InfusionStabilizerClassTransformer"
+		};
 	}
 	
 	@Override
@@ -38,7 +46,7 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	@Nullable
 	@Override
 	public String getSetupClass() {
-		return null;
+		return "org.btpos.dj2addons.core.DJ2ASMPreStartHook";
 	}
 	
 	@Override

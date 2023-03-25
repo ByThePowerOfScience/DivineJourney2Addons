@@ -45,7 +45,7 @@ public abstract class MTileSoulForge {
 	@Final
 	public static int soulSlot;
 	
-	@ModifyArg(method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;getWill(LWayofTime/bloodmagic/soul/EnumDemonWillType;)D"), index = 0)
+	@ModifyArg(remap=false,method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;getWill(LWayofTime/bloodmagic/soul/EnumDemonWillType;)D"), index = 0)
 	private EnumDemonWillType modifyDemonWillTypeUsed(EnumDemonWillType type) {
 		if (VSoulForge.shouldCraftWithAllWillTypes()) {
 			
@@ -59,7 +59,7 @@ public abstract class MTileSoulForge {
 		return type;
 	}
 	
-	@ModifyArg(method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;consumeSouls(LWayofTime/bloodmagic/soul/EnumDemonWillType;D)D"))
+	@ModifyArg(remap=false,method = "update", at = @At(value = "INVOKE", target = "LWayofTime/bloodmagic/tile/TileSoulForge;consumeSouls(LWayofTime/bloodmagic/soul/EnumDemonWillType;D)D"))
 	private EnumDemonWillType modifyConsumeSoulsType(EnumDemonWillType type) {
 		if (VSoulForge.shouldCraftWithAllWillTypes()) {
 			ItemStack soulStack = ((TileSoulForge)(Object)this).getStackInSlot(TileSoulForge.soulSlot);

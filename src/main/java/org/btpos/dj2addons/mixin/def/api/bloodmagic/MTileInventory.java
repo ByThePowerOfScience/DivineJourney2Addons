@@ -12,7 +12,7 @@ public abstract class MTileInventory {
 	@Shadow(aliases={"func_70301_a", "getStackInSlot"})
 	public abstract ItemStack getStackInSlot(int index);
 	
-	@Inject(method = "isItemValidForSlot", at = @At("RETURN"), cancellable=true)
+	@Inject(remap=false, method = "isItemValidForSlot", at = @At("RETURN"), cancellable=true)
 	public void isItemValidHandler(int index, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
 	}
 	

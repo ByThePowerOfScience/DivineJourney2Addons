@@ -21,12 +21,12 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(TileUse.class)
+@Mixin(value=TileUse.class, remap=false)
 public abstract class MTileUse extends TileAdvInteractor {
-    @Shadow
+    @Shadow(remap=false)
     private XUFakePlayer fakePlayer;
     
-    @Shadow @Final private ItemStackHandler contents;
+    @Shadow(remap=false) @Final private ItemStackHandler contents;
     
     @Inject(
             remap=false,

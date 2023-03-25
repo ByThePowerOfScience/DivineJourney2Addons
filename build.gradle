@@ -163,7 +163,7 @@ dependencies {
 			
 	)
 	
-	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
+	deobfCompile("curse.maven:Thaumcraft-223628:2629023")
 	
 	deobfProvided("curse.maven:Aether-255308:3280119")
 	
@@ -248,10 +248,10 @@ processResources {
 jar {
 	manifest {
 		attributes(
-//				"FMLCorePluginContainsFMLMod": "true",
-//                "FMLCorePlugin"              : coremods,
+				"FMLCorePluginContainsFMLMod": "true",
+                "FMLCorePlugin"              : coremods,
 				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-//				"ForceLoadAsMod": "true",
+				"ForceLoadAsMod": "true",
 				"MixinConfigs": 'mixins.dj2addons.init.json'
 		)
 	}

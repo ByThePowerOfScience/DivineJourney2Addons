@@ -1,12 +1,21 @@
 package org.btpos.dj2addons.core;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.btpos.dj2addons.mixin.DJ2AMixinConfig;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Intermediary between the ASM phase and the Mod phase of loading.
  */
 public class DJ2AddonsCore {
+	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	
+	
+	
 	private static boolean coreLoaded = false;
 	
 	public static boolean shouldWriteAerogelTooltip = false;
@@ -16,7 +25,7 @@ public class DJ2AddonsCore {
 	 */
 	public static void onLoadCore() {
 		coreLoaded = true;
-		DJ2AMixinConfig.LOGGER.info("DJ2Addons loaded!");
+		LOGGER.info("DJ2Addons loaded!");
 	}
 	
 	/**

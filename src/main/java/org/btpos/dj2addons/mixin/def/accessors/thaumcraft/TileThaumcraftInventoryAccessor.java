@@ -7,9 +7,9 @@ import thaumcraft.common.tiles.TileThaumcraftInventory;
 
 @Mixin(TileThaumcraftInventory.class)
 public interface TileThaumcraftInventoryAccessor {
-	@Invoker
+	@Invoker(remap=false)
 	void callSyncSlots(EntityPlayerMP playerMP);
 	
-	@Invoker
+	@Invoker(remap=false)
 	boolean callIsSyncedSlot(int i);
 }

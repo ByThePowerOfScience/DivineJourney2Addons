@@ -27,7 +27,6 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
@@ -42,7 +41,6 @@ import org.btpos.dj2addons.impl.modrefs.CTotemic;
 import org.btpos.dj2addons.impl.modrefs.IsModLoaded;
 import org.btpos.dj2addons.util.StringDumpUtils;
 import org.btpos.dj2addons.util.Util.DevTools;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,7 +58,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	@Override
-	public List<String> getSubSubCommand(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+	public List<String> getSubSubCommand(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
 		return Arrays.stream(SubCommand.values()).filter(sc -> {
 			switch (sc) {
 				case bewitchment:
@@ -74,7 +72,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, info, mods, bewitchment, extrautils2, totemic
+		hand, info, mods, bewitchment, extrautils2, totemic, findextending
 //		,validate
 	}
 	
@@ -105,6 +103,8 @@ public class CommandHandler extends CraftTweakerCommand {
 					else
 						executeBlockInfoCommand(m.withChat(), sender, params);
 					break;
+//				case findextending:
+//					TODO
 //				case validate:
 //					m.withChat().send(String.join("\n", VCraftTweaker.validate().toArray(new String[0])));
 //					break;
@@ -174,6 +174,37 @@ public class CommandHandler extends CraftTweakerCommand {
 	private static void info_printBlockMeta(MessageHelper m, ICommandSender sender, List<String> args) {
 		m.setUsage("dj2addons.commands.info.blockmeta.usage");
 		
+		BlockPos target;
+		// get target pos
+		if (args.size() == 3) {
+			try {
+				target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 1, true);
+			} catch (NumberInvalidException e) {
+				m.usage();
+				return;
+			}
+		} else if (args.size() == 0) {
+			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
+				m.usage();
+				return;
+			}
+			
+			target = getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
+			if (target == null) {
+				m.sendError("Command must specify coordinates or be executed while looking at a block.");
+				return;
+			}
+		} else {
+			m.usage();
+			return;
+		}
+		
+		IBlockState state = sender.getEntityWorld().getBlockState(target);
+//		if (state.equals(Blocks.AIR.getDefaultState())) {
+//			m.sendError("No block found at " + target);
+//			return;
+//		}
+		printBlockMeta(m, target, state);
 	}
 	
 	private static void info_dumpTileCommand(MessageHelper m, ICommandSender sender, List<String> args) throws NumberFormatException, NumberInvalidException {
@@ -182,20 +213,25 @@ public class CommandHandler extends CraftTweakerCommand {
 		final int numSupers;
 		final BlockPos target;
 		
-		if (args.size() == 1) {
-			numSupers = Integer.parseInt(args.get(0));
+		if (args.size() <= 1) {
 			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
 				m.usage();
 				return;
 			}
+			
+			if (args.size() == 1)
+				numSupers = Integer.parseInt(args.get(0));
+			else 
+				numSupers = -1;
+			
 			target = getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
 			if (target == null) {
 				m.sendError("Command must specify coordinates or be executed while looking at a block.");
 				return;
 			}
 		} else if (args.size() == 4) {
+			target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 1, true);
 			numSupers = Integer.parseInt(args.remove(0));
-			target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 0, true);
 		} else {
 			m.usage();
 			return;
@@ -236,14 +272,17 @@ public class CommandHandler extends CraftTweakerCommand {
 		Class<? extends Block> bc = sender.getEntityWorld().getBlockState(target).getBlock().getClass();
 		m.sendHeading("Block:");
 		m.sendPropertyWithCopy("Class", bc.getName());
+		m.sendPropertyWithCopy("Extends Class", bc.getSuperclass().getName());
 		if (bc.getDeclaringClass() != bc)
-			m.sendPropertyWithCopy("Declaring Class", bc.getDeclaringClass().getName());
+			m.sendPropertyWithCopy("Declared Inside", bc.getDeclaringClass().getName());
 		m.sendProperty(null, "Implements Interfaces:");
 		Arrays.stream(bc.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
 		
 		TileEntity t = sender.getEntityWorld().getTileEntity(target);
-		if (t == null)
+		if (t == null) {
+			m.sendHeading("Tile Entity: NONE");
 			return;
+		}
 		m.sendHeading("Tile Entity:");
 		Class<? extends TileEntity> te = t.getClass();
 		m.sendPropertyWithCopy("Class", te.getName());
@@ -590,11 +629,11 @@ public class CommandHandler extends CraftTweakerCommand {
 			return indent(indent) + "§e- " + property + "§" + HIGHLIGHTING[indent] + value;
 		}
 		
-		static String listToAssociativeArrayPretty(List<Object> list, boolean raw, int indent) {
-			Map<Object, Object> map = new HashMap<>();
+		static <T> String listToAssociativeArrayPretty(List<T> list, boolean raw, int indent) {
+			Map<T, T> map = new HashMap<>();
 			for (int i = 0; i < list.size(); i+=2) {
-				Object o1 = list.get(i);
-				Object o2;
+				T o1 = list.get(i);
+				T o2;
 				try {
 					o2 = list.get(i+1);
 				} catch (Exception e) {
@@ -605,7 +644,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			return mapToAssociativeArrayPretty(map, raw, indent);
 		}
 		
-		static String mapToAssociativeArrayPretty(Map<Object, Object> map, boolean raw, int indent) {
+		static <T> String mapToAssociativeArrayPretty(Map<T, T> map, boolean raw, int indent) {
 			StringBuilder sb = new StringBuilder();
 			if (!raw)
 				sb.append(TextFormatting.YELLOW);
