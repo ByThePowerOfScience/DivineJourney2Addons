@@ -1,8 +1,14 @@
 package org.btpos.dj2addons;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.block.Block;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.CompoundDataFixer;
+import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -73,12 +79,12 @@ public class DJ2Addons {
 		}
 	}
 	
+	
+	
 //	@GameRegistry.ObjectHolder(MOD_ID)
 //	public static class Blocks {
 //      public static final Block resourcename = null;
 //	}
-
-	
 	
 	
 	/**
@@ -86,7 +92,6 @@ public class DJ2Addons {
 	 */
 	@Mod.EventBusSubscriber(modid=DJ2Addons.MOD_ID)
 	public static class ObjectRegistryHandler {
-		
 		@SubscribeEvent
 		public static void addPotions(RegistryEvent.Register<Potion> evt) {
 			ModPotions.registerPotions(evt.getRegistry());
@@ -95,6 +100,29 @@ public class DJ2Addons {
 		@SubscribeEvent
 		public static void addPotionTypes(RegistryEvent.Register<PotionType> evt) {
 			ModPotions.registerPotionTypes(evt.getRegistry());
+		}
+		
+		
+		private static final ImmutableMap<ResourceLocation, ResourceLocation> remapper = ImmutableMap.of(
+				new ResourceLocation("modularmachinery", "blockcasing"), new ResourceLocation("multiblocked","")
+		);
+		
+		@SubscribeEvent
+		public static void catchBlocks(RegistryEvent.MissingMappings<Block> evt) {
+			//TODO datafixer
+			evt.getAllMappings().forEach(blockMapping -> {
+				if (remapper.containsKey(blockMapping.key)) {
+					Block newBlock = blockMapping.registry.getValue(remapper.get(blockMapping.key));
+					blockMapping.remap(newBlock);
+				}
+			});
+		}
+		
+		public static void main(String[] args) {
+			CompoundDataFixer dataFixer = FMLCommonHandler.instance().getDataFixer();
+			ModFixs modFixs = dataFixer.init("modularmachinery", 7);
+			
+			//TODO
 		}
 		
 		//TODO Figure out models and how to register them
