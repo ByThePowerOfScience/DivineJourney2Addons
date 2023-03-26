@@ -55,6 +55,8 @@ public class DJ2Addons {
 			CCraftTweaker.loadCommandHandler();
 	}
 	
+	
+	
 	/**
 	 * This is the second initialization event. Register custom recipes.
 	 */

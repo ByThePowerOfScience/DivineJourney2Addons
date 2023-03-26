@@ -111,7 +111,7 @@ dependencies {
 			"curse.maven:ZeroCore-247921:3194743"
 	)
 	
-	deobfCompile("curse.maven:Bewitchment-285439:3256343") {
+	deobfProvided("curse.maven:Bewitchment-285439:3256343") {
 		exclude group: "org.spongepowered"
 	}
 	
@@ -160,10 +160,13 @@ dependencies {
 	deobfProvided(
 			"curse.maven:ModularMachinery-270790:2713714",
 			"curse.maven:ModularMagic-324318:2737623"
-			
 	)
 	
-	deobfCompile("curse.maven:Thaumcraft-223628:2629023")
+	provided(
+			"curse.maven:MysticalAgriculture-246640:2704562"
+	)
+	
+	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
 	
 	deobfProvided("curse.maven:Aether-255308:3280119")
 	
