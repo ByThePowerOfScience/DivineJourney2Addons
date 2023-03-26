@@ -1,10 +1,11 @@
+import org.apache.commons.lang3.StringUtils;
 import org.btpos.dj2addons.util.Util;
 import org.btpos.dj2addons.util.zendoc.*;
-import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.reflections.Reflections;
 import stanhebben.zenscript.annotations.Optional;
+import stanhebben.zenscript.annotations.ZenClass;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -58,17 +59,17 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 		}
 		
 		public void export(Path path, Class<?>[] classes) throws IOException {
-			for(int i = 0; i < classes.length; ++i) {
+			for (Class<?> aClass : classes) {
 				StringBuilder out = new StringBuilder();
-				ZenDocClass zenClass = classes[i].getDeclaredAnnotation(ZenDocClass.class);
-				ZenDocAppend zenDocAppend = classes[i].getDeclaredAnnotation(ZenDocAppend.class);
-				ZenDocInclude zenDocInclude = classes[i].getDeclaredAnnotation(ZenDocInclude.class);
+				ZenDocClass zenClass = aClass.getDeclaredAnnotation(ZenDocClass.class);
+				ZenDocAppend zenDocAppend = aClass.getDeclaredAnnotation(ZenDocAppend.class);
+				ZenDocInclude zenDocInclude = aClass.getDeclaredAnnotation(ZenDocInclude.class);
 				if (zenClass != null && !zenClass.onlyInOther()) {
-					if (i > 0) {
-						out.append("\n");
-					}
-					System.out.println("Documenting " + classes[i].getName());
-					out.append(docClass(classes[i]));
+//					if (i > 0) {
+//						out.append("\n");
+//					}
+					System.out.println("Documenting " + aClass.getName());
+					out.append(docClass(aClass));
 					
 					
 					if (zenDocInclude != null) {
@@ -100,7 +101,11 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 					
 					
 					try {
-						String[] h3 = zenClass.value().split("\\.");
+						String name = aClass.getDeclaredAnnotation(ZenClass.class).value();
+						if ("".equals(name)) {
+							name = aClass.getCanonicalName();
+						}
+						String[] h3 = name.split("\\.");
 						String zenClassName = h3[h3.length - 1];
 						Files.write(path.resolve(zenClassName.toLowerCase() + ".md"), out.toString().getBytes());
 					} catch (IOException var24) {
@@ -113,13 +118,20 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 		
 		private static String docClass(Class<?> clazz) {
 			ZenDocClass zenClass = clazz.getDeclaredAnnotation(ZenDocClass.class);
+			ZenClass zen = clazz.getDeclaredAnnotation(ZenClass.class);
 			StringBuilder out = new StringBuilder();
-			String[] h3 = zenClass.value().split("\\.");
+			String zenName;
+			if ("".equals(zen.value())){
+				zenName = clazz.getCanonicalName();
+			} else {
+				zenName = zen.value();
+			}
+			String[] h3 = zenName.split("\\.");
 			String zenTypeName = h3[h3.length - 1];
 			out.append("### Class\n");
 			out.append("\n");
 			out.append("```zenscript").append("\n");
-			out.append("import ").append(zenClass.value()).append(";").append("\n");
+			out.append("import ").append(zenName).append(";").append("\n");
 			out.append("```").append("\n");
 			out.append("\n");
 			String[] description = zenClass.description();
