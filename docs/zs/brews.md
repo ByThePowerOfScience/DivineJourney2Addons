@@ -42,7 +42,7 @@ Registers the recipe for a given brew.
 void enableWarpWardPendant();
 ```
 
-Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is enabled.
+Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.
 
 
 
