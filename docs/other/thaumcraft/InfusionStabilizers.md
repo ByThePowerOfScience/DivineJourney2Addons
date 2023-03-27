@@ -2,7 +2,7 @@ Thaumcraft uses Interfaces instead of Capabilities to handle its infusion stabil
 
 To get around this, there is a custom config file to use.
 
-###Instructions
+### Instructions
 1. Get the name of the class for the **Block** you wish to turn into an infusion stabilizer.
    * This can be done using `/ct dj2addons info classes` on a block in-game.
 2. Create the file `<mc dir>\dj2addons\infusion_stabilizers.txt` (or `\overrides\dj2addons\infusion_stabilizers.txt` for a modpack zip).
