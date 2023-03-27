@@ -1,4 +1,3 @@
-
 ### Class
 
 ```zenscript
@@ -17,9 +16,7 @@ CTRandom newRandom();
 Creates a new Random object with a default seed.
 
 ```zenscript
-CTRandom newRandom(
-  int seed, // 
-);
+CTRandom newRandom(seed);
 ```
 
 Creates a new Random object with a set seed.
@@ -34,7 +31,7 @@ Gets the next random integer.
 
 ```zenscript
 int nextInt(
-  int bound, // The maximum number the random int can be.
+  int bound // The maximum number the random int can be.
 );
 ```
 

@@ -24,9 +24,9 @@ public class CTWitchesAltar {
 	 * @param multiplier For cups and swords: total multiplier. For wands, flat bonus multiplier.
 	 */
 	@ZenMethod @ZenDocMethod(order=1,args = {
-			@ZenDocArg(arg="itemStack", info="The OreDict key to add."),
-			@ZenDocArg(arg="gain", info="Flat bonus to Magical Power."),
-			@ZenDocArg(arg="multiplier", info="Multiplicative multiplier applied to MP.")
+			@ZenDocArg(value ="itemStack", info="The OreDict key to add."),
+			@ZenDocArg(value ="gain", info="Flat bonus to Magical Power."),
+			@ZenDocArg(value ="multiplier", info="Multiplicative multiplier applied to MP.")
 	})
 	public static void addUpgradeCup(IItemStack itemStack, int gain, double multiplier) {
 		com.bewitchment.Util.registerAltarUpgradeItemStack(CraftTweakerMC.getItemStack(itemStack), new AltarUpgrade(AltarUpgrade.Type.CUP, gain, multiplier));
@@ -39,9 +39,9 @@ public class CTWitchesAltar {
 	 * @param totalMult For cups and swords: total multiplier. For wands, flat bonus multiplier.
 	 */
 	@ZenMethod @ZenDocMethod(order=2,args = {
-			@ZenDocArg(arg="oreDict", info="The OreDict key to add."),
-			@ZenDocArg(arg="gain", info="Flat bonus to Magical Power."),
-			@ZenDocArg(arg="totalMult", info="Multiplicative multiplier applied to MP.")
+			@ZenDocArg(value ="oreDict", info="The OreDict key to add."),
+			@ZenDocArg(value ="gain", info="Flat bonus to Magical Power."),
+			@ZenDocArg(value ="totalMult", info="Multiplicative multiplier applied to MP.")
 	})
 	public static void addUpgradeCup(IOreDictEntry oreDict, int gain, double totalMult) {
 		com.bewitchment.Util.registerAltarUpgradeOreDict(oreDict.getName(), new AltarUpgrade(AltarUpgrade.Type.CUP, gain, totalMult));
@@ -58,8 +58,8 @@ public class CTWitchesAltar {
 	 * @param bonus Flat bonus to Magical Power.
 	 */
 	@ZenMethod @ZenDocMethod(order=3,args = {
-			@ZenDocArg(arg="itemStack", info="The Item to add."),
-			@ZenDocArg(arg="bonus", info="Flat bonus to Magical Power.")
+			@ZenDocArg(value ="itemStack", info="The Item to add."),
+			@ZenDocArg(value ="bonus", info="Flat bonus to Magical Power.")
 	})
 	public static void addUpgradePentacle(IItemStack itemStack, int bonus) {
 		com.bewitchment.Util.registerAltarUpgradeItemStack(CraftTweakerMC.getItemStack(itemStack), new AltarUpgrade(AltarUpgrade.Type.PENTACLE, bonus, 0.0));
@@ -72,8 +72,8 @@ public class CTWitchesAltar {
 	 * @param bonus Flat bonus to Magical Power.
 	 */
 	@ZenMethod @ZenDocMethod(order=4,args = {
-			@ZenDocArg(arg="oreDict", info="The OreDict key to add."),
-			@ZenDocArg(arg="bonus", info="Flat bonus to Magical Power.")
+			@ZenDocArg(value ="oreDict", info="The OreDict key to add."),
+			@ZenDocArg(value ="bonus", info="Flat bonus to Magical Power.")
 	})
 	public static void addUpgradePentacle(IOreDictEntry oreDict, int bonus) {
 		com.bewitchment.Util.registerAltarUpgradeOreDict(oreDict.getName(), new AltarUpgrade(AltarUpgrade.Type.PENTACLE, bonus, 0.0));
@@ -90,8 +90,8 @@ public class CTWitchesAltar {
 	 * @param multBoost Flat bonus multiplier.
 	 */
 	@ZenMethod @ZenDocMethod(order=5,args = {
-			@ZenDocArg(arg="itemStack", info="The Item to add."),
-			@ZenDocArg(arg="multBoost", info="Additive multiplier to MP.")
+			@ZenDocArg(value ="itemStack", info="The Item to add."),
+			@ZenDocArg(value ="multBoost", info="Additive multiplier to MP.")
 	})
 	public static void addUpgradeWand(IItemStack itemStack, double multBoost) {
 		com.bewitchment.Util.registerAltarUpgradeItemStack(CraftTweakerMC.getItemStack(itemStack), new AltarUpgrade(AltarUpgrade.Type.WAND, 0, multBoost));
@@ -103,8 +103,8 @@ public class CTWitchesAltar {
 	 * @param multBoost Flat bonus multiplier.
 	 */
 	@ZenMethod @ZenDocMethod(order=6,args = {
-			@ZenDocArg(arg="oreDict", info="The OreDict key to add."),
-			@ZenDocArg(arg="multBoost", info="Additive multiplier to MP.")
+			@ZenDocArg(value ="oreDict", info="The OreDict key to add."),
+			@ZenDocArg(value ="multBoost", info="Additive multiplier to MP.")
 	})
 	public static void addUpgradeWand(IOreDictEntry oreDict, double multBoost) {
 		com.bewitchment.Util.registerAltarUpgradeOreDict(oreDict.getName(), new AltarUpgrade(AltarUpgrade.Type.WAND, 0, multBoost));
@@ -119,8 +119,8 @@ public class CTWitchesAltar {
 	 * @param multiplier Multiplier applied to ME.
 	 */
 	@ZenMethod @ZenDocMethod(order=7,args = {
-			@ZenDocArg(arg="itemStack", info="The Item to add."),
-			@ZenDocArg(arg="multiplier", info="Additive multiplier to MP.")
+			@ZenDocArg(value ="itemStack", info="The Item to add."),
+			@ZenDocArg(value ="multiplier", info="Additive multiplier to MP.")
 	})
 	public static void addUpgradeSword(IItemStack itemStack, double multiplier) {
 		com.bewitchment.Util.registerAltarUpgradeItemStack(CraftTweakerMC.getItemStack(itemStack), new AltarUpgrade(AltarUpgrade.Type.SWORD, 0, multiplier));
@@ -132,8 +132,8 @@ public class CTWitchesAltar {
 	 * @param multiplier Multiplier applied to ME.
 	 */
 	@ZenMethod @ZenDocMethod(order=8,args = {
-			@ZenDocArg(arg="oreDict", info="The OreDict key to add."),
-			@ZenDocArg(arg="multiplier", info="Additive multiplier to MP.")
+			@ZenDocArg(value ="oreDict", info="The OreDict key to add."),
+			@ZenDocArg(value ="multiplier", info="Additive multiplier to MP.")
 	})
 	public static void addUpgradeSword(IOreDictEntry oreDict, double multiplier) {
 		com.bewitchment.Util.registerAltarUpgradeOreDict(oreDict.getName(), new AltarUpgrade(AltarUpgrade.Type.SWORD, 0, multiplier));
@@ -142,12 +142,12 @@ public class CTWitchesAltar {
 	
 	
 	
-	@ZenMethod @ZenDocMethod(order=9,description = "Removes altar upgrades matching the item parameter.", args={@ZenDocArg(arg="iItemStack")})
+	@ZenMethod @ZenDocMethod(order=9,description = "Removes altar upgrades matching the item parameter.", args={@ZenDocArg(value ="iItemStack")})
 	public static void removeUpgrade(IItemStack iItemStack) {
 		VAltarUpgrades.removeUpgrade(CraftTweakerMC.getItemStack(iItemStack));
 	}
 	
-	@ZenMethod @ZenDocMethod(order=10,description = "Removes altar upgrades matching an oredict entry.", args=@ZenDocArg(arg="oreDictEntry"))
+	@ZenMethod @ZenDocMethod(order=10,description = "Removes altar upgrades matching an oredict entry.", args=@ZenDocArg(value ="oreDictEntry"))
 	public static void removeUpgrade(IOreDictEntry oreDictEntry) {
 		VAltarUpgrades.removeUpgrade(oreDictEntry.getName());
 	}

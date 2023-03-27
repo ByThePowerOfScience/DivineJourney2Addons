@@ -1,4 +1,3 @@
-
 ### Class
 
 ```zenscript
@@ -14,7 +13,7 @@ Must be run with the preinit loader, specified with `#loader preinit` at the top
 
 ```zenscript
 void setMaxEnergyStored(
-  long value, // The maximum energy stored.
+  long value // The maximum energy stored.
 );
 ```
 

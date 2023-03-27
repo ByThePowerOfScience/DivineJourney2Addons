@@ -229,65 +229,75 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 			
 			ZenDocArg[] args = annotation.args();
 			
-			if (params.length != args.length)
-				throw new IllegalStateException("Error in (" + method.getDeclaringClass().getName() + "#" + method.getName() + "): All arguments must have a corresponding ZenDocArg annotation!"); // I really tried to get rid of this, but the parameter names aren't saved by the compiler ;_;
+			if (params.length != args.length) // I really tried to get rid of this, but the parameter names aren't saved by the compiler ;_;
+				throw new IllegalStateException("Error in (" + method.getDeclaringClass().getName() + "#" + method.getName() + "): All arguments must have a corresponding ZenDocArg annotation!");
 			
-			if (params.length > 0) {
-				out.append("\n");
-			}
 			
-			int largest = 0;
-			List<String[]> parameterStrings = new ArrayList<>(params.length);
-			
-			String line;
-			for (int i = 0; i < params.length; i++) {
-				Parameter p = params[i];
-				ZenDocArg arg = args[i];
-				boolean optional = false;
-				boolean nullable = false;
-				Annotation[] paramAnnotations = p.getAnnotations();
-				
-				for (Annotation a : paramAnnotations) {
-					if (a instanceof Optional) {
-						optional = true;
+			if ((params.length == 0 || params.length == 1) && (args.length == 0 || args[0].info() == null || args[0].info().isEmpty())) {
+				if (params.length == 1) {
+					if (params[0].getDeclaredAnnotation(Optional.class) != null)
+						out.append("@Optional ");
+					if (params[0].getDeclaredAnnotation(ZenDocNullable.class) != null)
+						out.append("@Nullable ");
+					out.append(args[0].value());
+				}
+			} else {
+				out.append('\n');
+				int largest = 0;
+				List<String[]> parameterStrings = new ArrayList<>(params.length);
+				String line;
+				for (int i = 0; i < params.length; i++) {
+					Parameter p = params[i];
+					ZenDocArg arg = args[i];
+					boolean optional = false;
+					boolean nullable = false;
+					Annotation[] paramAnnotations = p.getAnnotations();
+					
+					for (Annotation a : paramAnnotations) {
+						if (a instanceof Optional) {
+							optional = true;
+						}
+						
+						if (a instanceof ZenDocNullable || a instanceof Nullable) {
+							nullable = true;
+						}
 					}
 					
-					if (a instanceof ZenDocNullable || a instanceof Nullable) {
-						nullable = true;
+					String optionalString = optional ? "@Optional " : "";
+					line = nullable ? "@Nullable " : "";
+					String typeString = getSimpleTypeString(p.getType());
+					String nameString = arg.value();
+					
+					String outString = "  " + optionalString + line + typeString + " " + nameString;
+					
+					if (params.length != 1)
+						outString += ',';
+					
+					if (outString.length() > largest) {
+						largest = outString.length();
 					}
+					
+					
+					parameterStrings.add(new String[]{outString, arg.info()});
 				}
 				
-				String optionalString = optional ? "@Optional " : "";
-				line = nullable ? "@Nullable " : "";
-				String typeString = getSimpleTypeString(p.getType());
-				String nameString = arg.arg();
-				
-				String outString = "  " + optionalString + line + typeString + " " + nameString + ",";
-				
-				if (outString.length() > largest) {
-					largest = outString.length();
+				for (String[] parameterString : parameterStrings) {
+					out.append(StringUtils.rightPad(parameterString[0], largest));
+					if (parameterString[1] != null && !parameterString[1].equals("")) {
+						out.append(" // ").append(parameterString[1]);
+					}
+					
+					out.append("\n");
 				}
 				
-				// get ZenDocArg description for arg
-				
-				
-				parameterStrings.add(new String[]{outString, arg.info()});
 			}
-		
-			for (String[] parameterString : parameterStrings) {
-				out.append(StringUtils.rightPad(parameterString[0], largest));
-				if (parameterString[1] != null) {
-					out.append(" // ").append(parameterString[1]);
-				}
-				
-				out.append("\n");
-			}
+			
 			
 			out.append(");\n");
 			out.append("```").append("\n\n");
 			String[] description = annotation.description();
+			String line;
 			if (description.length > 0) {
-				
 				for (String s : description) {
 					line = s;
 					out.append(parse(line));

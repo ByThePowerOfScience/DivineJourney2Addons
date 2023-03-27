@@ -19,7 +19,7 @@ public class CTCelestialCrystals {
 	@ZenMethod @ZenDocMethod(
 			order=1,
 			description="Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it.",
-			args=@ZenDocArg(arg="block", info="The IItemStack to set the block to. Must be a block type.")
+			args=@ZenDocArg(value ="block", info="The IItemStack to set the block to. Must be a block type.")
 	)
 	public static void setStarmetalConversion(IItemStack block) {
 		Block b = CraftTweakerMC.getBlock(block);
@@ -34,7 +34,7 @@ public class CTCelestialCrystals {
 	@ZenMethod @ZenDocMethod(
 			order=2,
 			description="Scales the time that celestial crystals take to grow. For example, `scale = 0.5` would halve the time required.",
-			args=@ZenDocArg(arg="scale", info="Value to multiply the time by.")
+			args=@ZenDocArg(value ="scale", info="Value to multiply the time by.")
 	)
 	public static void scaleGrowthTime(double scale) {
 		VAstralSorcery.celestialCrystalGrowthScale = scale / 2;

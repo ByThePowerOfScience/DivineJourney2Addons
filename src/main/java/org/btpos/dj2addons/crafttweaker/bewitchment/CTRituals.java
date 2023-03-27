@@ -16,9 +16,9 @@ import stanhebben.zenscript.annotations.ZenMethod;
 		"Handles Bewitchment ritual tweaks.",
 		"Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file."
 }) @ZenDocAppend("docs/include/rituals.example.md")
-public class Rituals {
+public class CTRituals {
 	@ZenMethod @ZenDocMethod(order=1,args = {
-			@ZenDocArg(arg="name",info="The name of the ritual to remove. e.g. \"biome_shift\".")
+			@ZenDocArg(value ="name",info="The name of the ritual to remove. e.g. \"biome_shift\".")
 	}, description = "Removes a Bewitchment ritual by name.")
 	public static void removeRitual(String name) {
 		VModRecipes.addRitualToRemove(new VModRecipes.DummyRitual(name));

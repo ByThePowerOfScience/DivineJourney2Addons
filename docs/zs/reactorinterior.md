@@ -19,11 +19,11 @@ void registerBlock(
 );
 ```
 
-Registers a fluid for use in the reactor's interior as a coolant.
+Registers a block for use in the reactor's interior as a coolant.
 
 ```zenscript
 void deregisterBlock(
-  IOreDictEntry oreDict, // The oredict entry to remove.
+  IOreDictEntry oreDict // The oredict entry to remove.
 );
 ```
 
@@ -31,11 +31,11 @@ Deregisters a previously-registered valid reactor interior block.
 
 ```zenscript
 void registerFluid(
-  ILiquidStack oreDict,   // The OreDict tag to register as a valid interior block.
+  ILiquidStack fluid,     // The fluid to register as a valid interior block.
   float absorption,       // How much radiation this material absorbs and converts to heat. 0.0 = none, 1.0 = all.
   float heatEfficiency,   // How efficiently radiation is converted to heat. 0 = no heat, 1 = all heat.
   float moderation,       // How well this material moderates radiation. This is a divisor; should not be below 1.
-  float heatConductivity, // How well this material conducts heat to other blocks. Use `ReactorInterior.HeatConductivity`.
+  float heatConductivity, // How well this material conducts heat to other blocks. The numbers have no simple scale, so use `ReactorInterior.HeatConductivity` to find an analog for your block.
 );
 ```
 
@@ -43,7 +43,7 @@ Registers a fluid for use in the reactor's interior as a coolant.
 
 ```zenscript
 void deregisterFluid(
-  ILiquidStack fluid, // The fluid to deregister.
+  ILiquidStack fluid // The fluid to deregister.
 );
 ```
 

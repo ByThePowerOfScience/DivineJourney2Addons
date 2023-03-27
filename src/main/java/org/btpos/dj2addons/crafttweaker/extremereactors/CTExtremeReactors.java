@@ -20,7 +20,7 @@ public class CTExtremeReactors {
 	@ZenMethod @ZenDocMethod(
 			order=1,
 			description = "Sets the maximum energy the reactor can store in its output buffer.",
-			args=@ZenDocArg(arg="value", info="The maximum energy stored."))
+			args=@ZenDocArg(value ="value", info="The maximum energy stored."))
 	public static void setMaxEnergyStored(long value) {
 		VExtremeReactors.maxEnergyStored = value;
 	}

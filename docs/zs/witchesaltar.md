@@ -1,4 +1,3 @@
-
 ### Class
 
 ```zenscript
@@ -77,17 +76,13 @@ void addUpgradeSword(
 
 
 ```zenscript
-void removeUpgrade(
-  IItemStack iItemStack, // 
-);
+void removeUpgrade(iItemStack);
 ```
 
 Removes altar upgrades matching the item parameter.
 
 ```zenscript
-void removeUpgrade(
-  IOreDictEntry oreDictEntry, // 
-);
+void removeUpgrade(oreDictEntry);
 ```
 
 Removes altar upgrades matching an oredict entry.

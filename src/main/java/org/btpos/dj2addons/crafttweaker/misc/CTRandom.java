@@ -24,7 +24,7 @@ public class CTRandom {
 		return new CTRandom(0x118999);
 	}
 	@ZenMethod
-	@ZenDocMethod(order=1,description = "Creates a new Random object with a set seed.", args=@ZenDocArg(arg="seed"))
+	@ZenDocMethod(order=1,description = "Creates a new Random object with a set seed.", args=@ZenDocArg(value ="seed"))
 	public static CTRandom newRandom(int seed) {
 		return new CTRandom(seed);
 	}
@@ -36,7 +36,7 @@ public class CTRandom {
 	}
 	
 	@ZenMethod
-	@ZenDocMethod(order=3,description="Gets the next random integer between 0 and the specified bound.",args=@ZenDocArg(arg="bound",info = "The maximum number the random int can be."))
+	@ZenDocMethod(order=3,description="Gets the next random integer between 0 and the specified bound.",args=@ZenDocArg(value ="bound",info = "The maximum number the random int can be."))
 	public int nextInt(int bound) {
 		return rand.nextInt(bound);
 	}

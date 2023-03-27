@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ZenDocArg {
-	String arg();
+	String value();
 	
 	String info() default "";
 }

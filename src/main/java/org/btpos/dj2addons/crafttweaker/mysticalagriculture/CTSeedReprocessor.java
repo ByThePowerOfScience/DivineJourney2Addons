@@ -17,8 +17,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTSeedReprocessor {
 	@ZenMethod
 	@ZenDocMethod(description = "Adds a recipe for the seed reprocessor.", args = {
-			@ZenDocArg(arg="input", info="The input item stack."),
-			@ZenDocArg(arg="output", info ="The output item stack.")
+			@ZenDocArg(value ="input", info="The input item stack."),
+			@ZenDocArg(value ="output", info ="The output item stack.")
 	}) @ZenDoc("Adds a recipe for the seed reprocessor.")
 	public static void addRecipe(IItemStack input, IItemStack output) {
 		ReprocessorManager.addRecipe(CraftTweakerMC.getItemStack(input), CraftTweakerMC.getItemStack(output));

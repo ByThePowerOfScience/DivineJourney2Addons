@@ -1,4 +1,3 @@
-
 ### Class
 
 ```zenscript
@@ -12,7 +11,7 @@ Disallows certain biomes to be sampled by the Biome Marker (for use in the Quant
 
 ```zenscript
 void excludeBiome(
-  IBiome biome, // The biome to exclude.
+  IBiome biome // The biome to exclude.
 );
 ```
 

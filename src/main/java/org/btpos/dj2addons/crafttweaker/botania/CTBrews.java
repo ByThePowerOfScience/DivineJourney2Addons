@@ -19,8 +19,8 @@ import java.util.List;
 
 @ZenDocAppend({"docs/include/brews.example.md"})
 @ZenRegister @ModOnly("botania")
-@ZenClass("dj2addons.botania.Brews") @ZenDocClass("dj2addons.botania.Brews") @ZenDocInclude(Brews.ZenBrew.class)
-public class Brews {
+@ZenClass("dj2addons.botania.Brews") @ZenDocClass("dj2addons.botania.Brews") @ZenDocInclude(CTBrews.ZenBrew.class)
+public class CTBrews {
 	
 	@ZenRegister @ModOnly("botania")
 	@ZenClass("dj2addons.botania.Brew") @ZenDocClass(value="dj2addons.botania.Brew", onlyInOther = true)
@@ -47,9 +47,9 @@ public class Brews {
 	}
 	
 	@ZenMethod @ZenDocMethod(order=1, args = {
-			@ZenDocArg(arg="key", info="The registry key to be assigned to the Brew."),
-			@ZenDocArg(arg="cost", info="The base mana cost of the brew. Amplified automatically for flasks, etc."),
-			@ZenDocArg(arg="potionEffects", info="A/an array of potion effects.")
+			@ZenDocArg(value ="key", info="The registry key to be assigned to the Brew."),
+			@ZenDocArg(value ="cost", info="The base mana cost of the brew. Amplified automatically for flasks, etc."),
+			@ZenDocArg(value ="potionEffects", info="A/an array of potion effects.")
 	}, description = {
 			"Creates a Brew instance and registers its existence with Botania, then returns it.",
 			"The key is set to \"botania.brews.\\<name\\>\" and the color is taken from the source potion."
@@ -63,11 +63,11 @@ public class Brews {
 	}
 	
 	@ZenMethod @ZenDocMethod(order=2, args = {
-			@ZenDocArg(arg="key", info="The registry key to be assigned to the Brew."),
-			@ZenDocArg(arg="name", info="The display name of the Brew. e.g. \"Flask of <name>\""),
-			@ZenDocArg(arg="cost", info="The base mana cost of the brew. Amplified automatically for flasks, etc."),
-			@ZenDocArg(arg="color", info="The hexadecimal color of the brew."),
-			@ZenDocArg(arg="potionEffects", info="A/an array of potion effects.")
+			@ZenDocArg(value ="key", info="The registry key to be assigned to the Brew."),
+			@ZenDocArg(value ="name", info="The display name of the Brew. e.g. \"Flask of <name>\""),
+			@ZenDocArg(value ="cost", info="The base mana cost of the brew. Amplified automatically for flasks, etc."),
+			@ZenDocArg(value ="color", info="The hexadecimal color of the brew."),
+			@ZenDocArg(value ="potionEffects", info="A/an array of potion effects.")
 	}, description = {
 			"Creates a Brew instance and registers its existence with Botania, then returns it."
 	})
@@ -80,8 +80,8 @@ public class Brews {
 	}
 	
 	@ZenMethod @ZenDocMethod(order = 3, args = {
-			@ZenDocArg(arg = "brew", info = "The Brew instance to register a recipe for."),
-			@ZenDocArg(arg = "ingredients", info = "An array of item ingredients to set as the recipe.")
+			@ZenDocArg(value = "brew", info = "The Brew instance to register a recipe for."),
+			@ZenDocArg(value = "ingredients", info = "An array of item ingredients to set as the recipe.")
 	}, description = {
 			"Registers the recipe for a given brew."
 	})
