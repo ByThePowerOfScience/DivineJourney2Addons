@@ -1,5 +1,6 @@
 package org.btpos.dj2addons.util;
 
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -42,6 +43,12 @@ public class Util {
 			return input.substring(0, 1).toLowerCase() + input.substring(1);
 		}
 		
+	}
+	
+	public static class BlockStates {
+		public static <T extends Comparable<T>> String getPropertyValueName(IProperty<T> property, Comparable<T> value) {
+			return property.getName((T) value);
+		}
 	}
 	
 	

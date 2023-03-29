@@ -195,7 +195,8 @@ public class CommandHandler extends CraftTweakerCommand {
 		
 		m.sendHeading("NBT:");
 		NBTTagCompound nbt = tileEntity.serializeNBT();
-		m.sendMessageWithCopy(nbt.toString(), nbt.toString());//TODO format
+		String from = NBTConverter.from(nbt, false).toString();
+		m.sendMessageWithCopy(from, from);//TODO format
 	}
 	
 	private static void info_printBlockMeta(MessageHelper m, ICommandSender sender, List<String> args) {
