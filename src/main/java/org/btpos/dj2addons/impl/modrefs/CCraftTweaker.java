@@ -1,6 +1,7 @@
 package org.btpos.dj2addons.impl.modrefs;
 
 import crafttweaker.mc1120.commands.CTChatCommand;
+import net.minecraftforge.fml.common.Loader;
 import org.btpos.dj2addons.crafttweaker.CommandHandler;
 import org.btpos.dj2addons.impl.api.bewitchment.VAltarUpgrades;
 
@@ -10,6 +11,7 @@ public class CCraftTweaker {
 	}
 	
 	public static void postInit() {
-		VAltarUpgrades.executeUpgradeRemoval();
+		if (Loader.isModLoaded("bewitchment"))
+			VAltarUpgrades.executeUpgradeRemoval();
 	}
 }
