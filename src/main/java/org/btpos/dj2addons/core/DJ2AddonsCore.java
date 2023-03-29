@@ -1,20 +1,13 @@
 package org.btpos.dj2addons.core;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Intermediary between the ASM phase and the Mod phase of loading.
  */
 public class DJ2AddonsCore {
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
-	
-	
 	
 	private static boolean coreLoaded = false;
 	
@@ -25,13 +18,14 @@ public class DJ2AddonsCore {
 	 */
 	public static void onLoadCore() {
 		coreLoaded = true;
-		LOGGER.info("DJ2Addons loaded!");
+		LOGGER.info("DJ2Addons Core loaded!");
 	}
 	
 	/**
 	 * Called by {@link org.btpos.dj2addons.DJ2Addons#preinit DJ2Addons.preinit}
 	 */
 	public static void verifyCoreLoaded() {
+		LOGGER.info("Verified DJ2Addons Core Loaded!");
 		if (!coreLoaded) {
 			try {
 				Class.forName("org.spongepowered.asm.mixin.Mixin");

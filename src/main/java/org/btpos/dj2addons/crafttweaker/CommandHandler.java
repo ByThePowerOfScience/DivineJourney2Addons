@@ -2,6 +2,7 @@ package org.btpos.dj2addons.crafttweaker;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -12,12 +13,14 @@ import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import crafttweaker.mc1120.data.NBTConverter;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -32,6 +35,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.btpos.dj2addons.DJ2Addons;
 import org.btpos.dj2addons.impl.api.bewitchment.VModRecipes;
 import org.btpos.dj2addons.impl.api.extrautilities.VExtraUtilities;
@@ -149,6 +153,9 @@ public class CommandHandler extends CraftTweakerCommand {
 			case "blockmeta":
 				info_printBlockMeta(m.withLog(), sender, args);
 				break;
+			case "tiledata":
+				info_printTileData(m.withLog(), sender, args);
+				break;
 			case "class":
 				info_printBlockClasses(m.withLog(), sender, args);
 				break;
@@ -169,6 +176,26 @@ public class CommandHandler extends CraftTweakerCommand {
 			default:
 				m.usage();
 		}
+	}
+	
+	private static void info_printTileData(MessageHelper m, ICommandSender sender, List<String> args) {
+		BlockPos target = getStandardPos(m, sender, args);
+		if (target == null)
+			return;
+		
+		TileEntity tileEntity = sender.getEntityWorld().getTileEntity(target);
+		if (tileEntity == null) {
+			m.sendError("No tile entity found at " + prettyBlockPos(target));
+			return;
+		}
+		m.sendHeading("\"Tile Data\":");
+		NBTTagCompound tileData = tileEntity.getTileData();
+		String s = NBTConverter.from(tileData, false).toString();
+		m.sendMessageWithCopy(s, s); //TODO format
+		
+		m.sendHeading("NBT:");
+		NBTTagCompound nbt = tileEntity.serializeNBT();
+		m.sendMessageWithCopy(nbt.toString(), nbt.toString());//TODO format
 	}
 	
 	private static void info_printBlockMeta(MessageHelper m, ICommandSender sender, List<String> args) {
@@ -249,69 +276,59 @@ public class CommandHandler extends CraftTweakerCommand {
 		}).start();
 	}
 	
-	private static void info_printBlockClasses(MessageHelper m, ICommandSender sender, List<String> args) {
+	private static BlockPos getStandardPos(MessageHelper m, ICommandSender sender, List<String> args) {
 		final BlockPos target;
 		if (args.size() >= 3) {
 			try {
 				target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 0, true);
 			} catch (NumberInvalidException e) {
 				m.usage();
-				return;
+				return null;
 			}
 		} else {
 			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
 				m.sendError("Command must either be run by a player looking at a block or must specify coordinates."); //TODO translate for OneOneTwoTwo
-				return;
+				return null;
 			}
 			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
 			if (target == null) {
 				m.sendError("Command must either be run by a player looking at a block or must specify coordinates.");
-				return;
+				return null;
 			}
 		}
+		return target;
+	}
+	
+	private static void info_printBlockClasses(MessageHelper m, ICommandSender sender, List<String> args) {
+		BlockPos target = getStandardPos(m, sender, args);
+		if (target == null)
+			return;
+		
 		Class<? extends Block> bc = sender.getEntityWorld().getBlockState(target).getBlock().getClass();
 		m.sendHeading("Block:");
 		m.sendPropertyWithCopy("Class", bc.getName());
 		m.sendPropertyWithCopy("Extends Class", bc.getSuperclass().getName());
-		if (bc.getDeclaringClass() != bc)
+		if (bc.getDeclaringClass() != null && bc.getDeclaringClass() != bc)
 			m.sendPropertyWithCopy("Declared Inside", bc.getDeclaringClass().getName());
 		m.sendProperty(null, "Implements Interfaces:");
 		Arrays.stream(bc.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
 		
 		TileEntity t = sender.getEntityWorld().getTileEntity(target);
-		if (t == null) {
-			m.sendHeading("Tile Entity: NONE");
-			return;
+		if (t != null) {
+			m.sendHeading("Tile Entity:");
+			Class<? extends TileEntity> te = t.getClass();
+			m.sendPropertyWithCopy("Class", te.getName());
+			if (te.getDeclaringClass() != te)
+				m.sendPropertyWithCopy("Declaring Class", te.getDeclaringClass().getName());
+			m.sendProperty(null, "Implements Interfaces:");
+			Arrays.stream(te.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
 		}
-		m.sendHeading("Tile Entity:");
-		Class<? extends TileEntity> te = t.getClass();
-		m.sendPropertyWithCopy("Class", te.getName());
-		if (te.getDeclaringClass() != te)
-			m.sendPropertyWithCopy("Declaring Class", te.getDeclaringClass().getName());
-		m.sendProperty(null, "Implements Interfaces:");
-		Arrays.stream(te.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
 	}
 	
 	private static void printBlockCapabilitiesBySide(MessageHelper m, ICommandSender sender, List<String> args) {
-		final BlockPos target;
-		if (args.size() >= 3) {
-			try {
-				target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 0, true);
-			} catch (NumberInvalidException e) {
-				m.usage();
-				return;
-			}
-		} else {
-			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
-				m.sendError("Command must either be run by a player looking at a block or must specify coordinates."); //TODO translate for OneOneTwoTwo
-				return;
-			}
-			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
-			if (target == null) {
-				m.sendError("Command must either be run by a player looking at a block or must specify coordinates.");
-				return;
-			}
-		}
+		BlockPos target = getStandardPos(m, sender, args);
+		if (target == null)
+			return;
 		
 		TileEntity te = sender.getEntityWorld().getTileEntity(target);
 		if (te == null) {
@@ -436,7 +453,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					
 					printBlockMeta(m, blockPos, block);
 				} else {
-					m.send("§4Please hold an Item in your hand or look at a Block.");
+					m.sendError("Please hold an Item in your hand or look at a Block.");
 				}
 			}
 		} else {
@@ -449,17 +466,39 @@ public class CommandHandler extends CraftTweakerCommand {
 		int meta = block.getBlock().getMetaFromState(block);
 		String blockName = "<" + block.getBlock().getRegistryName() + (meta == 0 ? "" : ":" + meta) + ">";
 		
-		m.sendMessageWithCopy("Block §2" + blockName + " §rat §9[" + blockPos.getX() + ", " + blockPos.getY() + ", " + blockPos.getZ() + "]§r", blockName);
+		m.sendMessageWithCopy("Block §2" + blockName + " §rat " + prettyBlockPos(blockPos) + "§r", blockName);
+		
+		// Prints block properties aka its blockstate information that isn't just the metadata number
+		ImmutableList<IProperty<?>> blockProps = block.getProperties().keySet().asList();
+		if (blockProps != null) {
+			StringBuilder properties = new StringBuilder().append('{').append('\n');
+			for (int i = 0; i < blockProps.size(); i++) {
+				
+				Pair<String, String> propNameValue = getPropNameValue(blockProps.get(i), block);
+				properties.append('\t').append(propNameValue.getLeft()).append('=').append(propNameValue.getRight());
+				if (i != blockProps.size() - 1)
+					properties.append(',');
+			}
+			properties.append('}');
+			String propsString = properties.toString();
+			m.sendMessageWithCopy(propsString, propsString.replaceAll("\\s", ""));
+		}
 		
 		// adds the oreDict names if it has some
 		try {
 			List<String> oreDictNames = CommandUtils.getOreDictOfItem(new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(
 					block)));
 			printOreDictInfo(m, oreDictNames);
-			
 		} catch (IllegalArgumentException e) { // catches if it couldn't create a valid ItemStack for the Block
 			m.sendHeading("No OreDict Entries.");
 		}
+	}
+	
+	private static <T extends Comparable<T>> Pair<String, String> getPropNameValue(IProperty<T> prop, IBlockState blockState) {
+		String propName = prop.getName();
+		T propVal = blockState.getValue(prop);
+		String valName = prop.getName(propVal);
+		return Pair.of(propName, valName);
 	}
 	
 	private static void printLiquidInfo(MessageHelper m, ItemStack heldItem) {
@@ -519,6 +558,10 @@ public class CommandHandler extends CraftTweakerCommand {
 		}
 		
 		return null;
+	}
+	
+	private static String prettyBlockPos(BlockPos blockPos) {
+		return "§9[" + blockPos.getX() + ", " + blockPos.getY() + ", " + blockPos.getZ() + "]";
 	}
 	
 	

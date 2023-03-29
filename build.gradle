@@ -38,7 +38,6 @@ minecraft {
 	
 	replace "@VERSION@", project.version
 	replaceIn "DJ2Addons.java"
-	replace "@DEPENDENCIES@", project.deps
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -247,13 +246,14 @@ processResources {
 }
 
 
+
 jar {
 	manifest {
 		attributes(
-				"FMLCorePluginContainsFMLMod": "true",
-                "FMLCorePlugin"              : coremods,
+//				"FMLCorePluginContainsFMLMod": "true", TODO UNCOMMENT BEFORE RELEASING
+//				"FMLCorePlugin"              : coremods,
+//				"ForceLoadAsMod": "true",
 				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"ForceLoadAsMod": "true",
 				"MixinConfigs": 'mixins.dj2addons.init.json'
 		)
 	}
