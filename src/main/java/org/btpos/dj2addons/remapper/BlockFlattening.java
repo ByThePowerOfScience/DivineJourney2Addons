@@ -32,18 +32,23 @@ import static org.btpos.dj2addons.DJ2Addons.LOGGER;
  */
 public class BlockFlattening implements IFixableData {
 	private final List<FlatteningDefinition> flatteningDefinitions;
+	private final int version;
 	
 	public BlockFlattening(final List<FlatteningDefinition> flatteningDefinitions) {
+		this(flatteningDefinitions, 10005);
+	}
+	
+	public BlockFlattening(final List<FlatteningDefinition> flatteningDefinitions, int version) {
 		this.flatteningDefinitions = flatteningDefinitions;
+		this.version = version;
 	}
 	
 	@Override
 	public int getFixVersion() {
-		return 10005;
+		return version;
 	}
 	
 	private static boolean alreadyLogged = false;
-	private static boolean alreadyLogged2 = false;
 	@Override
 	public @NotNull NBTTagCompound fixTagCompound(final @NotNull NBTTagCompound compound) {
 		
@@ -71,13 +76,13 @@ public class BlockFlattening implements IFixableData {
 			                     
 								 flatteningDefinitions[flatteningDefinition.oldMetadata] = flatteningDefinition;
 		                     }));
-		if (!alreadyLogged2) {
+		if (!alreadyLogged) {
 			DJ2Addons.LOGGER.info("Running fix with {} block IDs, with {} flattening definitions on the first ID", flattingDefinitionsPerBlockID.size(),
 			                      Arrays.stream(flattingDefinitionsPerBlockID.get(flattingDefinitionsPerBlockID.keySet()
 			                                                                                                   .stream()
 			                                                                                                   .findFirst()
 			                                                                                                   .get())).filter(Objects::nonNull).count());
-			alreadyLogged2 = true;
+			alreadyLogged = true;
 		}
 		// If there aren't any blocks to flatten in this save, do nothing
 		if (flattingDefinitionsPerBlockID.isEmpty()) {
