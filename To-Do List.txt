@@ -1,0 +1,2 @@
+Mob Grinding Utils
+-Fix: Ender inhibitor not working consistently
