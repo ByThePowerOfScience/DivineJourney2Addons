@@ -73,7 +73,7 @@ dependencies {
 	
 	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
-	provided("mezz.jei:jei_1.12.2:4.16.1.302")
+	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
 	
 //	deobfCompile(
 //			"curse.maven:TickProfiler-270330:2912044"
@@ -82,6 +82,8 @@ dependencies {
 	deobfProvided(
 			"curse.maven:ImmersiveEngineering-231951:2974106"
 	)
+	
+	
 	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
@@ -97,7 +99,7 @@ dependencies {
 	
 	deobfProvided("curse.maven:AstralSorcery-241721:3044416")
 	
-	deobfProvided("curse.maven:Botania-225643:3330934")
+	deobfCompile("curse.maven:Botania-225643:3330934")
 	
 	deobfProvided(
 			"curse.maven:BloodMagic-224791:2822288",
@@ -250,10 +252,10 @@ processResources {
 jar {
 	manifest {
 		attributes(
-				"FMLCorePluginContainsFMLMod": "true",
-                "FMLCorePlugin"              : coremods,
+//				"FMLCorePluginContainsFMLMod": "true",
+//                "FMLCorePlugin"              : coremods, TODO uncomment this for release
 				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"ForceLoadAsMod": "true",
+//				"ForceLoadAsMod": "true",
 				"MixinConfigs": 'mixins.dj2addons.init.json'
 		)
 	}

@@ -6,22 +6,23 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.potions.IPotionEffect;
-import org.btpos.dj2addons.util.zendoc.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import org.btpos.dj2addons.impl.api.botania.BrewHandler;
+import org.btpos.dj2addons.util.zendoc.*;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.brew.Brew;
+import vazkii.botania.api.brew.IBrewContainer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ZenDocAppend({"docs/include/brews.example.md"})
 @ZenRegister @ModOnly("botania")
 @ZenClass("dj2addons.botania.Brews") @ZenDocClass("dj2addons.botania.Brews") @ZenDocInclude(CTBrews.ZenBrew.class)
 public class CTBrews {
-	
 	@ZenRegister @ModOnly("botania")
 	@ZenClass("dj2addons.botania.Brew") @ZenDocClass(value="dj2addons.botania.Brew", onlyInOther = true)
 	public static class ZenBrew {
@@ -55,11 +56,9 @@ public class CTBrews {
 			"The key is set to \"botania.brews.\\<name\\>\" and the color is taken from the source potion."
 	})
 	public static ZenBrew makeBrew(String key, int cost, IPotionEffect... potionEffects) {
-		List<PotionEffect> effects = new ArrayList<>();
-		for (IPotionEffect p : potionEffects) {
-			effects.add(CraftTweakerMC.getPotionEffect(p));
-		}
-		return new ZenBrew(BrewHandler.buildBrew(key, cost, effects.toArray(new PotionEffect[0])));
+		return new ZenBrew(BrewHandler.buildBrew(key, cost, Arrays.stream(potionEffects)
+		                                                          .map(CraftTweakerMC::getPotionEffect)
+		                                                          .toArray(PotionEffect[]::new)));
 	}
 	
 	@ZenMethod @ZenDocMethod(order=2, args = {
@@ -72,11 +71,9 @@ public class CTBrews {
 			"Creates a Brew instance and registers its existence with Botania, then returns it."
 	})
 	public static ZenBrew makeBrew(String key, String name, int cost, int color, IPotionEffect... potionEffects) {
-		List<PotionEffect> effects = new ArrayList<>();
-		for (IPotionEffect p : potionEffects) {
-			effects.add(CraftTweakerMC.getPotionEffect(p));
-		}
-		return new ZenBrew(BrewHandler.buildBrew(key,name,color,cost,effects.toArray(new PotionEffect[0])));
+		return new ZenBrew(BrewHandler.buildBrew(key, name, color, cost, Arrays.stream(potionEffects)
+		                                                                       .map(CraftTweakerMC::getPotionEffect)
+		                                                                       .toArray(PotionEffect[]::new)));
 	}
 	
 	@ZenMethod @ZenDocMethod(order = 3, args = {
@@ -86,13 +83,31 @@ public class CTBrews {
 			"Registers the recipe for a given brew."
 	})
 	public static void addBrewRecipe(ZenBrew brew, IItemStack... ingredients) {
-		List<ItemStack> itemStacks = new ArrayList<>();
-		
-		for (IItemStack i : ingredients) {
-			itemStacks.add(CraftTweakerMC.getItemStack(i));
-		}
-		
-		BrewHandler.registerBrewRecipe(brew.getInternal(), itemStacks.toArray(new ItemStack[0]));
+		BrewHandler.registerBrewRecipe(brew.getInternal(),
+		                               Arrays.stream(ingredients)
+		                                     .map(CraftTweakerMC::getItemStack)
+		                                     .toArray(ItemStack[]::new));
+	}
+	
+	@ZenMethod @ZenDocMethod(order = 3, args = {
+			@ZenDocArg(value = "brew", info = "The Brew instance to register a recipe for."),
+			@ZenDocArg(value="allowedContainers", info="The containers that this brew recipe will be allowed for. (e.g. <botania:vial>"),
+			@ZenDocArg(value = "ingredients", info = "An array of item ingredients to set as the recipe.")
+	}, description = {
+			"Registers the recipe for brew with a restricted set of valid containers.",
+			"Use in combination with ModTweaker's `mods.botania.Brew.removeRecipe()` to replace Botania's own brew recipes with output-specific versions."
+	})
+	public static void addOutputRestrictedBrewRecipe(ZenBrew brew, Set<IItemStack> allowedContainers, IItemStack... ingredients) {
+		BrewHandler.registerOutputRestrictedBrewRecipe(brew.getInternal(),
+		                                               allowedContainers.stream()
+		                                                                .map(CraftTweakerMC::getItemStack)
+		                                                                .map(ItemStack::getItem)
+		                                                                .filter(i -> i instanceof IBrewContainer)
+		                                                                .map(i -> (IBrewContainer)i)
+		                                                                .collect(Collectors.toSet()),
+		                                               Arrays.stream(ingredients)
+		                                                     .map(CraftTweakerMC::getItemStack)
+		                                                     .toArray(ItemStack[]::new));
 	}
 	
 	@ZenMethod @ZenDocMethod(order=4, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.")
