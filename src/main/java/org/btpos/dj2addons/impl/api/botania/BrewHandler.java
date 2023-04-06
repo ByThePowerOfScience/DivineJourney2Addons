@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.brew.Brew;
-import vazkii.botania.api.brew.IBrewContainer;
 import vazkii.botania.api.recipe.RecipeBrew;
 import vazkii.botania.common.brew.BrewMod;
 
@@ -35,9 +34,9 @@ public class BrewHandler {
 		BotaniaAPI.registerBrewRecipe(brew, (Object[])objects);
 	}
 	
-	public static void registerOutputRestrictedBrewRecipe(Brew brew, Set<IBrewContainer> allowedOutputs, ItemStack[] objects) {
+	public static void registerOutputRestrictedBrewRecipe(Brew brew, Set<ItemStack> allowedOutputs, ItemStack[] objects) {
 		Preconditions.checkArgument(objects.length <= 6);
-		RecipeBrew recipe = new RestrictedOutputRecipeBrew(brew, allowedOutputs, (Object[])objects);
+		RecipeBrew recipe = new RestrictedOutputRecipeBrew(brew, allowedOutputs, objects);
 		BotaniaAPI.brewRecipes.add(recipe);
 	}
 }

@@ -38,7 +38,6 @@ minecraft {
 	
 	replace "@VERSION@", project.version
 	replaceIn "DJ2Addons.java"
-	replace "@DEPENDENCIES@", project.deps
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
