@@ -5,9 +5,9 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import epicsquid.roots.util.zen.ZenDocArg;
-import epicsquid.roots.util.zen.ZenDocClass;
-import epicsquid.roots.util.zen.ZenDocMethod;
+import org.btpos.dj2addons.util.zendoc.ZenDocArg;
+import org.btpos.dj2addons.util.zendoc.ZenDocClass;
+import org.btpos.dj2addons.util.zendoc.ZenDocMethod;
 import net.minecraft.block.Block;
 import org.btpos.dj2addons.impl.api.astralsorcery.VAstralSorcery;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -19,7 +19,7 @@ public class CTCelestialCrystals {
 	@ZenMethod @ZenDocMethod(
 			order=1,
 			description="Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it.",
-			args=@ZenDocArg(arg="block", info="The IItemStack to set the block to. Must be a block type.")
+			args=@ZenDocArg(value ="block", info="The IItemStack to set the block to. Must be a block type.")
 	)
 	public static void setStarmetalConversion(IItemStack block) {
 		Block b = CraftTweakerMC.getBlock(block);
@@ -34,7 +34,7 @@ public class CTCelestialCrystals {
 	@ZenMethod @ZenDocMethod(
 			order=2,
 			description="Scales the time that celestial crystals take to grow. For example, `scale = 0.5` would halve the time required.",
-			args=@ZenDocArg(arg="scale", info="Value to multiply the time by.")
+			args=@ZenDocArg(value ="scale", info="Value to multiply the time by.")
 	)
 	public static void scaleGrowthTime(double scale) {
 		VAstralSorcery.celestialCrystalGrowthScale = scale / 2;

@@ -1,11 +1,10 @@
-
 ### Class
 
 ```zenscript
 import dj2addons.astralsorcery.Crystals;
 ```
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void setStarmetalConversion(
@@ -15,9 +14,6 @@ void setStarmetalConversion(
 
 Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it.
 
----
-
-
 ```zenscript
 void scaleGrowthTime(
   double scale // Value to multiply the time by.
@@ -25,6 +21,4 @@ void scaleGrowthTime(
 ```
 
 Scales the time that celestial crystals take to grow. For example, `scale = 0.5` would halve the time required.
-
----
 

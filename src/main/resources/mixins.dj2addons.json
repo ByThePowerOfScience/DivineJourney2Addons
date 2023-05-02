@@ -3,8 +3,8 @@
   "package": "org.btpos.dj2addons.mixin.def",
   "compatibilityLevel": "JAVA_8",
   "plugin": "org.btpos.dj2addons.mixin.DJ2AMixinConfig",
-  "refmap": "mixins.dj2addons.refmap.json",
   "mixins": [
+    "accessors.thaumcraft.TileThaumcraftInventoryAccessor",
     "api.astralsorcery.MTileCelestialCrystals",
     "api.bewitchment.MBewitchmentJEI",
     "api.bewitchment.MModRecipes",
@@ -12,6 +12,7 @@
     "api.bloodmagic.MTileInventory",
     "api.bloodmagic.MTileSoulForge",
     "api.extrautils.MGeneratorType",
+    "api.extrautils.MItemBiomeMarker",
     "api.extremereactors.MPowerSystem",
     "api.extremereactors.MReactorInteriorData",
     "api.totemic.MModContent",
@@ -21,14 +22,16 @@
     "patches.bewitchment.MOvenRecipe",
     "patches.bewitchment.MPoppetHandler",
     "patches.bloodmagic.MSoulForge",
-    "tweaks.botania.MModBrews",
     "patches.industrialforegoing.MPlantInteractor",
     "patches.modularmagic.MRequirementLifeEssence",
     "patches.moretweaker.MInputs",
+    "patches.packagedauto.MMiscUtil",
     "patches.rftools.MNBTMatchingRecipe",
+    "tweaks.botania.MModBrews",
+    "tweaks.extrautils2.MBlockMechanicalUser",
+    "tweaks.extrautils2.MTileUse",
     "tweaks.thaumcraft.MArcanePedestal",
-    "tweaks.thaumcraft.MTileEssentiaOutput",
-    "accessors.thaumcraft.TileThaumcraftInventoryAccessor"
+    "tweaks.thaumcraft.MTileEssentiaOutput"
   ],
   "client": [
   ],

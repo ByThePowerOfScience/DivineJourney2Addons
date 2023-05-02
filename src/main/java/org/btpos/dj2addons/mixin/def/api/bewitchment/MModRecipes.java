@@ -15,7 +15,7 @@ import java.util.List;
 
 @Mixin(ModRecipes.class)
 public class MModRecipes {
-	@Shadow
+	@Shadow(remap=false)
 	public static List<Ritual> ritualRecipes;
 	
 	@Inject(remap=false,method="addRitualRecipe()V", at=@At("TAIL"))

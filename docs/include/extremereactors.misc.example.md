@@ -1,6 +1,6 @@
 ### Example
 ```zenscript
-#loader dj2addons
+#loader preinit
 import dj2addons.extremereactors.ExtremeReactors;
 
 // Changes the output buffer capacity to 250 RF/Tesla.

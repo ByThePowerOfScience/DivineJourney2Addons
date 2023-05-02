@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModClassLoader;
 import net.minecraftforge.fml.common.ModContainer;
 import org.btpos.dj2addons.core.DJ2AddonsCore;
+import org.btpos.dj2addons.mixin.DJ2AMixinConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
@@ -82,7 +83,7 @@ public abstract class MLoader {
 				prepareConfigsMethod.setAccessible(true);
 				prepareConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment());
 			} catch (ReflectiveOperationException e) {
-				DJ2AddonsCore.LOGGER.warn("Mixin version 0.7+ detected. Other mods using this type of Mixin loader may break.");
+				DJ2AMixinConfig.LOGGER.warn("Mixin version 0.7+ detected. Other mods using this type of Mixin loader may break.");
 				
 				prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class, Extensions.class);
 				prepareConfigsMethod.setAccessible(true);

@@ -29,7 +29,7 @@ abstract class MOverlayHandler {
 		if (player == null)
 			return;
 		regen = -1;
-		if (player.isPotionActive(StatusEffects.SATUREGENTRIGGER)) {
+		if (player.isPotionActive(StatusEffects.UIEffectTrigger_HungerShankWave.apply(null))) {
 			regen = mc.ingameGUI.getUpdateCounter() % 25;
 		}
 	}

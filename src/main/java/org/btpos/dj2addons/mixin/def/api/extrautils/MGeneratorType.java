@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 public abstract class MGeneratorType {
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -35,6 +36,7 @@ public abstract class MGeneratorType {
 	
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -58,6 +60,7 @@ public abstract class MGeneratorType {
 	
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -80,6 +83,7 @@ public abstract class MGeneratorType {
 	}
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -103,6 +107,7 @@ public abstract class MGeneratorType {
 	
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -125,6 +130,7 @@ public abstract class MGeneratorType {
 	}
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -147,6 +153,7 @@ public abstract class MGeneratorType {
 	}
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(
@@ -170,6 +177,7 @@ public abstract class MGeneratorType {
 	
 	
 	@ModifyArg(
+			remap=false,
 			method = "<clinit>",
 			slice=@Slice(
 					from=@At(

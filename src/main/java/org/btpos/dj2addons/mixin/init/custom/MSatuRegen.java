@@ -30,7 +30,7 @@ public abstract class MSatuRegen extends GuiIngame  {
 	@Inject(method= "renderFood(II)V", locals= LocalCapture.CAPTURE_FAILSOFT, at=@At(target = "Lnet/minecraft/client/renderer/GlStateManager;enableBlend()V", value="INVOKE"))
 	private void getRegenValue(int width, int height, CallbackInfo ci, EntityPlayer player) {
 		regen = -1;
-		if (player.isPotionActive(StatusEffects.SATUREGENTRIGGER))
+		if (player.isPotionActive(StatusEffects.UIEffectTrigger_HungerShankWave.apply(null)))
 		{
 			regen = updateCounter % 25;
 		}

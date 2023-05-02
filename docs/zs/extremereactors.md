@@ -1,4 +1,3 @@
-
 ### Class
 
 ```zenscript
@@ -10,7 +9,7 @@ Handles general ExtremeReactors tweaks.
 Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file.
 
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void setMaxEnergyStored(
@@ -20,12 +19,13 @@ void setMaxEnergyStored(
 
 Sets the maximum energy the reactor can store in its output buffer.
 
----
 
+
+---
 
 ### Example
 ```zenscript
-#loader dj2addons
+#loader preinit
 import dj2addons.extremereactors.ExtremeReactors;
 
 // Changes the output buffer capacity to 250 RF/Tesla.

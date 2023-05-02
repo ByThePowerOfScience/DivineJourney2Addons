@@ -1,13 +1,19 @@
 
 package org.btpos.dj2addons.impl.api.botania;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.brew.Brew;
+import vazkii.botania.api.recipe.RecipeBrew;
 import vazkii.botania.common.brew.BrewMod;
 
+import java.util.Set;
+
 public class BrewHandler {
+	public static boolean shouldEnableWarpWardPendant = false;
+	
 	public BrewHandler() {
 	}
 	
@@ -24,8 +30,13 @@ public class BrewHandler {
 	}
 	
 	
-	
 	public static void registerBrewRecipe(Brew brew, ItemStack[] objects) {
 		BotaniaAPI.registerBrewRecipe(brew, (Object[])objects);
+	}
+	
+	public static void registerOutputRestrictedBrewRecipe(Brew brew, Set<ItemStack> allowedOutputs, ItemStack[] objects) {
+		Preconditions.checkArgument(objects.length <= 6);
+		RecipeBrew recipe = new RestrictedOutputRecipeBrew(brew, allowedOutputs, objects);
+		BotaniaAPI.brewRecipes.add(recipe);
 	}
 }

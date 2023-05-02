@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ItemBucket.class)
 abstract class MItemBucket {
-	@Shadow
+	@Shadow(aliases="containedBlock")
 	@Final
 	private Block containedBlock;
 	

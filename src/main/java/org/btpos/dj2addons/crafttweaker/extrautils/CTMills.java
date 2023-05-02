@@ -3,10 +3,10 @@ package org.btpos.dj2addons.crafttweaker.extrautils;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
-import epicsquid.roots.util.zen.ZenDocAppend;
-import epicsquid.roots.util.zen.ZenDocArg;
-import epicsquid.roots.util.zen.ZenDocClass;
-import epicsquid.roots.util.zen.ZenDocMethod;
+import org.btpos.dj2addons.util.zendoc.ZenDocAppend;
+import org.btpos.dj2addons.util.zendoc.ZenDocArg;
+import org.btpos.dj2addons.util.zendoc.ZenDocClass;
+import org.btpos.dj2addons.util.zendoc.ZenDocMethod;
 import org.btpos.dj2addons.impl.api.extrautilities.VExtraUtilities;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -24,8 +24,8 @@ public class CTMills {
 			"Sets mill power scaling.",
 			"Use `/dj2addons extrautils2` in-game to print all mill names."
 	}, args= {
-			@ZenDocArg(arg="millName", info="The name of the mill to change."),
-			@ZenDocArg(arg="values", info="An associative array of [Grid Power threshold : production percentage].")
+			@ZenDocArg(value ="millName", info="The name of the mill to change."),
+			@ZenDocArg(value ="values", info="An associative array of [Grid Power threshold : production percentage].")
 	}) @ZenDoc("Sets mill power scaling. See docs on GitHub.")
 	public static void setScaling(String millName, Map<Float, Float> values) {
 		final float[] arr = new float[values.size() * 2];
@@ -37,4 +37,6 @@ public class CTMills {
 		}
 		VExtraUtilities.setScaling(millName.toUpperCase().replace(" ", "_").trim(), arr);
 	}
+	
+	//TODO setBaseValue
 }

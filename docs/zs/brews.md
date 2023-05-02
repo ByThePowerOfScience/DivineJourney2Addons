@@ -1,53 +1,53 @@
-
 ### Class
 
 ```zenscript
 import dj2addons.botania.Brews;
 ```
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 Brew makeBrew(
-  string key,                   // The registry key to be assigned to the Brew.
-  int cost,                     // The base mana cost of the brew. Amplified automatically for flasks, etc.
-  IPotionEffect[] potionEffects // A/an array of potion effects.
+  string key,                    // The registry key to be assigned to the Brew.
+  int cost,                      // The base mana cost of the brew. Amplified automatically for flasks, etc.
+  IPotionEffect[] potionEffects, // A/an array of potion effects.
 );
 ```
 
 Creates a Brew instance and registers its existence with Botania, then returns it.
 The key is set to "botania.brews.\<name\>" and the color is taken from the source potion.
 
----
-
-
 ```zenscript
 Brew makeBrew(
-  string key,                   // The registry key to be assigned to the Brew.
-  string name,                  // The display name of the Brew. e.g. "Flask of <name>"
-  int cost,                     // The base mana cost of the brew. Amplified automatically for flasks, etc.
-  int color,                    // The hexadecimal color of the brew.
-  IPotionEffect[] potionEffects // A/an array of potion effects.
+  string key,                    // The registry key to be assigned to the Brew.
+  string name,                   // The display name of the Brew. e.g. "Flask of <name>"
+  int cost,                      // The base mana cost of the brew. Amplified automatically for flasks, etc.
+  int color,                     // The hexadecimal color of the brew.
+  IPotionEffect[] potionEffects, // A/an array of potion effects.
 );
 ```
 
 Creates a Brew instance and registers its existence with Botania, then returns it.
 
----
-
-
 ```zenscript
 void addBrewRecipe(
-  Brew brew,               // The Brew instance to register a recipe for.
-  IItemStack[] ingredients // An array of item ingredients to set as the recipe.
+  Brew brew,                // The Brew instance to register a recipe for.
+  IItemStack[] ingredients, // An array of item ingredients to set as the recipe.
 );
 ```
 
 Registers the recipe for a given brew.
 
+```zenscript
+void enableWarpWardPendant();
+```
+
+Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.
+
+
+
+
 ---
-
-
 
 ### Class
 
@@ -55,7 +55,7 @@ Registers the recipe for a given brew.
 import dj2addons.botania.Brew;
 ```
 
-#### Methods
+#### Instance Methods
 
 ```zenscript
 void setDisableBloodPendant();
@@ -63,14 +63,13 @@ void setDisableBloodPendant();
 
 Disables the Tainted Blood Pendant recipe for this brew.
 
----
-
-
 ```zenscript
 void setDisableIncenseStick();
 ```
 
 Disables the Incense Stick recipe for this brew.
+
+
 
 ---
 

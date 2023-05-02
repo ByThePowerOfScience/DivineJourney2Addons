@@ -5,6 +5,7 @@ import fileinput
 
 my_core_mods = ["org.btpos.dj2addons.core.DJ2ALoadingPlugin"]
 
+
 def getDepsFromBuildScript():
 	bpattern = re.compile("(?:implementation|runtimeOnly)(?:\\(\\s?(?:[\t ]*[\\w.:\"'\\-(),]+\\n?)+)")
 	deps = []
@@ -19,6 +20,7 @@ def getDepsFromBuildScript():
 				deps.append(str(s1.group(1)))
 	return deps
 
+
 def convertDepsToFolderPaths(deps):
 	out = []
 	for d in deps:
@@ -29,15 +31,18 @@ def convertDepsToFolderPaths(deps):
 		out.append(path)
 	return out
 
+
 cache_dir = "~/.gradle/caches/forge_gradle/deobf_dependencies"
+
+
 def getJarPaths(paths):
 	files = []
 	for p in paths:
-		with subprocess.Popen("cd %s*;echo $PWD" % (cache_dir + p), shell=True,stdout=subprocess.PIPE) as process:
+		with subprocess.Popen("cd %s*;echo $PWD" % (cache_dir + p), shell=True, stdout=subprocess.PIPE) as process:
 			out, err = process.communicate()
 			s = str(out).replace("'", "").replace("\\n", "").lstrip("abcdef1234567890")
 			sarr = s.split("/")
-			files.append(s + "/" + sarr[len(sarr)-2] + "-" + sarr[len(sarr)-1] + ".jar")
+			files.append(s + "/" + sarr[len(sarr) - 2] + "-" + sarr[len(sarr) - 1] + ".jar")
 	return files
 
 
@@ -52,7 +57,10 @@ def getCoreMods(files):
 				coremods.append(line.split(" ")[1])
 	return coremods
 
+
 coremods_prop = "coremods="
+
+
 def setCoreMods(s):
 	with open("../gradle.properties", "r") as file:
 		data = file.readlines()
@@ -63,7 +71,6 @@ def setCoreMods(s):
 	
 	with open("../gradle.properties", "w") as file:
 		file.writelines(data)
-
 
 
 def main():
@@ -79,16 +86,6 @@ def main():
 		coremods.append(m)
 	
 	setCoreMods(','.join(coremods))
-	
-	
-	
-	
-	
-	
+
+
 main()
-	
-	
-
-
-
-

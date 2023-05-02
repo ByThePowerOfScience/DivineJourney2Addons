@@ -9,7 +9,7 @@ Handles Bewitchment ritual tweaks.
 Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file.
 
 
-#### Methods
+#### Static Methods
 
 ```zenscript
 void removeRitual(
@@ -19,8 +19,9 @@ void removeRitual(
 
 Removes a Bewitchment ritual by name.
 
----
 
+
+---
 
 ### Example
 ```zenscript

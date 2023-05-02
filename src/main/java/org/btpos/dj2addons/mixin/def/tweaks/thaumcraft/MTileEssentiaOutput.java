@@ -23,9 +23,10 @@ abstract class MTileEssentiaOutput {
 	@Redirect(method= "fillBuffer()V", remap=false, at=@At(target="Lthaumcraft/api/ThaumcraftApiHelper;getConnectableTile(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/tileentity/TileEntity;", value="INVOKE"))
 	private TileEntity stopDrainModMagicJar(World world, BlockPos pos, EnumFacing face) {
 		TileEntity te = ThaumcraftApiHelper.getConnectableTile(world, pos, face);
-		if (!IsModLoaded.modularmagic || !CModularMagic.isTileAspectProvider(te))
-			return te;
-		return null;
+		if (IsModLoaded.modularmagic && CModularMagic.isTileAspectProvider(te)) {
+			return null;
+		}
+		return te;
 	}
 	
 	

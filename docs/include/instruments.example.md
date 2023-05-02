@@ -1,6 +1,6 @@
 ### Example
 ```zenscript
-#loader dj2addons
+#loader preinit
 import dj2addons.totemic.Instruments;
 
 // Changes the Eagle Bone Whistle to have 200 base music output and half the original maximum music.

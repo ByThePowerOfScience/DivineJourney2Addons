@@ -1,12 +1,23 @@
 package org.btpos.dj2addons.core;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.mixin.transformer.throwables.MixinTransformerError;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Intermediary between the ASM phase and the Mod phase of loading.
+ */
 public class DJ2AddonsCore {
+	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	
+	
+	
 	private static boolean coreLoaded = false;
-	public static Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	
 	public static boolean shouldWriteAerogelTooltip = false;
 	
 	/**
@@ -22,7 +33,12 @@ public class DJ2AddonsCore {
 	 */
 	public static void verifyCoreLoaded() {
 		if (!coreLoaded) {
-			throw new MixinTransformerError("DJ2Addons Mixins are not loaded! The config mixins.dj2addons.init.json was not executed.");
+			try {
+				Class.forName("org.spongepowered.asm.mixin.Mixin");
+				throw new Error("DJ2Addons Mixins are not loaded! The config mixins.dj2addons.init.json was not executed.");
+			} catch (ClassNotFoundException e) {
+				throw new Error("DJ2Addons requires Mixin to run.");
+			}
 		}
 	}
 	
