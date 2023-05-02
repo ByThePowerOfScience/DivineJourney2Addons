@@ -10,10 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.ItemStackHandler;
 import org.btpos.dj2addons.impl.modrefs.CThaumcraft;
 import org.btpos.dj2addons.impl.modrefs.IsModLoaded;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,8 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MTileUse extends TileAdvInteractor {
     @Shadow(remap=false)
     private XUFakePlayer fakePlayer;
-    
-    @Shadow(remap=false) @Final private ItemStackHandler contents;
     
     @Inject(
             remap=false,

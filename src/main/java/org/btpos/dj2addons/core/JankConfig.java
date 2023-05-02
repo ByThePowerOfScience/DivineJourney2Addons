@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Used since we can't read anything "normal" at this stage of loading.
  */
-public class JankConfig extends Object {
+public class JankConfig {
 	public static final String folder = "dj2addons" + File.separator;
 	public static final String infusionStabsFileName = folder + "infusion_stabilizers.txt";
 	

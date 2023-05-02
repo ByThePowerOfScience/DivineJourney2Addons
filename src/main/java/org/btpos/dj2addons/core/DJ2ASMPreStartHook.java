@@ -1,12 +1,8 @@
 package org.btpos.dj2addons.core;
 
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Map;
 
 public class DJ2ASMPreStartHook implements IFMLCallHook {
 	@Override

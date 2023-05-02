@@ -1,5 +1,5 @@
 import org.apache.commons.lang3.StringUtils;
-import org.btpos.dj2addons.util.Util;
+import org.btpos.dj2addons.util.Util.Format;
 import org.btpos.dj2addons.util.zendoc.*;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -378,7 +378,7 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 			if (result.startsWith("Zen")) {
 				result = result.substring(3);
 			} else if (result.startsWith("String")) {
-				result = Util.Strings.uncapitalizeFirstLetter(result);
+				result = Format.uncapitalizeFirstLetter(result);
 			}
 			
 			return result;

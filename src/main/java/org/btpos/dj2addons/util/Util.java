@@ -1,9 +1,11 @@
 package org.btpos.dj2addons.util;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import org.btpos.dj2addons.DJ2Addons;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class Util {
 		}
 	}
 	
-	public static class Strings {
+	public static class Format {
 		public static String capitalizeFirstLetter(String input) {
 			return input.substring(0, 1).toLowerCase() + input.substring(1);
 		}
@@ -42,6 +44,10 @@ public class Util {
 			return input.substring(0, 1).toLowerCase() + input.substring(1);
 		}
 		
+		@NotNull
+		public static String formatPos(BlockPos blockPos) {
+			return "[" + blockPos.getX() + ", " + blockPos.getY() + ", " + blockPos.getZ() + "]";
+		}
 	}
 	
 	

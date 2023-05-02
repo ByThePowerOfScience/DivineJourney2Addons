@@ -11,7 +11,11 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @SuppressWarnings("unused")
 @Mixin(BlockAdvInteractor.Use.class)
-public class MBlockMechanicalUser {
+public abstract class MBlockMechanicalUser extends BlockAdvInteractor {
+	public MBlockMechanicalUser(String texture) {
+		super(texture);
+	}
+	
 	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}

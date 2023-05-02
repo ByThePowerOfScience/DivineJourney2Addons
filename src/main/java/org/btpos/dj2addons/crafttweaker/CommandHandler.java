@@ -24,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -40,13 +41,17 @@ import org.btpos.dj2addons.impl.modrefs.CBigReactors.ReactorInteriorDataWrapper;
 import org.btpos.dj2addons.impl.modrefs.CTotemic;
 import org.btpos.dj2addons.impl.modrefs.IsModLoaded;
 import org.btpos.dj2addons.util.StringDumpUtils;
+import org.btpos.dj2addons.util.Util;
 import org.btpos.dj2addons.util.Util.DevTools;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused","Inspection"})
 public class CommandHandler extends CraftTweakerCommand {
+	private static Thread dumperThread = null;
+	
 	
 	public CommandHandler() {
 		super(DJ2Addons.MOD_ID);
@@ -219,8 +224,13 @@ public class CommandHandler extends CraftTweakerCommand {
 				return;
 			}
 			
-			if (args.size() == 1)
+			if (args.size() == 1) {
+				if ("stop".equalsIgnoreCase(args.get(0))) {
+					info_stopDumpTile(m);
+					return;
+				}
 				numSupers = Integer.parseInt(args.get(0));
+			}
 			else 
 				numSupers = -1;
 			
@@ -243,10 +253,31 @@ public class CommandHandler extends CraftTweakerCommand {
 			return;
 		}
 		
-		new Thread(() -> {
+		if (dumperThread != null && dumperThread.isAlive()) {
+			m.sendError("Tile dump already in progress.");
+			m.sendRaw(SpecialMessagesChat.getClickableCommandText("Click to cancel current tile dump.", "/ct dj2addons info tiledump stop", true));
+		}
+		
+		m.send("Starting tile data dump.");
+		dumperThread = new Thread(() -> {
 			StringDumpUtils.dump(te, m::log, numSupers);
 			m.linkToLog();
-		}).start();
+		});
+		dumperThread.start();
+	}
+	
+	private static void info_stopDumpTile(MessageHelper m) {
+		if (dumperThread == null || dumperThread.isAlive()) {
+			m.send("No tile dump in progress.");
+		} else {
+			dumperThread.stop();
+			if (dumperThread.isAlive()) {
+				m.sendError("Failed to kill dumper thread.");
+			} else {
+				m.sendError("Killed dumper thread.");
+				dumperThread = null;
+			}
+		}
 	}
 	
 	private static void info_printBlockClasses(MessageHelper m, ICommandSender sender, List<String> args) {
@@ -284,9 +315,9 @@ public class CommandHandler extends CraftTweakerCommand {
 			return;
 		}
 		m.sendHeading("Tile Entity:");
-		Class<? extends TileEntity> te = t.getClass();
+		Class<?> te = t.getClass();
 		m.sendPropertyWithCopy("Class", te.getName());
-		if (te.getDeclaringClass() != te)
+		if (te.getDeclaringClass() != te && te.getDeclaringClass() != null)
 			m.sendPropertyWithCopy("Declaring Class", te.getDeclaringClass().getName());
 		m.sendProperty(null, "Implements Interfaces:");
 		Arrays.stream(te.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));
@@ -449,7 +480,7 @@ public class CommandHandler extends CraftTweakerCommand {
 		int meta = block.getBlock().getMetaFromState(block);
 		String blockName = "<" + block.getBlock().getRegistryName() + (meta == 0 ? "" : ":" + meta) + ">";
 		
-		m.sendMessageWithCopy("Block §2" + blockName + " §rat §9[" + blockPos.getX() + ", " + blockPos.getY() + ", " + blockPos.getZ() + "]§r", blockName);
+		m.sendMessageWithCopy(formatPos(blockPos, blockName) + "§r", blockName);
 		
 		// adds the oreDict names if it has some
 		try {
@@ -460,6 +491,11 @@ public class CommandHandler extends CraftTweakerCommand {
 		} catch (IllegalArgumentException e) { // catches if it couldn't create a valid ItemStack for the Block
 			m.sendHeading("No OreDict Entries.");
 		}
+	}
+	
+	@NotNull
+	private static String formatPos(BlockPos blockPos, String blockName) {
+		return "Block §2" + blockName + " §rat §9" + Util.Format.formatPos(blockPos);
 	}
 	
 	private static void printLiquidInfo(MessageHelper m, ItemStack heldItem) {
@@ -551,14 +587,18 @@ public class CommandHandler extends CraftTweakerCommand {
 		private static final char[] HIGHLIGHTING = {'b', '2'};
 		
 		void send(String message) {
-			if (doChat)
-				sender.sendMessage(new TextComponentString(message));
-			if (doLog)
-				log(new TextComponentString(message).toString());
+			sendRaw(new TextComponentString(message));
 		}
 		
 		void log(String message) {
 			CraftTweakerAPI.logCommand(message);
+		}
+		
+		void sendRaw(ITextComponent textComponent) {
+			if (doChat)
+				sender.sendMessage(textComponent);
+			if (doLog)
+				log(textComponent.toString());
 		}
 		
 		void usage() {

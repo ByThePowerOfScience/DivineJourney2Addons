@@ -3,6 +3,7 @@ package org.btpos.dj2addons.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.World;
+import sun.reflect.generics.repository.ClassRepository;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -32,12 +33,14 @@ public class StringDumpUtils {
 		dump(object, System.out::println);
 	}
 	
-	static final Class<?>[] fieldTypeExclusions = new Class[] {
-			World.class
+	static final Object[] fieldTypeExclusions = new Object[] {
+			World.class,
+			"io.netty",
+			ClassRepository.class
 	};
 	static final Map<String, List<String>> fieldNameExclusions = ImmutableMap.of(
 			"net.minecraftforge.registries.RegistryDelegate", ImmutableList.of("type")
-	                                                                            );
+	);
 	
 	
 	/**
@@ -132,9 +135,13 @@ public class StringDumpUtils {
 							Field[] fields = clazz.getDeclaredFields();
 							findFields:
 							for (Field field : fields) {
-								for (Class<?> exclusion : fieldTypeExclusions) {
-									if (field.getType().isAssignableFrom(exclusion))
+								for (Object exclusion : fieldTypeExclusions) {
+									if (exclusion instanceof Class && field.getType().isAssignableFrom((Class<?>) exclusion) || ((Class<?>) exclusion).isAssignableFrom(field.getType()))
 										continue findFields;
+									else if (exclusion instanceof String) { // Packages
+										if (field.getType().getPackage().toString().contains((String)exclusion))
+											continue findFields;
+									}
 								}
 								List<String> exclusionsForClass = fieldNameExclusions.get(clazz.getName());
 								if (exclusionsForClass != null && exclusionsForClass.contains(field.getName())) {
