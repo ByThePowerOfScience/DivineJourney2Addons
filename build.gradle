@@ -17,7 +17,7 @@ apply plugin: 'idea'
 archivesBaseName = 'dj2addons'
 group = 'org.btpos.dj2addons'
 version = '1.2.2'
-
+project.ext.withCoremod = true //TODO change for release
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
@@ -73,10 +73,6 @@ dependencies {
 	deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
 	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
-	
-//	deobfCompile(
-//			"curse.maven:TickProfiler-270330:2912044"
-//	)
 	
 	deobfProvided(
 			"curse.maven:ImmersiveEngineering-231951:2974106"
@@ -196,20 +192,20 @@ dependencies {
 	)
 }
 
-
+project.ext.pythonFile = project.projectDir.path + File.separator + "venv" + File.separator + "bin" + File.separator + "python3";
 
 task generateModpackZip(type: Exec, group: 'buildruns') {
-	commandLine("python3", "./python/GenerateModpackZip.py")
+	commandLine(project.ext.pythonFile, "./python/GenerateModpackZip.py")
 }
 
 task updateModpack(type: Exec, group: 'buildruns') {
 	dependsOn(build)
-	commandLine("python3", "./python/UpdateModpack.py")
+	commandLine(project.ext.pythonFile, "./python/UpdateModpack.py")
 }
 
 task updateCFModpack(type: Exec, group: 'buildruns') {
 	dependsOn(build)
-	commandLine("python3", "./python/UpdateCFModpack.py")
+	commandLine(project.ext.pythonFile, "./python/UpdateCFModpack.py")
 }
 
 task copyTestZS(type: Copy) {
@@ -222,7 +218,7 @@ task zendoc(type: JavaExec, group: 'documentation') {
 }
 
 task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
-	commandLine("python3", "./python/RemoveShadedMixinLibraries.py")
+	commandLine(project.ext.pythonFile, "./python/RemoveShadedMixinLibraries.py")
 }
 
 processResources {
@@ -247,16 +243,23 @@ processResources {
 //	rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+project.ext.manifestAttributes_noCoremod = [
+		"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+		"MixinConfigs": 'mixins.dj2addons.init.json'
+]
+project.ext.manifestAttributes_coremod = [
+		"FMLCorePluginContainsFMLMod": "true",
+		"FMLCorePlugin": 'org.btpos.dj2addons.core.DJ2ALoadingPlugin',
+		"ForceLoadAsMod": "true",
+		
+		"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+		"MixinConfigs": 'mixins.dj2addons.init.json'
+]
+
 
 jar {
 	manifest {
-		attributes(
-//				"FMLCorePluginContainsFMLMod": "true",
-//                "FMLCorePlugin"              : coremods, TODO uncomment this for release
-				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-//				"ForceLoadAsMod": "true",
-				"MixinConfigs": 'mixins.dj2addons.init.json'
-		)
+		attributes(project.ext.withCoremod ? project.ext.manifestAttributes_coremod : project.ext.manifestAttributes_noCoremod)
 	}
 }
 jar.finalizedBy('reobfJar')

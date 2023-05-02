@@ -51,10 +51,7 @@ public class RestrictedOutputRecipeBrew extends RecipeBrew {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof RestrictedOutputRecipeBrew) {
-			return this.allowedOutputs.equals(((RestrictedOutputRecipeBrew) o).allowedOutputs);
-		} else {
-			return false;
-		}
+		return o instanceof RestrictedOutputRecipeBrew
+				&& this.allowedOutputs.equals(((RestrictedOutputRecipeBrew) o).allowedOutputs);
 	}
 }

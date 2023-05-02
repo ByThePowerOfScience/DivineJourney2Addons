@@ -5,7 +5,7 @@ import shutil
 from packaging import version
 
 mods_path = os.path.expanduser('~') + "/Documents/curseforge/minecraft/Instances/DJ2 Addons Test/mods/"
-buildpath = "../build/libs/"
+buildpath = "./build/libs/"
 
 def findnewestjar(modjars):
 	jarname = ''
@@ -22,7 +22,7 @@ def findnewestjar(modjars):
 					if thisone > current:
 						jarname = filename
 	if not jarname:
-		print('No valid jars found? Found the following:')
+		print('No valid jars found in build path? All jars in build path:')
 		for path in modjars:
 			print(path)
 		return
@@ -33,14 +33,15 @@ def main():
 	for file in glob.glob(mods_path + "dj2addons*.jar"):
 		try:
 			print('deleting ' + file)
-			#os.remove(file)
+			# os.remove(file)
 		except FileNotFoundError or IndexError:
-			print('Failed to find any file to delete.')
+			print('No mod file to delete found in mods dir.')
 			pass
 	
 	modjars = glob.glob(buildpath + 'dj2addons-*.jar')
 	
 	jarname = findnewestjar(modjars)
+	assert jarname, "No valid jar found from build directory."
 	
 	print(f'copying {jarname} to "{mods_path.split("/")[-3]}" mods folder')
 	shutil.copyfile(buildpath + jarname, mods_path + jarname)
