@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.tiles.essentia.TileEssentiaOutput;
 
-
-
 // AKA "Emptying Essentia Transfuser"
 @Mixin(TileEssentiaOutput.class)
 abstract class MTileEssentiaOutput {
