@@ -11,7 +11,6 @@ FIX QUANTUMFLUX MAGNET
 	-Fix: Upgrades do not apply if it is the last item in the stack
 -Extra Utilities
 	-CT: Set base value for mills
-	-Tweak: Dropper demon ingot range fix modded droppers [NOT FIXING, TOO JANK]
 -Totemic
 	-Add custom instruments?
 -Astral Sorcery
@@ -34,7 +33,7 @@ FIX QUANTUMFLUX MAGNET
 -Bewitchment
 	-Comparator output from various blocks like cauldron, etc.
 
-FIX BETTERP2P
+FIX BETTERP2P [likely not happening without more info]
 
 
 Done:

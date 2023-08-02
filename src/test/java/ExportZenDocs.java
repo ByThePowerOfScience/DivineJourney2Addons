@@ -1,6 +1,6 @@
+import btpos.dj2addons.util.zendoc.*;
 import org.apache.commons.lang3.StringUtils;
-import org.btpos.dj2addons.util.Util.Format;
-import org.btpos.dj2addons.util.zendoc.*;
+import btpos.dj2addons.util.Util.Format;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.reflections.Reflections;
@@ -40,7 +40,6 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 //				.map(bs -> );
 		Reflections reflections = new Reflections("org.btpos.dj2addons.crafttweaker");
 		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ZenDocClass.class);
-		System.out.println("Num classes: " + classes.size()); //debug
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);
 		
@@ -106,8 +105,13 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 							name = aClass.getCanonicalName();
 						}
 						String[] h3 = name.split("\\.");
-						String zenClassName = h3[h3.length - 1];
-						Files.write(path.resolve(zenClassName.toLowerCase() + ".md"), out.toString().getBytes());
+						String filename = h3[h3.length - 1] + ".md";
+						Path rel = path;
+						for (int i = 0; i <= h3.length - 2; i++) {
+							rel = rel.resolve(h3[i]);
+						}
+						Files.createDirectories(rel);
+						Files.write(rel.resolve(filename), out.toString().getBytes());
 					} catch (IOException var24) {
 						var24.printStackTrace();
 					}

@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "package": "btpos.dj2addons.api.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "btpos.dj2addonscore.DJ2AMixinConfig",
+  "mixins": [
+    "astralsorcery.MTileCelestialCrystals",
+    "bewitchment.MBewitchmentJEI",
+    "bewitchment.MModRecipes",
+    "bewitchment.MRitual",
+    "bloodmagic.MTileInventory",
+    "bloodmagic.MTileSoulForge",
+    "extrautils2.generators.MDragonEgg",
+    "extrautils2.generators.MFire",
+    "extrautils2.generators.MLava",
+    "extrautils2.generators.MLunar",
+    "extrautils2.generators.MSolar",
+    "extrautils2.generators.MWater",
+    "extrautils2.generators.MWind",
+    "extrautils2.MGeneratorType",
+    "extrautils2.MItemBiomeMarker",
+    "extremereactors.MPowerSystem",
+    "extremereactors.MReactorInteriorData",
+    "totemic.MModContent"
+  ],
+  "client": [],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

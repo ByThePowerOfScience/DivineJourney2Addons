@@ -2,13 +2,13 @@
   {
     "modid": "dj2addons",
     "name": "Divine Journey 2 Addons",
-    "description": "A collection of mixins and mods to support the Divine Journey 2 modpack.",
+    "description": "A collection of patches and tweaks to support the Divine Journey 2 modpack.",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "https://www.curseforge.com/project/605280",
     "updateUrl": "",
     "authorList": [
-      "ByThePowerOfScience"
+      "ByThePowerOfScience (AKA ABadHaiku)"
     ],
     "credits": "Atricos - Divine Journey 2",
     "logoFile": "",
