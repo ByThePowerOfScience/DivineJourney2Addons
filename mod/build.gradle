@@ -1,0 +1,23 @@
+dependencies {
+	compile project(":coremod")
+}
+
+jar {
+	manifest {
+		attributes (
+				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+				"MixinConfigs": 'mixins.dj2addons.init.json'
+		)
+	}
+}
+
+build {
+	doLast {
+		project.tasks.injectCoremodJar.execute()
+	}
+}
+
+task injectCoremodJar(type: Exec) {
+	commandLine(rootProject.ext.pythonFile, rootProject.projectDir.toPath().resolve('python/ModOutput_InjectCoreMod.py'))
+}
+

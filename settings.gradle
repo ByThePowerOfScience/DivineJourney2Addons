@@ -1,2 +1,2 @@
-include ':main', ":core"
+include ':mod', ":coremod"
 rootProject.name = 'dj2addons'

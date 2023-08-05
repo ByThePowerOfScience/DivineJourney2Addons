@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "btpos.dj2addons.initmixins",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "btpos.dj2addons.DJ2AMixinConfig",
+  "target": "@env(INIT)",
+  "mixins": [
+    "patches.minecraftforge.IngredientNBTAccessor",
+    "patches.minecraft.MItemBucket",
+    "patches.minecraft.MWorld",
+    "custom.minecraft.MSatuRegen"
+  ],
+  "client": [],
+  "minVersion": "0.6",
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}
