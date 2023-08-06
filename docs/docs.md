@@ -1,10 +1,10 @@
 # Welcome to the documentation section!
 
-This is where all APIs are documented: primarily CraftTweaker extensions, but also some other "proprietary" methods due to the information being required *way* before CraftTweaker loads its scripts.
+This is where all APIs are documented: primarily CraftTweaker extensions, but also some other "proprietary" methods due to the information being required <i>way</i> before CraftTweaker loads its scripts.
 
 ## Navigation:
 * `/docs/include`: Ignore this; all pages here only exist to be included in other files.
-* `/docs/zs`: CraftTweaker documentation.
+* [`/docs/zs`](./zs): CraftTweaker documentation.
 * `/docs/other`: Documentation of non-CraftTweaker configuration methods.
 
 ## Commands:
