@@ -4,8 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "btpos.dj2addons.DJ2AMixinConfig",
   "mixins": [
-    "aether.MAetherEventHandler",
-    "aether.MEnchanter",
+    "aether_legacy.MAetherEventHandler",
+    "aether_legacy.MEnchanter",
     "bewitchment.MOvenRecipe",
     "bewitchment.MPoppetHandler",
     "bloodmagic.MSoulForge",

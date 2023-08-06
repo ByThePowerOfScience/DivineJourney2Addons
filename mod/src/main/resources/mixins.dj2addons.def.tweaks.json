@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "btpos.dj2addons.DJ2AMixinConfig",
   "mixins": [
-    "botania.MModBrews",
     "extrautils2.MBlockMechanicalUser",
     "extrautils2.MTileUse",
     "thaumcraft.MArcanePedestal",

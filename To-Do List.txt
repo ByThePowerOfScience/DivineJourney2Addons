@@ -2,6 +2,8 @@ To-do list:
 
 FIX QUANTUMFLUX MAGNET
 
+**add tests to make sure that each addition/tweak/api works in-game**
+
 -Mob Grinding Utils
  	-Fix: Ender inhibitor not working consistently
 -Integrated Dynamics

@@ -26,6 +26,6 @@ abstract class MTileEssentiaOutput {
 		}
 		return te;
 	}
-	
+	//TODO make it so they will only not drain the last point of essentia, so as to keep them "seeded"
 	
 }

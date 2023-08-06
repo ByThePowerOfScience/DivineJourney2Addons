@@ -10,6 +10,9 @@
     "bewitchment.MRitual",
     "bloodmagic.MTileInventory",
     "bloodmagic.MTileSoulForge",
+    "botania.MModBrews",
+    "extrautils2.MGeneratorType",
+    "extrautils2.MItemBiomeMarker",
     "extrautils2.generators.MDragonEgg",
     "extrautils2.generators.MFire",
     "extrautils2.generators.MLava",
@@ -17,8 +20,6 @@
     "extrautils2.generators.MSolar",
     "extrautils2.generators.MWater",
     "extrautils2.generators.MWind",
-    "extrautils2.MGeneratorType",
-    "extrautils2.MItemBiomeMarker",
     "extremereactors.MPowerSystem",
     "extremereactors.MReactorInteriorData",
     "totemic.MModContent"

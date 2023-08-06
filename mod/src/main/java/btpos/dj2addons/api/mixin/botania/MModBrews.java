@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package btpos.dj2addons.tweaks.mixin.botania;
+package btpos.dj2addons.api.mixin.botania;
 
 import btpos.dj2addons.api.impl.botania.BrewHandler;
 import org.spongepowered.asm.mixin.Mixin;

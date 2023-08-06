@@ -1,9 +1,9 @@
 package btpos.dj2addons;
 
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer;
+import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import btpos.dj2addons.common.CoreInfo;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.MixinEnvironment.Phase;
@@ -14,6 +14,7 @@ import java.util.Map;
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	static { // Loads classes in the right order to avoid a circularity error.
 		CoreInfo.class.getName();
+		JankConfig.class.getName();
 		DJ2APreStartHook.class.getName();
 		InfusionStabilizerClassTransformer.class.getName();
 	}
@@ -46,7 +47,6 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 		return null;
 	}
 	
-	@Nullable
 	@Override
 	public String getSetupClass() {
 		return "btpos.dj2addons.DJ2APreStartHook";

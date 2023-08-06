@@ -26,7 +26,7 @@ public abstract class MRequirementLifeEssence {
 					shift = At.Shift.BEFORE
 			),
 			cancellable = true
-	)
+	) //TODO figure out if this should return FALSE
 	private void checkNull(MachineComponent component, RecipeCraftingContext context, ResultChance chance, CallbackInfoReturnable<Boolean> cir) {
 		if (component.getContainerProvider() == null || ((TileLifeEssenceProvider) component.getContainerProvider()).getSoulNetwork() == null)
 			cir.setReturnValue(true);
