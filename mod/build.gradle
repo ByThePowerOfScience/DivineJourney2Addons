@@ -178,6 +178,7 @@ task runTests(type: JavaExec, group: 'buildruns') {
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
 	classpath = modproject.sourceSets.main.output.classesDirs + modproject.sourceSets.main.compileClasspath + modproject.sourceSets.test.output.classesDirs + modproject.sourceSets.test.runtimeClasspath + coremodproject.sourceSets.main.output.classesDirs + coremodproject.sourceSets.main.compileClasspath + coremodproject.sourceSets.test.output.classesDirs + coremodproject.sourceSets.test.runtimeClasspath
-	main = 'Test'
+	main = 'GenerateTestZS'
+	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
 }
 

@@ -28,7 +28,6 @@ public class CTCelestialCrystals {
 			return;
 		}
 		VAstralSorcery.starmetalConversion = b.getDefaultState();
-		
 	}
 	
 	@ZenMethod @ZenDocMethod(

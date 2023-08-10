@@ -1,6 +1,6 @@
+import btpos.dj2addons.common.util.Util.Format;
 import btpos.dj2addons.common.util.zendoc.*;
 import org.apache.commons.lang3.StringUtils;
-import btpos.dj2addons.common.util.Util.Format;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.reflections.Reflections;
@@ -38,8 +38,8 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 //		         .filter(classInfo -> classInfo.getPackageName().contains("org.btpos.dj2addons.crafttweaker"))
 //		         .map(ResourceInfo::asByteSource)
 //				.map(bs -> );
-		Reflections reflections = new Reflections("org.btpos.dj2addons.crafttweaker");
-		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ZenDocClass.class);
+		
+		Set<Class<?>> classes = new Reflections("btpos.dj2addons").getTypesAnnotatedWith(ZenDocClass.class);
 		ZenDocExporter export = new ZenDocExporter();
 		Path path = Paths.get(targetPath);
 		

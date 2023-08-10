@@ -17,6 +17,6 @@ public class MTileCelestialCrystals {
 	
 	@ModifyVariable(method="update", name="mul", at=@At("LOAD"), ordinal = 0)
 	public double scaleTimeRequired(double d) {
-		return d;
+		return VAstralSorcery.celestialCrystalGrowthScale;
 	}
 }
