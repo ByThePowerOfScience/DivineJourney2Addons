@@ -1,7 +1,7 @@
 package btpos.dj2addons.api.mixin.totemic;
 
 import org.apache.commons.lang3.tuple.Pair;
-import btpos.dj2addons.api.impl.totemic.VInstruments;
+import btpos.dj2addons.api.totemic.VInstruments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -22,7 +22,7 @@ public class MModContent {
 	
 	@Redirect(remap=false, method="instruments", at=@At(target="pokefenn/totemic/api/music/MusicInstrument", value="NEW"))
 	private static MusicInstrument changeTotemicValues(String name, int baseOutput, int musicMaximum) {
-		Pair<Integer, Integer> vals = VInstruments.getValuesForInstrument(name, baseOutput, musicMaximum);
+		Pair<Integer, Integer> vals = VInstruments.Internal.getValuesForInstrument(name, baseOutput, musicMaximum);
 		return new MusicInstrument(name, vals.getLeft(), vals.getRight());
 	}
 }

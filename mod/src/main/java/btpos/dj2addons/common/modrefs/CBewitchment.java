@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.Map;
@@ -32,10 +33,10 @@ public class CBewitchment {
 	}
 	
 	@SuppressWarnings("ConstantConditions")
-	public static class DummyWorldState extends BlockWorldState {
+	public static class DummyPlacedItemWorldState extends BlockWorldState {
 		private final ItemStack is;
 		
-		public DummyWorldState(ItemStack is) {
+		public DummyPlacedItemWorldState(ItemStack is) {
 			super(null, null, false);
 			this.is = is;
 		}
@@ -53,6 +54,31 @@ public class CBewitchment {
 		@Override
 		public TileEntity getTileEntity() {
 			return new DummyPlacedItem(is);
+		}
+	}
+	
+	@SuppressWarnings("ConstantConditions")
+	public static class DummyBlockWorldState extends BlockWorldState {
+		private final IBlockState state;
+		
+		public DummyBlockWorldState(IBlockState state) {
+			super(null, null, false);
+			this.state = state;
+		}
+		
+		@Override
+		public BlockPos getPos() {
+			throw new IllegalStateException();
+		}
+		
+		@Override
+		public IBlockState getBlockState() {
+			return state;
+		}
+		
+		@Override
+		public TileEntity getTileEntity() {
+			return null;
 		}
 	}
 }

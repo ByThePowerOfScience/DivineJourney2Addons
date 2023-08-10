@@ -4,7 +4,7 @@ import com.rwtema.extrautils2.items.ItemBiomeMarker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import btpos.dj2addons.api.impl.extrautils2.VExtraUtilities;
+import btpos.dj2addons.api.extrautils2.VExtraUtilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
@@ -27,7 +27,7 @@ public abstract class MItemBiomeMarker {
 			cancellable = true
 	)
 	private static void checkAllowedBiomes(ItemStack itemStackIn, Biome biome, CallbackInfoReturnable<ItemStack> cir, ResourceLocation rl) {
-		if (VExtraUtilities.getExcludedBiomes().contains(rl))
+		if (VExtraUtilities.Internal.getExcludedBiomes().contains(rl))
 			cir.setReturnValue(itemStackIn);
 	}
 }

@@ -3,7 +3,7 @@ package btpos.dj2addons.api.mixin.bewitchment;
 import com.bewitchment.api.registry.Ritual;
 import com.bewitchment.client.integration.jei.BewitchmentJEI;
 import net.minecraftforge.registries.IForgeRegistry;
-import btpos.dj2addons.api.impl.bewitchment.VModRecipes;
+import btpos.dj2addons.api.bewitchment.Rituals;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -36,6 +36,6 @@ public class MBewitchmentJEI {
 			)
 	)
 	public Collection<Ritual> removeDummyRitualRecipes(IForgeRegistry<Ritual> instance) {
-		return instance.getValuesCollection().stream().filter(o -> !(o instanceof VModRecipes.DummyRitual)).collect(Collectors.toSet());
+		return instance.getValuesCollection().stream().filter(o -> !(o instanceof Rituals.Internal.DummyRitual)).collect(Collectors.toSet());
 	}
 }

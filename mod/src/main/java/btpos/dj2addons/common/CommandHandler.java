@@ -34,8 +34,8 @@ import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import btpos.dj2addons.DJ2Addons;
-import btpos.dj2addons.api.impl.bewitchment.VModRecipes;
-import btpos.dj2addons.api.impl.extrautils2.VExtraUtilities;
+import btpos.dj2addons.api.bewitchment.Rituals;
+import btpos.dj2addons.api.extrautils2.VExtraUtilities;
 import btpos.dj2addons.common.modrefs.CBigReactors;
 import btpos.dj2addons.common.modrefs.CBigReactors.ReactorInteriorDataWrapper;
 import btpos.dj2addons.common.modrefs.CTotemic;
@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused","Inspection"})
+@SuppressWarnings({"unused", "Inspection", "Guava"})
 public class CommandHandler extends CraftTweakerCommand {
 	private static Thread dumperThread = null;
 	
@@ -390,17 +390,17 @@ public class CommandHandler extends CraftTweakerCommand {
 	private static void bewitchmentHandler(MessageHelper m) {
 		m.sendHeading("Rituals:");
 		
-		VModRecipes.getAllRituals().stream().filter(r -> !(r instanceof VModRecipes.DummyRitual))
-				.forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
+		Rituals.getAllRituals().stream().filter(r -> !(r instanceof Rituals.Internal.DummyRitual))
+		       .forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
 		
 		
-		if (VModRecipes.getRitualsToRemove().size() == 0) {
+		if (Rituals.Internal.getRitualsToRemove().size() == 0) {
 			m.sendHeading("No removed rituals.");
 		} else {
 			m.sendHeading("Removed rituals:");
 			
-			VModRecipes.getRitualsToRemove()
-					.forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
+			Rituals.Internal.getRitualsToRemove()
+			                .forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
 			
 		}
 	}
@@ -418,7 +418,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	// Prints list of mill names
 	private static void extrautilsHandler(MessageHelper m) {
-		Map<String, float[]> generators = VExtraUtilities.getCurrentScaling();
+		Map<String, float[]> generators = VExtraUtilities.Internal.getCurrentScaling();
 		if (generators.size() != 0) {
 			m.sendHeading("GP Mills:");
 			
@@ -577,6 +577,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			return this;
 		}
 		
+		@SuppressWarnings("UnusedReturnValue")
 		public MessageHelper setUsage(String translationKey) {
 			this.usage = translationKey;
 			return this;
