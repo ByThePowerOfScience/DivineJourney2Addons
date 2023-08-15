@@ -4,6 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.reflections.Reflections;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Set;
 
 public class DJ2ATest {
 	public static World world;
@@ -26,5 +31,16 @@ public class DJ2ATest {
 	
 	public static void assertBlock(BlockPos pos, Block target) {
 		assertTrue(world.getBlockState(pos).getBlock() == target);
+	}
+	
+	public static void runTests() {
+		Set<Method> methodsAnnotatedWith = new Reflections("btpos.dj2addons").getMethodsAnnotatedWith(Test.class);
+		methodsAnnotatedWith.forEach(m -> {
+			try {
+				m.invoke(m.getDeclaringClass().newInstance(), (Object) null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

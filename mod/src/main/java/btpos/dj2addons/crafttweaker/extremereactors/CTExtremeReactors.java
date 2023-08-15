@@ -6,7 +6,7 @@ import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
 import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
-import btpos.dj2addons.api.extremereactors.VExtremeReactors;
+import btpos.dj2addons.api.extremereactors.ExtremeReactors;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -22,6 +22,6 @@ public class CTExtremeReactors {
 			description = "Sets the maximum energy the reactor can store in its output buffer.",
 			args=@ZenDocArg(value ="value", info="The maximum energy stored."))
 	public static void setMaxEnergyStored(long value) {
-		VExtremeReactors.Internal.maxEnergyStored = value;
+		ExtremeReactors.Internal.maxEnergyStored = value;
 	}
 }

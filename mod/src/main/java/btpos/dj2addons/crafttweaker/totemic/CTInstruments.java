@@ -6,7 +6,7 @@ import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
 import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
-import btpos.dj2addons.api.totemic.VInstruments;
+import btpos.dj2addons.api.totemic.Instruments;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -26,27 +26,27 @@ public class CTInstruments {
 			@ZenDocArg(value ="musicMaximum", info="Sets or scales the cap on the total music this instrument type can produce.")
 	})
 	public static void modifyMusicValues(String instrumentName, Number baseOutput, Number musicMaximum) {
-		VInstruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
+		Instruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
 	}
 
 	@ZenMethod
 	public static void modifyMusicValues(String instrumentName, int baseOutput, int musicMaximum) {
-		VInstruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
+		Instruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
 	}
 
 	@ZenMethod
 	public static void modifyMusicValues(String instrumentName, double baseOutput, int musicMaximum) {
-		VInstruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
+		Instruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
 	}
 
 	@ZenMethod
 	public static void modifyMusicValues(String instrumentName, int baseOutput, double musicMaximum) {
-		VInstruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
+		Instruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
 	}
 
 	@ZenMethod
 	public static void modifyMusicValues(String instrumentName, double baseOutput, double musicMaximum) {
-		VInstruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
+		Instruments.putInstrumentModifications(instrumentName, baseOutput, musicMaximum);
 	}
 
 }

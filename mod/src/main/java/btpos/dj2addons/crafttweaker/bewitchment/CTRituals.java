@@ -21,6 +21,6 @@ public class CTRituals {
 			@ZenDocArg(value ="name",info="The name of the ritual to remove. e.g. \"biome_shift\".")
 	}, description = "Removes a Bewitchment ritual by name.")
 	public static void removeRitual(String name) {
-		Rituals.removeRitual(new Rituals.Internal.DummyRitual(name));
+		Rituals.removeRitual(name);
 	}
 }

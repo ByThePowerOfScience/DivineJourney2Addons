@@ -5,10 +5,11 @@
   "plugin": "btpos.dj2addons.DJ2AMixinConfig",
   "target": "@env(INIT)",
   "mixins": [
-    "patches.minecraftforge.IngredientNBTAccessor",
+    "api.minecraft.MItemHangingEntity",
+    "custom.minecraft.MSatuRegen",
     "patches.minecraft.MItemBucket",
     "patches.minecraft.MWorld",
-    "custom.minecraft.MSatuRegen"
+    "patches.minecraftforge.IngredientNBTAccessor"
   ],
   "client": [],
   "minVersion": "0.6",

@@ -2,7 +2,7 @@ package btpos.dj2addons.api.extremereactors;
 
 import btpos.dj2addons.DJ2Addons;
 
-public class VExtremeReactors {
+public class ExtremeReactors {
 	
 	public static void setMaxEnergyStored(long l) {
 		if (Internal.maxEnergyStored != null) {

@@ -35,7 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import btpos.dj2addons.DJ2Addons;
 import btpos.dj2addons.api.bewitchment.Rituals;
-import btpos.dj2addons.api.extrautils2.VExtraUtilities;
+import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import btpos.dj2addons.common.modrefs.CBigReactors;
 import btpos.dj2addons.common.modrefs.CBigReactors.ReactorInteriorDataWrapper;
 import btpos.dj2addons.common.modrefs.CTotemic;
@@ -418,7 +418,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	// Prints list of mill names
 	private static void extrautilsHandler(MessageHelper m) {
-		Map<String, float[]> generators = VExtraUtilities.Internal.getCurrentScaling();
+		Map<String, float[]> generators = ExtraUtilities.Internal.getCurrentScaling();
 		if (generators.size() != 0) {
 			m.sendHeading("GP Mills:");
 			

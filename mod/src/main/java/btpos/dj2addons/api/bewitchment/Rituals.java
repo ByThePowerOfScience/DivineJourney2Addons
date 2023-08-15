@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rituals {
-	public static void removeRitual(Ritual ritual) {
-		Internal.ritualsToRemove.add(ritual);
+	public static void removeRitual(String name) {
+		Internal.ritualsToRemove.add(new Internal.DummyRitual(name));
 	}
 	
 	public static List<Ritual> getAllRituals() {

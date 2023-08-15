@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class VExtraUtilities {
+public class ExtraUtilities {
 	public static void setScaling(String millName, float[] values) {
 		Internal.scalingMap.put(millName, values);
 	}

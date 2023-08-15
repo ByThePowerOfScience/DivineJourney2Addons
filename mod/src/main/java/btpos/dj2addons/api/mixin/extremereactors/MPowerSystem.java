@@ -1,7 +1,7 @@
 package btpos.dj2addons.api.mixin.extremereactors;
 
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
-import btpos.dj2addons.api.extremereactors.VExtremeReactors;
+import btpos.dj2addons.api.extremereactors.ExtremeReactors;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -27,7 +27,7 @@ public class MPowerSystem {
 	 */
 	@ModifyVariable(method="<init>", at=@At("HEAD"), argsOnly = true)
 	private static long changeMaxEnergyStored(long value) {
-		return Objects.nonNull(VExtremeReactors.Internal.maxEnergyStored) ? VExtremeReactors.Internal.maxEnergyStored : value;
+		return Objects.nonNull(ExtremeReactors.Internal.maxEnergyStored) ? ExtremeReactors.Internal.maxEnergyStored : value;
 	}
 
 }

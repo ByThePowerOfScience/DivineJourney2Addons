@@ -3,7 +3,7 @@ package btpos.dj2addons.crafttweaker.extrautils2;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
-import btpos.dj2addons.api.extrautils2.VExtraUtilities;
+import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
@@ -35,7 +35,7 @@ public class CTMills {
 			arr[i+1] = entry.getValue();
 			i += 2;
 		}
-		VExtraUtilities.setScaling(millName.toUpperCase().replace(" ", "_").trim(), arr);
+		ExtraUtilities.setScaling(millName.toUpperCase().replace(" ", "_").trim(), arr);
 	}
 	
 	@ZenMethod @ZenDocMethod(order = 1, description = {
@@ -48,6 +48,6 @@ public class CTMills {
 	}) @ZenDoc("Sets mill base GP production. See docs on GitHub.")
 	public static void setBaseValue(String millName, Float value) {
 		millName = millName.toUpperCase().replace(" ", "_").trim();
-		VExtraUtilities.Internal.basePowerMap.put(millName, value);
+		ExtraUtilities.Internal.basePowerMap.put(millName, value);
 	}
 }

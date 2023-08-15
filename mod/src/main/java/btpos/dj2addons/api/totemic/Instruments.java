@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Holds the map for the instruments' new data
-public class VInstruments {
+public class Instruments {
 	
 	public static void putInstrumentModifications(String instrumentName, Number baseOutput, Number musicMaximum) {
 		Internal.INSTRUMENT_MAP.put(instrumentName, Pair.of(baseOutput, musicMaximum));

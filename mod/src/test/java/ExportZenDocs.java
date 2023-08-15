@@ -1,5 +1,6 @@
 import btpos.dj2addons.common.util.Util.Format;
 import btpos.dj2addons.common.util.zendoc.*;
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -379,9 +380,11 @@ public class ExportZenDocs { //TODO turn this into an annotation processor
 		
 		private static String getSimpleTypeString(Class<?> type) {
 			String result = type.getSimpleName();
-			if (result.startsWith("Zen")) {
-				result = result.substring(3);
-			} else if (result.startsWith("String")) {
+			ZenClass zc = type.getDeclaredAnnotation(ZenClass.class);
+			if (zc != null && !Strings.isNullOrEmpty(zc.value())) {
+					String[] split = zc.value().split("\\.");
+					result = split[split.length - 1];
+			} else if (result.equals("String")) {
 				result = Format.uncapitalizeFirstLetter(result);
 			}
 			

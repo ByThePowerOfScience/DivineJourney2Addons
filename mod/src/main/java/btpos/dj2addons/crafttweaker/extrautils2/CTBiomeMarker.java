@@ -8,7 +8,7 @@ import crafttweaker.api.world.IBiome;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
 import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
-import btpos.dj2addons.api.extrautils2.VExtraUtilities;
+import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -22,6 +22,6 @@ public class CTBiomeMarker {
 			@ZenDocArg(value = "biome", info = "The biome to exclude.")
 	}) @ZenDoc("Excludes biome from Biome Marker. See docs on GitHub.")
 	public static void excludeBiome(IBiome biome) {
-		VExtraUtilities.addExcludedBiome(CraftTweakerMC.getBiome(biome).getRegistryName());
+		ExtraUtilities.addExcludedBiome(CraftTweakerMC.getBiome(biome).getRegistryName());
 	}
 }

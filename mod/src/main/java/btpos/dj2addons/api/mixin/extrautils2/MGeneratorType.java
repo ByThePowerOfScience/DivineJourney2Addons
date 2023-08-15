@@ -1,7 +1,7 @@
 package btpos.dj2addons.api.mixin.extrautils2;
 
 import com.rwtema.extrautils2.blocks.BlockPassiveGenerator;
-import btpos.dj2addons.api.extrautils2.VExtraUtilities;
+import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
@@ -29,7 +29,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifySolarScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("SOLAR", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("SOLAR", values);
 	}
 	
 	
@@ -53,7 +53,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyLunarScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("LUNAR", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("LUNAR", values);
 	}
 	
 	
@@ -77,7 +77,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyLavaScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("LAVA", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("LAVA", values);
 	}
 	
 	@ModifyArg(
@@ -100,7 +100,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyWaterScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("WATER", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("WATER", values);
 	}
 	
 	
@@ -124,7 +124,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyWindScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("WIND", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("WIND", values);
 	}
 	
 	@ModifyArg(
@@ -147,7 +147,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyFireScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("FIRE", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("FIRE", values);
 	}
 	
 	@ModifyArg(
@@ -170,7 +170,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyPlayerWindUpScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("PLAYER_WIND_UP", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("PLAYER_WIND_UP", values);
 	}
 	
 	
@@ -194,6 +194,6 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyDragonEggMillScaling(float[] values) {
-		return VExtraUtilities.Internal.getScalingOrReturnOriginal("DRAGON_EGG", values);
+		return ExtraUtilities.Internal.getScalingOrReturnOriginal("DRAGON_EGG", values);
 	}
 }
