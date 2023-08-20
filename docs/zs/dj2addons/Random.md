@@ -10,13 +10,13 @@ Helper object for getting random numbers before world load.
 #### Static Methods
 
 ```zenscript
-CTRandom newRandom();
+Random newRandom();
 ```
 
 Creates a new Random object with a default seed.
 
 ```zenscript
-CTRandom newRandom(seed);
+Random newRandom(seed);
 ```
 
 Creates a new Random object with a set seed.
