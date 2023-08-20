@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "btpos.dj2addons.custom.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "btpos.dj2addons.DJ2AMixinConfig",
+  "mixins": [
+    "MOverlayHandler"
+  ],
+  "client": [],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

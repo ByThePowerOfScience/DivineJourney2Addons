@@ -1,2 +1,68 @@
-Mob Grinding Utils
--Fix: Ender inhibitor not working consistently
+To-do list:
+
+FIX QUANTUMFLUX MAGNET
+
+**add tests to make sure that each addition/tweak/api works in-game**
+
+-Mob Grinding Utils
+ 	-Fix: Ender inhibitor not working consistently
+-Integrated Dynamics
+	-Fix: crafting causing major lag
+	-Fix: network corrupting after every restart
+-Actually Additions
+	-Fix: Upgrades do not apply if it is the last item in the stack
+-Extra Utilities
+	-CT: Set base value for mills
+-Totemic
+	-Add custom instruments?
+-Astral Sorcery
+	-Fix: Massive amount of armor rendering above player
+	-Tweak: Fix sextant rendering in front of blocks?
+	-Add: Item to cycle star day?
+	-Add: Item that lights up when a certain star is present
+-Evilcraft
+	-Fix: Vengeance glasses not working
+-Mob Grinding Utils
+	-Fix: Ender Inhibitor not inhibiting teleportation
+-Ender IO
+	-Fix: Aversion (Mob prevention) obelisk not working
+	-Fix: Redstone conduit - Removing an input or changing its channel while it is powered keeps it constantly powered
+-Roots
+	-Projectiles spell? need more info
+	-Disable modifiers through `Modifiers.disableModifier("mod")` doesn't visually disable them
+	-if an herb slot doesn't exist on a staff spell, shift-clicking it into the ui will still eat the herb
+-Diagnose issue with Vethea and /home
+-Bewitchment
+	-Comparator output from various blocks like cauldron, etc.
+
+FIX BETTERP2P [likely not happening without more info]
+
+
+Done:
+-Astral Sorcery
+	-CT: Starmetal ore with a celestial crystal growing on it turns into iron, change what it turns into
+
+-Aether
+	-Fix: Aether enchanter Altar skyroot bucket dupe
+	-Tweak: Place lava with dispenser, turn it into Aerogel. should work with modded dispensers too.
+
+-Bewitchment
+	-CT: Change base value of existing altar modifiers
+
+-Extra Utilities
+	-CT: Edit mill power scaling
+	-Patch: Atum biomes appearing in Quantum Quarry dimension [Fixed with MBiomeMarker]
+
+-Totemic
+	-Change instrument values
+
+-Extreme Reactors
+	-CT: Output buffer size, add coolant types
+
+-Roots
+	-Inventory desync when hitting spell library key
+    -Spectator mode, if you change dimensions during spell then it teleports you to the coordinates in the dimension you left in the dimension you were teleported to
+    	-Example: Fall out of the aether, activate spell at y=0 in aether, get teleported to overworld, spell runs out, teleported to y=0 in overworld
+
+
+

@@ -1,1 +1,2 @@
+include ':mod', ":coremod"
 rootProject.name = 'dj2addons'
