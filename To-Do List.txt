@@ -22,6 +22,15 @@ Optimizations:
 		-Fix: cache result since the input will NEVER change
 -Agricraft
 	-0.23% | JsonPlant.getHarvestProducts() -> ReferencePipeline.forEach()
+-Extra Utilities
+	-Mechanical User
+		-Problem: TileUse.operate() taking 1.8% of total server time???  There's no way there are enough of them on the server that are constantly active to be doing this.
+		-Fix?: If the mode requires an item (e.g. Activate Block with Item), check if there's an item first before firing?
+		-TODO: Check in base with Mineralis cape to see if there's any mechanical users set to fire constantly
+-Actually Additions:
+	-TileEntityLaserRelay.getNetwork() - 1.46%, try and cache?
+		-> LaserRelayConnectionHandler.getNetworkFor() -> ConcurrentHashMap$KeyIterator.next() | 0.85%
+		<- TileEntityLaserRelayItem.saveDataOnChangeOrWorldStart() every tick
 -Redstone called every update tick (World.isBlockIndirectlyGettingPowered() might not be optimizable??)
 	-IE: 
 		-TileEntityMultiblockMetal.update() -> TileEntityMultiblockMetal.isRSDisabled()
