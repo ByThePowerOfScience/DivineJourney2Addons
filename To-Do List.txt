@@ -4,6 +4,38 @@ FIX QUANTUMFLUX MAGNET
 
 **add tests to make sure that each addition/tweak/api works in-game**
 
+Optimizations:
+-Industrial Foregoing
+	-1.42% | Hydrator
+		-Block.randomTick() -> Optional.get() -> BlockCrop$$Lambda$8493.885801297.accept() -> TileEntityCrop.onGrowthTick()
+			-[0.89% | TileEntityCrop.spread() -> [0.70% | GrowthRequirement.hasValidSoil()]
+				-Fix: Check if there aren't any empty adjacent filled cropsticks FIRST
+	-Plant interactor:
+		-0.20% | BlockUtils.canBlockBeBroken()
+			-Problem: called even when harvesting operation doesn't require it to be broken
+			-Fix: change order of checks
+	-IRedstoneControlledMachine$RedstoneControl$RedstoneOff.canRun() -> SidedTileEntity$update$1.invoke()
+		-Problem: Seems like it calls World#getRedstonePower EVERY TICK.
+		-Fix: Redstone only changes on block update; see if redstone power has changed only on block update and store that result until the next block update occurs.
+	-0.21% | MaterialStoneWorkFactoryTile.performWork()
+		-Problem: Lot of time spent on FurnaceRecipes.getSmeltingResult()
+		-Fix: cache result since the input will NEVER change
+-Agricraft
+	-0.23% | JsonPlant.getHarvestProducts() -> ReferencePipeline.forEach()
+-Redstone called every update tick (World.isBlockIndirectlyGettingPowered() might not be optimizable??)
+	-IE: 
+		-TileEntityMultiblockMetal.update() -> TileEntityMultiblockMetal.isRSDisabled()
+		-TileEntityMetalBarrel.update()
+		-TileEntitySampleDrill.update()
+	-Astral: TileChalice.update()
+	-Thaumcraft: TileThaumatorium.gettingPower() 
+
+
+
+
+
+
+
 -Mob Grinding Utils
  	-Fix: Ender inhibitor not working consistently
 -Integrated Dynamics
