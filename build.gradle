@@ -79,8 +79,6 @@ subprojects {
 		//	rename '(.+_at.cfg)', 'META-INF/$1'
 	}
 	
-	
-	
 	task generateModpackZip(type: Exec, group: 'buildruns') {
 		commandLine(rootProject.ext.pythonFile, "./python/GenerateModpackZip.py")
 	}

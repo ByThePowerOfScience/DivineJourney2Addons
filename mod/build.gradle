@@ -183,3 +183,7 @@ task runTests(type: JavaExec, group: 'buildruns') {
 	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
 }
 
+task buildTestJar(type: Jar, group: 'buildruns') {
+	from(sourceSets.test.output);
+	archiveName = 'dj2addons-test'
+}
