@@ -1,21 +1,35 @@
 import glob
 import os
 import zipfile
+from pathlib import Path
+from packaging import version
+import re
+
+# x = re.compile("/dj2addons-([0-9.]+)\\.jar/")
+
 
 def getModPath(s):
-	possibles = glob.glob(os.path.expanduser(s))
-	for p in possibles:
-		if 'sources' in p:
-			continue
-		return p
-	raise RuntimeError('No mod jar found.')
+    possibles = glob.glob(s)
+    if len(possibles) == 0:
+        raise RuntimeError("No possible mod jars found at " + s)
+    # latest = version.parse("0.0.0")
+    # latestjar = None
+    for [name, jar] in possibles:
+        if 'sources' in name:
+            continue
+        return jar
+    raise RuntimeError('No mod jar found at ' + str([path for [path, _jar] in possibles]))
 
 
-coremod_path = os.path.expanduser("~/IdeaProjects/DJ2Addons/coremod/build/libs/dj2addons-core.jar")
-mod_path = getModPath("~/IdeaProjects/DJ2Addons/mod/build/libs/dj2addons-*.jar")
+project_dir = Path("~/IdeaProjects/DJ2Addons/").expanduser()
+coremod_path = project_dir / "coremod/build/libs/dj2addons-core.jar"
+mod_path = project_dir / "mod/build/libs/dj2addons-*.jar"
+
 
 def main():
-	with zipfile.ZipFile(mod_path, 'a') as file:
-		file.write(coremod_path, '/META-INF/libraries/dj2addons-core.jar')
+    modjar = getModPath(str(mod_path))
+    with zipfile.ZipFile(modjar, 'a') as file:
+        file.write(coremod_path, '/META-INF/libraries/dj2addons-core.jar')
+
 
 main()

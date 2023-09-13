@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os;
+
 buildscript {
 	repositories {
 		gradlePluginPortal()
@@ -9,11 +11,15 @@ buildscript {
 		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.6+'
 	}
 }
-project.ext.pythonFile = project.file('venv/bin/python3')
+plugins {
+	id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
+}
+project.ext.pythonFile = Os.isFamily(Os.FAMILY_WINDOWS) ? project.file('venv/Scripts/python.exe') : project.file('venv/bin/python3')
 subprojects {
 	apply plugin: 'net.minecraftforge.gradle.forge'
 	apply plugin: 'org.spongepowered.mixin'
 	apply plugin: 'idea'
+	
 	
 	archivesBaseName = 'dj2addons'
 	group = 'btpos.dj2addons'
@@ -46,9 +52,12 @@ subprojects {
 	
 	repositories {
 		mavenCentral()
+		maven { url 'https://jitpack.io' }
 	}
 	
 	dependencies {
+		implementation("com.github.LlamaLad7:MixinExtras:0.1.1")
+//		annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
 		implementation 'org.spongepowered:mixin:0.8.5'
 		testImplementation     "org.junit.jupiter:junit-jupiter-api:5.2.0"
 		testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
@@ -99,7 +108,7 @@ subprojects {
 	
 	
 	task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
-		commandLine(rootProject.ext.pythonFile, "./python/RemoveShadedMixinLibraries.py")
+		commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
 	}
 	
 	jar.finalizedBy('reobfJar')
@@ -118,7 +127,17 @@ subprojects {
 			downloadJavadoc = true
 		}
 	}
+	
 }
+//ideaExt {
+//	project {
+//		settings {
+//			taskTriggers {
+//				afterSync tasks.getByName("removeShadedMixinLibraries")
+//			}
+//		}
+//	}
+//}
 
 task zendoc(type: JavaExec, group: 'documentation') {
 	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath // + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath

@@ -51,7 +51,7 @@ Optimizations:
 	-Fix: crafting causing major lag
 	-Fix: network corrupting after every restart
 -Actually Additions
-	-Fix: Upgrades do not apply if it is the last item in the stack
+	-Fix: Laser upgrades vanish but do not apply if it is the last item in the stack
 -Extra Utilities
 	-CT: Set base value for mills
 -Totemic

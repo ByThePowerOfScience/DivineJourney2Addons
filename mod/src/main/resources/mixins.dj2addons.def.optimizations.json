@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "btpos.dj2addons.optimizations.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "btpos.dj2addons.DJ2AMixinConfig",
+  "mixins": [
+    "industrialforegoing.MPlantInteractor"
+  ],
+  "client": [],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

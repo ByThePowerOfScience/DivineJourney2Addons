@@ -1,6 +1,8 @@
-package btpos.dj2addons.patches.mixin.industrialforegoing;
+package btpos.dj2addons.optimizations.mixin.industrialforegoing;
 
 import com.buuz135.industrial.tile.agriculture.PlantInteractorTile;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -10,6 +12,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.common.modrefs.CAgricraft;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,7 +36,12 @@ public class MPlantInteractor {
 	 * Allows Plant Interactors to access the drops from AgriCraft crops directly without having to drop them on the ground.
 	 * <p>Removes lag from FakePlayer usage and item drops.</p>
 	 */
-	@Redirect(remap=false, method="work()F", at=@At(value="INVOKE", target="Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
+	@Redirect(
+			remap=false,
+			method="work()F",
+			at=@At(
+					value="INVOKE",
+					target="Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
 	private IBlockState handleAgriCraftCrops(World world, BlockPos pos) {
 		if (!IsModLoaded.agricraft)
 			return world.getBlockState(pos);
@@ -47,5 +55,27 @@ public class MPlantInteractor {
 		} else {
 			return world.getBlockState(pos);
 		}
+	}
+	
+	
+	@Redirect(
+			remap=false,
+			method="work()F",
+			at=@At(
+					value="INVOKE",
+					target="Lcom/buuz135/industrial/utils/BlockUtils;canBlockBeBroken(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z"))
+	private boolean dj2addons$reviseChecks1(World world, BlockPos pos) {
+		return true;
+	}
+	
+	@WrapOperation(
+			remap=false,
+			method="work()F",
+			at=@At(
+					value="JUMP",
+					opcode = Opcodes.INSTANCEOF
+					))
+	private boolean dj2addons$moveCanBlockBeBrokenToLater(Object o, Operation<Boolean> operation) {
+		
 	}
 }

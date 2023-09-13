@@ -17,6 +17,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	public static final String[] defConfigs = {
 			"mixins.dj2addons.def.api.json",
 			"mixins.dj2addons.def.custom.json",
+			"mixins.dj2addons.def.optimizations.json",
 			"mixins.dj2addons.def.patches.json",
 			"mixins.dj2addons.def.tweaks.json"
 	};

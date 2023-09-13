@@ -32,6 +32,8 @@ dependencies {
 	
 	deobfCompile("curse.maven:ActuallyAdditions-228404:3117927")
 	
+	deobfCompile("curse.maven:Erebus-220698:3211974")
+	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
 			"curse.maven:Patchouli-306770:3162874",
@@ -183,6 +185,16 @@ task runTests(type: JavaExec, group: 'buildruns') {
 	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
 }
 
+//idea.project {
+//	settings {
+//		taskTriggers {
+//			afterSync tasks.getByName("removeShadedMixinLibraries")
+//		}
+//	}
+//}
+//idea {
+//	
+//}
 task buildTestJar(type: Jar, group: 'buildruns') {
 	from(sourceSets.test.output);
 	archiveName = 'dj2addons-test'

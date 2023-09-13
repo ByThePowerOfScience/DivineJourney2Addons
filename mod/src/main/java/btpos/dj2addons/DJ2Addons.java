@@ -67,7 +67,7 @@ public class DJ2Addons {
 	 */
 	@Mod.EventHandler
 	public void postinit(FMLPostInitializationEvent event) {
-		if (IsModLoaded.crafttweaker) {
+		if (IsModLoaded.crafttweaker) { // also finalizes all IsModLoaded checks
 			CCraftTweaker.postInit();
 		}
 	}

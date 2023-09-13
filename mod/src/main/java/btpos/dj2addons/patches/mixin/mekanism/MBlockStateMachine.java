@@ -9,6 +9,7 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import org.spongepowered.asm.mixin.Mixin;
 
+// TODO UNIMPLEMENTED
 @Mixin(BlockStateMachine.class)
 public abstract class MBlockStateMachine extends ExtendedBlockState {
 	public MBlockStateMachine(Block blockIn, IProperty<?>[] properties, IUnlistedProperty<?>[] unlistedProperties) {
