@@ -7,7 +7,7 @@ import dj2addons.thaumcraft.InfusionStabilizer;
 #### Static Methods
 
 ```zenscript
-CTInfusionStabilizer getInfusionStabilizer(block);
+InfusionStabilizer getInfusionStabilizer(block);
 ```
 
 Gets an InfusionStabilizer object for a given block.

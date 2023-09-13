@@ -11,9 +11,9 @@ Adds upgrades to the Witches Altar.
 
 ```zenscript
 void addUpgradeCup(
-  IItemStack itemStack, // The OreDict key to add.
-  int gain,             // Flat bonus to Magical Power.
-  double multiplier,    // Multiplicative multiplier applied to MP.
+  IItemStack itemStack, // The Item to add. Will be a TileEntityPlacedItem on the Altar.
+  int gain,             // Amount added to Recharge Rate.
+  double multiplier,    // Multiplier applied to total MP.
 );
 ```
 
@@ -21,8 +21,17 @@ void addUpgradeCup(
 ```zenscript
 void addUpgradeCup(
   IOreDictEntry oreDict, // The OreDict key to add.
-  int gain,              // Flat bonus to Magical Power.
-  double totalMult,      // Multiplicative multiplier applied to MP.
+  int gain,              // Amount added to Recharge Rate.
+  double multiplier,     // Multiplier applied to total MP.
+);
+```
+
+
+```zenscript
+void addUpgradeCup(
+  IBlock block,      // The Block key to add.
+  int gain,          // Amount added to Recharge Rate.
+  double multiplier, // Multiplier applied to total MP.
 );
 ```
 
@@ -30,7 +39,7 @@ void addUpgradeCup(
 ```zenscript
 void addUpgradePentacle(
   IItemStack itemStack, // The Item to add.
-  int bonus,            // Flat bonus to Magical Power.
+  int bonus,            // Amount added to recharge rate.
 );
 ```
 
@@ -38,7 +47,15 @@ void addUpgradePentacle(
 ```zenscript
 void addUpgradePentacle(
   IOreDictEntry oreDict, // The OreDict key to add.
-  int bonus,             // Flat bonus to Magical Power.
+  int bonus,             // Amount added to recharge rate.
+);
+```
+
+
+```zenscript
+void addUpgradePentacle(
+  IBlock block, // The Block to add.
+  int bonus,    // Amount added to recharge rate.
 );
 ```
 
@@ -46,7 +63,7 @@ void addUpgradePentacle(
 ```zenscript
 void addUpgradeWand(
   IItemStack itemStack, // The Item to add.
-  double multBoost,     // Additive multiplier to MP.
+  double bonus,         // Flat bonus to MP.
 );
 ```
 
@@ -54,7 +71,15 @@ void addUpgradeWand(
 ```zenscript
 void addUpgradeWand(
   IOreDictEntry oreDict, // The OreDict key to add.
-  double multBoost,      // Additive multiplier to MP.
+  double bonus,          // Flat bonus to MP.
+);
+```
+
+
+```zenscript
+void addUpgradeWand(
+  IBlock block, // The Block to add.
+  double bonus, // Flat bonus to MP.
 );
 ```
 
@@ -62,7 +87,7 @@ void addUpgradeWand(
 ```zenscript
 void addUpgradeSword(
   IItemStack itemStack, // The Item to add.
-  double multiplier,    // Additive multiplier to MP.
+  double multiplier,    // Flat multiplier to MP.
 );
 ```
 
@@ -70,10 +95,24 @@ void addUpgradeSword(
 ```zenscript
 void addUpgradeSword(
   IOreDictEntry oreDict, // The OreDict key to add.
-  double multiplier,     // Additive multiplier to MP.
+  double multiplier,     // Flat multiplier to MP.
 );
 ```
 
+
+```zenscript
+void addUpgradePentacle(
+  IBlock block,      // The Block to add.
+  double multiplier, // Flat multiplier to MP.
+);
+```
+
+
+```zenscript
+void removeAllUpgrades();
+```
+
+Removes all registered altar upgrades.
 
 ```zenscript
 void removeUpgrade(iItemStack);
@@ -86,4 +125,10 @@ void removeUpgrade(oreDictEntry);
 ```
 
 Removes altar upgrades matching an oredict entry.
+
+```zenscript
+void removeUpgrade(block);
+```
+
+Removes altar upgrades matching a block state.
 
