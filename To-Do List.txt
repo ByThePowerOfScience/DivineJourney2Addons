@@ -10,10 +10,7 @@ Optimizations:
 		-Block.randomTick() -> Optional.get() -> BlockCrop$$Lambda$8493.885801297.accept() -> TileEntityCrop.onGrowthTick()
 			-[0.89% | TileEntityCrop.spread() -> [0.70% | GrowthRequirement.hasValidSoil()]
 				-Fix: Check if there aren't any empty adjacent filled cropsticks FIRST
-	-Plant interactor:
-		-0.20% | BlockUtils.canBlockBeBroken()
-			-Problem: called even when harvesting operation doesn't require it to be broken
-			-Fix: change order of checks
+
 	-IRedstoneControlledMachine$RedstoneControl$RedstoneOff.canRun() -> SidedTileEntity$update$1.invoke()
 		-Problem: Seems like it calls World#getRedstonePower EVERY TICK.
 		-Fix: Redstone only changes on block update; see if redstone power has changed only on block update and store that result until the next block update occurs.
@@ -40,7 +37,11 @@ Optimizations:
 	-Thaumcraft: TileThaumatorium.gettingPower() 
 
 
-
+Optimizations DONE:
+-Plant interactor:
+		-0.20% | BlockUtils.canBlockBeBroken()
+			-Problem: called even when harvesting operation doesn't require it to be broken
+			-Fix: change order of checks
 
 
 

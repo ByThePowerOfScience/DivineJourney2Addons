@@ -82,7 +82,7 @@ dependencies {
 			"curse.maven:McJtyLib-233105:2745846"
 	)
 	
-	deobfProvided(
+	deobfCompile(
 			"curse.maven:Forgelin-248453:2785465",
 			"curse.maven:TeslaCoreLib-254602:3438487",
 			"curse.maven:IndustrialForegoing-266515:2745321"

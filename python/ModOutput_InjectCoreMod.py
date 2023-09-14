@@ -14,10 +14,10 @@ def getModPath(s):
         raise RuntimeError("No possible mod jars found at " + s)
     # latest = version.parse("0.0.0")
     # latestjar = None
-    for [name, jar] in possibles:
-        if 'sources' in name:
+    for x in possibles:
+        if 'sources' in x:
             continue
-        return jar
+        return x
     raise RuntimeError('No mod jar found at ' + str([path for [path, _jar] in possibles]))
 
 

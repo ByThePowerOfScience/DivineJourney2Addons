@@ -1,7 +1,10 @@
 package btpos.dj2addons.common.modrefs;
 
 import com.infinityraider.agricraft.api.v1.misc.IAgriHarvestable;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
+import java.util.function.Consumer;
 
 public class CAgricraft {
 	public static boolean isAgriHarvestable(TileEntity te) {
@@ -10,5 +13,9 @@ public class CAgricraft {
 	
 	public static IAgriHarvestable asAgriHarvestable(TileEntity te) {
 		return (IAgriHarvestable)te;
+	}
+	
+	public static void callOnHarvest(TileEntity te, Consumer<ItemStack> consumer) {
+		((IAgriHarvestable)te).onHarvest(consumer, null);
 	}
 }
