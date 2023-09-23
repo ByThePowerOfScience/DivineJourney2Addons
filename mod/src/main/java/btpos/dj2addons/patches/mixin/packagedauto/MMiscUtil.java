@@ -3,6 +3,7 @@ package btpos.dj2addons.patches.mixin.packagedauto;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -11,7 +12,7 @@ import thelm.packagedauto.api.MiscUtil;
 
 @Mixin(MiscUtil.class)
 public abstract class MMiscUtil {
-	private static NBTTagCompound tagcompound;
+	@Unique private static NBTTagCompound dj2addons$tagcompound;
 	
 	@ModifyVariable(
 			remap=false,
@@ -28,7 +29,7 @@ public abstract class MMiscUtil {
 			)
 	)
 	private static NBTTagCompound getNBTCompound(NBTTagCompound nbt) {
-		tagcompound = nbt;
+		dj2addons$tagcompound = nbt;
 		return nbt;
 	}
 	
@@ -54,7 +55,7 @@ public abstract class MMiscUtil {
 	private static Object addTagCompound(Object stack) {
 		if (stack instanceof ItemStack) {
 			ItemStack is = ((ItemStack)stack);
-			is.setTagCompound(tagcompound);
+			is.setTagCompound(dj2addons$tagcompound);
 			return is;
 		} else {
 			return stack;

@@ -8,15 +8,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Fixes this method creating 1000 new itemstacks every tick for LITERALLY NO REASON
  */
 @Mixin(AbilityAccessories.class)
 public abstract class MAbilityAccessories {
-    @Unique private static final Map<Item, ItemStack> dj2addons$itemstackCache = new HashMap<>();
+    @Unique private static final Map<Item, ItemStack> dj2addons$itemstackCache = new ConcurrentHashMap<>();
 	
 	@Redirect(
 			remap=false,
@@ -25,7 +25,7 @@ public abstract class MAbilityAccessories {
 					value="NEW",
 					target="(Lnet/minecraft/item/Item;)net/minecraft/item/ItemStack"
 			)
-	)
+	) // not necessarily the most optimal, but it's less brittle than directly referencing each one.
 	private ItemStack cacheResult(Item itemIn) {
 		return dj2addons$itemstackCache.computeIfAbsent(itemIn, ItemStack::new);
 	}

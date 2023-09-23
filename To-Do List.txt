@@ -46,7 +46,7 @@ Optimizations DONE:
 			-Fix: change order of checks
 
 
-
+-configanytime for thaumcraft jankconfig
 
 -Mob Grinding Utils
  	-Fix: Ender inhibitor not working consistently

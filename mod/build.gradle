@@ -31,8 +31,17 @@ dependencies {
 	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
 	
 	deobfCompile("curse.maven:ActuallyAdditions-228404:3117927")
+//	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
+//	deobfProvided(
+//			"curse.maven:EnderIO-64578:3328811",
+//			"curse.maven:ProjectIntelligence-306028:2833640",
+//			"curse.maven:EnderCore-231868:2972849",
+//			"curse.maven:BrandonsCore-231382:3408276",
+//			"curse.maven:CodeChickenLib-242818:2779848"
+//	)
+//	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	
-	deobfCompile("curse.maven:Erebus-220698:3211974")
+	deobfProvided("curse.maven:Erebus-220698:3211974")
 	
 	// **CRAFTTWEAKER HOOKS**
 	deobfCompile(
@@ -40,9 +49,9 @@ dependencies {
 			"curse.maven:Baubles-227083:2518667"
 	)
 	
-	deobfCompile("curse.maven:Botania-225643:3330934")
+	deobfProvided("curse.maven:Botania-225643:3330934")
 	
-	deobfCompile("curse.maven:ExtraUtils2-225561:2678374")
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	
 	deobfProvided(
@@ -102,15 +111,6 @@ dependencies {
 			"curse.maven:MTLib-253211:3308160"
 	)
 
-
-//	deobfProvided(
-//			"curse.maven:EnderIO-64578:3328811",
-//			"curse.maven:ProjectIntelligence-306028:2833640",
-//			"curse.maven:EnderCore-231868:2972849",
-//			"curse.maven:BrandonsCore-231382:3408276",
-//			"curse.maven:CodeChickenLib-242818:2779848"
-//	)
-//	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	
 	deobfProvided("curse.maven:AppleSkin-248787:2987247")
 	
