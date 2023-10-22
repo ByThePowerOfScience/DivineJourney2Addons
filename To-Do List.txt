@@ -28,8 +28,7 @@ Optimizations:
 	-TileEntityLaserRelay.getNetwork() - 1.46%, try and cache?
 		-> LaserRelayConnectionHandler.getNetworkFor() -> ConcurrentHashMap$KeyIterator.next() | 0.85%
 		<- TileEntityLaserRelayItem.saveDataOnChangeOrWorldStart() every tick
--Aether
-	-AbilityAccessories.onUpdate() creating new itemstacks every tick
+
 -Redstone called every update tick (World.isBlockIndirectlyGettingPowered() might not be optimizable??)
 	-IE: 
 		-TileEntityMultiblockMetal.update() -> TileEntityMultiblockMetal.isRSDisabled()
@@ -44,7 +43,8 @@ Optimizations DONE:
 		-0.20% | BlockUtils.canBlockBeBroken()
 			-Problem: called even when harvesting operation doesn't require it to be broken
 			-Fix: change order of checks
-
+-Aether
+	-AbilityAccessories.onUpdate() creating new itemstacks every tick
 
 -configanytime for thaumcraft jankconfig
 
