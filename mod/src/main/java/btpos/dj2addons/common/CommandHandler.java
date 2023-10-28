@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused", "Inspection", "Guava"})
+@SuppressWarnings({"unused", "Guava"})
 public class CommandHandler extends CraftTweakerCommand {
 	private static Thread dumperThread = null;
 	
@@ -269,7 +269,7 @@ public class CommandHandler extends CraftTweakerCommand {
 		if (dumperThread == null || dumperThread.isAlive()) {
 			m.send("No tile dump in progress.");
 		} else {
-			dumperThread.stop();
+			dumperThread.stop(); // FIXME
 			if (dumperThread.isAlive()) {
 				m.sendError("Failed to kill dumper thread.");
 			} else {
@@ -391,7 +391,7 @@ public class CommandHandler extends CraftTweakerCommand {
 		m.sendHeading("Rituals:");
 		
 		Rituals.getAllRituals().stream().filter(r -> !(r instanceof Rituals.Internal.DummyRitual))
-		       .forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
+		       .forEach(r -> m.sendPropertyWithCopy(null, String.valueOf(r.getRegistryName())));
 		
 		
 		if (Rituals.Internal.getRitualsToRemove().size() == 0) {
@@ -400,7 +400,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			m.sendHeading("Removed rituals:");
 			
 			Rituals.Internal.getRitualsToRemove()
-			                .forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
+			                .forEach(r -> m.sendPropertyWithCopy(null, String.valueOf(r.getRegistryName())));
 			
 		}
 	}
@@ -410,7 +410,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	private static void totemicHandler(MessageHelper m) {
 		m.sendHeading("Instruments:");
 		CTotemic.getInstrumentRegistry().forEach(i -> {
-			m.sendPropertyWithCopy(null, i.getRegistryName() + "");
+			m.sendPropertyWithCopy(null, String.valueOf(i.getRegistryName()));
 			m.sendPropertyWithCopy("baseOutput", String.valueOf(CTotemic.getBaseOutput(i)), 1);
 			m.sendPropertyWithCopy("musicMaximum", String.valueOf(CTotemic.getMusicMaximum(i)), 1);
 		});
@@ -626,6 +626,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			sendPropertyWithCopy(property, value, value, indent);
 		}
 		
+		@SuppressWarnings("SameParameterValue")
 		void sendPropertyWithCopy(String property, String value, String toCopy) {
 			sendPropertyWithCopy(property, value, toCopy, 0);
 		}
@@ -645,10 +646,12 @@ public class CommandHandler extends CraftTweakerCommand {
 				log(message);
 		}
 		
+		@SuppressWarnings("SameParameterValue")
 		void sendProperty(String property, String value) {
 			sendProperty(property, value, 0);
 		}
 		
+		@SuppressWarnings("SameParameterValue")
 		void sendProperty(String property, String value, int indent) {
 			send(getPropertyMessage(property, value, indent));
 		}
@@ -669,6 +672,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			return indent(indent) + "§e- " + property + "§" + HIGHLIGHTING[indent] + value;
 		}
 		
+		@SuppressWarnings("SameParameterValue")
 		static <T> String listToAssociativeArrayPretty(List<T> list, boolean raw, int indent) {
 			Map<T, T> map = new HashMap<>();
 			for (int i = 0; i < list.size(); i+=2) {
