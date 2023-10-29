@@ -2,6 +2,7 @@ package btpos.dj2addons.initmixins;
 
 import btpos.dj2addons.DJ2AMixinConfig;
 import btpos.dj2addons.common.CoreInfo;
+import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModClassLoader;
@@ -20,6 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -36,7 +38,7 @@ public abstract class MLoader {
 	 * Load all mods now and load mod support mixin configs. This can't be done later
 	 * since constructing mods loads classes from them.
 	 */
-	@SuppressWarnings("ALL")
+//	@SuppressWarnings("ALL")
 	@Inject(method = "loadMods", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/LoadController;transition(Lnet/minecraftforge/fml/common/LoaderState;Z)V", ordinal = 1), remap = false)
 	private void beforeConstructingMods(List<String> injectedModContainers, CallbackInfo ci) {
 		// Add all mods to class loader
@@ -53,11 +55,17 @@ public abstract class MLoader {
 		Mixins.addConfigurations(DJ2AMixinConfig.defConfigs);
 		
 		
-		
-		Proxy mixinProxy = (Proxy) Launch.classLoader.getTransformers().stream().filter(transformer -> transformer instanceof Proxy).findFirst().get();
+		Optional<IClassTransformer> first = Launch.classLoader.getTransformers()
+		                                                      .stream()
+		                                                      .filter(transformer -> transformer instanceof Proxy)
+		                                                      .findFirst();
+		if (!first.isPresent()) {
+			throw new RuntimeException("Could not find mixin proxy!");
+		}
+		Proxy mixinProxy = (Proxy)(first.get());
 		try {
 			//This will very likely break on the next major mixin release.
-			Class mixinTransformerClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinTransformer");
+			Class<?> mixinTransformerClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinTransformer");
 			Field transformerField = Proxy.class.getDeclaredField("transformer");
 			transformerField.setAccessible(true);
 			Object transformer = transformerField.get(mixinProxy);
@@ -67,14 +75,15 @@ public abstract class MLoader {
 			processorField.setAccessible(true);
 			Object processor = processorField.get(transformer);
 			
-			Class mixinProcessorClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinProcessor");
-			
+			Class<?> mixinProcessorClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinProcessor");
 			Method selectConfigsMethod = mixinProcessorClass.getDeclaredMethod("selectConfigs", MixinEnvironment.class);
 			selectConfigsMethod.setAccessible(true);
 			selectConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment());
 			
 			Method prepareConfigsMethod;
 			try {
+				// Because I build on Mixin 0.8.5:
+				//noinspection JavaReflectionMemberAccess
 				prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class);
 				prepareConfigsMethod.setAccessible(true);
 				prepareConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment());
@@ -92,8 +101,6 @@ public abstract class MLoader {
 				prepareConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment(), extensions);
 				
 			}
-			
-			
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}

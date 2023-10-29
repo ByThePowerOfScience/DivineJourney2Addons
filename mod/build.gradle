@@ -23,6 +23,19 @@ repositories {
 	mavenCentral()
 }
 
+//configurations.getByName("deobfProvided") {
+//	exclude group: "org.spongepowered"
+//}
+//configurations.getByName("deobfCompile") {
+//	exclude group: "org.spongepowered"
+//}
+
+configurations.configureEach {
+	resolutionStrategy {
+		force 'org.spongepowered:mixin:0.8.5'
+	}
+}
+
 dependencies {
 	compile project(":coremod")
 	
@@ -167,16 +180,16 @@ build {
 	}
 }
 
-task injectCoremodJar(type: Exec) {
+tasks.register('injectCoremodJar', Exec) {
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_InjectCoreMod.py'))
 }
 
-task generateTestZS(type: Copy) {
+tasks.register('generateTestZS', Copy) {
 	from rootProject.file('Test.zs')
 	into project.file('run/scripts')
 }
 
-task runTests(type: JavaExec, group: 'buildruns') {
+tasks.register('runTests', JavaExec) {
 	dependsOn(build, generateTestZS)
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
@@ -195,7 +208,7 @@ task runTests(type: JavaExec, group: 'buildruns') {
 //idea {
 //	
 //}
-task buildTestJar(type: Jar, group: 'buildruns') {
+tasks.register('buildTestJar', Jar) {
 	from(sourceSets.test.output)
 	archiveName = 'dj2addons-test'
 }
