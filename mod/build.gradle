@@ -54,7 +54,7 @@ dependencies {
 	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
 	
 	
-	deobfProvided(
+	deobfCompile(
 			"curse.maven:Roots-246183:3484394",
 			"curse.maven:MysticalWorld-282940:3460961",
 			"curse.maven:MysticalLib-277064:3483816"
@@ -86,7 +86,7 @@ dependencies {
 	deobfProvided("curse.maven:ModTweaker-220954:3840577")
 	
 	// **TWEAKS**
-	deobfProvided(
+	deobfCompile(
 			"curse.maven:RFTools-224641:2861573",
 			"curse.maven:McJtyLib-233105:2745846"
 	)
@@ -196,6 +196,6 @@ task runTests(type: JavaExec, group: 'buildruns') {
 //	
 //}
 task buildTestJar(type: Jar, group: 'buildruns') {
-	from(sourceSets.test.output);
+	from(sourceSets.test.output)
 	archiveName = 'dj2addons-test'
 }

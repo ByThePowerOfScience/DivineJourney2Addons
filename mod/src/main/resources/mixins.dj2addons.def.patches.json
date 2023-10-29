@@ -13,6 +13,7 @@
     "modularmagic.MRequirementLifeEssence",
     "moretweaker.MInputs",
     "packagedauto.MMiscUtil",
+    "rftools.MCrafterBaseTE",
     "rftools.MNBTMatchingRecipe"
   ],
   "client": [],

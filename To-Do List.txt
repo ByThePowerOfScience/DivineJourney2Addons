@@ -46,7 +46,13 @@ Optimizations DONE:
 -Aether
 	-AbilityAccessories.onUpdate() creating new itemstacks every tick
 
+
+-SWITCH TO MIXINBOOTER. DJ2ADDONS BREAKS ON NEW VERSIONS OF IT, RIP.
 -configanytime for thaumcraft jankconfig
+
+
+
+
 
 -Mob Grinding Utils
  	-Fix: Ender inhibitor not working consistently
