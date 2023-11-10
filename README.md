@@ -1,5 +1,7 @@
 ## Description
-Various Mixins and mod-tweaks for the purpose of supporting the Divine Journey 2 modpack. All APIs are documented [here](/docs/docs.md)
+Various Mixins and mod-tweaks supporting the Divine Journey 2 modpack. All APIs are documented [here](/docs/docs.md).
+
+I wrote this to be fully compatible with other modpacks as well, so please let me know if it doesn't work outside of Divine Journey 2!  Eventually I'd like to make this a full library of bugfixes and APIs for 1.12.2, so any suggestions for mod changes would be very appreciated!
 
 ## Non-API Changes:
 
