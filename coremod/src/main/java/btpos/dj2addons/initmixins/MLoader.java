@@ -75,10 +75,12 @@ public abstract class MLoader {
 			processorField.setAccessible(true);
 			Object processor = processorField.get(transformer);
 			
+			
 			Class<?> mixinProcessorClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinProcessor");
 			Method selectConfigsMethod = mixinProcessorClass.getDeclaredMethod("selectConfigs", MixinEnvironment.class);
 			selectConfigsMethod.setAccessible(true);
 			selectConfigsMethod.invoke(processor, MixinEnvironment.getCurrentEnvironment());
+			
 			
 			Method prepareConfigsMethod;
 			try {
