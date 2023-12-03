@@ -11,16 +11,17 @@ import java.util.Objects;
 @Mixin(PowerSystem.class)
 public class MPowerSystem {
 	
-	/**
-	 * Fixes typo in "Tesla".
-	 */
-	@ModifyVariable(method="<init>", ordinal = 0, at=@At("HEAD"), argsOnly = true)
-	private static String fixTypo(String fullName) {
-		if (fullName.equals("Testa"))
-			return "Tesla";
-		else
-			return fullName;
-	}
+	// once again: if it ain't broke, DO NOT.
+//	/**
+//	 * Fixes typo in "Tesla".
+//	 */
+//	@ModifyVariable(method="<init>", ordinal = 0, at=@At("HEAD"), argsOnly = true)
+//	private static String fixTypo(String fullName) {
+//		if (fullName.equals("Testa"))
+//			return "Tesla";
+//		else
+//			return fullName;
+//	}
 	
 	/**
 	 * Allows CraftTweaker to change the maximum energy stored in the output buffer.
