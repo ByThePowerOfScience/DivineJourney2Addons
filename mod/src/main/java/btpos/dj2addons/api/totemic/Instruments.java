@@ -1,6 +1,7 @@
 package btpos.dj2addons.api.totemic;
 
 
+import btpos.dj2addons.DJ2Addons;
 import org.apache.commons.lang3.tuple.Pair;
 import btpos.dj2addons.common.util.Util;
 
@@ -21,7 +22,7 @@ public class Instruments {
 			else
 				return val.intValue();
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			DJ2Addons.LOGGER.catching(e);
 			return original;
 		}
 	}
@@ -29,7 +30,7 @@ public class Instruments {
 		private static final Map<String, Pair<? extends Number, ? extends Number>> INSTRUMENT_MAP = new HashMap<>();
 		
 		public static Pair<Integer, Integer> getValuesForInstrument(String name, int baseOutput, int musicMaximum) {
-			Pair<? extends Number, ? extends Number> vals = INSTRUMENT_MAP.get(name);
+			Pair<? extends Number, ? extends Number> vals = INSTRUMENT_MAP.remove(name);
 			if (vals != null) {
 				baseOutput = setOrMult(vals.getLeft(), baseOutput);
 				musicMaximum = setOrMult(vals.getRight(), musicMaximum);
