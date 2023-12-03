@@ -21,11 +21,12 @@ public class Rituals {
 	}
 	
 	public static class Internal {
-		
-		private static final List<Ritual> ritualsToRemove = new ArrayList<>();
+		private static List<Ritual> ritualsToRemove = new ArrayList<>();
 		
 		public static List<Ritual> getRitualsToRemove() {
-			return ritualsToRemove;
+			List<Ritual> ritualsToRemove1 = ritualsToRemove;
+			ritualsToRemove = null;
+			return ritualsToRemove1;
 		}
 		
 		public static class DummyRitual extends Ritual {
