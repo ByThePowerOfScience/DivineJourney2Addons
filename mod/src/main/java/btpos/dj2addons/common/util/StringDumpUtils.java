@@ -3,7 +3,6 @@ package btpos.dj2addons.common.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.World;
-import sun.reflect.generics.repository.ClassRepository;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -17,7 +16,7 @@ import java.util.function.Consumer;
  * This version contains a powerful iterative algorithm that can traverse extremely long object graphs,
  * bounded by memory and not runtime stack frames.
  *
- * Edited by ByThePowerOfScience to use consumers and exclusions to save the heap.
+ * <p>Edited by ByThePowerOfScience to use consumers and exclusions to save the heap.
  * @author  Bryan Wagner
  * @since   2013-08-24
  * @version 2015-09-19
@@ -36,7 +35,7 @@ public class StringDumpUtils {
 	static final Object[] fieldTypeExclusions = new Object[] {
 			World.class,
 			"io.netty",
-			ClassRepository.class
+			sun.reflect.generics.repository.ClassRepository.class
 	};
 	static final Map<String, List<String>> fieldNameExclusions = ImmutableMap.of(
 			"net.minecraftforge.registries.RegistryDelegate", ImmutableList.of("type")
@@ -136,7 +135,7 @@ public class StringDumpUtils {
 							findFields:
 							for (Field field : fields) {
 								for (Object exclusion : fieldTypeExclusions) {
-									if (exclusion instanceof Class && field.getType().isAssignableFrom((Class<?>) exclusion) || ((Class<?>) exclusion).isAssignableFrom(field.getType()))
+									if (exclusion instanceof Class && (field.getType().isAssignableFrom((Class<?>) exclusion) || ((Class<?>) exclusion).isAssignableFrom(field.getType())))
 										continue findFields;
 									else if (exclusion instanceof String) { // Packages
 										if (field.getType().getPackage().toString().contains((String)exclusion))

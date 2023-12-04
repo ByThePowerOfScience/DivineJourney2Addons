@@ -107,10 +107,10 @@ dependencies {
 	deobfCompile(
 			"curse.maven:Forgelin-248453:2785465",
 			"curse.maven:TeslaCoreLib-254602:3438487",
-//			"curse.maven:IndustrialForegoing-266515:2745321"
+//			"curse.maven:IndustrialForegoing-266515:2745321" // returning 403 for some reason
 	)
 	
-	compile files("./libs/industrialforegoing-1.12.2-1.12.13-237.jar")
+	compile files(file("${rootProject.projectDir}/libs/industrialforegoing-1.12.2-1.12.13-237-deobf.jar"))  // isn't working for some reason????
 	
 	deobfProvided(
 			"curse.maven:AgriCraft-225635:3317747",

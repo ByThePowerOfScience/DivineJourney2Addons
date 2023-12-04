@@ -70,7 +70,6 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 //		LOGGER.debug("Attempting to apply mixin {} to target class {}", mixinClassName, targetClassName);
-	
 	}
 	
 	@Override

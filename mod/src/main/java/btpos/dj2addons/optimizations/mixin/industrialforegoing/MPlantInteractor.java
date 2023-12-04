@@ -75,6 +75,9 @@ public class MPlantInteractor {
 	
 	@Unique private BlockPos dj2addons$pos;
 	
+	/**
+	 * Moves the canBlockBeBroken check to after we determine it's a valid block so we aren't checking every single block.
+	 */
 	@Redirect(
 			remap=false,
 			method="work()F",
@@ -86,8 +89,9 @@ public class MPlantInteractor {
 		return true;
 	}
 	
-	
-	@SuppressWarnings("MixinAnnotationTarget")
+	/**
+	 * Moves the canBlockBeBroken check to after we determine it's a valid block so we aren't checking every single block.
+	 */
 	@WrapOperation(
 			remap=false,
 			method="work()F",
