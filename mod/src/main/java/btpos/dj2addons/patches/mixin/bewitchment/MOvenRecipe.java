@@ -35,9 +35,11 @@ public abstract class MOvenRecipe {
 	) //TODO test that this fixes the bug https://github.com/Divine-Journey-2/Divine-Journey-2/issues/679
 	private boolean checkByproductSlotBeforeConsumeJar(OvenRecipe instance, Random rand, ItemStackHandler input, ItemStackHandler output) {
 		ItemStack byproductSlot = output.getStackInSlot(1);
-		return instance.requiresJar
-		       && (byproductSlot.isEmpty() || Util.canMerge(instance.byproduct, byproductSlot))
-		       && !(byproductSlot.getCount() == byproductSlot.getMaxStackSize()) ;
+		if (instance.requiresJar) {
+			return (byproductSlot.isEmpty() || Util.canMerge(instance.byproduct, byproductSlot))
+			       && !(byproductSlot.getCount() == byproductSlot.getMaxStackSize());
+		}
+		return false;
 	}
 	
 	

@@ -2,7 +2,8 @@ package btpos.dj2addons.tweaks.mixin.thaumcraft;
 
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import thaumcraft.common.tiles.TileThaumcraftInventory;
 import thaumcraft.common.tiles.crafting.TilePedestal;
 
@@ -16,8 +17,15 @@ public abstract class MArcanePedestal extends TileThaumcraftInventory {
 	 * @author ByThePowerOfScience
 	 * @reason Allows infusion recipes to output multiple items.
 	 */
-	@Overwrite(remap=false)
-	public void setInventorySlotContentsFromInfusion(int i, ItemStack itemStack) {
+	@Redirect(
+			remap=false,
+			method="setInventorySlotContentsFromInfusion",
+			at=@At(
+					target="Lthaumcraft/common/tiles/crafting/TilePedestal;setInventorySlotContents(ILnet/minecraft/item/ItemStack;)V",
+					value="INVOKE"
+			)
+	)
+	public void dj2addons$bypassStackSize(TilePedestal instance, int i, ItemStack itemStack) {
 		this.getItems().set(i, itemStack);
 		
 		this.markDirty();

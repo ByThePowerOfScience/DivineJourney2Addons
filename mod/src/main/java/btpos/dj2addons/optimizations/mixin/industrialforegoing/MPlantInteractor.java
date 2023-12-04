@@ -48,15 +48,15 @@ public class MPlantInteractor {
 	 * Allows Plant Interactors to access the drops from AgriCraft crops directly without having to drop them on the ground.
 	 * <p>Removes lag from FakePlayer usage and item drops.</p>
 	 */
-	@Redirect(
+	@WrapOperation(
 			remap=false,
 			method="work()F",
 			at=@At(
 					value="INVOKE",
 					target="Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
-	private IBlockState handleAgriCraftCrops(World world, BlockPos pos) {
+	private IBlockState handleAgriCraftCrops(World world, BlockPos pos, Operation<IBlockState> original) {
 		if (!IsModLoaded.agricraft)
-			return world.getBlockState(pos);
+			return original.call(world, pos);
 		
 		TileEntity te = world.getTileEntity(pos);
 		if (CAgricraft.isAgriHarvestable(te)) {
@@ -69,7 +69,7 @@ public class MPlantInteractor {
 			WORKING_TILES.remove(this);
 			return dj2addons$DUMMY;
 		} else {
-			return world.getBlockState(pos);
+			return original.call(world, pos);
 		}
 	}
 	
