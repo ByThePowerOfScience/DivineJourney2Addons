@@ -20,7 +20,8 @@ public abstract class MEnchanter {
 			method="update()V",
 			at=@At(
 					target="Lnet/minecraft/item/Item;hasContainerItem(Lnet/minecraft/item/ItemStack;)Z",
-					value = "INVOKE")) //TODO expand check to only consume buckets if the output is in a bucket, otherwise leave bucket behind
+					value = "INVOKE"))
+	// TODO expand check to only consume buckets if the output is in a bucket, otherwise leave bucket behind
 	private boolean noCheckContainerItem(Item instance, ItemStack stack) {
 //		ItemStack output = this.currentEnchantment.getOutput();
 //		return !((output.getItem().hasContainerItem(output) && output.getItem().getContainerItem(stack).isItemEqualIgnoreDurability(new ItemStack(Items.BUCKET)))

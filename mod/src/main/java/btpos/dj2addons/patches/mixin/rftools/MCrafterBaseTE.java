@@ -48,7 +48,7 @@ public abstract class MCrafterBaseTE {
 			return remaining; // failsoft
 		
 		for (int i = 0; i < remaining.size(); i++) {
-			remaining.get(i).setCount(dj2addons$cachedRecipe.getInventory().getStackInSlot(i).getCount()); // TODO test
+			remaining.get(i).setCount(dj2addons$cachedRecipe.getInventory().getStackInSlot(i).getCount());
 		}
 		return remaining;
 	}

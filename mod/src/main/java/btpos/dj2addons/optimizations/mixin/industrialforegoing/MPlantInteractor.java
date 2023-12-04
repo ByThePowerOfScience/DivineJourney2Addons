@@ -77,6 +77,7 @@ public class MPlantInteractor {
 	
 	/**
 	 * Moves the canBlockBeBroken check to after we determine it's a valid block so we aren't checking every single block.
+	 * <p>Intentionally made a Redirect to nullify the check.</p>
 	 */
 	@Redirect(
 			remap=false,
