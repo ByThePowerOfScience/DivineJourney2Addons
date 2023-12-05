@@ -214,7 +214,7 @@ tasks.register('runTests', JavaExec) {
 //	main = 'GenerateTestZS'
 //	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
 	jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
-	args '-mixin.config=mixins.dj2addons.init.json'
+	args('--mixin.config', 'mixins.dj2addons.init.json', '--tweakClass', 'org.spongepowered.asm.launch.MixinTweaker')
 	main = 'GradleStart'
 }
 
