@@ -116,7 +116,7 @@ subprojects { Project p ->
 	
 	mixin {
 		//noinspection GroovyAssignabilityCheck
-		add p.sourceSets.main, "mixins.dj2addons.${p.name}.refmap.json"
+		add sourceSets.main, "mixins.dj2addons.refmap.json"
 //    hotSwap = true
 	}
 	

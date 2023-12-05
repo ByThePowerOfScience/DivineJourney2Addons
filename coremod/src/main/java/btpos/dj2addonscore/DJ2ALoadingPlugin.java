@@ -42,7 +42,7 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	@Override
 	public String[] getASMTransformerClass() {
 		return new String[] {
-				"btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer"
+				"btpos.dj2addonscore.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer"
 		};
 	}
 	
@@ -53,7 +53,7 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	
 	@Override
 	public String getSetupClass() {
-		return "btpos.dj2addons.DJ2APreStartHook";
+		return "btpos.dj2addonscore.DJ2APreStartHook";
 	}
 	
 	@Override

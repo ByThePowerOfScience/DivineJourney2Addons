@@ -1,5 +1,6 @@
 package btpos.dj2addonstest;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +45,6 @@ public class DJ2AddonsTest {
 		LOGGER.info("getTestsSucceededCount() - " + summary.getTestsSucceededCount());
 		List<Failure> failures = summary.getFailures();
 		failures.forEach(failure -> LOGGER.error("Test Failed: " + failure.getTestIdentifier(), failure.getException()));
-		System.exit(0);
+		FMLCommonHandler.instance().exitJava(0, true);
 	}
 }

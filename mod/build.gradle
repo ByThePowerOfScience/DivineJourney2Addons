@@ -192,29 +192,35 @@ tasks.register('generateTestZS', Copy) {
 }
 
 tasks.register('runTests', JavaExec) {
-//	dependsOn(build)
+	dependsOn(build)
 	group = 'buildruns'
-	workingDir = "$projectDir/run"
-//	dependsOn(build, generateTestZS)
-	def modproject = project(":mod")
-	def coremodproject = project(":coremod")
+	workingDir = "$projectDir/testrun"
 	classpath = files(
 			"${System.properties['user.home']}/.gradle/caches/minecraft/net/minecraftforge/forge/1.12.2-14.23.5.2847/start",
 			"${rootProject.projectDir}/libs/EnderCore-1.12.2-0.5.76-core.jar",
 			"${rootProject.projectDir}/libs/AutoConfig-1.12.2-1.0.2.jar",
-			"${rootProject.projectDir}/libs/AutoSave-1.12.2-1.0.11.jar") +
-			sourceSets.main.output.classesDirs +
+			"${rootProject.projectDir}/libs/AutoSave-1.12.2-1.0.11.jar",
+			"${rootProject.projectDir}/coremod/build/libs/dj2addons-core.jar") +
+			sourceSets.main.output +
 			sourceSets.main.compileClasspath +
-			sourceSets.test.output.classesDirs +
-			sourceSets.test.runtimeClasspath +
-			coremodproject.sourceSets.main.output.classesDirs +
-			coremodproject.sourceSets.main.compileClasspath +
-			coremodproject.sourceSets.test.output.classesDirs +
-			coremodproject.sourceSets.test.runtimeClasspath
-//	main = 'GenerateTestZS'
-//	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
-	jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
-	args('--mixin.config', 'mixins.dj2addons.init.json', '--tweakClass', 'org.spongepowered.asm.launch.MixinTweaker')
+			sourceSets.test.output +
+			sourceSets.test.runtimeClasspath
+//			project(':coremod').sourceSets.main.output
+//			files("${rootProject.projectDir}/coremod/build/libs/dj2addons-core.jar")
+//			coremodproject.sourceSets.test.output.classesDirs +
+//			coremodproject.sourceSets.test.runtimeClasspath
+	
+	jvmArgs (
+			'-Dforge.logging.console.level=debug',
+			'-Dmixin.debug.verbose=true',
+			'-Dmixin.debug.export=true',
+			'-Dmixin.hotSwap=true',
+//			'-Dfml.coreMods.load=btpos.dj2addonscore.DJ2ALoadingPlugin'
+	)
+//	args(
+//			'--mixin.config', 'mixins.dj2addons.init.json',
+////			'--mixin.config', 'mixins.dj2addons.bootstrap.json',
+//			'--tweakClass', 'org.spongepowered.asm.launch.MixinTweaker')
 	main = 'GradleStart'
 }
 
@@ -228,6 +234,7 @@ tasks.register('runTests', JavaExec) {
 //idea {
 //	
 //}
+
 tasks.register('buildTestJar', Jar) {
 	from(sourceSets.test.output)
 	archiveName = 'dj2addons-test'
