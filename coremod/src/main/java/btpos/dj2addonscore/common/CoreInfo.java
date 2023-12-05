@@ -1,4 +1,4 @@
-package btpos.dj2addons.common;
+package btpos.dj2addonscore.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +18,7 @@ public class CoreInfo {
 	public static boolean doesTickProfilerExist = false;
 	
 	/**
-	 * Called by {@link btpos.dj2addons.initmixins.MLoader#beforeConstructingMods MLoader.beforeConstructingMods}.
+	 * Called by {@link btpos.dj2addonscore.bootstrap.MLoader#beforeConstructingMods MLoader.beforeConstructingMods}.
 	 */
 	public static void onLoadCore() {
 		coreLoaded = true;
@@ -44,7 +44,7 @@ public class CoreInfo {
 	}
 	
 	/**
-	 * Called by {@link btpos.dj2addons.DJ2AMixinConfig#shouldApplyMixin DJ2AMixinConfig.shouldApplyMixin} if TickCentral is detected.
+	 * Called by {@link btpos.dj2addonscore.DJ2AMixinConfig#shouldApplyMixin DJ2AMixinConfig.shouldApplyMixin} if TickCentral is detected.
 	 */
 	public static void onDisableAerogelPatch() {
 		shouldWriteAerogelTooltip = true;

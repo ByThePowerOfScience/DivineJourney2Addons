@@ -1,5 +1,11 @@
 package btpos.dj2addons;
 
+import btpos.dj2addons.common.modrefs.CCraftTweaker;
+import btpos.dj2addons.common.modrefs.IsModLoaded;
+import btpos.dj2addons.custom.proxy.CommonProxy;
+import btpos.dj2addons.custom.registry.ModPotions;
+import btpos.dj2addonscore.DJ2AMixinConfig;
+import btpos.dj2addonscore.common.CoreInfo;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent;
@@ -11,11 +17,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
-import btpos.dj2addons.common.CoreInfo;
-import btpos.dj2addons.common.modrefs.CCraftTweaker;
-import btpos.dj2addons.common.modrefs.IsModLoaded;
-import btpos.dj2addons.custom.proxy.CommonProxy;
-import btpos.dj2addons.custom.registry.ModPotions;
 
 @Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
 public class DJ2Addons {

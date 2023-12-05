@@ -10,6 +10,6 @@ public interface IngredientNBTAccessor {
 	/**
 	 * Made public in latest Forge version, but can't use it because ForgeGradle 2.3.
  	 */
-	@Invoker("<init>")
+	@Invoker(value="<init>", remap=false)
 	static IngredientNBT createIngredientNBT(ItemStack stack) {throw new UnsupportedOperationException("Invoker not merged properly, or invoker called in interface instead of target class.");}
 }

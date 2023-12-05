@@ -1,11 +1,10 @@
 package btpos.dj2addons.api.mixin.totemic;
 
 import btpos.dj2addons.api.totemic.Instruments;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import pokefenn.totemic.api.music.MusicInstrument;
 import pokefenn.totemic.init.ModContent;
 
@@ -21,9 +20,9 @@ public class MModContent {
 //						.put("totemic:eagleBoneWhistle", Pair.of(10,100))
 //						.build();
 	
-	@WrapOperation(remap=false, method="instruments", at=@At(target="(Ljava/lang/String;II)pokefenn/totemic/api/music/MusicInstrument", value="NEW"))
-	private static MusicInstrument changeTotemicValues(String name, int baseOutput, int musicMaximum, Operation<MusicInstrument> original) {
+	@Redirect(remap=false, method="instruments", at=@At(target="(Ljava/lang/String;II)pokefenn/totemic/api/music/MusicInstrument", value="NEW"))
+	private static MusicInstrument changeTotemicValues(String name, int baseOutput, int musicMaximum) {
 		Pair<Integer, Integer> vals = Instruments.Internal.getValuesForInstrument(name, baseOutput, musicMaximum);
-		return original.call(name, (int)vals.getLeft(), (int)vals.getRight());
+		return new MusicInstrument(name, vals.getLeft(), vals.getRight());
 	}
 }

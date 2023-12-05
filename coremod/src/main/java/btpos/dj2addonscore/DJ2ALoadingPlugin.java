@@ -1,8 +1,8 @@
-package btpos.dj2addons;
+package btpos.dj2addonscore;
 
-import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer;
-import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
-import btpos.dj2addons.common.CoreInfo;
+import btpos.dj2addonscore.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer;
+import btpos.dj2addonscore.asm.api.thaumcraft.infusionstabilizers.JankConfig;
+import btpos.dj2addonscore.common.CoreInfo;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;

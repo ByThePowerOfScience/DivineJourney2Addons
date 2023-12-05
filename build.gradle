@@ -16,7 +16,7 @@ plugins {
 	id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
 }
 project.ext.pythonFile = Os.isFamily(Os.FAMILY_WINDOWS) ? project.file('venv/Scripts/python.exe') : project.file('venv/bin/python3')
-subprojects {
+subprojects { Project p ->
 	apply plugin: 'net.minecraftforge.gradle.forge'
 	apply plugin: 'org.spongepowered.mixin'
 	apply plugin: 'idea'
@@ -108,7 +108,6 @@ subprojects {
 		from "./" include "Test.zs" into "./run/scripts"
 	}
 	
-	
 	task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
 		commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
 	}
@@ -117,8 +116,7 @@ subprojects {
 	
 	mixin {
 		//noinspection GroovyAssignabilityCheck
-		add sourceSets.main, 'mixins.dj2addons.refmap.json'
-//    config 'mixins.dj2addons.json'
+		add p.sourceSets.main, "mixins.dj2addons.${p.name}.refmap.json"
 //    hotSwap = true
 	}
 	

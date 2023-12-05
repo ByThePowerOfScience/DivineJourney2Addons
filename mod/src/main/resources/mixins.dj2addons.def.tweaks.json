@@ -2,7 +2,7 @@
   "required": true,
   "package": "btpos.dj2addons.tweaks.mixin",
   "compatibilityLevel": "JAVA_8",
-  "plugin": "btpos.dj2addons.DJ2AMixinConfig",
+  "plugin": "btpos.dj2addonscore.DJ2AMixinConfig",
   "mixins": [
     "extrautils2.MTileUse",
     "thaumcraft.MArcanePedestal",
@@ -10,6 +10,7 @@
     "thaumcraft.TileThaumcraftInventoryAccessor"
   ],
   "client": [],
+  "minVersion": "0.6",
   "injectors": {
     "maxShiftBy": 10
   }

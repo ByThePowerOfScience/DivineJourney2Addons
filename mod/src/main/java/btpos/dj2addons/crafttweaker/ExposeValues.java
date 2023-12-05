@@ -1,7 +1,7 @@
 package btpos.dj2addons.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
-import btpos.dj2addons.common.CoreInfo;
+import btpos.dj2addonscore.common.CoreInfo;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

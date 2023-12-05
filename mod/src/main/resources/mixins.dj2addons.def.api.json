@@ -2,7 +2,8 @@
   "required": true,
   "package": "btpos.dj2addons.api.mixin",
   "compatibilityLevel": "JAVA_8",
-  "plugin": "btpos.dj2addons.DJ2AMixinConfig",
+  "plugin": "btpos.dj2addonscore.DJ2AMixinConfig",
+  "minVersion": "0.6",
   "mixins": [
     "astralsorcery.MTileCelestialCrystals",
     "bewitchment.MBewitchmentJEI",

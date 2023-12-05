@@ -1,7 +1,7 @@
-package btpos.dj2addons.initmixins;
+package btpos.dj2addonscore.bootstrap;
 
-import btpos.dj2addons.DJ2AMixinConfig;
-import btpos.dj2addons.common.CoreInfo;
+import btpos.dj2addonscore.DJ2AMixinConfig;
+import btpos.dj2addonscore.common.CoreInfo;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;

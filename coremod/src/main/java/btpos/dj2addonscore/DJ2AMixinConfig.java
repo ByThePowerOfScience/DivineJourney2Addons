@@ -1,9 +1,9 @@
-package btpos.dj2addons;
+package btpos.dj2addonscore;
 
+import btpos.dj2addonscore.common.CoreInfo;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Logger;
-import btpos.dj2addons.common.CoreInfo;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;

@@ -29,7 +29,7 @@ public class Util {
 				f.setAccessible(true);
 				return (Map<String, Capability<?>>) f.get(CapabilityManager.INSTANCE);
 			} catch (IllegalAccessException | NoSuchFieldException e) {
-				e.printStackTrace();
+				DJ2Addons.LOGGER.catching(e);
 				return null;
 			}
 		}

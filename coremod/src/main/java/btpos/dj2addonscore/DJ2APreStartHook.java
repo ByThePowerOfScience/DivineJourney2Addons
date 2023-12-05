@@ -1,6 +1,6 @@
-package btpos.dj2addons;
+package btpos.dj2addonscore;
 
-import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
+import btpos.dj2addonscore.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
 
 import java.util.Map;

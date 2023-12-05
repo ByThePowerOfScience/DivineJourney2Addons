@@ -1,8 +1,8 @@
 {
   "required": true,
-  "package": "btpos.dj2addons.initmixins",
+  "package": "btpos.dj2addonscore.bootstrap",
   "compatibilityLevel": "JAVA_8",
-  "plugin": "btpos.dj2addons.DJ2AMixinConfig",
+  "plugin": "btpos.dj2addonscore.DJ2AMixinConfig",
   "target": "@env(INIT)",
   "mixins": [
     "MLoader"

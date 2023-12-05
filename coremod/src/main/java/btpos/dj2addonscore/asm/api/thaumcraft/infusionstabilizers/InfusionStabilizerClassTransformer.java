@@ -1,5 +1,6 @@
-package btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers;
+package btpos.dj2addonscore.asm.api.thaumcraft.infusionstabilizers;
 
+import btpos.dj2addonscore.DJ2AMixinConfig;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
@@ -44,7 +45,7 @@ public class InfusionStabilizerClassTransformer implements IClassTransformer {
 		try (FileOutputStream fileOutputStream = new FileOutputStream("dj2addons" + File.separator + transformedName + ".class")) {
 			fileOutputStream.write(bytes);
 		} catch (IOException e) {
-			e.printStackTrace();
+			DJ2AMixinConfig.LOGGER.catching(e);
 		}
 		return bytes;
 	}

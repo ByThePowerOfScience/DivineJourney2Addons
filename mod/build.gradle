@@ -1,3 +1,5 @@
+//file:noinspection GradlePackageUpdate
+//file:noinspection GradlePackageVersionRange
 repositories {
 //    maven {
 //        name = "Su5ed LegacyDev Fork"
@@ -44,15 +46,15 @@ dependencies {
 	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
 	
 	deobfCompile("curse.maven:ActuallyAdditions-228404:3117927")
-//	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
-//	deobfProvided(
-//			"curse.maven:EnderIO-64578:3328811",
-//			"curse.maven:ProjectIntelligence-306028:2833640",
-//			"curse.maven:EnderCore-231868:2972849",
-//			"curse.maven:BrandonsCore-231382:3408276",
-//			"curse.maven:CodeChickenLib-242818:2779848"
-//	)
-//	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
+	deobfProvided(
+			"curse.maven:EnderIO-64578:3328811",
+			"curse.maven:ProjectIntelligence-306028:2833640",
+			"curse.maven:EnderCore-231868:2972849",
+			"curse.maven:BrandonsCore-231382:3408276",
+			"curse.maven:CodeChickenLib-242818:2779848"
+	)
+	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	
 	deobfProvided("curse.maven:Erebus-220698:3211974")
 	
@@ -107,20 +109,22 @@ dependencies {
 	deobfCompile(
 			"curse.maven:Forgelin-248453:2785465",
 			"curse.maven:TeslaCoreLib-254602:3438487",
-//			"curse.maven:IndustrialForegoing-266515:2745321" // returning 403 for some reason
+//			"curse.maven:IndustrialForegoing-266515:2745321" // returning 403 for some reason, so using downloaded jar below:
 	)
-	
-	compile files(file("${rootProject.projectDir}/libs/industrialforegoing-1.12.2-1.12.13-237-deobf.jar"))  // isn't working for some reason????
+	compile files("${rootProject.projectDir}/libs/industrialforegoing-1.12.2-1.12.13-237-deobf.jar")
 	
 	deobfProvided(
 			"curse.maven:AgriCraft-225635:3317747",
 			"curse.maven:InfinityLib-251396:3317119"
 	)
 
-//	deobfProvided(
-//			"curse.maven:MysticalAgriculture-246640:2704562"
-//	)
+	deobfProvided(
+//			"curse.maven:MysticalAgriculture-246640:2704562" // deobfProvidedDeobfDepTask20 throws ZipExeception: invalid entry compressed size (expected 133 but got 131 bytes)
+			"curse.maven:Cucumber-272335:2645867"
+	)
 	
+	provided files("${rootProject.projectDir}/libs/MysticalAgriculture-1.12.2-1.7.5.jar")
+//
 	deobfProvided(
 			"curse.maven:MoreTweaker-336569:3226142",
 			"curse.maven:MTLib-253211:3308160"
@@ -132,10 +136,6 @@ dependencies {
 	deobfProvided(
 			"curse.maven:ModularMachinery-270790:2713714",
 			"curse.maven:ModularMagic-324318:2737623"
-	)
-	
-	provided(
-			"curse.maven:MysticalAgriculture-246640:2704562"
 	)
 	
 	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
@@ -151,11 +151,11 @@ dependencies {
 	deobfProvided("curse.maven:PackagedAuto-308380:3614585")
 	
 	
-	deobfProvided(
-			"curse.maven:ThermalExpansion-69163:2926431",
-			"curse.maven:ThermalFoundation-222880:2926428",
-			"curse.maven:CoFHCore-69162:2920433"
-	)
+//	deobfProvided(
+//			"curse.maven:ThermalExpansion-69163:2926431",
+//			"curse.maven:ThermalFoundation-222880:2926428",
+//			"curse.maven:CoFHCore-69162:2920433"
+//	)
 	
 	deobfProvided(
 			"curse.maven:Mekanism-268560:2835175"
@@ -192,12 +192,30 @@ tasks.register('generateTestZS', Copy) {
 }
 
 tasks.register('runTests', JavaExec) {
-	dependsOn(build, generateTestZS)
+//	dependsOn(build)
+	group = 'buildruns'
+	workingDir = "$projectDir/run"
+//	dependsOn(build, generateTestZS)
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
-	classpath = modproject.sourceSets.main.output.classesDirs + modproject.sourceSets.main.compileClasspath + modproject.sourceSets.test.output.classesDirs + modproject.sourceSets.test.runtimeClasspath + coremodproject.sourceSets.main.output.classesDirs + coremodproject.sourceSets.main.compileClasspath + coremodproject.sourceSets.test.output.classesDirs + coremodproject.sourceSets.test.runtimeClasspath
-	main = 'GenerateTestZS'
-	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
+	classpath = files(
+			"${System.properties['user.home']}/.gradle/caches/minecraft/net/minecraftforge/forge/1.12.2-14.23.5.2847/start",
+			"${rootProject.projectDir}/libs/EnderCore-1.12.2-0.5.76-core.jar",
+			"${rootProject.projectDir}/libs/AutoConfig-1.12.2-1.0.2.jar",
+			"${rootProject.projectDir}/libs/AutoSave-1.12.2-1.0.11.jar") +
+			sourceSets.main.output.classesDirs +
+			sourceSets.main.compileClasspath +
+			sourceSets.test.output.classesDirs +
+			sourceSets.test.runtimeClasspath +
+			coremodproject.sourceSets.main.output.classesDirs +
+			coremodproject.sourceSets.main.compileClasspath +
+			coremodproject.sourceSets.test.output.classesDirs +
+			coremodproject.sourceSets.test.runtimeClasspath
+//	main = 'GenerateTestZS'
+//	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
+	jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
+	args '-mixin.config=mixins.dj2addons.init.json'
+	main = 'GradleStart'
 }
 
 //idea.project {
