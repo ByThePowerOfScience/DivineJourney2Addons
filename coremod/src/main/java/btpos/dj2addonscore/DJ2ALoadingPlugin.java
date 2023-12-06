@@ -22,7 +22,11 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 		InfusionStabilizerClassTransformer.class.getName();
 	}
 	public DJ2ALoadingPlugin() {
-		MixinBootstrap.init();
+		try {
+			MixinBootstrap.init();
+		} catch (Exception e) {
+			DJ2AMixinConfig.LOGGER.catching(e);
+		}
 		MixinExtrasBootstrap.init();
 		registerInitMixins();
 	}

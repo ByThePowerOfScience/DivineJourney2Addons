@@ -36,11 +36,16 @@ public class CoreInfo {
 		if (!coreLoaded) {
 			try {
 				Class.forName("org.spongepowered.asm.mixin.Mixin");
+				String reason = whydidwefailtoloadcore();
 				throw new MixinError(CORENOTLOADEDSTRING);
 			} catch (ClassNotFoundException e) {
 				throw new Error("DJ2Addons requires Mixin to run. Install MixinBootstrap (NOT MixinBooter) and try launching again.");
 			}
 		}
+	}
+	
+	private static String whydidwefailtoloadcore() {
+		return null; // TODO check if MLoader went, check if we had an exception, etc
 	}
 	
 	/**

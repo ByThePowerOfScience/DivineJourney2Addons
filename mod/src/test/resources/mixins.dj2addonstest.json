@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "btpos.dj2addonstest.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(INIT)",
+  "mixins": [
+    "MLoader"
+  ],
+  "client": [],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

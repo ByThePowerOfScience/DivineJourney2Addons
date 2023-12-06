@@ -44,7 +44,16 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				return false;
 			}
 		}
-		return !simplename.contains("JEI") || Loader.isModLoaded("jei");
+		if (simplename.contains("JEI")) {
+			try {
+				return Loader.isModLoaded("jei");
+			} catch (Exception e) {
+				LOGGER.catching(e);
+				return false;
+			}
+		} else {
+			return true;
+		}
 	}
 	
 	private boolean hasTickProfiler() {

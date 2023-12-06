@@ -191,38 +191,7 @@ tasks.register('generateTestZS', Copy) {
 	into project.file('run/scripts')
 }
 
-tasks.register('runTests', JavaExec) {
-	dependsOn(build)
-	group = 'buildruns'
-	workingDir = "$projectDir/testrun"
-	classpath = files(
-			"${System.properties['user.home']}/.gradle/caches/minecraft/net/minecraftforge/forge/1.12.2-14.23.5.2847/start",
-			"${rootProject.projectDir}/libs/EnderCore-1.12.2-0.5.76-core.jar",
-			"${rootProject.projectDir}/libs/AutoConfig-1.12.2-1.0.2.jar",
-			"${rootProject.projectDir}/libs/AutoSave-1.12.2-1.0.11.jar",
-			"${rootProject.projectDir}/coremod/build/libs/dj2addons-core.jar") +
-			sourceSets.main.output +
-			sourceSets.main.compileClasspath +
-			sourceSets.test.output +
-			sourceSets.test.runtimeClasspath
-//			project(':coremod').sourceSets.main.output
-//			files("${rootProject.projectDir}/coremod/build/libs/dj2addons-core.jar")
-//			coremodproject.sourceSets.test.output.classesDirs +
-//			coremodproject.sourceSets.test.runtimeClasspath
-	
-	jvmArgs (
-			'-Dforge.logging.console.level=debug',
-			'-Dmixin.debug.verbose=true',
-			'-Dmixin.debug.export=true',
-			'-Dmixin.hotSwap=true',
-//			'-Dfml.coreMods.load=btpos.dj2addonscore.DJ2ALoadingPlugin'
-	)
-//	args(
-//			'--mixin.config', 'mixins.dj2addons.init.json',
-////			'--mixin.config', 'mixins.dj2addons.bootstrap.json',
-//			'--tweakClass', 'org.spongepowered.asm.launch.MixinTweaker')
-	main = 'GradleStart'
-}
+
 
 //idea.project {
 //	settings {
@@ -238,4 +207,38 @@ tasks.register('runTests', JavaExec) {
 tasks.register('buildTestJar', Jar) {
 	from(sourceSets.test.output)
 	archiveName = 'dj2addons-test'
+}
+
+tasks.register('runTests', JavaExec) {
+	dependsOn(build)
+	group = 'buildruns'
+	workingDir = "$projectDir/testrun"
+	classpath = files(
+			"${System.properties['user.home']}/.gradle/caches/minecraft/net/minecraftforge/forge/1.12.2-14.23.5.2847/start",
+			"${rootProject.projectDir}/libs/EnderCore-1.12.2-0.5.76-core.jar",
+			"${rootProject.projectDir}/libs/AutoConfig-1.12.2-1.0.2.jar",
+			"${rootProject.projectDir}/libs/AutoSave-1.12.2-1.0.11.jar",
+			"${rootProject.projectDir}/coremod/build/libs/dj2addons-core.jar",
+			"${rootProject.projectDir}/mod/build/libs/dj2addons-${version}.jar") +
+			project(':coremod').sourceSets.main.compileClasspath +
+			project(':coremod').sourceSets.test.runtimeClasspath +
+			project(':mod').sourceSets.main.compileClasspath +
+			project(':mod').sourceSets.main.runtimeClasspath +
+			project(':mod').sourceSets.test.runtimeClasspath
+//			files("${rootProject.projectDir}/coremod/build/libs/dj2addons-core.jar")
+//			coremodproject.sourceSets.test.output.classesDirs +
+//			coremodproject.sourceSets.test.runtimeClasspath
+	
+	jvmArgs (
+			'-Dforge.logging.console.level=debug',
+			'-Dmixin.debug.verbose=true',
+			'-Dmixin.debug.export=true',
+			'-Dmixin.hotSwap=true',
+			'-Dfml.coreMods.load=btpos.dj2addonstest.DJ2AddonsTest'
+	)
+//	args(
+//			'--mixin.config', 'mixins.dj2addonstest.json',
+////			'--mixin.config', 'mixins.dj2addons.bootstrap.json',
+//			'--tweakClass', 'org.spongepowered.asm.launch.MixinTweaker')
+	main = 'GradleStart'
 }

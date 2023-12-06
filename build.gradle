@@ -140,9 +140,12 @@ subprojects { Project p ->
 //}
 
 task zendoc(type: JavaExec, group: 'documentation') {
-	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath // + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
+	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath
+	// + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
 	main = 'ExportZenDocs'
 }
+
+
 
 
 
