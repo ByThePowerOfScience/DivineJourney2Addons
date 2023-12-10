@@ -1,5 +1,6 @@
 package btpos.dj2addons.optimizations.mixin.aether_legacy;
 
+import com.gildedgames.the_aether.items.ItemsAether;
 import com.gildedgames.the_aether.player.abilities.AbilityAccessories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,9 +27,23 @@ public abstract class MAbilityAccessories {
 					target="(Lnet/minecraft/item/Item;)net/minecraft/item/ItemStack"
 			)
 	) // not necessarily the most optimal, but it's less brittle than directly referencing each one.
-	private ItemStack cacheResult(Item itemIn) {
+	private ItemStack cacheItemStacks(Item itemIn) {
 		return dj2addons$itemstackCache.computeIfAbsent(itemIn, ItemStack::new);
 	}
+	
+	@Redirect(
+			remap=false,
+			method="onUpdate",
+			at=@At(
+					value="NEW",
+					target="(Lnet/minecraft/item/Item;II)net/minecraft/item/ItemStack"
+			)
+	) // not necessarily the most optimal, but it's less brittle than directly referencing each one.
+	private ItemStack useObsidianGlovesCache(Item itemIn, int x, int y) {
+		return obsidian_gloves.copy();
+	}
+	@Unique
+	private static final ItemStack obsidian_gloves = new ItemStack(ItemsAether.obsidian_gloves, 1, 0);
 	
 }
 

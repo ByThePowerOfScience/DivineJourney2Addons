@@ -41,7 +41,7 @@ public class JankConfig {
 				}
 			}
 		} catch (IOException e) {
-			CoreInfo.LOGGER.catching(e);
+			CoreInfo.LOGGER.info("No infusion stabilizer config found. Skipping.");
 		}
 	}
 }

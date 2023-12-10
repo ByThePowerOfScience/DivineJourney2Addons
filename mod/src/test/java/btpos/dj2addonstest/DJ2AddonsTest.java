@@ -1,13 +1,12 @@
 package btpos.dj2addonstest;
 
 import btpos.dj2addonscore.DJ2AMixinConfig;
+import btpos.dj2addonstest.optimizations.mixin.industrialforegoing.MPlantInteractorTest;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
-import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -16,12 +15,13 @@ import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.spongepowered.asm.mixin.Mixins;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-//@Mod(modid="dj2addonstest", name="dj2addonstest", version="1.0", dependencies="before:enderio;before:bewitchment;before:astralsorcery;before:crafttweaker")
+//@Mod(modid="dj2addonstest", name="dj2addonstest", version="1.0", dependencies="after:agricraft")
 public class DJ2AddonsTest implements IFMLLoadingPlugin {
 	
 	public static final Logger LOGGER = LogManager.getLogger("DJ2AddonsTest");
@@ -29,10 +29,12 @@ public class DJ2AddonsTest implements IFMLLoadingPlugin {
 	public DJ2AddonsTest() {
 		Mixins.addConfiguration("mixins.dj2addonstest.json");
 		Mixins.addConfigurations(DJ2AMixinConfig.defConfigs);
+		Mixins.addConfiguration("mixins.dj2addons.init.json");
 	}
 	
+	
 	//	@Mod.EventHandler
-//	public void preInit(FMLPreInitializationEvent event) {
+//	public void postInit(FMLPostInitializationEvent event) {
 //		LOGGER.info("TESTING MOD LOADED");
 //	}
 	
@@ -42,9 +44,7 @@ public class DJ2AddonsTest implements IFMLLoadingPlugin {
 //	}
 //
 	
-	public static void runTests() {
-		LOGGER.info("STARTING TESTS");
-		
+	static List<String> checkLoadedConfigs() {
 		List<String> list = new ArrayList<String>(Arrays.asList(DJ2AMixinConfig.defConfigs));
 		list.add("mixins.dj2addons.bootstrap.json");
 		list.add("mixins.dj2addons.init.json");
@@ -63,8 +63,22 @@ public class DJ2AddonsTest implements IFMLLoadingPlugin {
 				haveVisited.put(config, true);
 			}
 		});
+		return haveVisited.entrySet().stream().map((entry -> {
+			if (entry.getValue())
+				return '-' + entry.getKey();
+			else
+				return '-' + entry.getKey() + ": FAILED";
+		})).collect(Collectors.toList());
+	}
+	
+	public static void runTests() {
+		LOGGER.info("STARTING TESTS");
 		
+		System.gc();
 		
+		MPlantInteractorTest.dotestmanually();
+		
+		List<String> configStrings = checkLoadedConfigs();
 		final LauncherDiscoveryRequest request =
 				LauncherDiscoveryRequestBuilder.request()
 				                               .selectors(DiscoverySelectors.selectPackage("btpos.dj2addonstest"))
@@ -77,24 +91,13 @@ public class DJ2AddonsTest implements IFMLLoadingPlugin {
 		launcher.execute(request);
 		
 		TestExecutionSummary summary = listener.getSummary();
-		LOGGER.info("Mixin Configs:");
-		haveVisited.forEach((k, v) -> {
-			if (v)
-				LOGGER.info('-' + k);
-			else
-				LOGGER.info('-' + k + ": FAILED");
-		});
+		LOGGER.info("Mixin configs:");
+		configStrings.forEach(LOGGER::info);
 		LOGGER.info("Tests found: " + summary.getTestsFoundCount());
 		LOGGER.info("Tests succeeded: " + summary.getTestsSucceededCount());
-		summary.getFailures()
-		       .forEach(failure -> {
-			       MethodSource source = (MethodSource)failure.getTestIdentifier().getSource().get();
-			       LOGGER.error(
-					       "Test Failed: {} - [{}|{}]",
-					       failure.getTestIdentifier().getDisplayName(),
-					       source.getClassName(),
-					       source.getMethodName());
-		       });
+		summary.printFailuresTo(new PrintWriter(System.out));
+		summary.getFailures().forEach(failure -> failure.getException().printStackTrace(System.out));
+		
 		FMLCommonHandler.instance().exitJava(0, false);
 	}
 	
@@ -108,16 +111,13 @@ public class DJ2AddonsTest implements IFMLLoadingPlugin {
 		return null;
 	}
 	
-	@Nullable
 	@Override
 	public String getSetupClass() {
 		return null;
 	}
 	
 	@Override
-	public void injectData(Map<String, Object> data) {
-	
-	}
+	public void injectData(Map<String, Object> data) {}
 	
 	@Override
 	public String getAccessTransformerClass() {

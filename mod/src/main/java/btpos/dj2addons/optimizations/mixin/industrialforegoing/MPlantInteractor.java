@@ -39,10 +39,11 @@ public class MPlantInteractor {
 	
 	@Shadow(remap=false) private boolean hasWorked;
 	
+	@Shadow(remap=false) private IFluidTank sludge;
+	
 	@Unique
 	private static final IBlockState dj2addons$DUMMY = Blocks.AIR.getDefaultState();
 	
-	@Shadow private IFluidTank sludge;
 	
 	/**
 	 * Allows Plant Interactors to access the drops from AgriCraft crops directly without having to drop them on the ground.
