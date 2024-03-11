@@ -9,13 +9,15 @@
     "bewitchment.MOvenRecipe",
     "bewitchment.MPoppetHandler",
     "bloodmagic.MSoulForge",
-    "immersiveengineering.MTileEntityMultiblockPart",
     "modularmagic.MRequirementLifeEssence",
     "moretweaker.MInputs",
     "packagedauto.MMiscUtil",
     "rftools.MNBTMatchingRecipe"
   ],
-  "client": [],
+  "client": [
+    "immersiveengineering.MTileEntityMultiblockPart",
+    "immersiveengineering.MTileEntityMultiblockPartSubclasses"
+  ],
   "injectors": {
     "maxShiftBy": 10
   }
