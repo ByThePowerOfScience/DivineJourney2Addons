@@ -5,6 +5,7 @@
   "plugin": "btpos.dj2addons.DJ2AMixinConfig",
   "mixins": [
     "aether_legacy.MAbilityAccessories",
+    "agricraft.MTileEntityCrop",
     "enderio.MNullHelper",
     "industrialforegoing.MPlantInteractor"
   ],
