@@ -7,6 +7,7 @@
     "aether_legacy.MAbilityAccessories",
     "agricraft.MTileEntityCrop",
     "enderio.MNullHelper",
+    "enderio.MProf",
     "industrialforegoing.MPlantInteractor"
   ],
   "client": [],

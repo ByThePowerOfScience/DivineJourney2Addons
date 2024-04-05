@@ -6,37 +6,44 @@ FIX QUANTUMFLUX MAGNET
 
 Optimizations:
 -Industrial Foregoing
-	-1.42% | Hydrator
-		-Block.randomTick() -> Optional.get() -> BlockCrop$$Lambda$8493.885801297.accept() -> TileEntityCrop.onGrowthTick()
-			-[0.89% | TileEntityCrop.spread() -> [0.70% | GrowthRequirement.hasValidSoil()]
-				-Fix: Check if there aren't any empty adjacent filled cropsticks FIRST
-
 	-IRedstoneControlledMachine$RedstoneControl$RedstoneOff.canRun() -> SidedTileEntity$update$1.invoke()
 		-Problem: Seems like it calls World#getRedstonePower EVERY TICK.
 		-Fix: Redstone only changes on block update; see if redstone power has changed only on block update and store that result until the next block update occurs.
 	-0.21% | MaterialStoneWorkFactoryTile.performWork()
 		-Problem: Lot of time spent on FurnaceRecipes.getSmeltingResult()
 		-Fix: cache result since the input will NEVER change
+-EnderIO
+	-0.03% | SagMillMachineRecipe.getBonusType()
 -Agricraft
 	-0.23% | JsonPlant.getHarvestProducts() -> ReferencePipeline.forEach()
+	-0.08% + 0.50% | GrowthRequirement.hasValidSoil() -> Optional.filter()
+		* Problem: We're checking over a whole list every single time the crop is ticked for if it is on a valid soil block
+		* Fix: The soil block can never change without a block update, so only recheck for valid soil on block update and save to a bool, then use that on tick.
 -Extra Utilities
 	-Mechanical User
 		-Problem: TileUse.operate() taking 1.8% of total server time???  There's no way there are enough of them on the server that are constantly active to be doing this.
 		-Fix?: If the mode requires an item (e.g. Activate Block with Item), check if there's an item first before firing?
-		-TODO: Check in base with Mineralis cape to see if there's any mechanical users set to fire constantly
+			-TODO: Check in base with Mineralis cape to see if there's any mechanical users set to fire constantly
 -Actually Additions:
 	-TileEntityLaserRelay.getNetwork() - 1.46%, try and cache?
-		-> LaserRelayConnectionHandler.getNetworkFor() -> ConcurrentHashMap$KeyIterator.next() | 0.85%
-		<- TileEntityLaserRelayItem.saveDataOnChangeOrWorldStart() every tick
--Aether
-	-AbilityAccessories.onUpdate() creating new itemstacks every tick
+			-> LaserRelayConnectionHandler.getNetworkFor() -> ConcurrentHashMap$KeyIterator.next() | 0.85%
+			<- TileEntityLaserRelayItem.saveDataOnChangeOrWorldStart() every tick
+		-Also in TileEntityLaserRelayFluids.transmitFluid()
+			* Why is it using ConcurrentHashMap$KeyIterator.next() instead of a hash lookup?
+				* Answer: Because it needs to check the key for if it contains the position.
+			* Should we cache this value? We'd need to find a way to ensure that it's accurate by rechecking it if it's dirty
+				* Wait no it's ALREADY cached. But the fact that it's being called this often means that it's not good enough, since we aren't changing networks that often in the slightest.
+		- 12.97% CLIENT: Also being called EVERY SINGLE **FRAME** on the client
+
 -Redstone called every update tick (World.isBlockIndirectlyGettingPowered() might not be optimizable??)
 	-IE: 
 		-TileEntityMultiblockMetal.update() -> TileEntityMultiblockMetal.isRSDisabled()
 		-TileEntityMetalBarrel.update()
 		-TileEntitySampleDrill.update()
 	-Astral: TileChalice.update()
-	-Thaumcraft: TileThaumatorium.gettingPower() 
+	-Thaumcraft: TileThaumatorium.gettingPower()
+
+
 
 
 Optimizations DONE:
@@ -44,6 +51,13 @@ Optimizations DONE:
 		-0.20% | BlockUtils.canBlockBeBroken()
 			-Problem: called even when harvesting operation doesn't require it to be broken
 			-Fix: change order of checks
+-Agricraft
+	-1.42% | Hydrator
+			-TileEntityCrop.onGrowthTick(): [0.89% | TileEntityCrop.spread() -> 0.70% | GrowthRequirement.hasValidSoil()]
+			-Fix: Check if there aren't any empty adjacent filled cropsticks FIRST
+			-Fixed in MTileEntityCrop
+-Aether
+	-AbilityAccessories.onUpdate() creating new itemstacks every tick [could still be optimized further with direct substitution instead of a map] [MAbilityAccessories]
 
 
 -configanytime for thaumcraft jankconfig
