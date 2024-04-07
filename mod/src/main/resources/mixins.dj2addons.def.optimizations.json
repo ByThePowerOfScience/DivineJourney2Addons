@@ -4,6 +4,13 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "btpos.dj2addons.DJ2AMixinConfig",
   "mixins": [
+    "actuallyadditions.MActuallyAdditions",
+    "actuallyadditions.MLaserRelayConnectionHandler",
+    "actuallyadditions.MTileEntityLaserRelayEnergy",
+    "actuallyadditions.MTileEntityLaserRelayItem",
+    "actuallyadditions.MWorldData",
+    "actuallyadditions.NetworkAccessor",
+    "actuallyadditions.TileEntityLaserRelayEnergyAccessor",
     "aether_legacy.MAbilityAccessories",
     "agricraft.MTileEntityCrop",
     "enderio.MNullHelper",
