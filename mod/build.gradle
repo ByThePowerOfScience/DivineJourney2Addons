@@ -40,7 +40,7 @@ dependencies {
 			"curse.maven:BrandonsCore-231382:3408276",
 			"curse.maven:CodeChickenLib-242818:2779848"
 	)
-	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	provided "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	
 	deobfProvided("curse.maven:Erebus-220698:3211974")
 	
@@ -92,7 +92,7 @@ dependencies {
 			"curse.maven:McJtyLib-233105:2745846"
 	)
 	
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Forgelin-248453:2785465",
 			"curse.maven:TeslaCoreLib-254602:3438487",
 			"curse.maven:IndustrialForegoing-266515:2745321"
@@ -147,7 +147,7 @@ dependencies {
 			"curse.maven:Mekanism-268560:2835175"
 	)
 	
-	deobfCompile("curse.maven:RadixCore-77286:2483855")
+	deobfProvided("curse.maven:RadixCore-77286:2483855")
 	
 	// Dev Tools
 	testImplementation( // For ZenDoc

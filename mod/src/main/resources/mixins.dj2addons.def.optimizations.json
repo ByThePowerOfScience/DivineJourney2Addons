@@ -6,10 +6,10 @@
   "mixins": [
     "actuallyadditions.MActuallyAdditions",
     "actuallyadditions.MLaserRelayConnectionHandler",
+    "actuallyadditions.MTileEntityLaserRelay",
     "actuallyadditions.MTileEntityLaserRelayEnergy",
     "actuallyadditions.MTileEntityLaserRelayItem",
     "actuallyadditions.MWorldData",
-    "actuallyadditions.NetworkAccessor",
     "actuallyadditions.TileEntityLaserRelayEnergyAccessor",
     "aether_legacy.MAbilityAccessories",
     "agricraft.MTileEntityCrop",

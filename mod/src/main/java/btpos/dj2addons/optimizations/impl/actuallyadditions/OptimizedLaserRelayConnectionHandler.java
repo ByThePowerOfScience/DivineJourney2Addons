@@ -1,42 +1,71 @@
 package btpos.dj2addons.optimizations.impl.actuallyadditions;
 
-import btpos.dj2addons.DJ2Addons;
-import btpos.dj2addons.optimizations.impl.actuallyadditions.GraphNetwork.RelayNode;
+import btpos.dj2addons.optimizations.impl.actuallyadditions.GraphNetwork.Node;
 import de.ellpeck.actuallyadditions.api.laser.IConnectionPair;
 import de.ellpeck.actuallyadditions.api.laser.ILaserRelayConnectionHandler;
 import de.ellpeck.actuallyadditions.api.laser.LaserType;
 import de.ellpeck.actuallyadditions.api.laser.Network;
+import de.ellpeck.actuallyadditions.mod.data.WorldData;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityLaserRelay;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnectionHandler {
 	
-	private static Map<BlockPos, GraphNetwork> networkLookupMap = new ConcurrentHashMap<>();
+	public static final Logger LOGGER = LogManager.getLogger("LaserHandler");
+	
+	public Map<BlockPos, GraphNetwork> networkLookupMap = new ConcurrentHashMap<>();
+	
+	public void addNetworkNodesToNetworkLookupMap(Network network) {
+		if (!(network instanceof GraphNetwork)) {
+			LOGGER.debug("[initNetMap] VANILLA NETWORK FOUND");
+			return;
+		}
+		GraphNetwork gnetwork = (GraphNetwork) network;
+		gnetwork.nodeLookupMap.keySet()
+		                      .forEach(pos -> {
+									LOGGER.debug("[initNetMap] added " + pos);
+									networkLookupMap.put(pos, gnetwork);
+							  });
+		LOGGER.debug("[injectIntoMap] Loaded network: " + gnetwork);
+	}
+	
+	public Node getNodeFor(BlockPos pos) {
+		GraphNetwork graphNetwork = networkLookupMap.get(pos);
+		if (graphNetwork == null) {
+//			LOGGER.debug("[getNodeFor] no network for " + pos);
+			return null;
+		}
+		
+		return graphNetwork.getNodeFor(pos);
+	}
 	
 	@Override
 	public ConcurrentSet<IConnectionPair> getConnectionsFor(BlockPos relay, World world) {
 		ConcurrentSet<IConnectionPair> ret = new ConcurrentSet<>();
 		
-		GraphNetwork network = networkLookupMap.get(relay);
-		if (network == null)
-			return ret;
+		Node node = getNodeFor(relay);
+		if (node == null)
+			return null;
 		
-		RelayNode node = network.nodeLookupMap.get(relay);
-		for (RelayNode connection : node.connections) {
+		for (Node connection : node.connections) {
 			ret.add(node.makeConnectionPairWith(connection));
 		}
+		
 		return ret;
 	}
+	
 	
 	/**
 	 * Called to delete the relay entirely.
@@ -45,79 +74,98 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	 */
 	@Override
 	public void removeRelayFromNetwork(BlockPos toDelete, World world) {
-		final GraphNetwork networkOfTD = networkLookupMap.remove(toDelete);
-		if (networkOfTD == null) {
+		final GraphNetwork networkForDeleted = getNetworkFor(toDelete, world);
+		if (networkForDeleted == null) {
 			//DEBUG
-			DJ2Addons.LOGGER.debug("[BAD!!!] network was null for " + toDelete);
+			LOGGER.debug("[removeRelayFromNetwork] network was null for " + toDelete);
 			return;
 		}
 		
-		final RelayNode nodeToDelete = networkOfTD.nodeLookupMap.remove(toDelete);
+		final Node nodeToDelete = networkForDeleted.removeNode(toDelete);
 		if (nodeToDelete == null) {
 			//DEBUG
-			DJ2Addons.LOGGER.debug("[ALERT!!!] relay node was null for " + toDelete);
+			LOGGER.debug("[removeRelayFromNetwork] relay node was null for " + toDelete);
 			return;
 		}
-		
-		// allocating this here so we don't have to reallocate and can just clear
-		final Set<RelayNode> alreadyTraversed = new HashSet<>(networkOfTD.nodeLookupMap.size());
 		
 		
 		// for each node, remove their connections to this one and handle new graphs that could be created from the split
 		nodeToDelete.connections.forEach(otherNode -> {
-			// Remove all other nodes' connection to this one,
 			otherNode.connections.remove(nodeToDelete);
 			
-			// if the other node was ONLY connected to this relay:
+			// if the other node was ONLY connected to this relay: isolate that other node as well
 			if (otherNode.connections.isEmpty()) {
-				// isolate that other node as well
-				removeNodeFromOldNetwork(otherNode);
+				LOGGER.debug("[removeRelayFromNetwork | forEach] {} empty, removing", otherNode);
+				removeNodeFromOldNetwork(otherNode, world);
 			} else {
 				// form a new network for this branch since they're no longer connected to the old one
-				// actually, by law nodes cannot connect to other nodes in the same network, so we don't need to do a search!!!
-				GraphNetwork newNetworkForBranch = new GraphNetwork();
-				alreadyTraversed.clear();
+				GraphNetwork newNetworkForBranch = makeNewNetwork(world);
 				
-				GraphNetwork.forEachNodeRecursive(otherNode, n -> {
-					moveNodeToNetwork(newNetworkForBranch, n);
-				}, alreadyTraversed);
-			} // TODO keep the largest branch in the original network
+				GraphNetwork.forEachNodeRecursive(
+						otherNode,
+						n -> moveNodeToNetwork(newNetworkForBranch, n, world),
+						new HashSet<>(networkForDeleted.getNodeCount()));
+				LOGGER.debug("[removeRelayFromNetwork | forEach] {} created new branch {}", otherNode, newNetworkForBranch);
+			}
+			// TODO keep the largest branch in the original network
 		});
 		
 		nodeToDelete.connections.clear();
+		removeNodeFromOldNetwork(nodeToDelete, world);
 	}
 	
-	private void moveNodeToNetwork(GraphNetwork newNetwork, RelayNode node) {
-		removeNodeFromOldNetwork(node);
+	private void moveNodeToNetwork(GraphNetwork newNetwork, Node node, World world) {
+		LOGGER.debug("[moveNodeToNetwork] {} -> {}", node, newNetwork);
+		removeNodeFromOldNetwork(node, world);
 		addNodeToNetwork(newNetwork, node);
 	}
 	
-	private void removeNodeFromOldNetwork(RelayNode node) {
-		if (node.network == null)
+	/**
+	 * Nullifies a node's references to its old network, updates the lookup maps, and updates the world data if this was the last node in the network.
+	 */
+	private void removeNodeFromOldNetwork(Node node, World world) {
+		GraphNetwork nodeNetwork = node.network;
+		if (nodeNetwork == null)
 			return;
-		node.network.changeAmount++;
-		node.network.nodeLookupMap.remove(node.pos);
+		
+		nodeNetwork.changeAmount++;
+		
+		nodeNetwork.removeNode(node.pos);
+		
 		networkLookupMap.remove(node.pos);
+		
+		if (nodeNetwork.getNodeCount() <= 0) {
+			WorldData.get(world).laserRelayNetworks.remove(nodeNetwork);
+			LOGGER.debug("[removeNodeFromOldNetwork] Last node {} removed from network {}", node.pos, nodeNetwork);
+			return;
+		}
+		
+		LOGGER.debug("[removeNodeFromOldNetwork] Removed " + node.pos + " from network " + nodeNetwork);
+		
 		node.network = null;
 	}
 	
-	private void addNodeToNetwork(GraphNetwork newNetwork, RelayNode node) {
-		if (node.network == newNetwork)
+	private void addNodeToNetwork(GraphNetwork newNetwork, Node node) {
+		if (node.network == newNetwork) {
+			LOGGER.debug("[addToNetwork] networks equal: " + node.network + " " + newNetwork);
 			return;
+		}
 		newNetwork.nodeLookupMap.put(node.pos, node);
 		networkLookupMap.put(node.pos, newNetwork);
 		
 		node.network = newNetwork;
 		newNetwork.changeAmount++;
+		LOGGER.debug("[addToNetwork] Added " + node.pos + " to network " + newNetwork);
+		
 	}
 	
 	@Override
 	public final GraphNetwork getNetworkFor(BlockPos relay, World world) {
-		// TODO get from world data
-		return networkLookupMap.getOrDefault(relay, null);
+		return networkLookupMap.get(relay);
 	}
 	
-	public void mergeNetworks(GraphNetwork superNetwork, GraphNetwork toBeRemoved) {
+	public void mergeNetworks(GraphNetwork superNetwork, GraphNetwork toBeRemoved, World world) {
+		LOGGER.debug("[mergeNetworks] super: " + superNetwork + " | " + toBeRemoved);
 		// update the network lookup map to the new network
 		networkLookupMap.replaceAll((blockPos, mappedNetwork) -> {
 			if (mappedNetwork.equals(toBeRemoved))
@@ -126,44 +174,69 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		});
 		
 		toBeRemoved.mergeIntoOtherNetwork(superNetwork);
-		//TODO update world data
+		
+		WorldData.get(world).laserRelayNetworks.remove(toBeRemoved);
 	}
 	
 	@Override
 	public boolean addConnection(BlockPos firstRelayPos, BlockPos secondRelayPos, LaserType type, World world, boolean suppressConnectionRender, boolean removeIfConnected) {
+		LOGGER.traceEntry(() -> firstRelayPos, () -> secondRelayPos, () -> type);
 		if (firstRelayPos == null
 		    || secondRelayPos == null
 		    || firstRelayPos.equals(secondRelayPos))
 		{
-			DJ2Addons.LOGGER.debug("Bad positions given: " + firstRelayPos + " " + secondRelayPos);
+			LOGGER.debug("[addConnection] Bad positions given: " + firstRelayPos + " " + secondRelayPos);
 			return false;
 		}
 		
 		
-		GraphNetwork firstNetwork = this.getNetworkFor(firstRelayPos, world);
-		GraphNetwork secondNetwork = this.getNetworkFor(secondRelayPos, world);
+		GraphNetwork firstNetwork = getNetworkFor(firstRelayPos, world);
+		GraphNetwork secondNetwork = getNetworkFor(secondRelayPos, world);
 		
 		
 		if (firstNetwork == null && secondNetwork == null) {
 			// neither has a network, so create a new one
-			GraphNetwork newNetwork = new GraphNetwork();
-			addNodeToNetwork(newNetwork, new RelayNode(newNetwork, firstRelayPos, type));
-			addNodeToNetwork(newNetwork, new RelayNode(newNetwork, secondRelayPos, type));
-		} else if (Objects.equals(firstNetwork, secondNetwork)) {
+			GraphNetwork newNetwork = makeNewNetwork(world);
+			
+			Node firstNode = new Node(firstRelayPos, type);
+			Node secondNode = new Node(secondRelayPos, type);
+			
+			addNodeToNetwork(newNetwork, firstNode);
+			addNodeToNetwork(newNetwork, secondNode);
+			
+			firstNode.linkTo(secondNode);
+			
+			LOGGER.debug("[addConnection] Both null, created {}", newNetwork);
+		} else if (firstNetwork == secondNetwork) {
 			// if they're the same network:
 			if (!removeIfConnected) {
+				LOGGER.debug("[addConnection] Same, no remove: {}", firstNetwork);
 				return false; // this is the only short-circuit return in this block
 			}
-			
-			this.removeConnection(world, firstRelayPos, secondRelayPos);
+			if (firstNetwork.getNodeFor(firstRelayPos).connections.contains(firstNetwork.getNodeFor(secondRelayPos))) {
+				LOGGER.debug("[addConnection] Same, remove: {}", firstNetwork);
+				removeConnection(world, firstRelayPos, secondRelayPos);
+			}
 		} else if (firstNetwork == null) {
+			LOGGER.debug("[addConnection | 1 -> 2] {} -> {}", firstRelayPos, secondNetwork);
 			// add it to the second network
-			addNodeToNetwork(secondNetwork, new RelayNode(secondNetwork, firstRelayPos, type));
+			Node node = new Node(firstRelayPos, type);
+			addNodeToNetwork(secondNetwork, node);
+			
+			Node first = secondNetwork.nodeLookupMap.get(secondRelayPos);
+			first.linkTo(node);
+			
 		} else if (secondNetwork == null) {
 			// add it to the first network
-			addNodeToNetwork(firstNetwork, new RelayNode(firstNetwork, firstRelayPos, type));
+			LOGGER.debug("[addConnection | 2 -> 1] {} -> {}", secondRelayPos, firstNetwork);
+			Node node = new Node(secondRelayPos, type);
+			addNodeToNetwork(firstNetwork, node);
+			node.linkTo(firstNetwork.nodeLookupMap.get(firstRelayPos));
 		} else {
-			mergeNetworks(firstNetwork, secondNetwork);
+			LOGGER.debug("[addConnection|merge] {} into {}", secondNetwork, firstNetwork);
+			mergeNetworks(firstNetwork, secondNetwork, world);
+			Node first = firstNetwork.nodeLookupMap.get(firstRelayPos);
+			first.linkTo(secondNetwork.nodeLookupMap.get(secondRelayPos));
 		}
 		
 		return true;
@@ -175,29 +248,53 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		    || secondRelayPos == null
 		    || firstRelayPos.equals(secondRelayPos))
 		{
-			DJ2Addons.LOGGER.debug("Bad positions given: " + firstRelayPos + " " + secondRelayPos);
+			LOGGER.debug("[removeConnection] Bad positions given: " + firstRelayPos + " " + secondRelayPos);
 			return;
 		}
 		
 		
 		GraphNetwork network = getNetworkFor(firstRelayPos, world);
 		
-		if (!Objects.equals(network, getNetworkFor(secondRelayPos, world))) {
-			DJ2Addons.LOGGER.debug("Not the same network: " + firstRelayPos + " " + secondRelayPos);
+		if (network != getNetworkFor(secondRelayPos, world)) {
+			LOGGER.debug("[removeConnection] Not the same network: " + firstRelayPos + " " + secondRelayPos + "\n{} {}", network, getNetworkFor(secondRelayPos, world));
 			return;
 		}
 		
-		RelayNode firstNode = network.nodeLookupMap.get(firstRelayPos);
-		RelayNode secondNode = network.nodeLookupMap.get(secondRelayPos);
+		Node firstNode = network.nodeLookupMap.get(firstRelayPos);
+		Node secondNode = network.nodeLookupMap.get(secondRelayPos);
 		
+		// remove each other's connection to the other
 		firstNode.connections.remove(secondNode);
 		secondNode.connections.remove(firstNode);
 		
-		// Add all other nodes to a new network
-		GraphNetwork newNetworkForSecondBranch = new GraphNetwork();
-		GraphNetwork.traverseFromNode(secondNode, node -> moveNodeToNetwork(newNetworkForSecondBranch, node), network.nodeLookupMap.size());
+		// if either is now isolated, remove it from the network
+		boolean haveIsolatedNode = false;
+		if (firstNode.connections.isEmpty()) {
+			haveIsolatedNode = true;
+			removeNodeFromOldNetwork(firstNode, world);
+		}
+		if (secondNode.connections.isEmpty()) {
+			haveIsolatedNode = true;
+			removeNodeFromOldNetwork(secondNode, world);
+		}
+		if (!haveIsolatedNode) {
+			LOGGER.debug("[removeConnection] moving nodes starting from {}", secondNode);
+			// Add all of new split-off branch to new network
+			GraphNetwork newNetworkForSecondBranch = makeNewNetwork(world);
+			GraphNetwork.traverseFromNode(
+					secondNode,
+					node -> moveNodeToNetwork(newNetworkForSecondBranch, node, world),
+					network.getNodeCount());
+		}
 	}
 	
+	@NotNull
+	private static GraphNetwork makeNewNetwork(World world) {
+		GraphNetwork graphNetwork = new GraphNetwork();
+		WorldData.get(world).laserRelayNetworks.add(graphNetwork);
+		LOGGER.debug("[makeNewNetwork] " + graphNetwork);
+		return graphNetwork;
+	}
 	
 	
 	public static Network readNetworkFromNBT(NBTTagCompound tag) {
@@ -209,7 +306,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		if (network instanceof GraphNetwork)
 			return GraphNetwork.toNBT((GraphNetwork) network);
 		else // DEBUG
-			throw new RuntimeException("[ActuallyAdditions] A non-GraphNetwork somehow found its way into the system.");
+			throw new RuntimeException("[ActuallyAdditions] A non-GraphNetwork somehow found its way into the system." + network);
 	}
 	
 	

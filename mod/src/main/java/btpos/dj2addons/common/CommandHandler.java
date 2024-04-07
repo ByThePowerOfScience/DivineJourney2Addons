@@ -1,5 +1,17 @@
 package btpos.dj2addons.common;
 
+import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.api.bewitchment.Rituals;
+import btpos.dj2addons.api.extrautils2.ExtraUtilities;
+import btpos.dj2addons.common.modrefs.CBigReactors;
+import btpos.dj2addons.common.modrefs.CBigReactors.ReactorInteriorDataWrapper;
+import btpos.dj2addons.common.modrefs.CTotemic;
+import btpos.dj2addons.common.modrefs.IsModLoaded;
+import btpos.dj2addons.common.util.StringDumpUtils;
+import btpos.dj2addons.common.util.Util;
+import btpos.dj2addons.common.util.Util.DevTools;
+import btpos.dj2addons.optimizations.impl.actuallyadditions.GraphNetwork;
+import btpos.dj2addons.optimizations.impl.actuallyadditions.OptimizedLaserRelayConnectionHandler;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -11,6 +23,8 @@ import crafttweaker.mc1120.commands.CommandUtils;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import crafttweaker.mc1120.data.NBTConverter;
+import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
+import de.ellpeck.actuallyadditions.mod.data.WorldData;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
@@ -33,20 +47,17 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import btpos.dj2addons.DJ2Addons;
-import btpos.dj2addons.api.bewitchment.Rituals;
-import btpos.dj2addons.api.extrautils2.ExtraUtilities;
-import btpos.dj2addons.common.modrefs.CBigReactors;
-import btpos.dj2addons.common.modrefs.CBigReactors.ReactorInteriorDataWrapper;
-import btpos.dj2addons.common.modrefs.CTotemic;
-import btpos.dj2addons.common.modrefs.IsModLoaded;
-import btpos.dj2addons.common.util.StringDumpUtils;
-import btpos.dj2addons.common.util.Util;
-import btpos.dj2addons.common.util.Util.DevTools;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static btpos.dj2addons.DJ2AMixinConfig.LOGGER;
 
 @SuppressWarnings({"unused", "Inspection", "Guava"})
 public class CommandHandler extends CraftTweakerCommand {
@@ -76,7 +87,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, info, mods, bewitchment, extrautils2, totemic, findextending
+		hand, info, mods, bewitchment, extrautils2, totemic, findextending, networks, clearnetworks
 //		,validate
 	}
 	
@@ -128,6 +139,23 @@ public class CommandHandler extends CraftTweakerCommand {
 						extrautilsHandler(m.withChat());
 					if (command.get().equals(SubCommand.extrautils2))
 						break;
+				case networks: // DEBUG
+					LOGGER.debug("[Command] Printing AA networks: ");
+					((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap.values().forEach(DJ2Addons.LOGGER::info);
+					LOGGER.debug(((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap);
+					break;
+				case clearnetworks:
+					Map<BlockPos, GraphNetwork> networkLookupMap = ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap;
+					networkLookupMap.values().forEach(network -> {
+						network.nodeLookupMap.values().forEach(node -> {
+							node.connections.clear();
+							node.network = null;
+						});
+					});
+					networkLookupMap.clear();
+					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.clear();
+					break;
+					
 			}
 			switch (command.get()) {
 				case mods:
