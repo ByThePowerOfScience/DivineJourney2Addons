@@ -123,7 +123,7 @@ subprojects {
 		//noinspection GroovyAssignabilityCheck
 		add sourceSets.main, 'mixins.dj2addons.refmap.json'
 //    config 'mixins.dj2addons.json'
-//    hotSwap = true
+//    	hotSwap = true
 	}
 	
 	idea {

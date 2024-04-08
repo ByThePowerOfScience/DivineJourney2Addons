@@ -1,14 +1,18 @@
 package btpos.dj2addons.optimizations.impl.actuallyadditions;
 
 import btpos.dj2addons.optimizations.impl.actuallyadditions.GraphNetwork.Node;
+import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.laser.IConnectionPair;
 import de.ellpeck.actuallyadditions.api.laser.ILaserRelayConnectionHandler;
 import de.ellpeck.actuallyadditions.api.laser.LaserType;
 import de.ellpeck.actuallyadditions.api.laser.Network;
 import de.ellpeck.actuallyadditions.mod.data.WorldData;
+import de.ellpeck.actuallyadditions.mod.misc.apiimpl.ConnectionPair;
+import de.ellpeck.actuallyadditions.mod.tile.TileEntityBase.NBTType;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityLaserRelay;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -26,6 +31,43 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	public static final Logger LOGGER = LogManager.getLogger("LaserHandler");
 	
 	public Map<BlockPos, GraphNetwork> networkLookupMap = new ConcurrentHashMap<>();
+	
+	public static void performSync(NBTTagCompound compound, NBTType type, BlockPos pos, World world) {
+		if (type == NBTType.SYNC) {
+			ILaserRelayConnectionHandler genericConnectionHandler = ActuallyAdditionsAPI.connectionHandler;
+			if (!(genericConnectionHandler instanceof OptimizedLaserRelayConnectionHandler))
+				return;
+			
+			OptimizedLaserRelayConnectionHandler connectionHandler = ((OptimizedLaserRelayConnectionHandler) genericConnectionHandler);
+			
+			NBTTagList incomingPairs = compound.getTagList("Connections", 10);
+			LOGGER.debug("[readSyncableNBT] incoming pairs: " + incomingPairs);
+			if (incomingPairs.isEmpty()) {
+				connectionHandler.removeRelayFromNetwork(pos, world);
+				return;
+			}
+			
+			Set<IConnectionPair> previousConnected = connectionHandler.getConnectionsFor(pos, world);
+			
+			for (int i = 0; i < incomingPairs.tagCount(); i++) {
+				ConnectionPair newPair = new ConnectionPair(); // TODO remove this extra object instantiation
+				newPair.readFromNBT(incomingPairs.getCompoundTagAt(i));
+				
+				// remove it from the set if it's there, so all that's left in previousConnections is the ones we USED to have but don't anymore
+				if (previousConnected.remove(newPair) == false) {
+					// if it wasn't there, it's a new one, so add it
+					BlockPos[] positions = newPair.getPositions();
+					connectionHandler.addConnection(positions[0], positions[1], newPair.getType(), world);
+				}
+			}
+			
+			// anything left in the set is connections that aren't there anymore
+			previousConnected.forEach(connectionPair -> { //! This actually broke it; need to figure out what is synced and what isn't
+				BlockPos[] positions = connectionPair.getPositions();
+				connectionHandler.removeConnection(world, positions[0], positions[1]);
+			});
+		}
+	}
 	
 	public void addNetworkNodesToNetworkLookupMap(Network network) {
 		if (!(network instanceof GraphNetwork)) {
@@ -41,29 +83,33 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		LOGGER.debug("[injectIntoMap] Loaded network: " + gnetwork);
 	}
 	
-	public Node getNodeFor(BlockPos pos) {
-		GraphNetwork graphNetwork = networkLookupMap.get(pos);
+	public Node getNodeFor(BlockPos pos, World world) {
+		GraphNetwork graphNetwork = getNetworkFor(pos, world);
 		if (graphNetwork == null) {
-//			LOGGER.debug("[getNodeFor] no network for " + pos);
 			return null;
 		}
 		
 		return graphNetwork.getNodeFor(pos);
 	}
 	
-	@Override
-	public ConcurrentSet<IConnectionPair> getConnectionsFor(BlockPos relay, World world) {
-		ConcurrentSet<IConnectionPair> ret = new ConcurrentSet<>();
+	public Set<BlockPos> getPosConnectionsFor(BlockPos relay, World world) {
+		Set<BlockPos> ret = new HashSet<>();
 		
-		Node node = getNodeFor(relay);
-		if (node == null)
-			return null;
-		
-		for (Node connection : node.connections) {
-			ret.add(node.makeConnectionPairWith(connection));
+		for (Node connectedNode : getNodeFor(relay, world).connections) {
+			ret.add(connectedNode.pos);
 		}
 		
 		return ret;
+	}
+	
+	@Override
+	public ConcurrentSet<IConnectionPair> getConnectionsFor(BlockPos relay, World world) {
+		Node node = getNodeFor(relay, world);
+		if (node == null) {
+			return null;
+		}
+		
+		return node.getConnectionsAsPairs();
 	}
 	
 	
@@ -124,6 +170,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	 * Nullifies a node's references to its old network, updates the lookup maps, and updates the world data if this was the last node in the network.
 	 */
 	private void removeNodeFromOldNetwork(Node node, World world) {
+//		LOGGER.catching(new Throwable());
 		GraphNetwork nodeNetwork = node.network;
 		if (nodeNetwork == null)
 			return;
@@ -180,7 +227,6 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	
 	@Override
 	public boolean addConnection(BlockPos firstRelayPos, BlockPos secondRelayPos, LaserType type, World world, boolean suppressConnectionRender, boolean removeIfConnected) {
-		LOGGER.traceEntry(() -> firstRelayPos, () -> secondRelayPos, () -> type);
 		if (firstRelayPos == null
 		    || secondRelayPos == null
 		    || firstRelayPos.equals(secondRelayPos))
@@ -264,8 +310,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		Node secondNode = network.nodeLookupMap.get(secondRelayPos);
 		
 		// remove each other's connection to the other
-		firstNode.connections.remove(secondNode);
-		secondNode.connections.remove(firstNode);
+		firstNode.unlinkTo(secondNode);
 		
 		// if either is now isolated, remove it from the network
 		boolean haveIsolatedNode = false;

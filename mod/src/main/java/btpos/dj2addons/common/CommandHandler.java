@@ -57,8 +57,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static btpos.dj2addons.DJ2AMixinConfig.LOGGER;
-
 @SuppressWarnings({"unused", "Inspection", "Guava"})
 public class CommandHandler extends CraftTweakerCommand {
 	private static Thread dumperThread = null;
@@ -140,9 +138,12 @@ public class CommandHandler extends CraftTweakerCommand {
 					if (command.get().equals(SubCommand.extrautils2))
 						break;
 				case networks: // DEBUG
-					LOGGER.debug("[Command] Printing AA networks: ");
-					((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap.values().forEach(DJ2Addons.LOGGER::info);
-					LOGGER.debug(((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap);
+					StringBuilder sb = new StringBuilder().append("[Command] Printing AA networks:\n");
+					sb.append("From map:\n");
+					((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap.values().stream().distinct().forEach(n -> sb.append("\t").append(n).append("\n"));
+					sb.append("From World ").append(sender.getEntityWorld()).append(":\n");
+					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.forEach(n -> sb.append("\t").append(n).append("\n"));
+					DJ2Addons.LOGGER.debug(sb);
 					break;
 				case clearnetworks:
 					Map<BlockPos, GraphNetwork> networkLookupMap = ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap;
@@ -152,6 +153,7 @@ public class CommandHandler extends CraftTweakerCommand {
 							node.network = null;
 						});
 					});
+					GraphNetwork.debug$idCount = 0;
 					networkLookupMap.clear();
 					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.clear();
 					break;
