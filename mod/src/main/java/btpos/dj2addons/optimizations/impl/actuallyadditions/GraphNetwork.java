@@ -1,13 +1,16 @@
 package btpos.dj2addons.optimizations.impl.actuallyadditions;
 
 import btpos.dj2addons.DJ2Addons;
+import de.ellpeck.actuallyadditions.api.laser.IConnectionPair;
 import de.ellpeck.actuallyadditions.api.laser.LaserType;
 import de.ellpeck.actuallyadditions.api.laser.Network;
 import de.ellpeck.actuallyadditions.mod.misc.apiimpl.ConnectionPair;
+import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -137,15 +140,43 @@ public class GraphNetwork extends Network {
 	}
 	
 	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		if (!super.equals(o))
+			return false;
+		GraphNetwork that = (GraphNetwork) o;
+		
+		return id == that.id && Objects.equals(nodeLookupMap, that.nodeLookupMap);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(nodeLookupMap, id);
+	}
+	
+	@Override
 	public String toString() {
-		return "GraphNetwork["
-		       + id
-		       + "]{"
-		       + nodeLookupMap.values()
-		                      .stream()
-		                      .map(node -> "\n\t" + node)
-		                      .collect(Collectors.joining())
-		       + "\n}";
+		String ret = "GraphNetwork[" + id + "]{";
+		ret += nodeLookupMap.values()
+		                    .stream()
+		                    .map(node -> {
+			                    String s = String.format("[%d %d %d]", node.pos.getX(), node.pos.getY(), node.pos.getZ());
+			                    s += "::{";
+			                    s += node.connections
+					                    .stream()
+					                    .map(connected -> {
+						                    return String.format("(%d %d %d)", connected.pos.getX(), connected.pos.getY(), connected.pos.getZ());
+					                    })
+					                    .collect(Collectors.joining(", "));
+			                    s += "}";
+			                    return s;
+		                    })
+		                    .collect(Collectors.joining(", "));
+		ret += "}";
+		return ret;
 	}
 	
 	/**
@@ -182,17 +213,34 @@ public class GraphNetwork extends Network {
 		 * @param otherNode The node to form a link between
 		 */
 		public void linkTo(Node otherNode) {
+			if (Objects.equals(otherNode, this))
+				return;
 			this.connections.add(otherNode);
 			otherNode.connections.add(this);
 		}
 		
-		public ConnectionPair makeConnectionPairWith(Node other) {
+		public void unlinkTo(Node otherNode) {
+			this.connections.remove(otherNode);
+			otherNode.connections.remove(this);
+		}
+		
+		@Nonnull
+		public ConnectionPair makeConnectionPairWith(@Nonnull Node other) {
+			if (this.equals(other)) {
+				OptimizedLaserRelayConnectionHandler.LOGGER.warn("Node " + this + " made a connection with itself.");
+			}
 			return new ConnectionPair(
 					this.pos,
 					other.pos,
 					this.type,
 					false // always false in code fsr, instead just put as infrared if you're wearing goggles
 			);
+		}
+		
+		public ConcurrentSet<IConnectionPair> getConnectionsAsPairs() {
+			ConcurrentSet<IConnectionPair> ret = new ConcurrentSet<>();
+			this.connections.forEach(node -> ret.add(this.makeConnectionPairWith(node)));
+			return ret;
 		}
 		
 		@Override
@@ -218,15 +266,9 @@ public class GraphNetwork extends Network {
 		public String toString() {
 			String s = "RelayNode{[" + pos.getX() + ' ' + pos.getY() + ' ' + pos.getZ() + "]::(";
 			if (!connections.isEmpty()) {
-				StringBuilder sb = new StringBuilder();
-				connections.forEach(el -> sb.append("[")
-				                            .append(el.pos.getX())
-				                            .append(' ')
-				                            .append(el.pos.getY())
-				                            .append(' ')
-				                            .append(el.pos.getZ())
-				                            .append("],"));
-				s += sb;
+				s += connections.stream()
+				                .map(el -> "[" + el.pos.getX() + ' ' + el.pos.getY() + ' ' + el.pos.getZ() + "]")
+				                .collect(Collectors.joining(","));
 			}
 			return s + ")}";
 		}
