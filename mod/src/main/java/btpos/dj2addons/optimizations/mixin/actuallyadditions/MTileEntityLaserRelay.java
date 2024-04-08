@@ -41,7 +41,7 @@ public abstract class MTileEntityLaserRelay extends TileEntityInventoryBase {
 		super.readSyncableNBT(compound, type);
 		
 		// so I can hotswap it in dev
-		OptimizedLaserRelayConnectionHandler.performSync(compound, type, this.pos, this.world);
+		OptimizedLaserRelayConnectionHandler.onNetworkSync(compound, type, this.pos, this.world);
 	}
 	
 }

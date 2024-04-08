@@ -32,7 +32,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	
 	public Map<BlockPos, GraphNetwork> networkLookupMap = new ConcurrentHashMap<>();
 	
-	public static void performSync(NBTTagCompound compound, NBTType type, BlockPos pos, World world) {
+	public static void onNetworkSync(NBTTagCompound compound, NBTType type, BlockPos pos, World world) {
 		if (type == NBTType.SYNC) {
 			ILaserRelayConnectionHandler genericConnectionHandler = ActuallyAdditionsAPI.connectionHandler;
 			if (!(genericConnectionHandler instanceof OptimizedLaserRelayConnectionHandler))
@@ -80,7 +80,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 									LOGGER.debug("[initNetMap] added " + pos);
 									networkLookupMap.put(pos, gnetwork);
 							  });
-		LOGGER.debug("[injectIntoMap] Loaded network: " + gnetwork);
+		LOGGER.debug("[initNetMap] Loaded network: " + gnetwork);
 	}
 	
 	public Node getNodeFor(BlockPos pos, World world) {
@@ -151,19 +151,23 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 						otherNode,
 						n -> moveNodeToNetwork(newNetworkForBranch, n, world),
 						new HashSet<>(networkForDeleted.getNodeCount()));
-				LOGGER.debug("[removeRelayFromNetwork | forEach] {} created new branch {}", otherNode, newNetworkForBranch);
+				LOGGER.debug("[removeRelayFromNetwork | forEach] {} created new branch {}",
+				             otherNode,
+				             newNetworkForBranch);
 			}
 			// TODO keep the largest branch in the original network
 		});
 		
 		nodeToDelete.connections.clear();
 		removeNodeFromOldNetwork(nodeToDelete, world);
+		WorldData.get(world).markDirty();
 	}
 	
 	private void moveNodeToNetwork(GraphNetwork newNetwork, Node node, World world) {
 		LOGGER.debug("[moveNodeToNetwork] {} -> {}", node, newNetwork);
 		removeNodeFromOldNetwork(node, world);
-		addNodeToNetwork(newNetwork, node);
+		addNodeToNetwork(newNetwork, node, world);
+		WorldData.get(world).markDirty();
 	}
 	
 	/**
@@ -184,15 +188,16 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		if (nodeNetwork.getNodeCount() <= 0) {
 			WorldData.get(world).laserRelayNetworks.remove(nodeNetwork);
 			LOGGER.debug("[removeNodeFromOldNetwork] Last node {} removed from network {}", node.pos, nodeNetwork);
-			return;
 		}
-		
-		LOGGER.debug("[removeNodeFromOldNetwork] Removed " + node.pos + " from network " + nodeNetwork);
-		
-		node.network = null;
+		else {
+			LOGGER.debug("[removeNodeFromOldNetwork] Removed " + node.pos + " from network " + nodeNetwork);
+			
+			node.network = null;
+		}
+		WorldData.get(world).markDirty();
 	}
 	
-	private void addNodeToNetwork(GraphNetwork newNetwork, Node node) {
+	private void addNodeToNetwork(GraphNetwork newNetwork, Node node, World world) {
 		if (node.network == newNetwork) {
 			LOGGER.debug("[addToNetwork] networks equal: " + node.network + " " + newNetwork);
 			return;
@@ -203,7 +208,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		node.network = newNetwork;
 		newNetwork.changeAmount++;
 		LOGGER.debug("[addToNetwork] Added " + node.pos + " to network " + newNetwork);
-		
+		WorldData.get(world).markDirty();
 	}
 	
 	@Override
@@ -223,6 +228,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		toBeRemoved.mergeIntoOtherNetwork(superNetwork);
 		
 		WorldData.get(world).laserRelayNetworks.remove(toBeRemoved);
+		WorldData.get(world).markDirty();
 	}
 	
 	@Override
@@ -247,8 +253,8 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			Node firstNode = new Node(firstRelayPos, type);
 			Node secondNode = new Node(secondRelayPos, type);
 			
-			addNodeToNetwork(newNetwork, firstNode);
-			addNodeToNetwork(newNetwork, secondNode);
+			addNodeToNetwork(newNetwork, firstNode, world);
+			addNodeToNetwork(newNetwork, secondNode, world);
 			
 			firstNode.linkTo(secondNode);
 			
@@ -267,7 +273,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			LOGGER.debug("[addConnection | 1 -> 2] {} -> {}", firstRelayPos, secondNetwork);
 			// add it to the second network
 			Node node = new Node(firstRelayPos, type);
-			addNodeToNetwork(secondNetwork, node);
+			addNodeToNetwork(secondNetwork, node, world);
 			
 			Node first = secondNetwork.nodeLookupMap.get(secondRelayPos);
 			first.linkTo(node);
@@ -276,7 +282,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			// add it to the first network
 			LOGGER.debug("[addConnection | 2 -> 1] {} -> {}", secondRelayPos, firstNetwork);
 			Node node = new Node(secondRelayPos, type);
-			addNodeToNetwork(firstNetwork, node);
+			addNodeToNetwork(firstNetwork, node, world);
 			node.linkTo(firstNetwork.nodeLookupMap.get(firstRelayPos));
 		} else {
 			LOGGER.debug("[addConnection|merge] {} into {}", secondNetwork, firstNetwork);
@@ -284,7 +290,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			Node first = firstNetwork.nodeLookupMap.get(firstRelayPos);
 			first.linkTo(secondNetwork.nodeLookupMap.get(secondRelayPos));
 		}
-		
+		WorldData.get(world).markDirty();
 		return true;
 	}
 	
@@ -331,13 +337,16 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 					node -> moveNodeToNetwork(newNetworkForSecondBranch, node, world),
 					network.getNodeCount());
 		}
+		WorldData.get(world).markDirty();
 	}
 	
 	@NotNull
 	private static GraphNetwork makeNewNetwork(World world) {
 		GraphNetwork graphNetwork = new GraphNetwork();
-		WorldData.get(world).laserRelayNetworks.add(graphNetwork);
+		WorldData worldData = WorldData.get(world);
+		worldData.laserRelayNetworks.add(graphNetwork);
 		LOGGER.debug("[makeNewNetwork] " + graphNetwork);
+		worldData.markDirty();
 		return graphNetwork;
 	}
 	
