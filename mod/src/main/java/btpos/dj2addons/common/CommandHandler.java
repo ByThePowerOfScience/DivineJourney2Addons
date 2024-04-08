@@ -155,7 +155,9 @@ public class CommandHandler extends CraftTweakerCommand {
 					});
 					GraphNetwork.debug$idCount = 0;
 					networkLookupMap.clear();
-					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.clear();
+					WorldData worldData = WorldData.get(sender.getEntityWorld());
+					worldData.laserRelayNetworks.clear();
+					worldData.markDirty();
 					break;
 					
 			}

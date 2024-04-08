@@ -51,7 +51,9 @@ public abstract class MWorldData {
 			)
 	)
 	private void inject(NBTTagCompound compound, CallbackInfo ci) {
-		laserRelayNetworks.forEach(network -> ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).addNetworkNodesToNetworkLookupMap(network));
+		OptimizedLaserRelayConnectionHandler handler = (OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler;
+		handler.networkLookupMap.clear();
+		laserRelayNetworks.forEach(handler::addNetworkNodesToNetworkLookupMap);
 	}
 }
 
