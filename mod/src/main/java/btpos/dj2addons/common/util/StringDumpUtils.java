@@ -70,7 +70,7 @@ public class StringDumpUtils {
 	public static void dump(Object object, boolean isIncludingStatics, Consumer<String> out, int maxSupers) {
 		StringBuilder                   builder    = new StringBuilder();
 		Stack<Object[]>                 stack      = new Stack<>();
-		IdentityHashMap<Object, Object> visitorMap = new IdentityHashMap<>();
+		Map<Object, Object> visitorMap             = new IdentityHashMap<>();
 		TreeMap<String, Field>          fieldMap   = new TreeMap<>();  // can modify this to change or omit the sort order
 		ArrayList<Entry<String, Field>> fieldList  = new ArrayList<>();
 		
