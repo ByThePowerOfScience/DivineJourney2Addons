@@ -16,6 +16,9 @@ import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+/**
+ * @see btpos.dj2addons.api.bewitchment.WitchesAltar Java API
+ */
 @ZenRegister @ModOnly("bewitchment")
 @ZenClass("dj2addons.bewitchment.WitchesAltar") @ZenDocClass(value="dj2addons.bewitchment.WitchesAltar", description = "Adds upgrades to the Witches Altar.")
 public class CTWitchesAltar {

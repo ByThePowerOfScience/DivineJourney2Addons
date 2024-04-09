@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 
 /**
  * Additional APIs for Astral Sorcery.
- * @see btpos.dj2addons.crafttweaker.astralsorcery.CTCelestialCrystals CraftTweaker hooks
+ * @see btpos.dj2addons.crafttweaker.astralsorcery.CTCelestialCrystals CraftTweaker API
  */
 public final class AstralSorcery {
 	/**
@@ -31,16 +31,12 @@ public final class AstralSorcery {
 		
 		private static double celestialCrystalGrowthScale = 1.0D;
 		
-		/**
-		 * For use by Mixins to retrieve value. {@link #setStarmetalConversion}
-		 */
+		
 		public static IBlockState getStarmetalConversion() {
 			return starmetalConversion;
 		}
 		
-		/**
-		 * DO NOT CHANGE MANUALLY. Use {@link #setCelestialCrystalGrowthScale}
-		 */
+		
 		public static double getCelestialCrystalGrowthScale() {
 			return celestialCrystalGrowthScale;
 		}

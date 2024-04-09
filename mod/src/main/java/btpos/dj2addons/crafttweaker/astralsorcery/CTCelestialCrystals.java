@@ -11,6 +11,10 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+/**
+ * CraftTweaker hooks for Astral Sorcery's Crystals.
+ * @see btpos.dj2addons.api.astralsorcery.AstralSorcery Java API
+ */
 @ZenRegister @ModOnly("astralsorcery")
 @ZenClass("dj2addons.astralsorcery.Crystals") @ZenDocClass(value="dj2addons.astralsorcery.Crystals")
 public class CTCelestialCrystals {
