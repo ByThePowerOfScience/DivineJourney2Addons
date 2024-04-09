@@ -25,6 +25,9 @@ import vazkii.botania.common.brew.BrewMod;
 
 import java.util.Arrays;
 
+/**
+ * @see btpos.dj2addons.api.botania.Brews Java API
+ */
 @ZenDocAppend({"docs/include/brews.example.md"})
 @ZenRegister @ModOnly("botania")
 @ZenClass("dj2addons.botania.Brews") @ZenDocClass("dj2addons.botania.Brews") @ZenDocInclude(ZenBrewWrapper.class)
