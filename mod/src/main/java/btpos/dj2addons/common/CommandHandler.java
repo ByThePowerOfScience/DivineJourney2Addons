@@ -21,10 +21,13 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.mc1120.commands.ClipboardHelper;
 import crafttweaker.mc1120.commands.CommandUtils;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
+import crafttweaker.mc1120.commands.NBTUtils;
 import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import crafttweaker.mc1120.data.NBTConverter;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.mod.data.WorldData;
+import de.ellpeck.actuallyadditions.mod.tile.TileEntityBase;
+import de.ellpeck.actuallyadditions.mod.tile.TileEntityBase.NBTType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
@@ -32,6 +35,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -43,6 +47,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.lang3.ArrayUtils;
@@ -52,6 +57,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -85,16 +91,19 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, info, mods, bewitchment, extrautils2, totemic, findextending, networks, clearnetworks
+		hand, info, mods, bewitchment, extrautils2, totemic, findextending, networks, clearnetworks, syncablenbt, breakdebug
 //		,validate
 	}
 	
 	@Override
 	public void executeCommand(MinecraftServer server, ICommandSender sender, String[] args) {
-		if (sender == null)
+		if (sender == null) {
 			return;
+		}
+		
+		MessageHelper m = new MessageHelper(sender, "dj2addons.commands").withChat().setUsageSuffix("usage");
 		if (args.length < 1) {
-			sender.sendMessage(new TextComponentTranslation("dj2addons.commands.usage"));
+			m.usage();
 			return;
 		}
 		
@@ -103,47 +112,48 @@ public class CommandHandler extends CraftTweakerCommand {
 		//noinspection
 		Optional<SubCommand> command = Enums.getIfPresent(SubCommand.class, params.remove(0));
 		if (command.isPresent()) {
-			MessageHelper m = new MessageHelper(sender);
-			
 			switch (command.get()) {
 				case hand:
-					executeHandCommand(server, sender, args);
+					executeHandCommand(m, server, sender, args);
 					break;
 				case info:
-					m.setUsage("dj2addons.commands.info.usage");
-					if (params.size() < 1)
-						m.usage();
-					else
-						executeBlockInfoCommand(m.withChat(), sender, params);
+					executeBlockInfoCommand(m, sender, params);
 					break;
 //				case findextending:
 //					TODO
 //				case validate:
 //					m.withChat().send(String.join("\n", VCraftTweaker.validate().toArray(new String[0])));
 //					break;
-				case mods:
-				case bewitchment:
-					if (Loader.isModLoaded("bewitchment"))
-						bewitchmentHandler(m.withLog());
-					if (command.get().equals(SubCommand.bewitchment))
-						break;
-				case totemic:
-					if (Loader.isModLoaded("totemic"))
-						totemicHandler(m.withLog());
-					if (command.get().equals(SubCommand.totemic))
-						break;
-				case extrautils2:
-					if (Loader.isModLoaded("extrautils2"))
-						extrautilsHandler(m.withChat());
-					if (command.get().equals(SubCommand.extrautils2))
-						break;
+				case breakdebug:
+					System.out.println();
+					break;
+				case syncablenbt: // DEBUG
+					BlockPos lookAtPos = getLookAtPos(((EntityPlayer) sender.getCommandSenderEntity()));
+					if (lookAtPos == null) {
+						m.sendError("Null pos");
+						return;
+					}
+					TileEntity tileEntity = sender.getEntityWorld()
+					                              .getTileEntity(lookAtPos);
+					if(!(tileEntity instanceof TileEntityBase)) {
+						m.sendError("No tile entity");
+						return;
+					}
+					NBTTagCompound nbt = new NBTTagCompound();
+					((TileEntityBase) tileEntity).writeSyncableNBT(nbt, NBTType.SYNC);
+					m.sendHeading("Syncable NBT for " + formatPos(lookAtPos));
+					m.send(NBTUtils.getAppealingString(nbt.toString()));
+					break;
 				case networks: // DEBUG
-					StringBuilder sb = new StringBuilder().append("[Command] Printing AA networks:\n");
-					sb.append("From map:\n");
+					m.sendHeading("Printing AA networks:");
+					m.sendHeading("From map:");
+					StringBuilder sb = new StringBuilder();
 					((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap.values().stream().distinct().forEach(n -> sb.append("\t").append(n).append("\n"));
-					sb.append("From World ").append(sender.getEntityWorld()).append(":\n");
-					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.forEach(n -> sb.append("\t").append(n).append("\n"));
-					DJ2Addons.LOGGER.debug(sb);
+					m.send(sb.toString());
+					m.sendHeading("From world " + sender.getEntityWorld() + ":");
+					StringBuilder sb2 = new StringBuilder();
+					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.forEach(n -> sb2.append("\t").append(n).append("\n"));
+					m.send(sb2.toString());
 					break;
 				case clearnetworks:
 					Map<BlockPos, GraphNetwork> networkLookupMap = ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap;
@@ -159,6 +169,28 @@ public class CommandHandler extends CraftTweakerCommand {
 					worldData.laserRelayNetworks.clear();
 					worldData.markDirty();
 					break;
+				case mods:
+				case bewitchment:
+					if (Loader.isModLoaded("bewitchment"))
+						bewitchmentHandler(m.withLog());
+					else
+						m.usage();
+					if (command.get().equals(SubCommand.bewitchment))
+						break;
+				case totemic:
+					if (Loader.isModLoaded("totemic"))
+						totemicHandler(m.withLog());
+					else
+						m.usage();
+					if (command.get().equals(SubCommand.totemic))
+						break;
+				case extrautils2:
+					if (Loader.isModLoaded("extrautils2"))
+						extrautilsHandler(m.withChat());
+					else
+						m.usage();
+					if (command.get().equals(SubCommand.extrautils2))
+						break;
 					
 			}
 			switch (command.get()) {
@@ -176,20 +208,24 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	
 	private static void executeBlockInfoCommand(MessageHelper m, ICommandSender sender, List<String> args) {
-		if (args.size() < 1) {
+		m.enterSubCommand("info").withChat().withLog();
+		if (args.isEmpty()) {
 			m.usage();
 			return;
 		}
 		
 		switch (args.remove(0).toLowerCase(Locale.ROOT)) {
 			case "blockmeta":
-				info_printBlockMeta(m.withLog(), sender, args);
+				info_printBlockMeta(m, sender, args);
 				break;
 			case "class":
-				info_printBlockClasses(m.withLog(), sender, args);
+				info_printBlockClasses(m, sender, args);
 				break;
 			case "capabilities":
-				printBlockCapabilitiesBySide(m.withLog(), sender, args);
+				printBlockCapabilitiesBySide(m, sender, args);
+				break;
+			case "nbt":
+				info_printNBT(m, sender, args);
 				break;
 			case "dumptile":
 				if (!sender.canUseCommand(4, "op")) {
@@ -207,8 +243,49 @@ public class CommandHandler extends CraftTweakerCommand {
 		}
 	}
 	
+	private static void info_printNBT(MessageHelper m, ICommandSender sender, List<String> args) {
+		m.enterSubCommand("nbt");
+		
+		if (!(sender instanceof EntityPlayer) && args.size() < 3) {
+			m.sendError("Non-players must specify coordinates.");
+			return;
+		}
+		
+		Object target = null;
+		if (args.size() == 3) {
+			try {
+				target = CommandBase.parseBlockPos(sender, args.toArray(new String[0]), 1, true);
+			} catch (NumberInvalidException e) {
+				m.sendError("Invalid position provided.");
+			}
+		} else if (sender instanceof EntityPlayer) {
+			RayTraceResult rayTraceResult = CommandUtils.getPlayerLookat((EntityPlayer) sender.getCommandSenderEntity(), 100);
+			if (rayTraceResult.typeOfHit == Type.BLOCK)
+				target = rayTraceResult.getBlockPos();
+			else if (rayTraceResult.typeOfHit == Type.ENTITY)
+				target = rayTraceResult.entityHit;
+		} else {
+			m.sendError("Non-players must provide coordinates.");
+		}
+		
+		if (target == null) { // catches any errors
+			m.usage();
+			return;
+		} else if (target instanceof BlockPos) { // turn blockpos into tileentity
+			TileEntity te = sender.getEntityWorld().getTileEntity(((BlockPos) target));
+			if (te != null) {
+				target = te;
+			} else {
+				m.sendError("No tile entity found at position " + Util.Format.formatPos(((BlockPos) target)));
+				return;
+			}
+		}
+		
+		m.send(NBTUtils.getAppealingString(((INBTSerializable<?>) target).serializeNBT().toString()));
+	}
+	
 	private static void info_printBlockMeta(MessageHelper m, ICommandSender sender, List<String> args) {
-		m.setUsage("dj2addons.commands.info.blockmeta.usage");
+		m.enterSubCommand("blockmeta");
 		
 		BlockPos target;
 		// get target pos
@@ -219,7 +296,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				m.usage();
 				return;
 			}
-		} else if (args.size() == 0) {
+		} else if (args.isEmpty()) {
 			if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
 				m.usage();
 				return;
@@ -244,7 +321,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private static void info_dumpTileCommand(MessageHelper m, ICommandSender sender, List<String> args) throws NumberFormatException, NumberInvalidException {
-		m.setUsage("dj2addons.commands.info.dump.usage");
+		m.enterSubCommand("dump");
 		
 		final int numSupers;
 		final BlockPos target;
@@ -420,6 +497,8 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	
 	private static void bewitchmentHandler(MessageHelper m) {
+		m.enterSubCommand("bewitchment");
+		
 		m.sendHeading("Rituals:");
 		
 		Rituals.getAllRituals().stream().filter(r -> !(r instanceof Rituals.Internal.DummyRitual))
@@ -440,6 +519,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	@SuppressWarnings({"raw"})
 	private static void totemicHandler(MessageHelper m) {
+		m.enterSubCommand("totemic");
 		m.sendHeading("Instruments:");
 		CTotemic.getInstrumentRegistry().forEach(i -> {
 			m.sendPropertyWithCopy(null, i.getRegistryName() + "");
@@ -450,6 +530,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	// Prints list of mill names
 	private static void extrautilsHandler(MessageHelper m) {
+		m.enterSubCommand("extrautils");
 		Map<String, float[]> generators = ExtraUtilities.Internal.getCurrentScaling();
 		if (generators.size() != 0) {
 			m.sendHeading("GP Mills:");
@@ -462,8 +543,8 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	
 	
-	private static void executeHandCommand(MinecraftServer server, ICommandSender sender, String[] args) {
-		MessageHelper m = new MessageHelper(sender).withChat().withLog();
+	private static void executeHandCommand(MessageHelper m, MinecraftServer server, ICommandSender sender, String[] args) {
+		m.enterSubCommand("hand").withChat().withLog();
 		if (sender.getCommandSenderEntity() instanceof EntityPlayer) {
 			// Gets player and held item
 			EntityPlayer player = (EntityPlayer) sender.getCommandSenderEntity();
@@ -477,7 +558,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				String withNBT = "";
 				if (heldItem.serializeNBT().hasKey("tag")) {
 					String nbt = NBTConverter.from(heldItem.serializeNBT().getTag("tag"), false).toString();
-					if (nbt.length() > 0)
+					if (!nbt.isEmpty())
 						withNBT = ".withTag(" + nbt + ")";
 				}
 				m.sendMessageWithCopy("Item §2" + itemName + "§a" + withNBT, itemName + withNBT);
@@ -502,7 +583,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				}
 			}
 		} else {
-			sender.sendMessage(new TextComponentString("This command can only be casted by a player in-game."));
+			m.send("This command can only be cast by a player in-game.");
 		}
 	}
 	
@@ -526,7 +607,11 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	@NotNull
 	private static String formatPos(BlockPos blockPos, String blockName) {
-		return "Block §2" + blockName + " §rat §9" + Util.Format.formatPos(blockPos);
+		return "Block §2" + blockName + " §rat §9" + formatPos(blockPos);
+	}
+	
+	private static String formatPos(BlockPos blockPos) {
+		return "§9" + Util.Format.formatPos(blockPos);
 	}
 	
 	private static void printLiquidInfo(MessageHelper m, ItemStack heldItem) {
@@ -593,10 +678,13 @@ public class CommandHandler extends CraftTweakerCommand {
 		private final ICommandSender sender;
 		private boolean doLog = false;
 		private boolean doChat = false;
-		private String usage = null;
+		private String usage = "usage";
+		private List<String> currentTranslationKey;
 		
-		public MessageHelper(ICommandSender sender) {
+		public MessageHelper(ICommandSender sender, String baseTranslationKey) {
 			this.sender = sender;
+			this.currentTranslationKey = new LinkedList<>();
+			this.currentTranslationKey.add(baseTranslationKey);
 		}
 		
 		public MessageHelper withChat() {
@@ -615,15 +703,29 @@ public class CommandHandler extends CraftTweakerCommand {
 			return this;
 		}
 		
+		/**
+		 * Set the default usage suffix for any translation key category.
+		 */
+		public MessageHelper setUsageSuffix(String usageSuffix) {
+			this.usage = usageSuffix;
+			return this;
+		}
+		
+		public MessageHelper enterSubCommand(String label) {
+			currentTranslationKey.add(label);
+			return this;
+		}
+		
+		public MessageHelper exitSubCommand() {
+			currentTranslationKey.remove(currentTranslationKey.size() - 1);
+			return this;
+		}
+		
 		private static final String INDENT = "    ";
 		private static final char[] HIGHLIGHTING = {'b', '2'};
 		
 		void send(String message) {
 			sendRaw(new TextComponentString(message));
-		}
-		
-		void log(String message) {
-			CraftTweakerAPI.logCommand(message);
 		}
 		
 		void sendRaw(ITextComponent textComponent) {
@@ -633,9 +735,18 @@ public class CommandHandler extends CraftTweakerCommand {
 				log(textComponent.toString());
 		}
 		
+		void log(String message) {
+			CraftTweakerAPI.logCommand(message);
+		}
+		
+		void sendTranslation(String subKey) {
+			if (!currentTranslationKey.isEmpty()) {
+				sendRaw(new TextComponentTranslation(String.join(".", currentTranslationKey) + "." + subKey));
+			}
+		}
+		
 		void usage() {
-			if (this.usage != null)
-				sender.sendMessage(new TextComponentTranslation(usage));
+			sender.sendMessage(new TextComponentTranslation(String.join(".", currentTranslationKey) + "." + usage));
 		}
 		
 		void linkToLog() {

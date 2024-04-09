@@ -5,6 +5,7 @@
   "plugin": "btpos.dj2addons.DJ2AMixinConfig",
   "mixins": [
     "actuallyadditions.MActuallyAdditions",
+    "actuallyadditions.MConnectionPair",
     "actuallyadditions.MLaserRelayConnectionHandler",
     "actuallyadditions.MTileEntityLaserRelay",
     "actuallyadditions.MTileEntityLaserRelayEnergy",

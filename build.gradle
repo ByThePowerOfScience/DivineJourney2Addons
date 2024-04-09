@@ -35,6 +35,10 @@ subprojects {
 		args "--username=Dev"//, "--mixin.config=mixins.dj2addons.init.json"
 		jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
 	}
+	runServer {
+		args "--username=Dev"//, "--mixin.config=mixins.dj2addons.init.json"
+		jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
+	}
 	
 	minecraft {
 		version = "1.12.2-14.23.5.2847"
