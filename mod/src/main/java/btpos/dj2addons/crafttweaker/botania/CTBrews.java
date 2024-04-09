@@ -118,7 +118,7 @@ public class CTBrews {
 	
 	@ZenMethod @ZenDocMethod(order = 4, args = {
 			@ZenDocArg(value = "brew", info = "The Brew instance to register a recipe for."),
-			@ZenDocArg(value="allowedContainers", info="The containers that this brew recipe will be allowed for. (e.g. <botania:vial:0> = Managlass Vial, <botania:vial:1> = Alfglass Flask)"),
+			@ZenDocArg(value = "allowedContainers", info="The containers that this brew recipe will be allowed for. (e.g. <botania:vial:0> = Managlass Vial, <botania:vial:1> = Alfglass Flask)"),
 			@ZenDocArg(value = "ingredients", info = "An array of item ingredients to set as the recipe.")
 	}, description = {
 			"Registers the recipe for brew with a restricted set of valid containers.",
@@ -127,11 +127,10 @@ public class CTBrews {
 	public static void addOutputRestrictedBrewRecipe(ZenBrewWrapper brew, IItemStack[] allowedContainers, IItemStack[] ingredients) {
 		Brews.registerOutputRestrictedBrewRecipe(
 				brew.getInternal(),
-				Arrays.stream(allowedContainers).map(CraftTweakerMC::getItemStack)
-				      .peek(is -> {
-						  if (!(is.getItem() instanceof IBrewContainer))
-							  throw new IllegalArgumentException("All \"allowedContainers\" must implement `IBrewContainer`.");
-					  }).collect(FastUtilCollectors.toObjectOpenHashSet()),
+				Arrays.stream(allowedContainers)
+				      .map(CraftTweakerMC::getItemStack)
+				      .peek(is -> { if (!(is.getItem() instanceof IBrewContainer)) throw new IllegalArgumentException("All \"allowedContainers\" must implement `IBrewContainer`."); })
+				      .collect(FastUtilCollectors.toObjectOpenHashSet()),
 				Arrays.stream(ingredients)
 				      .map(CraftTweakerMC::getItemStack)
 				      .toArray(ItemStack[]::new));
