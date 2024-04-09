@@ -16,14 +16,14 @@ import static WayofTime.bloodmagic.tile.TileSoulForge.soulSlot;
 
 @Mixin(value = TileSoulForge.class, remap = false)
 public abstract class MTileSoulForge {
-	
 	@ModifyArg(
 			method = "update",
 			at = @At(
 					value = "INVOKE",
 					target = "LWayofTime/bloodmagic/tile/TileSoulForge;getWill(LWayofTime/bloodmagic/soul/EnumDemonWillType;)D"
 			),
-			index = 0)
+			index = 0
+	)
 	private EnumDemonWillType modifyDemonWillTypeUsed(EnumDemonWillType type) {
 		if (Internal.shouldCraftWithAllWillTypes()) {
 			
@@ -40,8 +40,9 @@ public abstract class MTileSoulForge {
 	@ModifyArg(
 			method = "update",
 			at = @At(
-					value = "INVOKE",
-					target = "LWayofTime/bloodmagic/tile/TileSoulForge;consumeSouls(LWayofTime/bloodmagic/soul/EnumDemonWillType;D)D")
+					target = "LWayofTime/bloodmagic/tile/TileSoulForge;consumeSouls(LWayofTime/bloodmagic/soul/EnumDemonWillType;D)D",
+					value = "INVOKE"
+			)
 	)
 	private EnumDemonWillType modifyConsumeSoulsType(EnumDemonWillType type) {
 		if (Internal.shouldCraftWithAllWillTypes()) {

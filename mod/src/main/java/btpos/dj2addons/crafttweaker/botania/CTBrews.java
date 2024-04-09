@@ -1,17 +1,21 @@
 
 package btpos.dj2addons.crafttweaker.botania;
 
-import btpos.dj2addons.common.util.zendoc.*;
+import btpos.dj2addons.api.botania.Brews;
+import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
+import btpos.dj2addons.common.util.zendoc.ZenDocArg;
+import btpos.dj2addons.common.util.zendoc.ZenDocClass;
+import btpos.dj2addons.common.util.zendoc.ZenDocInclude;
+import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
+import btpos.dj2addons.crafttweaker.botania.CTBrews.ZenBrewWrapper;
+import btpos.dj2addons.util.fastutilutils.FastUtilCollectors;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.data.IllegalDataException;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.potions.IPotionEffect;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import btpos.dj2addons.crafttweaker.botania.CTBrews.ZenBrewWrapper;
-import btpos.dj2addons.api.botania.Brews;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.BotaniaAPI;
@@ -20,7 +24,6 @@ import vazkii.botania.api.brew.IBrewContainer;
 import vazkii.botania.common.brew.BrewMod;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @ZenDocAppend({"docs/include/brews.example.md"})
 @ZenRegister @ModOnly("botania")
@@ -119,17 +122,16 @@ public class CTBrews {
 			"Use in combination with ModTweaker's `mods.botania.Brew.removeRecipe()` to replace Botania's own brew recipes with output-specific versions."
 	})
 	public static void addOutputRestrictedBrewRecipe(ZenBrewWrapper brew, IItemStack[] allowedContainers, IItemStack[] ingredients) {
-		Brews.registerOutputRestrictedBrewRecipe(brew.getInternal(),
-		                                               Arrays.stream(allowedContainers)
-		                                                     .map(CraftTweakerMC::getItemStack)
-		                                                     .peek(is -> {
-			                                                     if (!(is.getItem() instanceof IBrewContainer))
-				                                                     throw new IllegalDataException("All \"allowedContainers\" must implement `IBrewContainer`.");
-		                                                     })
-		                                                     .collect(Collectors.toSet()),
-	                                                   Arrays.stream(ingredients)
-	                                                         .map(CraftTweakerMC::getItemStack)
-		                                                     .toArray(ItemStack[]::new));
+		Brews.registerOutputRestrictedBrewRecipe(
+				brew.getInternal(),
+				Arrays.stream(allowedContainers).map(CraftTweakerMC::getItemStack)
+				      .peek(is -> {
+						  if (!(is.getItem() instanceof IBrewContainer))
+							  throw new IllegalArgumentException("All \"allowedContainers\" must implement `IBrewContainer`.");
+					  }).collect(FastUtilCollectors.toObjectOpenHashSet()),
+				Arrays.stream(ingredients)
+				      .map(CraftTweakerMC::getItemStack)
+				      .toArray(ItemStack[]::new));
 	}
 	
 	@ZenMethod @ZenDocMethod(order=5, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.")
