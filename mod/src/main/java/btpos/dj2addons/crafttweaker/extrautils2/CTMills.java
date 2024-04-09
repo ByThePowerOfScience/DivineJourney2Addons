@@ -1,6 +1,7 @@
 package btpos.dj2addons.crafttweaker.extrautils2;
 
 import btpos.dj2addons.api.extrautils2.ExtraUtilities;
+import btpos.dj2addons.api.extrautils2.ExtraUtilities.Internal;
 import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
@@ -27,14 +28,7 @@ public class CTMills {
 			@ZenDocArg(value ="values", info="An associative array of [Grid Power threshold : production percentage]. See example.")
 	}) @ZenDoc("Sets mill power scaling. See docs on GitHub.")
 	public static void setScaling(String millName, Map<Float, Float> values) {
-		final float[] arr = new float[values.size() * 2];
-		int i = 0;
-		for (Map.Entry<Float, Float> entry : values.entrySet()) {
-			arr[i] = entry.getKey();
-			arr[i+1] = entry.getValue();
-			i += 2;
-		}
-		ExtraUtilities.setScaling(millName.toUpperCase().replace(" ", "_").trim(), arr);
+		ExtraUtilities.setScaling(millName, values);
 	}
 	
 	@ZenMethod @ZenDocMethod(order = 1, description = {
@@ -47,6 +41,6 @@ public class CTMills {
 	}) @ZenDoc("Sets mill base GP production. See docs on GitHub.")
 	public static void setBaseValue(String millName, Float value) {
 		millName = millName.toUpperCase().replace(" ", "_").trim();
-		ExtraUtilities.Internal.basePowerMap.put(millName, value);
+		Internal.basePowerMap.put(millName, value);
 	}
 }
