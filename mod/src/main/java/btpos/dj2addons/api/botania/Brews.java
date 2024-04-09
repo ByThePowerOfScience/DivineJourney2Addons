@@ -9,7 +9,7 @@ import vazkii.botania.api.recipe.RecipeBrew;
 
 import java.util.Set;
 
-public class Brews {
+public final class Brews {
 	
 	public static void registerOutputRestrictedBrewRecipe(Brew brew, Set<ItemStack> allowedOutputs, ItemStack[] objects) {
 		Preconditions.checkArgument(objects.length <= 6);
@@ -21,7 +21,7 @@ public class Brews {
 		Internal.shouldEnableWarpWardPendant = true;
 	}
 	
-	public static class Internal {
+	public static final class Internal {
 		public static boolean shouldEnableWarpWardPendant = false;
 	}
 }

@@ -11,10 +11,6 @@ public class CAgricraft {
 		return te instanceof IAgriHarvestable;
 	}
 	
-	public static IAgriHarvestable asAgriHarvestable(TileEntity te) {
-		return (IAgriHarvestable)te;
-	}
-	
 	public static void callOnHarvest(TileEntity te, Consumer<ItemStack> consumer) {
 		((IAgriHarvestable)te).onHarvest(consumer, null);
 	}

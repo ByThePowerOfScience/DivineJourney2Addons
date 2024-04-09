@@ -1,16 +1,16 @@
 package btpos.dj2addons.api.mixin.bewitchment;
 
+import btpos.dj2addons.api.bewitchment.Rituals;
+import btpos.dj2addons.util.fastutilutils.FastUtilCollectors;
 import com.bewitchment.api.registry.Ritual;
 import com.bewitchment.client.integration.jei.BewitchmentJEI;
 import net.minecraftforge.registries.IForgeRegistry;
-import btpos.dj2addons.api.bewitchment.Rituals;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Mixin(BewitchmentJEI.class)
 public class MBewitchmentJEI {
@@ -36,6 +36,9 @@ public class MBewitchmentJEI {
 			)
 	)
 	public Collection<Ritual> removeDummyRitualRecipes(IForgeRegistry<Ritual> instance) {
-		return instance.getValuesCollection().stream().filter(o -> !(o instanceof Rituals.Internal.DummyRitual)).collect(Collectors.toSet());
+		return instance.getValuesCollection()
+		               .stream()
+		               .filter(o -> !(o instanceof Rituals.Internal.DummyRitual))
+		               .collect(FastUtilCollectors.toObjectOpenHashSet());
 	}
 }

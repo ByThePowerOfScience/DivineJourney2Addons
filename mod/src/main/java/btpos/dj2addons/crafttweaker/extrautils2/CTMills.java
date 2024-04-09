@@ -1,17 +1,16 @@
 package btpos.dj2addons.crafttweaker.extrautils2;
 
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenDoc;
-import crafttweaker.annotations.ZenRegister;
 import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
 import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenDoc;
+import crafttweaker.annotations.ZenRegister;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 @ZenRegister @ModOnly("extrautils2")
@@ -30,7 +29,7 @@ public class CTMills {
 	public static void setScaling(String millName, Map<Float, Float> values) {
 		final float[] arr = new float[values.size() * 2];
 		int i = 0;
-		for (Map.Entry<Float, Float> entry : new ArrayList<>(values.entrySet())) {
+		for (Map.Entry<Float, Float> entry : values.entrySet()) {
 			arr[i] = entry.getKey();
 			arr[i+1] = entry.getValue();
 			i += 2;

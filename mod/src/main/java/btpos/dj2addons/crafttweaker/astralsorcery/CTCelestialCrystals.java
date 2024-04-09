@@ -1,15 +1,13 @@
 package btpos.dj2addons.crafttweaker.astralsorcery;
 
-import crafttweaker.CraftTweakerAPI;
+import btpos.dj2addons.api.astralsorcery.AstralSorcery;
+import btpos.dj2addons.common.util.zendoc.ZenDocArg;
+import btpos.dj2addons.common.util.zendoc.ZenDocClass;
+import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import btpos.dj2addons.common.util.zendoc.ZenDocArg;
-import btpos.dj2addons.common.util.zendoc.ZenDocClass;
-import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
-import net.minecraft.block.Block;
-import btpos.dj2addons.api.astralsorcery.AstralSorcery;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -18,16 +16,11 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTCelestialCrystals {
 	@ZenMethod @ZenDocMethod(
 			order=1,
-			description="Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it.",
-			args=@ZenDocArg(value ="block", info="The IItemStack to set the block to. Must be a block type.")
+			description="Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it. Throws ClassCastException if `block` is not a Block.",
+			args=@ZenDocArg(value ="block", info="The IItemStack to set the block to. Must be a Block type.")
 	)
 	public static void setStarmetalConversion(IItemStack block) {
-		Block b = CraftTweakerMC.getBlock(block);
-		if (b == null) {
-			CraftTweakerAPI.logError("No block found for " + block.getDisplayName());
-			return;
-		}
-		AstralSorcery.Internal.starmetalConversion = b.getDefaultState();
+		AstralSorcery.setStarmetalConversion(CraftTweakerMC.getBlock(block).getDefaultState());
 	}
 	
 	@ZenMethod @ZenDocMethod(
@@ -36,6 +29,6 @@ public class CTCelestialCrystals {
 			args=@ZenDocArg(value ="scale", info="Value to multiply the time by.")
 	)
 	public static void scaleGrowthTime(double scale) {
-		AstralSorcery.Internal.celestialCrystalGrowthScale = scale / 2;
+		AstralSorcery.setCelestialCrystalGrowthScale(scale / 2);
 	}
 }

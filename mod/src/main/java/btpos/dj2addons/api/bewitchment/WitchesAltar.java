@@ -3,13 +3,13 @@ package btpos.dj2addons.api.bewitchment;
 import btpos.dj2addons.common.modrefs.CBewitchment;
 import com.bewitchment.api.BewitchmentAPI;
 import com.bewitchment.api.registry.AltarUpgrade;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.state.BlockWorldState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class WitchesAltar {
@@ -36,7 +36,7 @@ public class WitchesAltar {
 	
 	public static class Internal {
 		
-		public static final Set<BlockWorldState> toRemove = new HashSet<>();
+		public static final Set<BlockWorldState> toRemove = new ObjectOpenHashSet<>();
 		
 		public static void executeUpgradeRemoval() {
 			toRemove.forEach(dws -> CBewitchment.getAltarUpgrades().keySet().removeIf(p -> p.test(dws)));

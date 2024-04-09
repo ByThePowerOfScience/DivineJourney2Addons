@@ -1,6 +1,6 @@
 package btpos.dj2addons.api.bloodmagic;
 
-public class HellfireForge {
+public final class HellfireForge {
 	private static int ticksRequired = 100;
 	
 	public static void setTicksRequired(int ticks) {

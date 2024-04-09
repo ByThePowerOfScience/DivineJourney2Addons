@@ -1,13 +1,14 @@
 package btpos.dj2addons.api.extrautils2;
 
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ExtraUtilities {
+public final class ExtraUtilities {
 	public static void setScaling(String millName, float[] values) {
 		Internal.scalingMap.put(millName, values);
 	}
@@ -16,10 +17,11 @@ public class ExtraUtilities {
 		Internal.biomeMarker_excludedBiomes.add(rl);
 	}
 	
-	public static class Internal {
-		public static final Map<String, Float> basePowerMap = new HashMap<>();
-		private static final Map<String, float[]> scalingMap = new HashMap<>();
-		private static final Set<ResourceLocation> biomeMarker_excludedBiomes = new HashSet<>();
+	public static final class Internal {
+		public static final Map<String, Float> basePowerMap = new Object2FloatOpenHashMap<>();
+		private static final Map<String, float[]> scalingMap = new Object2ObjectOpenHashMap<>();
+		
+		private static final Set<ResourceLocation> biomeMarker_excludedBiomes = new ObjectOpenHashSet<>(7);
 		
 		public static float[] getScalingOrReturnOriginal(String s, float[] original) {
 			float[] arr = scalingMap.get(s);

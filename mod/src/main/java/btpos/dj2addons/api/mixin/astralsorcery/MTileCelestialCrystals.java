@@ -12,11 +12,11 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class MTileCelestialCrystals {
 	@ModifyArg(method="update", at=@At(target="Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Z", ordinal = 0, value="INVOKE"))
 	public IBlockState alterStarmetalIronChange(IBlockState state) {
-		return AstralSorcery.Internal.starmetalConversion;
+		return AstralSorcery.Internal.getStarmetalConversion();
 	}
 	
 	@ModifyVariable(method="update", name="mul", at=@At("LOAD"), ordinal = 0)
 	public double scaleTimeRequired(double d) {
-		return AstralSorcery.Internal.celestialCrystalGrowthScale;
+		return AstralSorcery.Internal.getCelestialCrystalGrowthScale();
 	}
 }

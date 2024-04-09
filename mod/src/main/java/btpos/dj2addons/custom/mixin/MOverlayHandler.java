@@ -33,7 +33,8 @@ abstract class MOverlayHandler {
 	
 	@Redirect(method= "drawSaturationOverlay(FFLnet/minecraft/client/Minecraft;IIF)V", at=@At(target="Lnet/minecraft/client/gui/GuiIngame;drawTexturedModalRect(IIIIII)V", value="INVOKE"))
 	private static void saturationOverlayRegenEffect(GuiIngame instance, int x, int y, int textureX, int textureY, int width, int height,
-	                                                 @Local(name="i") int i, @Share("dj2addons$regen") LocalIntRef regen) {
+	                                                 @Local(name="i") int i, @Share("dj2addons$regen") LocalIntRef regen)
+	{
 		if (i == regen.get()) {
 			y -= 2;
 		}

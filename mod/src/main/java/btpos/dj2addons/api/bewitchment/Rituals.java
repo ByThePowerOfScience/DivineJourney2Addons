@@ -11,7 +11,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rituals {
+public final class Rituals {
 	public static void removeRitual(String name) {
 		Internal.ritualsToRemove.add(new Internal.DummyRitual(name));
 	}
@@ -20,7 +20,7 @@ public class Rituals {
 		return ImmutableList.copyOf(com.bewitchment.registry.ModRecipes.ritualRecipes);
 	}
 	
-	public static class Internal {
+	public static final class Internal {
 		
 		private static final List<Ritual> ritualsToRemove = new ArrayList<>();
 		

@@ -127,13 +127,13 @@ public class CTBrews {
 				                                                     throw new IllegalDataException("All \"allowedContainers\" must implement `IBrewContainer`.");
 		                                                     })
 		                                                     .collect(Collectors.toSet()),
-	                                               Arrays.stream(ingredients)
-		                                                     .map(CraftTweakerMC::getItemStack)
+	                                                   Arrays.stream(ingredients)
+	                                                         .map(CraftTweakerMC::getItemStack)
 		                                                     .toArray(ItemStack[]::new));
 	}
 	
 	@ZenMethod @ZenDocMethod(order=5, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.")
 	public static void enableWarpWardPendant() {
-		Brews.Internal.shouldEnableWarpWardPendant = true;
+		Brews.enableWarpWardPendant();
 	}
 }

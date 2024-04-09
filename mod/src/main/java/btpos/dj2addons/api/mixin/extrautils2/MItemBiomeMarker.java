@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ItemBiomeMarker.class)
 public abstract class MItemBiomeMarker {
 	
+	/**
+	 * Prevents setting the NBT of a biome marker to any biome that has been excluded.
+	 */
 	@Inject(
 			remap = false,
 			method = "setBiome",

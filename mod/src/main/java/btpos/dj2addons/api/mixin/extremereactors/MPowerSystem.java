@@ -1,12 +1,10 @@
 package btpos.dj2addons.api.mixin.extremereactors;
 
-import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import btpos.dj2addons.api.extremereactors.ExtremeReactors;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-
-import java.util.Objects;
 
 @Mixin(PowerSystem.class)
 public class MPowerSystem {
@@ -27,7 +25,9 @@ public class MPowerSystem {
 	 */
 	@ModifyVariable(method="<init>", at=@At("HEAD"), argsOnly = true)
 	private static long changeMaxEnergyStored(long value) {
-		return Objects.nonNull(ExtremeReactors.Internal.maxEnergyStored) ? ExtremeReactors.Internal.maxEnergyStored : value;
+		return ExtremeReactors.Internal.maxEnergyStored != -1L
+		        ? ExtremeReactors.Internal.maxEnergyStored
+		        : value;
 	}
 
 }

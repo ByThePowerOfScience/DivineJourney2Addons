@@ -13,7 +13,7 @@ import java.util.Map;
 public class Util {
 	public static class Numbers {
 		public static boolean isDecimal_Fast(Number n) {
-			return (n.doubleValue() - n.intValue() != 0.0D);
+			return (n.floatValue() - n.intValue() != 0.0f);
 		}
 		
 		public static boolean isDecimal(Number n) {
