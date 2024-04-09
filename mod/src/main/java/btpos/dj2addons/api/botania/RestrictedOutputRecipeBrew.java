@@ -22,32 +22,44 @@ import java.util.Set;
  * // Make your brew
  * Brew myBrew = new BrewMod("myBrew", ...);
  *
- * // Register a recipe specifically for the Vial and Flask:
- * Brews.registerOutputRestrictedBrewRecipe(
+ * // Create a recipe specifically for the Vial and Flask:
+ * RecipeBrew bottleRecipe = new RestrictedOutputRecipeBrew(
  *      myBrew,
  *      Set.of(Brews.MANAGLASS_VIAL, Brews.ALFGLASS_FLASK),
- *      new ItemStack[] {
+ *      new Object[] {
  *          new ItemStack(Items.COOKED_BEEF),
  *          new ItemStack(Items.NETHER_WART)
  *      }
  * );
  *
- * // Register a recipe specifically for Tainted Blood Pendants:
- * new RestrictedOutputRecipeBrew(
+ * // Create a recipe specifically for Tainted Blood Pendants:
+ * RecipeBrew pendantRecipe = new RestrictedOutputRecipeBrew(
  *      myBrew,
  *      Set.of(Brews.TAINTED_BLOOD_PENDANT),
- *      new ItemStack[] {
- *          Items.NETHER_STAR,
- *          Items.GOLDEN_APPLE
+ *      new Object[] {
+ *          new ItemStack(Items.NETHER_STAR),
+ *          new ItemStack(Items.GOLDEN_APPLE)
  *      }
  * );
+ *
+ * BotaniaAPI.brewRecipes.add(bottleRecipe);
+ * BotaniaAPI.brewRecipes.add(pendantRecipe);
  * }</pre>
+ * @see btpos.dj2addons.api.botania.Brews#registerOutputRestrictedBrewRecipe(vazkii.botania.api.brew.Brew, java.util.Set, Object...) Brews#registerOutputRestrictedBrewRecipe
  */
 public class RestrictedOutputRecipeBrew extends RecipeBrew {
 	public final Set<ItemStack> allowedOutputs;
 	private final int hashcode;
 	
-	public RestrictedOutputRecipeBrew(Brew brew, Set<ItemStack> allowedOutputs, Object[] inputs) {
+	/**
+	 *
+	 * @param brew The brew this recipe is for.
+	 * @param allowedOutputs The set of output containers that will trigger this recipe. Null values will be excluded.
+	 * @param inputs An array of ItemStacks (item references with metadata) and/or Strings (OreDictionary tags).
+	 * @see btpos.dj2addons.api.botania.RestrictedOutputRecipeBrew Example
+	 * @see btpos.dj2addons.api.botania.Brews Brews API
+	 */
+	public RestrictedOutputRecipeBrew(Brew brew, Set<ItemStack> allowedOutputs, Object... inputs) {
 		super(brew, inputs);
 		
 		this.allowedOutputs = allowedOutputs.stream()

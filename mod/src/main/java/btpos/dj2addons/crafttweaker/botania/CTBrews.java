@@ -66,7 +66,7 @@ public class CTBrews {
 	@ZenMethod @ZenDocMethod(order=1, args = {
 			@ZenDocArg(value ="key", info="The registry key to be assigned to the Brew."),
 			@ZenDocArg(value ="cost", info="The base mana cost of the brew. Amplified automatically for flasks, etc."),
-			@ZenDocArg(value ="potionEffects", info="A/an array of potion effects.")
+			@ZenDocArg(value ="potionEffects", info="An array of potion effects.")
 	}, description = {
 			"Creates a Brew instance and registers its existence with Botania, then returns it.",
 			"The key is set to \"botania.brews.[key]\" and the color is taken from the source potion."
@@ -78,7 +78,7 @@ public class CTBrews {
 	}
 	
 	@ZenMethod @Deprecated
-	public static ZenBrewWrapper makeBrew(String key, String name, int cost, int color, IPotionEffect... potionEffects) {
+	public static ZenBrewWrapper makeBrew(String key, String name, int cost, int color, IPotionEffect[] potionEffects) {
 		return newBrew(key, name, cost, color, potionEffects);
 	}
 	
@@ -87,7 +87,7 @@ public class CTBrews {
 			@ZenDocArg(value ="name", info="The translation key for the display name of the Brew. e.g. \"Flask of <name>\""),
 			@ZenDocArg(value ="cost", info="The base mana cost of the brew. Amplified automatically by Botania for flasks, etc."),
 			@ZenDocArg(value ="color", info="The hexadecimal color of the brew."),
-			@ZenDocArg(value ="potionEffects", info="A/an array of potion effects.")
+			@ZenDocArg(value ="potionEffects", info="An array of potion effects.")
 	}, description = {
 			"Creates a Brew instance and registers its existence with Botania, then returns it."
 	})
@@ -98,7 +98,7 @@ public class CTBrews {
 	}
 	
 	@ZenMethod @Deprecated
-	public static void addBrewRecipe(ZenBrewWrapper brew, IItemStack... ingredients) {
+	public static void addBrewRecipe(ZenBrewWrapper brew, IItemStack[] ingredients) {
 		addStandardBrewRecipe(brew, ingredients);
 	}
 	
@@ -131,9 +131,9 @@ public class CTBrews {
 				      .map(CraftTweakerMC::getItemStack)
 				      .peek(is -> { if (!(is.getItem() instanceof IBrewContainer)) throw new IllegalArgumentException("All \"allowedContainers\" must implement `IBrewContainer`."); })
 				      .collect(FastUtilCollectors.toObjectOpenHashSet()),
-				Arrays.stream(ingredients)
-				      .map(CraftTweakerMC::getItemStack)
-				      .toArray(ItemStack[]::new));
+				(Object[]) Arrays.stream(ingredients)
+				                 .map(CraftTweakerMC::getItemStack)
+				                 .toArray(ItemStack[]::new));
 	}
 	
 	@ZenMethod @ZenDocMethod(order=5, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.")

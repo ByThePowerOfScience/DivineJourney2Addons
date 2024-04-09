@@ -66,14 +66,15 @@ public final class Brews {
 	 * }</pre>
 	 * @param brew The brew this recipe should create.
 	 * @param allowedOutputs The only containers this recipe should be valid for.
-	 * @param ingredients The items in the recipe.
+	 * @param ingredients The items in the recipe. Can be a String or an ItemStack.
 	 * @see btpos.dj2addons.api.botania.RestrictedOutputRecipeBrew RestrictedOutputRecipeBrew
 	 * @see #MANAGLASS_VIAL
 	 * @see #ALFGLASS_FLASK
 	 * @see #INCENSE_STICK
 	 * @see #TAINTED_BLOOD_PENDANT
+	 * @see btpos.dj2addons.crafttweaker.botania.CTBrews#addOutputRestrictedBrewRecipe(btpos.dj2addons.crafttweaker.botania.CTBrews.ZenBrewWrapper, crafttweaker.api.item.IItemStack[], crafttweaker.api.item.IItemStack[]) CraftTweaker API
 	 */
-	public static void registerOutputRestrictedBrewRecipe(Brew brew, Set<ItemStack> allowedOutputs, ItemStack... ingredients) {
+	public static void registerOutputRestrictedBrewRecipe(Brew brew, Set<ItemStack> allowedOutputs, Object... ingredients) {
 		Preconditions.checkArgument(ingredients.length <= 6);
 		RecipeBrew recipe = new RestrictedOutputRecipeBrew(brew, allowedOutputs, ingredients);
 		BotaniaAPI.brewRecipes.add(recipe);
@@ -81,6 +82,7 @@ public final class Brews {
 	
 	/**
 	 * Enables the Tainted Blood Pendant of Warp Ward.  Only applicable if Thaumcraft is installed.
+	 * @see btpos.dj2addons.crafttweaker.botania.CTBrews#enableWarpWardPendant() CraftTweaker API
 	 */
 	public static void enableWarpWardPendant() {
 		Internal.shouldEnableWarpWardPendant = true;
