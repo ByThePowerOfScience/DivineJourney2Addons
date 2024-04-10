@@ -25,8 +25,8 @@ public class MPowerSystem {
 	 */
 	@ModifyVariable(method="<init>", at=@At("HEAD"), argsOnly = true)
 	private static long changeMaxEnergyStored(long value) {
-		return ExtremeReactors.Internal.maxEnergyStored != -1L
-		        ? ExtremeReactors.Internal.maxEnergyStored
+		return ExtremeReactors.Internal.getMaxEnergyStored() != -1L
+		        ? ExtremeReactors.Internal.getMaxEnergyStored()
 		        : value;
 	}
 

@@ -16,12 +16,14 @@ import stanhebben.zenscript.annotations.ZenMethod;
 		"Handles general ExtremeReactors tweaks.",
 		"Must be run with the preinit loader, specified with `#loader preinit` at the top of the ZS file."
 }) @ZenDocAppend("docs/include/extremereactors.misc.example.md")
-public class CTExtremeReactors {
+public final class CTExtremeReactors {
 	@ZenMethod @ZenDocMethod(
 			order=1,
 			description = "Sets the maximum energy the reactor can store in its output buffer.",
 			args=@ZenDocArg(value ="value", info="The maximum energy stored."))
 	public static void setMaxEnergyStored(long value) {
-		ExtremeReactors.Internal.maxEnergyStored = value;
+		ExtremeReactors.setMaxEnergyStored(value);
 	}
+	
+	private CTExtremeReactors() {}
 }

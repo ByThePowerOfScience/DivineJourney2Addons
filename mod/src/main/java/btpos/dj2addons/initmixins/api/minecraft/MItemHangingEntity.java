@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EntityItemFrame.class)
 public abstract class MItemHangingEntity extends EntityHanging {
-	public MItemHangingEntity(World worldIn) {
+	private MItemHangingEntity(World worldIn) {
 		super(worldIn);
 	}
 	
@@ -17,6 +17,6 @@ public abstract class MItemHangingEntity extends EntityHanging {
 	@Override @SuppressWarnings("ConstantConditions")
 	public boolean onValidSurface() {
 		IBlockState blockState = world.getBlockState(this.hangingPosition.offset(facingDirection.getOpposite()));
-		return !ItemFrames.Internal.getDisallowed().contains(blockState) && super.onValidSurface();
+		return !ItemFrames.Internal.isDisallowed(blockState) && super.onValidSurface();
 	}
 }

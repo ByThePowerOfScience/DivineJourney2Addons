@@ -17,7 +17,7 @@ public class Util {
 		}
 		
 		public static boolean isDecimal(Number n) {
-			return (n instanceof Double || n instanceof Float);
+			return (n instanceof Float || n instanceof Double);
 		}
 	}
 	
