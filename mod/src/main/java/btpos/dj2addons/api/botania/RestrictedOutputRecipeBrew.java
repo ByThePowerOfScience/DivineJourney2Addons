@@ -1,6 +1,6 @@
 package btpos.dj2addons.api.botania;
 
-import btpos.dj2addons.util.fastutilutils.FastUtilCollectors;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import vazkii.botania.api.brew.Brew;
@@ -64,7 +64,7 @@ public class RestrictedOutputRecipeBrew extends RecipeBrew {
 		
 		this.allowedOutputs = allowedOutputs.stream()
 		                                    .filter(Objects::nonNull)
-		                                    .collect(FastUtilCollectors.toObjectOpenHashSet());
+		                                    .collect(ImmutableSet.toImmutableSet());
 		
 		this.hashcode = Objects.hash(super.hashCode(), allowedOutputs.hashCode());
 	}

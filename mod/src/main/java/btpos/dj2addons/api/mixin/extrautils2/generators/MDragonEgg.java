@@ -17,6 +17,6 @@ abstract class MDragonEgg {
 			constant=@Constant(floatValue=500.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("DRAGON_EGG", f);
+		return Internal.getBasePower("DRAGON_EGG", f);
 	}
 }

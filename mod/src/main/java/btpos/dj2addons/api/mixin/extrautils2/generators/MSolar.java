@@ -16,6 +16,6 @@ abstract class MSolar {
 			constant=@Constant(floatValue=1.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("SOLAR", f);
+		return Internal.getBasePower("SOLAR", f);
 	}
 }

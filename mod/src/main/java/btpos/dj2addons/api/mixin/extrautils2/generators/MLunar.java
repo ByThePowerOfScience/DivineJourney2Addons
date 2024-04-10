@@ -16,6 +16,6 @@ abstract class MLunar {
 			constant=@Constant(floatValue=1.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("LUNAR", f);
+		return Internal.getBasePower("LUNAR", f);
 	}
 }

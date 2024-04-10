@@ -16,7 +16,7 @@ abstract class MLava {
 			constant=@Constant(floatValue=4.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("LAVA", f);
+		return Internal.getBasePower("LAVA", f);
 	}
 	
 	
@@ -28,7 +28,7 @@ abstract class MLava {
 			constant=@Constant(floatValue=2.0f, ordinal = 0)
 	)
 	public float dj2addons$modifyPowerLevel(float f) {
-		float f1 = Internal.basePowerMap.getOrDefault("LAVA", f);
+		float f1 = Internal.getBasePower("LAVA", f);
 		if (f1 == f)
 			return f;
 		else
@@ -43,7 +43,7 @@ abstract class MLava {
 			constant=@Constant(floatValue=2.0f, ordinal = 1)
 	)
 	public float dj2addons$modifyPowerLevel2(float f) {
-		float f1 = Internal.basePowerMap.getOrDefault("LAVA", f);
+		float f1 = Internal.getBasePower("LAVA", f);
 		if (f1 == f)
 			return f;
 		else

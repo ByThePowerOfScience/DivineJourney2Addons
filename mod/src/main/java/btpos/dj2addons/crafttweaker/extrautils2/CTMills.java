@@ -1,7 +1,6 @@
 package btpos.dj2addons.crafttweaker.extrautils2;
 
 import btpos.dj2addons.api.extrautils2.ExtraUtilities;
-import btpos.dj2addons.api.extrautils2.ExtraUtilities.Internal;
 import btpos.dj2addons.common.util.zendoc.ZenDocAppend;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
@@ -40,7 +39,6 @@ public class CTMills {
 			@ZenDocArg(value ="value", info="The amount of Grid Power the mill should provide.")
 	}) @ZenDoc("Sets mill base GP production. See docs on GitHub.")
 	public static void setBaseValue(String millName, Float value) {
-		millName = millName.toUpperCase().replace(" ", "_").trim();
-		Internal.basePowerMap.put(millName, value);
+		ExtraUtilities.setBasePower(millName, value);
 	}
 }

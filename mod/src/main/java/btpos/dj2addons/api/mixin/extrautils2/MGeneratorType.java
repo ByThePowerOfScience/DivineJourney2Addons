@@ -29,7 +29,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifySolarScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("SOLAR", values);
+		return ExtraUtilities.Internal.getScaling("SOLAR", values);
 	}
 	
 	
@@ -53,7 +53,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyLunarScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("LUNAR", values);
+		return ExtraUtilities.Internal.getScaling("LUNAR", values);
 	}
 	
 	
@@ -77,7 +77,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyLavaScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("LAVA", values);
+		return ExtraUtilities.Internal.getScaling("LAVA", values);
 	}
 	
 	@ModifyArg(
@@ -100,7 +100,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyWaterScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("WATER", values);
+		return ExtraUtilities.Internal.getScaling("WATER", values);
 	}
 	
 	
@@ -124,7 +124,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyWindScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("WIND", values);
+		return ExtraUtilities.Internal.getScaling("WIND", values);
 	}
 	
 	@ModifyArg(
@@ -147,7 +147,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyFireScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("FIRE", values);
+		return ExtraUtilities.Internal.getScaling("FIRE", values);
 	}
 	
 	@ModifyArg(
@@ -170,7 +170,7 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyPlayerWindUpScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("PLAYER_WIND_UP", values);
+		return ExtraUtilities.Internal.getScaling("PLAYER_WIND_UP", values);
 	}
 	
 	
@@ -194,6 +194,6 @@ public abstract class MGeneratorType {
 			)
 	)
 	private static float[] modifyDragonEggMillScaling(float[] values) {
-		return ExtraUtilities.Internal.getScalingOrReturnOriginal("DRAGON_EGG", values);
+		return ExtraUtilities.Internal.getScaling("DRAGON_EGG", values);
 	}
 }

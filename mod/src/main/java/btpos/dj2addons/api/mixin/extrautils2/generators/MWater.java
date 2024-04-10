@@ -16,7 +16,7 @@ abstract class MWater {
 			constant=@Constant(floatValue=4.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("WATER", f / 2f) * 2;
+		return Internal.getBasePower("WATER", f / 2f) * 2;
 	}
 	
 	@ModifyConstant(
@@ -27,7 +27,7 @@ abstract class MWater {
 			constant=@Constant(floatValue=2.0f)
 	)
 	public float dj2addons$modifyPowerLevel2(float f) {
-		float f1 = Internal.basePowerMap.getOrDefault("WATER", f);
+		float f1 = Internal.getBasePower("WATER", f);
 		if (f1 == f) {
 			return f;
 		} else {

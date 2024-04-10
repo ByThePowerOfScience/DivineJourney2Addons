@@ -17,6 +17,6 @@ abstract class MFire {
 			constant=@Constant(floatValue=4.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("FIRE", f);
+		return Internal.getBasePower("FIRE", f);
 	}
 }

@@ -418,7 +418,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	
 	// Prints list of mill names
 	private static void extrautilsHandler(MessageHelper m) {
-		Map<String, float[]> generators = ExtraUtilities.Internal.getCurrentScaling();
+		Map<String, float[]> generators = ExtraUtilities.Internal.getScalingMap();
 		if (generators.size() != 0) {
 			m.sendHeading("GP Mills:");
 			

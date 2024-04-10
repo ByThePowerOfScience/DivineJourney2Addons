@@ -30,7 +30,7 @@ public abstract class MItemBiomeMarker {
 			cancellable = true
 	)
 	private static void checkAllowedBiomes(ItemStack itemStackIn, Biome biome, CallbackInfoReturnable<ItemStack> cir, ResourceLocation rl) {
-		if (ExtraUtilities.Internal.getExcludedBiomes().contains(rl))
+		if (ExtraUtilities.Internal.isExcludedBiome(rl))
 			cir.setReturnValue(itemStackIn);
 	}
 }

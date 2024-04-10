@@ -16,6 +16,6 @@ abstract class MWind {
 			constant=@Constant(floatValue=1.0f)
 	)
 	public float dj2addons$modifyBasePowerGen(float f) {
-		return Internal.basePowerMap.getOrDefault("WIND", f);
+		return Internal.getBasePower("WIND", f);
 	}
 }
