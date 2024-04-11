@@ -11,10 +11,8 @@ public class CoreInfo {
 	
 	private static boolean coreLoaded = false;
 	
-	public static boolean shouldWriteAerogelTooltip = false;
-	
 	/**
-	 * Called by {@link btpos.dj2addons.initmixins.MLoader#beforeConstructingMods MLoader.beforeConstructingMods}.
+	 * Called by {@link btpos.dj2addons.initmixins.MLoader#beforeConstructingMods MLoader#beforeConstructingMods}.
 	 */
 	public static void onLoadCore() {
 		coreLoaded = true;
@@ -35,10 +33,4 @@ public class CoreInfo {
 		}
 	}
 	
-	/**
-	 * Called by {@link btpos.dj2addons.DJ2AMixinConfig#shouldApplyMixin DJ2AMixinConfig.shouldApplyMixin} if TickCentral is detected.
-	 */
-	public static void onDisableAerogelPatch() {
-		shouldWriteAerogelTooltip = true;
-	}
 }

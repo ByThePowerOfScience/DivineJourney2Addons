@@ -24,7 +24,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void onLoad(String mixinPackage) {
-		LOGGER.debug("Loading mixins from " + mixinPackage);
+		LOGGER.debug("Loading mixins from {}", mixinPackage);
 	}
 	
 	@Override
@@ -40,7 +40,6 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 		if (simplename.equals("MWorld")) {
 			if (hasTickProfiler()) {
 				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
-				CoreInfo.onDisableAerogelPatch();
 				return false;
 			}
 		}
