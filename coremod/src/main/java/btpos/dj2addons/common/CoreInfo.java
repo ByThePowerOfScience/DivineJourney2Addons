@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
  * Intermediary between the ASM phase and the Mod phase of loading.
  */
 public class CoreInfo {
-	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons Core");
 	
 	private static boolean coreLoaded = false;
 	
