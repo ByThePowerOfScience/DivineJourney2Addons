@@ -26,7 +26,7 @@ repositories {
 
 
 dependencies {
-	compile project(":coremod")
+	compile(project(":coremod"))
 	
 	compile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
@@ -163,6 +163,7 @@ jar {
 				"MixinConfigs": 'mixins.dj2addons.init.json'
 		)
 	}
+	
 }
 
 build {
@@ -171,16 +172,20 @@ build {
 	}
 }
 
-task injectCoremodJar(type: Exec) {
+tasks.register('injectCoremodJar', Exec) {
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_InjectCoreMod.py'))
 }
 
-task generateTestZS(type: Copy) {
+//tasks.register('addCoremodToJar', Copy) {
+//	from
+//}
+
+tasks.register('generateTestZS', Copy) {
 	from rootProject.file('Test.zs')
 	into project.file('run/scripts')
 }
 
-task runTests(type: JavaExec, group: 'buildruns') {
+tasks.register('runTests', JavaExec) {
 	dependsOn(build, generateTestZS)
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
@@ -199,7 +204,7 @@ task runTests(type: JavaExec, group: 'buildruns') {
 //idea {
 //	
 //}
-task buildTestJar(type: Jar, group: 'buildruns') {
+tasks.register('buildTestJar', Jar) {
 	from(sourceSets.test.output);
 	archiveName = 'dj2addons-test'
 }

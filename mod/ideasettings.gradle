@@ -1,0 +1,68 @@
+logger.debug "ASDF evaluating"
+idea {
+	logger.debug "ASDF idea"
+	project {
+		logger.debug "ASDF project"
+		settings {
+			logger.debug "ASDF settings"
+			runConfigurations {
+				logger.debug "ASDF runconfig"
+				"1. Run Client"(GradleTask) {
+					taskNames = "runClient"
+				}
+				"2. Run Server"(GradleTask) {
+					taskNames = "runServer"
+				}
+				"3. Run Obfuscated Client"(GradleTask) {
+					taskNames = "runObfClient"
+				}
+				"4. Run Obfuscated Server"(GradleTask) {
+					taskNames = "runObfServer"
+				}
+				/*
+				These require extra configuration in IntelliJ, so are not enabled by default
+				self.add(Application("Run Client (IJ Native, Deprecated)", project).apply {
+				  mainClass = "GradleStart"
+				  moduleName = project.name + ".ideVirtualMain"
+				  afterEvaluate {
+					val runClient = tasks.runClient.get()
+					workingDirectory = runClient.workingDir.absolutePath
+					programParameters = runClient.calculateArgs(project).map { '"' + it + '"' }.joinToString(" ")
+					jvmArgs = runClient.calculateJvmArgs(project).map { '"' + it + '"' }.joinToString(" ") +
+					  ' ' + runClient.systemProperties.map { "\"-D" + it.key + '=' + it.value.toString() + '"' }
+					  .joinToString(" ")
+				  }
+				})
+				self.add(Application("Run Server (IJ Native, Deprecated)", project).apply {
+				  mainClass = "GradleStartServer"
+				  moduleName = project.name + ".ideVirtualMain"
+				  afterEvaluate {
+					val runServer = tasks.runServer.get()
+					workingDirectory = runServer.workingDir.absolutePath
+					programParameters = runServer.calculateArgs(project).map { '"' + it + '"' }.joinToString(" ")
+					jvmArgs = runServer.calculateJvmArgs(project).map { '"' + it + '"' }.joinToString(" ") +
+					  ' ' + runServer.systemProperties.map { "\"-D" + it.key + '=' + it.value.toString() + '"' }
+					  .joinToString(" ")
+				  }
+				})
+				*/
+			}
+		}
+		compiler {
+			logger.debug "ASDF compiler"
+			javac {
+				logger.debug "ASDF javac"
+				afterEvaluate {
+					logger.debug "ASDF afterEval"
+
+//				moduleJavacAdditionalOptions = Map.of(
+//						(project.name + ".main"),
+//						tasks.compileJava.options.compilerArgs
+//								.collect { "\"" + it + "\"" }
+//								.join(" ")
+//				)
+				}
+			}
+		}
+	}
+}

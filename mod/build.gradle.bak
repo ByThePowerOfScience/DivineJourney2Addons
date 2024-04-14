@@ -1,0 +1,209 @@
+repositories {
+//    maven {
+//        name = "Su5ed LegacyDev Fork"
+//        url = "https://su5ed.jfrog.io/artifactory/maven/"
+//    }
+	mavenLocal()
+	maven {
+		name = "CurseMaven"
+		url = "https://cursemaven.com"
+	}
+	maven {
+		name = "JEI Maven"
+		url = "https://dvs1.progwml6.com/files/maven"
+	}
+	maven {
+		name = "BlameJared"
+		url = "https://maven.blamejared.com/"
+	}
+	maven {
+		name = "CoFH Maven"
+		url = "https://maven.covers1624.net"
+	}
+	mavenCentral()
+}
+
+
+
+dependencies {
+	compile(project(":coremod"))
+	
+	compile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
+	
+	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
+	
+	deobfCompile("curse.maven:ActuallyAdditions-228404:3117927")
+	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
+	deobfProvided(
+			"curse.maven:EnderIO-64578:3328811",
+			"curse.maven:ProjectIntelligence-306028:2833640",
+			"curse.maven:EnderCore-231868:2972849",
+			"curse.maven:BrandonsCore-231382:3408276",
+			"curse.maven:CodeChickenLib-242818:2779848"
+	)
+	provided "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	
+	deobfProvided("curse.maven:Erebus-220698:3211974")
+	
+	// **CRAFTTWEAKER HOOKS**
+	deobfCompile(
+			"curse.maven:Patchouli-306770:3162874",
+			"curse.maven:Baubles-227083:2518667"
+	)
+	
+	deobfProvided("curse.maven:Botania-225643:3330934")
+	
+	deobfProvided("curse.maven:ExtraUtils2-225561:2678374")
+	
+	
+	deobfProvided(
+			"curse.maven:Roots-246183:3484394",
+			"curse.maven:MysticalWorld-282940:3460961",
+			"curse.maven:MysticalLib-277064:3483816"
+	)
+	
+	deobfProvided("curse.maven:AstralSorcery-241721:3044416")
+	
+	deobfProvided(
+			"curse.maven:ImmersiveEngineering-231951:2974106"
+	)
+	
+	deobfProvided(
+			"curse.maven:BloodMagic-224791:2822288",
+			"curse.maven:GuideAPI-228832:2645992"
+	)
+	
+	deobfProvided("curse.maven:Totemic-237541:2700798")
+	
+	deobfProvided(
+			"curse.maven:ExtremeReactors-250277:3194746",
+			"curse.maven:ZeroCore-247921:3194743"
+	)
+	
+	deobfProvided("curse.maven:Bewitchment-285439:3256343") {
+		exclude group: "org.spongepowered"
+	}
+	
+	
+	deobfProvided("curse.maven:ModTweaker-220954:3840577")
+	
+	// **TWEAKS**
+	deobfProvided(
+			"curse.maven:RFTools-224641:2861573",
+			"curse.maven:McJtyLib-233105:2745846"
+	)
+	
+	deobfProvided(
+			"curse.maven:Forgelin-248453:2785465",
+			"curse.maven:TeslaCoreLib-254602:3438487",
+			"curse.maven:IndustrialForegoing-266515:2745321"
+	)
+	
+	deobfProvided(
+			"curse.maven:AgriCraft-225635:3317747",
+			"curse.maven:InfinityLib-251396:3317119"
+	)
+
+//	deobfProvided(
+//			"curse.maven:MysticalAgriculture-246640:2704562"
+//	)
+	
+	provided(
+			"curse.maven:MysticalAgriculture-246640:2704562"
+	)
+	
+	deobfProvided(
+			"curse.maven:MoreTweaker-336569:3226142",
+			"curse.maven:MTLib-253211:3308160"
+	)
+
+	
+	deobfProvided("curse.maven:AppleSkin-248787:2987247")
+	
+	deobfProvided(
+			"curse.maven:ModularMachinery-270790:2713714",
+			"curse.maven:ModularMagic-324318:2737623"
+	)
+	
+	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
+	
+	deobfProvided("curse.maven:Aether-255308:3280119")
+
+//	deobfProvided(
+//			"curse.maven:Evilcraft-74610:2811267",
+//			"curse.maven:CyclopsCore-232758:3159497"
+//	)
+//
+	
+	deobfProvided("curse.maven:PackagedAuto-308380:3614585")
+	
+	
+	deobfProvided(
+			"curse.maven:ThermalExpansion-69163:2926431",
+			"curse.maven:ThermalFoundation-222880:2926428",
+			"curse.maven:CoFHCore-69162:2920433"
+	)
+	
+	deobfProvided(
+			"curse.maven:Mekanism-268560:2835175"
+	)
+	
+	deobfProvided("curse.maven:RadixCore-77286:2483855")
+	
+	// Dev Tools
+	testImplementation( // For ZenDoc
+			"org.reflections:reflections:0.10.2"
+	)
+}
+
+jar {
+	manifest {
+		attributes (
+				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+				"MixinConfigs": 'mixins.dj2addons.init.json'
+		)
+	}
+}
+
+build {
+	doLast {
+		project.tasks.injectCoremodJar.execute() // TODO: make this portable instead of completely hardcoded
+	}
+}
+
+tasks.register('injectCoremodJar', Exec) {
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_InjectCoreMod.py'))
+}
+
+//tasks.register('addCoremodToJar', Copy) {
+//	from
+//}
+
+tasks.register('generateTestZS', Copy) {
+	from rootProject.file('Test.zs')
+	into project.file('run/scripts')
+}
+
+tasks.register('runTests', JavaExec) {
+	dependsOn(build, generateTestZS)
+	def modproject = project(":mod")
+	def coremodproject = project(":coremod")
+	classpath = modproject.sourceSets.main.output.classesDirs + modproject.sourceSets.main.compileClasspath + modproject.sourceSets.test.output.classesDirs + modproject.sourceSets.test.runtimeClasspath + coremodproject.sourceSets.main.output.classesDirs + coremodproject.sourceSets.main.compileClasspath + coremodproject.sourceSets.test.output.classesDirs + coremodproject.sourceSets.test.runtimeClasspath
+	main = 'GenerateTestZS'
+	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
+}
+
+//idea.project {
+//	settings {
+//		taskTriggers {
+//			afterSync tasks.getByName("removeShadedMixinLibraries")
+//		}
+//	}
+//}
+//idea {
+//	
+//}
+tasks.register('buildTestJar', Jar) {
+	from(sourceSets.test.output);
+	archiveName = 'dj2addons-test'
+}

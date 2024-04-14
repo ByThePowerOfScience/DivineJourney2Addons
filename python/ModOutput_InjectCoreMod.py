@@ -1,24 +1,34 @@
 import glob
-import os
+import re
 import zipfile
 from pathlib import Path
-from packaging import version
-import re
 
-# x = re.compile("/dj2addons-([0-9.]+)\\.jar/")
+from packaging import version
+
+version_regex = re.compile(r"/dj2addons-([0-9.]+).*\.jar/")
 
 
 def getModPath(s):
     possibles = glob.glob(s)
     if len(possibles) == 0:
         raise RuntimeError("No possible mod jars found at " + s)
-    # latest = version.parse("0.0.0")
-    # latestjar = None
-    for x in possibles:
-        if 'sources' in x:
+    latest = version.parse("0.0.0")
+    latestjar = None
+    for jarName in possibles:
+        if 'sources' in jarName:
             continue
-        return x
-    raise RuntimeError('No mod jar found at ' + str([path for [path, _jar] in possibles]))
+        jarVersion = version_regex.match(jarName).groups()
+        if jarVersion is None:
+            print("No jar version found for " + jarName)
+            continue
+        else:
+            if jarVersion[0] > latest:
+                latestjar = jarName
+    
+    if latestjar is not None:
+        return latestjar
+    else:
+        raise RuntimeError('No mod jar found at ' + str([path for [path, _jar] in possibles]))
 
 
 project_dir = Path("~/IdeaProjects/DJ2Addons/").expanduser()
