@@ -8,10 +8,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
-import zone.rong.mixinbooter.IEarlyMixinLoader;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -20,7 +17,7 @@ import java.util.Map;
 @SortingIndex(10)
 @MCVersion("1.12.2")
 @TransformerExclusions({"btpos.dj2addons.asm", "btpos.dj2addons.core"}) // made a new package specifically so the rest of the mod could be transformed.
-public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
+public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {//, IEarlyMixinLoader {
 	static {
 		// Load classes in the right order to avoid a circularity error.
 		CoreInfo.class.getName();
@@ -49,15 +46,15 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 //		}
 //	}
 	
-	@Override
-	public List<String> getMixinConfigs() {
-		return Collections.singletonList("mixins.dj2addons.init.json");
-	}
-	
-	@Override
-	public void onMixinConfigQueued(String mixinConfig) {
-		CoreInfo.LOGGER.info("[MIXIN] Init phase config loaded: {}", mixinConfig);
-	}
+//	@Override
+//	public List<String> getMixinConfigs() {
+//		return Collections.singletonList("mixins.dj2addons.init.json");
+//	}
+//
+//	@Override
+//	public void onMixinConfigQueued(String mixinConfig) {
+//		CoreInfo.LOGGER.info("[MIXIN] Init phase config loaded: {}", mixinConfig);
+//	}
 	
 	@Override
 	public String[] getASMTransformerClass() {

@@ -157,7 +157,7 @@ dependencies {
 
 mixin {
 	//noinspection GroovyAssignabilityCheck
-	add sourceSets.main, "mixins.dj2addons.refmap.json"
+	add sourceSets.main, 'mixins.dj2addons.refmap.json'
 //    config 'mixins.dj2addons.json'
 //    	hotSwap = true
 }
@@ -165,9 +165,10 @@ mixin {
 jar {
 	manifest {
 		attributes (
-				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-//				"MixinConfigs": 'mixins.dj2addons.init.json',
-				'ContainedDeps': 'dj2addons-core.jar'
+//				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+				'MixinConfigs': 'mixins.dj2addons.init.json',
+				'ContainedDeps': "dj2addonscore-${project(':coremod').version}.jar",
+//				'FMLCorePluginContainsFMLMod': true
 		)
 	}
 }
@@ -178,30 +179,28 @@ runClient.dependsOn('build', 'copyCoremodToRunDir')
 
 
 tasks.register('jankShadow', Exec) {
-	group = 'dj2addons'
+	group = 'other_dj2addons'
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'))
 }
 
-
 tasks.register('copyCoremodToRunDir', Copy) {
-	group = 'dj2addons'
-	
+	group = 'other_dj2addons'
+
 	from project(':coremod').buildDir.toPath().resolve('libs')
-	include 'dj2addons-core.jar'
+	include 'dj2addonscore-*.jar'
+	exclude 'dj2addonscore-*-sources.jar'
 	into project.projectDir.toPath().resolve('run/mods')
 }
 
 
-
-
 tasks.register('generateTestZS', Copy) {
-	group = 'dj2addons'
+	group = 'other_dj2addons'
 	from rootProject.file('Test.zs')
 	into project.file('run/scripts')
 }
 
 tasks.register('runTests', JavaExec) {
-	group = 'dj2addons'
+	group = 'build_dj2addons'
 	dependsOn(build, generateTestZS)
 	
 	def modproject = project(":mod")
@@ -231,25 +230,25 @@ tasks.register('runTests', JavaExec) {
 //}
 
 tasks.register('buildTestJar', Jar) {
-	group = 'dj2addons'
+	group = 'build_dj2addons'
 	from(sourceSets.test.output);
 	archiveName = 'dj2addons-test'
 }
 
 
 tasks.register('generateModpackZip', Exec) {
-	group = 'dj2addons'
+	group = 'build_dj2addons'
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/GenerateModpackZip.py').toString())
 }
 
 tasks.register('updateModpack', Exec) {
-	group = 'dj2addons'
+	group = 'build_dj2addons'
 	dependsOn(build)
 	commandLine(rootProject.ext.pythonFile, rootProject.file('./python/UpdateModpack.py').toString())
 }
 
 tasks.register('updateCFModpack', Exec) {
-	group = 'dj2addons'
+	group = 'build_dj2addons'
 	dependsOn(build)
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/UpdateCFModpack.py').toString())
 }

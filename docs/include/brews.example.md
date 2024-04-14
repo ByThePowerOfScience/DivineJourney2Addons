@@ -11,4 +11,19 @@ luckBrew.disableIncenseStick().disableBloodPendant();
 
 // Registers the Luck I brew with a recipe.
 Brews.addBrewRecipe(luckBrew, [<minecraft:nether_wart>, <minecraft:cooked_beef>]);
+
+
+// Enable the Tainted Blood Pendant of Warp Ward
+Brews.enableWarpWardPendant();
+
+
+// Give the Tainted Blood Pendant of Warp Ward a different recipe than the original allowed ones
+val warpWardBrew as Brew = Brews.getByName("botania.brews.warpWard");
+Brews.removeRecipe("botania.brews.warpWard"); // remove the original recipe
+
+Brews.addOutputRestrictedBrewRecipe( // make an easier recipe for non-pendants
+	warpWardBrew,
+	[<botania:vial:0>, <botania:vial:1>, <botania:incense_stick>],
+	[
+);
 ```

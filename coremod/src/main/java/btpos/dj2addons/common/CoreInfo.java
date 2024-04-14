@@ -17,7 +17,7 @@ public class CoreInfo {
 	public static void onLoadCore() {
 		if (!coreLoaded) {
 			coreLoaded = true;
-			LOGGER.info("DJ2Addons loaded!");
+			LOGGER.info("DJ2Addons Core loaded!");
 		}
 	}
 	

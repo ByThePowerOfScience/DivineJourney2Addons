@@ -53,6 +53,7 @@ subprojects { Project proj ->
 		
 		mappings = "stable_39"
 		
+		//noinspection GroovyAssignabilityCheck
 		replace "@VERSION@", project.version
 //		replaceIn "DJ2Addons.java"
 	}
@@ -113,13 +114,6 @@ subprojects { Project proj ->
 	}
 	
 	
-	
-	
-	tasks.register('removeShadedMixinLibraries', Exec) {
-		group = 'dependencies'
-		commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
-	}
-	
 //	jar {
 //		into('/META-INF/libraries') {
 //			from configurations.embed
@@ -155,6 +149,11 @@ subprojects { Project proj ->
 //		}
 //	}
 //}
+
+tasks.register('removeShadedMixinLibraries', Exec) {
+	group = 'dependencies'
+	commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
+}
 
 tasks.register('zendoc', JavaExec) {
 	group = 'documentation'

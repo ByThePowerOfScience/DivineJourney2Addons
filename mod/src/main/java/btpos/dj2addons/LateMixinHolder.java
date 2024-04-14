@@ -15,7 +15,7 @@ public class LateMixinHolder implements ILateMixinLoader {
 				"mixins.dj2addons.def.optimizations.json",
 				"mixins.dj2addons.def.patches.json",
 				"mixins.dj2addons.def.tweaks.json"
-		                    );
+        );
 	}
 	
 	@Override

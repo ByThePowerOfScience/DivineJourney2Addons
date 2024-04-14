@@ -93,17 +93,17 @@ void addUpgradeSword(
 
 
 ```zenscript
-void addUpgradeSword(
-  IOreDictEntry oreDict, // The OreDict key to add.
-  double multiplier,     // Flat multiplier to MP.
+void addUpgradePentacle(
+  IBlock block,      // The Block to add.
+  double multiplier, // Flat multiplier to MP.
 );
 ```
 
 
 ```zenscript
-void addUpgradePentacle(
-  IBlock block,      // The Block to add.
-  double multiplier, // Flat multiplier to MP.
+void addUpgradeSword(
+  IOreDictEntry oreDict, // The OreDict key to add.
+  double multiplier,     // Flat multiplier to MP.
 );
 ```
 

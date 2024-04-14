@@ -30,14 +30,14 @@ public class JankConfig {
 				try {
 					line = line.substring(0, line.indexOf("//"));
 				} catch (Exception e) {
-					CoreInfo.LOGGER.debug("Line \"{}\" is only a comment.", line);
+					CoreInfo.LOGGER.error("Line \"{}\" is only a comment.", line);
 					continue;
 				}
 				String[] splitLine = line.split(",");
 				try {
 					infusionStabilizersToAdd.put(splitLine[0].trim(), Float.parseFloat(splitLine[1].trim()));
 				} catch (Exception e) {
-					CoreInfo.LOGGER.debug("Line \"{}\" did not parse as an infusion stabilizer.", line);
+					CoreInfo.LOGGER.error("Line \"{}\" did not parse as an infusion stabilizer.", line);
 				}
 			}
 		} catch (IOException e) {

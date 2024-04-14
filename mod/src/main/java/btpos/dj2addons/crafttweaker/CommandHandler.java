@@ -7,6 +7,7 @@ import btpos.dj2addons.commands.util.DJ2ACommandUtils;
 import btpos.dj2addons.commands.util.MessageHelper;
 import btpos.dj2addons.common.modrefs.CBigReactors;
 import btpos.dj2addons.common.modrefs.CBigReactors.ReactorInteriorDataWrapper;
+import btpos.dj2addons.common.modrefs.CBotania;
 import btpos.dj2addons.common.modrefs.CTotemic;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.common.util.StringDumpUtils;
@@ -77,6 +78,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				case bewitchment:
 				case totemic:
 				case extrautils2:
+				case botania:
 					return Loader.isModLoaded(sc.name());
 				default:
 					return true;
@@ -85,7 +87,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, info, mods, bewitchment, extrautils2, totemic, findextending, networks, clearnetworks, syncablenbt, breakdebug
+		hand, info, mods, bewitchment, extrautils2, totemic, findextending, networks, clearnetworks, syncablenbt, breakdebug, botania
 //		,validate
 	}
 	
@@ -106,7 +108,8 @@ public class CommandHandler extends CraftTweakerCommand {
 		//noinspection
 		Optional<SubCommand> command = Enums.getIfPresent(SubCommand.class, params.remove(0));
 		if (command.isPresent()) {
-			switch (command.get()) {
+			SubCommand subCommand = command.get();
+			switch (subCommand) {
 				case hand:
 					executeHandCommand(m, server, sender, args);
 					break;
@@ -138,8 +141,6 @@ public class CommandHandler extends CraftTweakerCommand {
 					m.sendHeading("Syncable NBT for " + DJ2ACommandUtils.formatPos(lookAtPos));
 					m.send(NBTUtils.getAppealingString(nbt.toString()));
 					break;
-				case networks: // DEBUG
-				
 				case clearnetworks:
 					Map<BlockPos, GraphNetwork> networkLookupMap = ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap;
 					networkLookupMap.values().forEach(network -> {
@@ -160,28 +161,34 @@ public class CommandHandler extends CraftTweakerCommand {
 						bewitchmentHandler(m.withLog());
 					else
 						m.usage();
-					if (command.get().equals(SubCommand.bewitchment))
+					if (subCommand == SubCommand.bewitchment)
 						break;
 				case totemic:
 					if (Loader.isModLoaded("totemic"))
 						totemicHandler(m.withLog());
 					else
 						m.usage();
-					if (command.get().equals(SubCommand.totemic))
+					if (subCommand == SubCommand.totemic)
 						break;
 				case extrautils2:
 					if (Loader.isModLoaded("extrautils2"))
 						extrautilsHandler(m.withChat());
 					else
 						m.usage();
-					if (command.get().equals(SubCommand.extrautils2))
+					if (subCommand == SubCommand.extrautils2)
 						break;
+				case botania:
+					if (Loader.isModLoaded("botania"))
+						botaniaHandler(m.withChat().withLog());
+					else
+						m.usage();
 					
 			}
-			switch (command.get()) {
+			switch (subCommand) {
 				case mods:
 				case bewitchment:
 				case totemic:
+				case botania:
 					sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("Printed to CraftTweaker log.", sender));
 			}
 		} else {
@@ -190,6 +197,9 @@ public class CommandHandler extends CraftTweakerCommand {
 		
 	}
 	
+	private void botaniaHandler(MessageHelper messageHelper) {
+		CBotania.printAllBrews(messageHelper);
+	}
 	
 	
 	private static void executeBlockInfoCommand(MessageHelper m, ICommandSender sender, List<String> args) {
@@ -519,7 +529,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	// Prints list of mill names
 	private static void extrautilsHandler(MessageHelper m) {
 		m.enterSubCommand("extrautils");
-		Map<String, float[]> generators = ExtraUtilities.Internal.getCurrentScaling();
+		Map<String, float[]> generators = ExtraUtilities.Internal.getScalingMap();
 		if (!generators.isEmpty()) {
 			m.sendHeading("GP Mills:");
 			

@@ -1,15 +1,17 @@
+archivesBaseName = 'dj2addonscore'
+
 jar {
 	manifest {
 		attributes (
 				'FMLCorePlugin': 'btpos.dj2addons.core.DJ2ALoadingPlugin',
 				
-//				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 //				"MixinConfigs": 'mixins.dj2addons.bootstrap.json'
 		)
-		archivesBaseName = 'dj2addonscore'
 	}
 	finalizedBy('reobfJar')
 }
+
 
 mixin {
 	//noinspection GroovyAssignabilityCheck

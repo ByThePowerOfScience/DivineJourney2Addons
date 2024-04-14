@@ -2,12 +2,17 @@
 package btpos.dj2addons.api.botania;
 
 import com.google.common.base.Preconditions;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.brew.Brew;
 import vazkii.botania.api.recipe.RecipeBrew;
 import vazkii.botania.common.item.ModItems;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -78,6 +83,79 @@ public final class Brews {
 		Preconditions.checkArgument(ingredients.length <= 6);
 		RecipeBrew recipe = new RestrictedOutputRecipeBrew(brew, allowedOutputs, ingredients);
 		BotaniaAPI.brewRecipes.add(recipe);
+	}
+	//		NonNullList<ItemStack> ores = OreDictionary.getOres(((String) el));
+	//		if (ores.isEmpty())
+	//			throw CraftTweakerHelpers.fillExc(new IllegalArgumentException("Invalid OreDict key " + el + " provided. Key was either empty or nonexistent."));
+	//		return ores.get(0);
+	
+	/**
+	 *
+	 * @param key The key for the brew, e.g. "botania.brews.warpWard". Use "/ct dj2addons brews" in-game to get the keys for all registered brews.
+	 * @param ingredientsToMatch An array of ItemStacks or OreDict Strings that are the ingredients to match.
+	 */
+	public static void removeRecipe(String key, Object[] ingredientsToMatch) {
+		for (int i = 0; i < ingredientsToMatch.length; i++) {
+			Object o = ingredientsToMatch[i];
+			if (!(o instanceof ItemStack || o instanceof String)) {
+				throw new IllegalArgumentException("Ingredients must be either ItemStacks or OreDict Strings.");
+			}
+		}
+		
+		List<RecipeBrew> brewRecipes = BotaniaAPI.brewRecipes;
+		
+		IntList indicesToRemove = new IntArrayList();
+		boolean[] hasParamFoundMatchAlready = new boolean[ingredientsToMatch.length];
+		
+		loopAllRecipes:
+		for (int idx_allRecipes = 0, brewRecipesSize = brewRecipes.size(); idx_allRecipes < brewRecipesSize; idx_allRecipes++) {
+			RecipeBrew recipe = brewRecipes.get(idx_allRecipes);
+			if (!key.equals(recipe.getBrew().getKey()))
+				continue;
+			
+			Arrays.fill(hasParamFoundMatchAlready, false);
+			
+			for (Object ingredientFromRecipe : recipe.getInputs()) {
+				boolean ingredientExistsInParamSet = false;
+				
+				for (int i = 0; i < ingredientsToMatch.length; i++) {
+					if (hasParamFoundMatchAlready[i])
+						continue;
+					
+					Object fromParam = ingredientsToMatch[i];
+					if (ingredientFromRecipe.equals(fromParam)) {
+						hasParamFoundMatchAlready[i] = true;
+						ingredientExistsInParamSet = true;
+						break;
+					}
+					if (fromParam instanceof ItemStack && ingredientFromRecipe instanceof ItemStack) {
+						if (OreDictionary.itemMatches(((ItemStack) fromParam), ((ItemStack) ingredientFromRecipe), false)) {
+							hasParamFoundMatchAlready[i] = true;
+							ingredientExistsInParamSet = true;
+							break;
+						}
+					}
+					else if (ingredientFromRecipe instanceof String && fromParam instanceof ItemStack) {
+						if (OreDictionary.containsMatch(false, OreDictionary.getOres(((String) ingredientFromRecipe), false), ((ItemStack) fromParam))) {
+							hasParamFoundMatchAlready[i] = true;
+							ingredientExistsInParamSet = true;
+							break;
+						}
+					}
+				}
+				if (!ingredientExistsInParamSet)
+					break;
+			}
+			for (int i = 0; i < hasParamFoundMatchAlready.length; i++) {
+				if (!hasParamFoundMatchAlready[i])
+					continue loopAllRecipes;
+			}
+			indicesToRemove.add(idx_allRecipes);
+		}
+		
+		for (int i = indicesToRemove.size() - 1; i >= 0; i--) {
+			brewRecipes.remove(indicesToRemove.getInt(i));
+		}
 	}
 	
 	/**

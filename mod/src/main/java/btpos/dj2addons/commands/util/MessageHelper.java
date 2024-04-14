@@ -6,12 +6,14 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -262,6 +264,20 @@ public final class MessageHelper {
 	
 	public static String makeIndent(int level) {
 		return StringUtils.repeat(INDENT, level + 1);
+	}
+	
+	static final List<TextFormatting> INDENT_COLORS = Arrays.asList(TextFormatting.AQUA, TextFormatting.DARK_GREEN);
+	static final ITextComponent PROPERTY_BULLET = new TextComponentString("- ").setStyle(new Style().setColor(TextFormatting.YELLOW));
+	
+	public static ITextComponent getPropertyMessage(ITextComponent property, ITextComponent value, int indent) {
+		return TCS(makeIndent(indent)).appendSibling(PROPERTY_BULLET.createCopy())
+		                              .appendSibling(property)
+		                              .appendText(": ")
+		                              .appendSibling(SpecialMessagesChat.getCopyMessage(value.getFormattedText(), value.getUnformattedComponentText()).setStyle(new Style().setColor(INDENT_COLORS.get(indent % INDENT_COLORS.size()))));
+	}
+	
+	private static TextComponentString TCS(String s) {
+		return new TextComponentString(s);
 	}
 	
 	public static String getPropertyMessage(String property, String value, int indent) {

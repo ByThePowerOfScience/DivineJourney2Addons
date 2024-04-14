@@ -12,7 +12,7 @@ mod_dir = project_dir / "mod"
 out_jar_subdir = "build/libs"
 
 coremod_path = coremod_dir / out_jar_subdir / "dj2addonscore-*.jar"
-mod_path = mod_dir / out_jar_subdir / "dj2addons-*.jar"
+mod_jar_path = mod_dir / out_jar_subdir / "dj2addons-*.jar"
 
 
 mod_version_regex = re.compile(r"dj2addons-([0-9.]+(?:-\w+)?)\.jar")
@@ -52,7 +52,7 @@ def getLatestVersion(s: Union[str, Path], version_regex: Pattern[AnyStr]) -> Pat
 	raise RuntimeError('No valid jar found in set of ' + str([possibles]))
 
 def getLatestModBuild() -> Path:
-	return getLatestVersion(str(mod_path), mod_version_regex)
+	return getLatestVersion(str(mod_jar_path), mod_version_regex)
 
 def getLatestCoremodBuild() -> Path:
 	return getLatestVersion(str(coremod_path), coremod_version_regex)
