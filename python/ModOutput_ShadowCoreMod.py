@@ -8,7 +8,7 @@ from packaging import version
 versionRegex = re.compile(r"dj2addons-([0-9.]+(?:-\w+)?)\.jar")
 
 
-def getModPath(s):
+def getLatestModJar(s):
 	possibles = glob.glob(s)
 	if len(possibles) == 0:
 		raise RuntimeError("No possible mod jars found at " + s)
@@ -35,11 +35,13 @@ project_dir = Path("~/IdeaProjects/DJ2Addons/").expanduser()
 coremod_path = project_dir / "coremod/build/libs/dj2addons-core.jar"
 mod_path = project_dir / "mod/build/libs/dj2addons-*.jar"
 
+mixinextras = Path("~/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-common/0.3.5/5de895137aa0478675b6ecf7602d9652b05dc37e/mixinextras-common-0.3.5.jar").expanduser()
 
 def main():
-	modjar = getModPath(str(mod_path))
+	modjar = getLatestModJar(str(mod_path))
 	with zipfile.ZipFile(modjar, mode='a') as file:
 		file.write(coremod_path, '/META-INF/libraries/dj2addons-core.jar')
+		file.write(mixinextras, '/META-INF/libraries/mixinextras-common-0.3.5.jar')
 
 
 main()

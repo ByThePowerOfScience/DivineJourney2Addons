@@ -62,7 +62,7 @@ subprojects {
 	
 	dependencies {
 		implementation("io.github.llamalad7:mixinextras-common:0.3.5")
-		shadow("io.github.llamalad7:mixinextras-common:0.3.5")
+//		shadow("io.github.llamalad7:mixinextras-common:0.3.5")
 //		annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
 		implementation("org.spongepowered:mixin:0.8.5")
 		testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
@@ -94,26 +94,30 @@ subprojects {
 		//	rename '(.+_at.cfg)', 'META-INF/$1'
 	}
 	
-	task generateModpackZip(type: Exec, group: 'buildruns') {
+	tasks.register('generateModpackZip', Exec) {
+		group = 'buildruns'
 		commandLine(rootProject.ext.pythonFile, "./python/GenerateModpackZip.py")
 	}
 	
-	task updateModpack(type: Exec, group: 'buildruns') {
+	tasks.register('updateModpack', Exec) {
+		group = 'buildruns'
 		dependsOn(build)
 		commandLine(rootProject.ext.pythonFile, "./python/UpdateModpack.py")
 	}
 	
-	task updateCFModpack(type: Exec, group: 'buildruns') {
+	tasks.register('updateCFModpack', Exec) {
+		group = 'buildruns'
 		dependsOn(build)
 		commandLine(rootProject.ext.pythonFile, "./python/UpdateCFModpack.py")
 	}
 	
-	task copyTestZS(type: Copy) {
+	tasks.register('copyTestZS', Copy) {
 		from "./" include "Test.zs" into "./run/scripts"
 	}
 	
 	
-	task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
+	tasks.register('removeShadedMixinLibraries', Exec) {
+		group = 'dependencies'
 		commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
 	}
 	
@@ -145,8 +149,10 @@ subprojects {
 //	}
 //}
 
-task zendoc(type: JavaExec, group: 'documentation') {
-	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath // + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
+tasks.register('zendoc', JavaExec) {
+	group = 'documentation'
+	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath
+	// + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
 	main = 'ExportZenDocs'
 }
 

@@ -24,7 +24,6 @@ repositories {
 }
 
 
-
 dependencies {
 	compile project(":coremod")
 	
@@ -165,22 +164,19 @@ jar {
 	}
 }
 
-build {
-	doLast {
-		project.tasks.injectCoremodJar.execute() // TODO: make this portable instead of completely hardcoded
-	}
+build.finalizedBy('injectCoremodJar')
+
+tasks.register('injectCoremodJar', Exec) {
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'))
 }
 
-task injectCoremodJar(type: Exec) {
-	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_InjectCoreMod.py'))
-}
 
-task generateTestZS(type: Copy) {
+tasks.register('generateTestZS', Copy) {
 	from rootProject.file('Test.zs')
 	into project.file('run/scripts')
 }
 
-task runTests(type: JavaExec, group: 'buildruns') {
+tasks.register('runTests', JavaExec) {
 	dependsOn(build, generateTestZS)
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
@@ -199,7 +195,7 @@ task runTests(type: JavaExec, group: 'buildruns') {
 //idea {
 //	
 //}
-task buildTestJar(type: Jar, group: 'buildruns') {
+tasks.register('buildTestJar', Jar) {
 	from(sourceSets.test.output);
 	archiveName = 'dj2addons-test'
 }
