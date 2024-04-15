@@ -7,7 +7,6 @@ from packaging import version
 
 versionRegex = re.compile(r"dj2addons-([0-9.]+(?:-\w+)?)\.jar")
 
-
 def getLatestModJar(s):
 	possibles = glob.glob(s)
 	if len(possibles) == 0:
@@ -37,11 +36,24 @@ mod_path = project_dir / "mod/build/libs/dj2addons-*.jar"
 
 mixinextras = Path("~/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-common/0.3.5/5de895137aa0478675b6ecf7602d9652b05dc37e/mixinextras-common-0.3.5.jar").expanduser()
 
-def main():
+def jankShadowMixinExtrasIntoCoremod():
+	with zipfile.ZipFile(mixinextras, mode='r') as mixExtJar:
+		with zipfile.ZipFile(coremod_path, mode='a') as coremodJar:
+			for name in mixExtJar.namelist():
+				if 'com/llamalad7' not in name:
+					continue
+				coremodJar.writestr(name, mixExtJar.read(name))
+
+def jankShadowCoremodIntoMod():
 	modjar = getLatestModJar(str(mod_path))
+	print("Copying coremod to " + modjar)
 	with zipfile.ZipFile(modjar, mode='a') as file:
 		file.write(coremod_path, '/META-INF/libraries/dj2addons-core.jar')
-		file.write(mixinextras, '/META-INF/libraries/mixinextras-common-0.3.5.jar')
+		# file.write(mixinextras, '/META-INF/libraries/_mixinextras-common-0.3.5.jar')  # only way I could find to rename it when copying
+
+def main():
+	# jankShadowMixinExtrasIntoCoremod()
+	jankShadowCoremodIntoMod()
 
 
 main()

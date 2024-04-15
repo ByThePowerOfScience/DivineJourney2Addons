@@ -1,9 +1,9 @@
 package btpos.dj2addons;
 
+import btpos.dj2addons.common.CoreInfo;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Logger;
-import btpos.dj2addons.common.CoreInfo;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -24,6 +24,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void onLoad(String mixinPackage) {
+		CoreInfo.onLoadCore();
 		LOGGER.debug("Loading mixins from {}", mixinPackage);
 	}
 	
@@ -102,7 +103,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				output = "Teaching hunger shanks to do The Wave.";
 				break;
 			case "MInputs":
-				output = "It's Florbin' Time.";
+				output = "Making Bewitchment say \"It's Florbin' Time.\" and florb all over the place.";
 				break;
 			case "MTileEssentiaOutput":
 				output = "Sealing those pesky leaks in the modular magical machineries.";
@@ -123,6 +124,5 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				return;
 		}
 		LOGGER.info(output);
-		
 	}
 }

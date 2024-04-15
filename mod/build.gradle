@@ -23,9 +23,9 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
-	compile project(":coremod")
+	implementation project(':coremod')
+//	embed project(path: ':coremod', configuration: 'obfJar')  I really tried, but I just can't figure out how to make this not janky as hell, so PYTHON IT IS!!!
 	
 	compile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
@@ -155,32 +155,66 @@ dependencies {
 	)
 }
 
+mixin {
+	//noinspection GroovyAssignabilityCheck
+	add sourceSets.main, "mixins.dj2addons.refmap.json"
+//    config 'mixins.dj2addons.json'
+//    	hotSwap = true
+}
+
 jar {
 	manifest {
 		attributes (
 				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"MixinConfigs": 'mixins.dj2addons.init.json'
+				"MixinConfigs": 'mixins.dj2addons.init.json',
+				'ContainedDeps': 'dj2addons-core.jar'
 		)
 	}
 }
 
-build.finalizedBy('injectCoremodJar')
 
-tasks.register('injectCoremodJar', Exec) {
+build.finalizedBy('jankShadow')
+runClient.dependsOn('build', 'copyCoremodToRunDir')
+
+
+tasks.register('jankShadow', Exec) {
+	group = 'dj2addons'
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'))
 }
 
 
+tasks.register('copyCoremodToRunDir', Copy) {
+	group = 'dj2addons'
+	
+	from project(':coremod').buildDir.toPath().resolve('libs')
+	include 'dj2addons-core.jar'
+	into project.projectDir.toPath().resolve('run/mods')
+}
+
+
+
+
 tasks.register('generateTestZS', Copy) {
+	group = 'dj2addons'
 	from rootProject.file('Test.zs')
 	into project.file('run/scripts')
 }
 
 tasks.register('runTests', JavaExec) {
+	group = 'dj2addons'
 	dependsOn(build, generateTestZS)
+	
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
-	classpath = modproject.sourceSets.main.output.classesDirs + modproject.sourceSets.main.compileClasspath + modproject.sourceSets.test.output.classesDirs + modproject.sourceSets.test.runtimeClasspath + coremodproject.sourceSets.main.output.classesDirs + coremodproject.sourceSets.main.compileClasspath + coremodproject.sourceSets.test.output.classesDirs + coremodproject.sourceSets.test.runtimeClasspath
+	classpath = modproject.sourceSets.main.output.classesDirs
+					+ modproject.sourceSets.main.compileClasspath
+					+ modproject.sourceSets.test.output.classesDirs
+					+ modproject.sourceSets.test.runtimeClasspath
+					+ coremodproject.sourceSets.main.output.classesDirs
+					+ coremodproject.sourceSets.main.compileClasspath
+					+ coremodproject.sourceSets.test.output.classesDirs
+					+ coremodproject.sourceSets.test.runtimeClasspath
+	
 	main = 'GenerateTestZS'
 	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
 }
@@ -195,7 +229,32 @@ tasks.register('runTests', JavaExec) {
 //idea {
 //	
 //}
+
 tasks.register('buildTestJar', Jar) {
+	group = 'dj2addons'
 	from(sourceSets.test.output);
 	archiveName = 'dj2addons-test'
+}
+
+
+tasks.register('generateModpackZip', Exec) {
+	group = 'dj2addons'
+	commandLine(rootProject.ext.pythonFile, "./python/GenerateModpackZip.py")
+}
+
+tasks.register('updateModpack', Exec) {
+	group = 'dj2addons'
+	dependsOn(build)
+	commandLine(rootProject.ext.pythonFile, "./python/UpdateModpack.py")
+}
+
+tasks.register('updateCFModpack', Exec) {
+	group = 'dj2addons'
+	dependsOn(build)
+	commandLine(rootProject.ext.pythonFile, "./python/UpdateCFModpack.py")
+}
+
+tasks.register('copyTestZS', Copy) {
+	group = 'other_dj2addons'
+	from "./" include "Test.zs" into "./run/scripts"
 }

@@ -3,9 +3,19 @@ jar {
 		attributes (
 				"FMLCorePlugin": 'btpos.dj2addons.DJ2ALoadingPlugin',
 				
-				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"MixinConfigs": 'mixins.dj2addons.bootstrap.json'
+//				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+//				"MixinConfigs": 'mixins.dj2addons.bootstrap.json'
 		)
 		archiveName 'dj2addons-core.jar'
 	}
+	finalizedBy('reobfJar')
 }
+
+mixin {
+	//noinspection GroovyAssignabilityCheck
+	add sourceSets.main, "mixins.dj2addons.core.refmap.json"
+//    config 'mixins.dj2addons.json'
+//    	hotSwap = true
+}
+
+// TODO sign jar

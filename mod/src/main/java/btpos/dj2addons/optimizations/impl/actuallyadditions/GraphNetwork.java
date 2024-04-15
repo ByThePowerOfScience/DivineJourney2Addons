@@ -6,16 +6,17 @@ import de.ellpeck.actuallyadditions.api.laser.LaserType;
 import de.ellpeck.actuallyadditions.api.laser.Network;
 import de.ellpeck.actuallyadditions.mod.misc.apiimpl.ConnectionPair;
 import io.netty.util.internal.ConcurrentSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -32,12 +33,16 @@ public class GraphNetwork extends Network {
 	public final int id;
 	
 	public GraphNetwork() {
-		nodeLookupMap = new ConcurrentHashMap<>();
+		nodeLookupMap = Collections.synchronizedMap(new Object2ObjectOpenHashMap<>());
 		this.id = debug$idCount++;
 	}
 	
 	public int getNodeCount() {
 		return nodeLookupMap.size();
+	}
+	
+	public Set<BlockPos> getMembers() {
+		return nodeLookupMap.keySet();
 	}
 	
 	public Node removeNode(BlockPos pos) {
@@ -69,7 +74,7 @@ public class GraphNetwork extends Network {
 		}
 		
 		// get an arbitrary node to start with since we know it'll access every single node in the graph
-		traverseFromNode(nodeLookupMap.values().iterator().next(), action, nodeLookupMap.size());
+		nodeLookupMap.values().forEach(action);
 	}
 	
 	public static void traverseFromNode(Node currentNode, Consumer<Node> action, int estimatedSize) {

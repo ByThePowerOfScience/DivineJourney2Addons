@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WorldData.class)
 public abstract class MWorldData {
 	
-	@Shadow @Final public ConcurrentSet<Network> laserRelayNetworks;
+	@Shadow(remap = false) @Final
+	public ConcurrentSet<Network> laserRelayNetworks;
 	
 	@Redirect(
 			method = "readFromNBT",
@@ -47,7 +48,8 @@ public abstract class MWorldData {
 			at = @At(
 					target = "Lde/ellpeck/actuallyadditions/mod/data/WorldData;playerSaveData:Ljava/util/concurrent/ConcurrentHashMap;",
 					value="FIELD",
-					opcode = Opcodes.GETFIELD
+					opcode = Opcodes.GETFIELD,
+					remap=false
 			)
 	)
 	private void inject(NBTTagCompound compound, CallbackInfo ci) {

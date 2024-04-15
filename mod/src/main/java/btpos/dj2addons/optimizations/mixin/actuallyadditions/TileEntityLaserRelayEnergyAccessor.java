@@ -5,7 +5,7 @@ import de.ellpeck.actuallyadditions.mod.tile.TileEntityLaserRelayEnergy.Mode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(TileEntityLaserRelayEnergy.class)
+@Mixin(value = TileEntityLaserRelayEnergy.class, remap = false)
 public interface TileEntityLaserRelayEnergyAccessor {
 	@Accessor
 	Mode getMode();

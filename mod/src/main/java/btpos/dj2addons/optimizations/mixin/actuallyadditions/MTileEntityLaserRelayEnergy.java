@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Mixin(value=TileEntityLaserRelayEnergy.class, remap=false)
 public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 	
+	@SuppressWarnings("rawtypes")
 	@Redirect(
 			remap = false,
 			method = "transferEnergyToReceiverInNeed",
@@ -37,7 +38,7 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 					value = "INVOKE"
 			)
 	)
-	private Iterator dj2addons$forceStopForLoop(ConcurrentSet instance) {
+	private Iterator dj2addons$stopConnectionsLoop(ConcurrentSet instance) {
 		return new Iterator() {
 			@Override
 			public boolean hasNext() {
@@ -50,8 +51,6 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 			}
 		};
 	}
-	
-	
 	
 	@Inject(
 			method="transferEnergyToReceiverInNeed",
@@ -84,7 +83,8 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 						boolean workedOnce = false;
 						
 						for (EnumFacing facing : theRelay.receiversAround.keySet()) {
-							if (!theRelay.equals(((TileEntityLaserRelayEnergy)(Object)this)) || facing != from) {
+							//noinspection EqualsBetweenInconvertibleTypes
+							if (!theRelay.equals(this) || facing != from) {
 								TileEntity tile = theRelay.receiversAround.get(facing);
 								
 								EnumFacing opp = facing.getOpposite();

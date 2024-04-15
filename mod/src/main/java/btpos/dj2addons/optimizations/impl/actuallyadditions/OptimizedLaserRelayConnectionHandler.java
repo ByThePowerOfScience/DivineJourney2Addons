@@ -11,6 +11,8 @@ import de.ellpeck.actuallyadditions.mod.misc.apiimpl.ConnectionPair;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityBase.NBTType;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityLaserRelay;
 import io.netty.util.internal.ConcurrentSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -23,14 +25,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnectionHandler {
 	
 	public static final Logger LOGGER = LogManager.getLogger("LaserHandler");
 	
-	public Map<BlockPos, GraphNetwork> networkLookupMap = new ConcurrentHashMap<>();
+	public Map<BlockPos, GraphNetwork> networkLookupMap = Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>());
 	
 	
 	public static void onNetworkSync(NBTTagCompound compound, NBTType type, BlockPos pos, World world) {
@@ -42,7 +43,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			OptimizedLaserRelayConnectionHandler connectionHandler = ((OptimizedLaserRelayConnectionHandler) genericConnectionHandler);
 			
 			NBTTagList incomingPairs = compound.getTagList("Connections", 10);
-			LOGGER.debug("[readSyncableNBT] incoming pairs: " + incomingPairs);
+			LOGGER.debug("[readSyncableNBT] incoming pairs: {}", incomingPairs);
 			if (incomingPairs.isEmpty()) {
 				connectionHandler.removeRelayFromNetwork(pos, world);
 				return;
@@ -80,10 +81,10 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		GraphNetwork gnetwork = (GraphNetwork) network;
 		gnetwork.nodeLookupMap.keySet()
 		                      .forEach(pos -> {
-									LOGGER.debug("[initNetMap] added " + pos);
+			                      LOGGER.debug("[initNetMap] added {}", pos);
 									networkLookupMap.put(pos, gnetwork);
 							  });
-		LOGGER.debug("[initNetMap] Loaded network: " + gnetwork);
+		LOGGER.debug("[initNetMap] Loaded network: {}", gnetwork);
 	}
 	
 	public Node getNodeFor(BlockPos pos, World world) {
@@ -127,14 +128,14 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		final GraphNetwork networkForDeleted = getNetworkFor(toDelete, world);
 		if (networkForDeleted == null) {
 			//DEBUG
-			LOGGER.debug("[removeRelayFromNetwork] network was null for " + toDelete);
+			LOGGER.debug("[removeRelayFromNetwork] network was null for {}", toDelete);
 			return;
 		}
 		
 		final Node nodeToDelete = networkForDeleted.removeNode(toDelete);
 		if (nodeToDelete == null) {
 			//DEBUG
-			LOGGER.debug("[removeRelayFromNetwork] relay node was null for " + toDelete);
+			LOGGER.debug("[removeRelayFromNetwork] relay node was null for {}", toDelete);
 			return;
 		}
 		
@@ -194,7 +195,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			LOGGER.debug("[removeNodeFromOldNetwork] Last node {} removed from network {}", node.pos, nodeNetwork);
 		}
 		else {
-			LOGGER.debug("[removeNodeFromOldNetwork] Removed " + node.pos + " from network " + nodeNetwork);
+			LOGGER.debug("[removeNodeFromOldNetwork] Removed {} from network {}", node.pos, nodeNetwork);
 			
 			node.network = null;
 		}
@@ -203,7 +204,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	
 	private void addNodeToNetwork(GraphNetwork newNetwork, Node node, WorldData data) {
 		if (node.network == newNetwork) {
-			LOGGER.debug("[addToNetwork] networks equal: " + node.network + " " + newNetwork);
+			LOGGER.debug("[addToNetwork] networks equal: {} {}", node.network, newNetwork);
 			return;
 		}
 		newNetwork.nodeLookupMap.put(node.pos, node);
@@ -211,7 +212,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		
 		node.network = newNetwork;
 		newNetwork.changeAmount++;
-		LOGGER.debug("[addToNetwork] Added " + node.pos + " to network " + newNetwork);
+		LOGGER.debug("[addToNetwork] Added {} to network {}", node.pos, newNetwork);
 		data.markDirty();
 	}
 	
@@ -222,7 +223,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 	}
 	
 	public void mergeNetworks(GraphNetwork superNetwork, GraphNetwork toBeRemoved, World world) {
-		LOGGER.debug("[mergeNetworks] super: " + superNetwork + " | " + toBeRemoved);
+		LOGGER.debug("[mergeNetworks] super: {} | {}", superNetwork, toBeRemoved);
 		// update the network lookup map to the new network
 		networkLookupMap.replaceAll((blockPos, mappedNetwork) -> {
 			if (mappedNetwork.equals(toBeRemoved))
@@ -243,7 +244,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		    || secondRelayPos == null
 		    || firstRelayPos.equals(secondRelayPos))
 		{
-			LOGGER.debug("[addConnection] Bad positions given: " + firstRelayPos + " " + secondRelayPos);
+			LOGGER.debug("[addConnection] Bad positions given: {} {}", firstRelayPos, secondRelayPos);
 			return false;
 		}
 		
@@ -307,7 +308,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		    || secondRelayPos == null
 		    || firstRelayPos.equals(secondRelayPos))
 		{
-			LOGGER.debug("[removeConnection] Bad positions given: " + firstRelayPos + " " + secondRelayPos);
+			LOGGER.debug("[removeConnection] Bad positions given: {} {}", firstRelayPos, secondRelayPos);
 			return;
 		}
 		
@@ -316,7 +317,11 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		GraphNetwork network = getNetworkFor(firstRelayPos, world);
 		
 		if (network != getNetworkFor(secondRelayPos, world)) {
-			LOGGER.debug("[removeConnection] Not the same network: " + firstRelayPos + " " + secondRelayPos + "\n{} {}", network, getNetworkFor(secondRelayPos, world));
+			LOGGER.debug("[removeConnection] Not the same network: {} {}\n{} {}",
+			             firstRelayPos,
+			             secondRelayPos,
+			             network,
+			             getNetworkFor(secondRelayPos, world));
 			return;
 		}
 		
@@ -353,7 +358,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 		GraphNetwork graphNetwork = new GraphNetwork();
 		worldData.laserRelayNetworks.add(graphNetwork); // This should have been in a method addLaserNetwork in the original source...
 		worldData.markDirty();
-		LOGGER.debug("[makeNewNetwork] " + graphNetwork);
+		LOGGER.debug("[makeNewNetwork] {}", graphNetwork);
 		return graphNetwork;
 	}
 	

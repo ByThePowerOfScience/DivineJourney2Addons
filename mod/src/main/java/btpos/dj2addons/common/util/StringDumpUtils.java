@@ -22,6 +22,7 @@ import java.util.function.Consumer;
  * @since   2013-08-24
  * @version 2015-09-19
  */
+@SuppressWarnings("ALL")
 public class StringDumpUtils {
 	
 	public static final String INDENT        = "  ";

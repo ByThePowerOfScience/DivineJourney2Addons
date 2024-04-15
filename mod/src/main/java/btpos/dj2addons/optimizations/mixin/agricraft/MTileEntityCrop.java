@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.List;
 
-@Mixin(TileEntityCrop.class)
+@Mixin(value = TileEntityCrop.class, remap = false)
 public abstract class MTileEntityCrop {
 	
 	@Shadow private AgriSeed seed;

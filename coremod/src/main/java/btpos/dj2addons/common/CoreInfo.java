@@ -12,11 +12,13 @@ public class CoreInfo {
 	private static boolean coreLoaded = false;
 	
 	/**
-	 * Called by {@link btpos.dj2addons.initmixins.MLoader#beforeConstructingMods MLoader#beforeConstructingMods}.
+	 * Called by {@link btpos.dj2addons.DJ2AMixinConfig#onLoad(String)}.
 	 */
 	public static void onLoadCore() {
-		coreLoaded = true;
-		LOGGER.info("DJ2Addons loaded!");
+		if (!coreLoaded) {
+			coreLoaded = true;
+			LOGGER.info("DJ2Addons loaded!");
+		}
 	}
 	
 	/**
@@ -26,9 +28,9 @@ public class CoreInfo {
 		if (!coreLoaded) {
 			try {
 				Class.forName("org.spongepowered.asm.mixin.Mixin");
-				throw new Error("DJ2Addons Mixins are not loaded! The config mixins.dj2addons.bootstrap.json was not executed.");
+				Class.forName("zone.rong.mixinbooter.IEarlyMixinLoader"); // hate that I have to depend on this guy...
 			} catch (ClassNotFoundException e) {
-				throw new Error("DJ2Addons requires Mixin to run.");
+				throw new Error("DJ2Addons requires MixinBooter to run. Use MixinBooter ");
 			}
 		}
 	}

@@ -15,8 +15,15 @@ plugins {
 	id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
 }
 
+allprojects {
+	configurations {
+		embed
+	}
+}
+
+
 project.ext.pythonFile = Os.isFamily(Os.FAMILY_WINDOWS) ? project.file('venv/Scripts/python.exe') : project.file('venv/bin/python3')
-subprojects {
+subprojects { Project proj ->
 	apply plugin: 'net.minecraftforge.gradle.forge'
 	apply plugin: 'org.spongepowered.mixin'
 	apply plugin: 'idea'
@@ -24,7 +31,7 @@ subprojects {
 	
 	archivesBaseName = 'dj2addons'
 	group = 'btpos.dj2addons'
-	version = '1.2.2'
+	version = '1.2.1.1.1'
 	
 	sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 	compileJava {
@@ -57,23 +64,31 @@ subprojects {
 	
 	repositories {
 		mavenCentral()
-		maven { url 'https://jitpack.io' }
+//		maven { url 'https://jitpack.io' }
+		maven {
+			url 'https://maven.cleanroommc.com'
+		}
+		maven {
+			url 'https://cursemaven.com'
+		}
 	}
 	
-	configurations {
-		shadow
-	}
 	
 	dependencies {
-		implementation("io.github.llamalad7:mixinextras-common:0.3.5")
+//		implementation("io.github.llamalad7:mixinextras-common:0.3.5")
 //		shadow("io.github.llamalad7:mixinextras-common:0.3.5")
 //		annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
-		implementation("org.spongepowered:mixin:0.8.5")
+//		implementation("org.spongepowered:mixin:0.8.5")
+		compileOnly('zone.rong:mixinbooter:9.1') {
+			transitive = true
+		}
+		// TODO add MixinBooter 9.1 to DJ2 mod manifest
+		deobfCompile("curse.maven:mixin-booter-419286:5079135-javadoc-sources")
+		
 		testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
 		testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
 		testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
 		testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
-		
 	}
 	
 	processResources {
@@ -98,26 +113,7 @@ subprojects {
 		//	rename '(.+_at.cfg)', 'META-INF/$1'
 	}
 	
-	tasks.register('generateModpackZip', Exec) {
-		group = 'buildruns'
-		commandLine(rootProject.ext.pythonFile, "./python/GenerateModpackZip.py")
-	}
 	
-	tasks.register('updateModpack', Exec) {
-		group = 'buildruns'
-		dependsOn(build)
-		commandLine(rootProject.ext.pythonFile, "./python/UpdateModpack.py")
-	}
-	
-	tasks.register('updateCFModpack', Exec) {
-		group = 'buildruns'
-		dependsOn(build)
-		commandLine(rootProject.ext.pythonFile, "./python/UpdateCFModpack.py")
-	}
-	
-	tasks.register('copyTestZS', Copy) {
-		from "./" include "Test.zs" into "./run/scripts"
-	}
 	
 	
 	tasks.register('removeShadedMixinLibraries', Exec) {
@@ -125,14 +121,22 @@ subprojects {
 		commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
 	}
 	
-	jar.finalizedBy('reobfJar')
-	
-	mixin {
-		//noinspection GroovyAssignabilityCheck
-		add sourceSets.main, 'mixins.dj2addons.refmap.json'
-//    config 'mixins.dj2addons.json'
-//    	hotSwap = true
-	}
+//	jar {
+//		into('/META-INF/libraries') {
+//			from configurations.embed
+//		}
+//
+//		doFirst {
+//			manifest {
+//				def contained = configurations.embed.collect { it.getName() };
+//				if (!contained.isEmpty()) {
+//					attributes([
+//							"ContainedDeps": contained.join(' ')
+//					])
+//				}
+//			}
+//		}
+//	}
 	
 	idea {
 		module {
@@ -160,7 +164,12 @@ tasks.register('zendoc', JavaExec) {
 	main = 'ExportZenDocs'
 }
 
-
+//String getCN() {
+//	def firsts = ['Donald', 'Lex', 'The', 'Arthur', 'Bridget', 'Dorian', 'Ford', 'Guy', 'James', 'Jessica', 'John', 'Michael', 'Robinson', 'Zaphod', 'Bell', 'Penelope']
+//	def lasts = ['Duck', 'Luthor', 'Doctor', 'Master', 'Dent', 'Jones', 'Gray', 'Prefect', 'Montag', 'Moriarty', 'Rabbit', 'Watson', 'Smith', 'Corleone', 'Crusoe', 'Beeblebrox', 'Cranel', 'Akk']
+//	def rand = new Random()
+//	return firsts[rand.nextInt(firsts.size())] + ' ' + lasts[rand.nextInt(lasts.size())]
+//}
 
 
 

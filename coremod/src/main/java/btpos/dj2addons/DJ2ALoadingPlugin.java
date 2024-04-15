@@ -3,15 +3,11 @@ package btpos.dj2addons;
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer;
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import btpos.dj2addons.common.CoreInfo;
-import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import org.spongepowered.asm.launch.MixinBootstrap;
-import org.spongepowered.asm.mixin.MixinEnvironment;
-import org.spongepowered.asm.mixin.MixinEnvironment.Phase;
 
-import java.lang.reflect.Method;
 import java.util.Map;
-@SuppressWarnings({"ResultOfMethodCallIgnored"})
+
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 	static { // Loads classes in the right order to avoid a circularity error.
 		CoreInfo.class.getName();
@@ -19,24 +15,26 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 		DJ2APreStartHook.class.getName();
 		InfusionStabilizerClassTransformer.class.getName();
 	}
+	
 	public DJ2ALoadingPlugin() {
-		MixinBootstrap.init();
-		MixinExtrasBootstrap.init();
-		registerInitMixins();
+//		MixinBootstrap.init();
 		
+//		MixinExtrasBootstrap.init();
+		
+//		registerInitMixins();
 	}
-
-	private void registerInitMixins() {
-		try {
-			MixinEnvironment initEnv = MixinEnvironment.getEnvironment(Phase.INIT);
-			Class<?> mixins = Class.forName("org.spongepowered.asm.mixin.Mixins");
-			Method createConfiguration = mixins.getDeclaredMethod("createConfiguration", String.class, MixinEnvironment.class);
-			createConfiguration.setAccessible(true);
-			createConfiguration.invoke(null, "mixins.dj2addons.bootstrap.json", initEnv);
-		} catch (ReflectiveOperationException e) {
-			throw new NoClassDefFoundError("DJ2Addons Mixins Not Loaded! " + e.getMessage());
-		}
-	}
+	
+//	private void registerInitMixins() {
+//		try {
+//			MixinEnvironment initEnv = MixinEnvironment.getEnvironment(Phase.INIT);
+//			Class<?> mixins = Class.forName("org.spongepowered.asm.mixin.Mixins");
+//			Method createConfiguration = mixins.getDeclaredMethod("createConfiguration", String.class, MixinEnvironment.class);
+//			createConfiguration.setAccessible(true);
+//			createConfiguration.invoke(null, "mixins.dj2addons.bootstrap.json.bak", initEnv);
+//		} catch (ReflectiveOperationException e) {
+//			throw new NoClassDefFoundError("DJ2Addons Mixins Not Loaded! " + e.getMessage());
+//		}
+//	}
 	
 	@Override
 	public String[] getASMTransformerClass() {

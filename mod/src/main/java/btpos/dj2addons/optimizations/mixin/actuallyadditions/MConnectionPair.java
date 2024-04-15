@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(ConnectionPair.class)
 public abstract class MConnectionPair {
-	@Shadow @Final private BlockPos[] positions;
-	@Shadow private LaserType type;
+	@Shadow(remap = false) @Final private BlockPos[] positions;
+	@Shadow(remap = false) private LaserType type;
 	
 	@SuppressWarnings({"MissingUnique", "AddedMixinMembersNamePattern"})
 	int hashCode = -1;
@@ -40,7 +40,7 @@ public abstract class MConnectionPair {
 	 * @author ByThePowerOfScience
 	 * @reason Commutative (non-directional) pair equality for hashtables.
 	 */
-	@Overwrite(remap=false) @Override
+	@Overwrite @Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ConnectionPair))
 			return false;
