@@ -16,9 +16,13 @@ import btpos.dj2addons.common.modrefs.CCraftTweaker;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.custom.proxy.CommonProxy;
 import btpos.dj2addons.custom.registry.ModPotions;
+import zone.rong.mixinbooter.ILateMixinLoader;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
-public class DJ2Addons {
+public class DJ2Addons implements ILateMixinLoader  {
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
 	public static final String VERSION = "@VERSION@";
@@ -30,7 +34,8 @@ public class DJ2Addons {
 			"before:bloodmagic;" +
 			"before:bewitchment;" +
 			"after:extremereactors;" +
-			"after:botania";
+			"after:botania;" +
+			"before:actuallyadditions";
 	
 	public static final Logger LOGGER = DJ2AMixinConfig.LOGGER;
 	
@@ -109,5 +114,19 @@ public class DJ2Addons {
 //		}
 	}
 	
+	@Override
+	public List<String> getMixinConfigs() {
+		return Arrays.asList(
+				"mixins.dj2addons.def.api.json",
+				"mixins.dj2addons.def.custom.json",
+				"mixins.dj2addons.def.optimizations.json",
+				"mixins.dj2addons.def.patches.json",
+				"mixins.dj2addons.def.tweaks.json"
+        );
+	}
 	
+	@Override
+	public void onMixinConfigQueued(String mixinConfig) {
+		CoreInfo.LOGGER.info("[MIXIN] Default phase config loaded: {}", mixinConfig);
+	}
 }

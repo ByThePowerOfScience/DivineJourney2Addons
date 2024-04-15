@@ -117,6 +117,9 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
  			case "MModBrews":
 				output = "Turning rivers into bacon.";
 				break;
+ 			case "MActuallyAdditions":
+				output = "Graphifying laser relays. (That sounds so COOL!)";
+				break;
 // 			case "":
 //				output = "";
 //				break;

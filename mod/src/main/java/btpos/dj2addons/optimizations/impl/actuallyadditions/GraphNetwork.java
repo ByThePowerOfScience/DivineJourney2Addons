@@ -6,13 +6,14 @@ import de.ellpeck.actuallyadditions.api.laser.LaserType;
 import de.ellpeck.actuallyadditions.api.laser.Network;
 import de.ellpeck.actuallyadditions.mod.misc.apiimpl.ConnectionPair;
 import io.netty.util.internal.ConcurrentSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class GraphNetwork extends Network {
 	public final int id;
 	
 	public GraphNetwork() {
-		nodeLookupMap = Collections.synchronizedMap(new Object2ObjectOpenHashMap<>());
+		nodeLookupMap = Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>());
 		this.id = debug$idCount++;
 	}
 	
@@ -114,11 +115,13 @@ public class GraphNetwork extends Network {
 	public static NBTTagCompound toNBT(GraphNetwork network) {
 		NBTTagList list = new NBTTagList();
 		
-		forEachEdgeRecursive(network.nodeLookupMap.values().iterator().next(), (source, dest) -> {
-			NBTTagCompound tag = new NBTTagCompound();
-			source.makeConnectionPairWith(dest).writeToNBT(tag);
-			list.appendTag(tag);
-		}, new HashSet<>(network.nodeLookupMap.size()));
+		if (network.nodeLookupMap != null && !network.nodeLookupMap.isEmpty()) {
+			forEachEdgeRecursive(network.nodeLookupMap.values().iterator().next(), (source, dest) -> {
+				NBTTagCompound tag = new NBTTagCompound();
+				source.makeConnectionPairWith(dest).writeToNBT(tag);
+				list.appendTag(tag);
+			}, new ObjectOpenHashSet<>(network.nodeLookupMap.size()));
+		}
 		
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setTag("Network", list);

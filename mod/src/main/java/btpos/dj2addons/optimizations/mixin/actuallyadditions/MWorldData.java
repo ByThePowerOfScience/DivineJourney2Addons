@@ -52,7 +52,7 @@ public abstract class MWorldData {
 					remap=false
 			)
 	)
-	private void inject(NBTTagCompound compound, CallbackInfo ci) {
+	private void addToLookupMapAfterNetworkLoad(NBTTagCompound compound, CallbackInfo ci) {
 		OptimizedLaserRelayConnectionHandler handler = (OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler;
 		handler.networkLookupMap.clear();
 		laserRelayNetworks.forEach(handler::addNetworkNodesToNetworkLookupMap);

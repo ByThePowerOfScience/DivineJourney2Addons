@@ -4,11 +4,16 @@ import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizer
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import btpos.dj2addons.common.CoreInfo;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import zone.rong.mixinbooter.IEarlyMixinLoader;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
+@MCVersion("1.12.2")
+public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 	static { // Loads classes in the right order to avoid a circularity error.
 		CoreInfo.class.getName();
 		JankConfig.class.getName();
@@ -35,6 +40,16 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin {
 //			throw new NoClassDefFoundError("DJ2Addons Mixins Not Loaded! " + e.getMessage());
 //		}
 //	}
+	
+	@Override
+	public List<String> getMixinConfigs() {
+		return Collections.singletonList("mixins.dj2addons.init.json");
+	}
+	
+	@Override
+	public void onMixinConfigQueued(String mixinConfig) {
+		CoreInfo.LOGGER.info("[MIXIN] Init phase config loaded: {}", mixinConfig);
+	}
 	
 	@Override
 	public String[] getASMTransformerClass() {

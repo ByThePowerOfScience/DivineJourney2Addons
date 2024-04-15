@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * Equality commutative
  */
-@Mixin(ConnectionPair.class)
+@Mixin(value = ConnectionPair.class, remap = false)
 public abstract class MConnectionPair {
-	@Shadow(remap = false) @Final private BlockPos[] positions;
-	@Shadow(remap = false) private LaserType type;
+	@Shadow @Final private BlockPos[] positions;
+	@Shadow private LaserType type;
 	
 	@SuppressWarnings({"MissingUnique", "AddedMixinMembersNamePattern"})
 	int hashCode = -1;
@@ -30,7 +30,7 @@ public abstract class MConnectionPair {
 			for (BlockPos position : positions) {
 				hash += position.hashCode();
 			}
-			hash *= type.ordinal();
+			hash *= type.ordinal() + 1;
 			hashCode = hash;
 		}
 		return hashCode;
@@ -42,16 +42,19 @@ public abstract class MConnectionPair {
 	 */
 	@Overwrite @Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof ConnectionPair))
-			return false;
 		if (this == obj)
 			return true;
+		if (!(obj instanceof ConnectionPair))
+			return false;
 		
-		return this.hashCode() == obj.hashCode();
+		ConnectionPair other = ((ConnectionPair) obj);
+		BlockPos[] otherPos = other.getPositions();
+		return this.type == other.getType()
+		       && ((this.positions[0].equals(otherPos[0]) && this.positions[1].equals(otherPos[1]))
+					|| (this.positions[0].equals(otherPos[1]) && this.positions[1].equals(otherPos[0])));
 	}
 	
 	@Inject(
-			remap=false,
 			method = "readFromNBT",
 			at=@At("HEAD")
 	)
