@@ -1,8 +1,10 @@
-package btpos.dj2addons.common;
+package btpos.dj2addons.crafttweaker;
 
 import btpos.dj2addons.DJ2Addons;
 import btpos.dj2addons.api.bewitchment.Rituals;
 import btpos.dj2addons.api.extrautils2.ExtraUtilities;
+import btpos.dj2addons.commands.util.DJ2ACommandUtils;
+import btpos.dj2addons.commands.util.MessageHelper;
 import btpos.dj2addons.common.modrefs.CBigReactors;
 import btpos.dj2addons.common.modrefs.CBigReactors.ReactorInteriorDataWrapper;
 import btpos.dj2addons.common.modrefs.CTotemic;
@@ -15,10 +17,8 @@ import btpos.dj2addons.optimizations.impl.actuallyadditions.OptimizedLaserRelayC
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.mc1120.commands.ClipboardHelper;
 import crafttweaker.mc1120.commands.CommandUtils;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import crafttweaker.mc1120.commands.NBTUtils;
@@ -42,22 +42,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -128,7 +122,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					System.out.println();
 					break;
 				case syncablenbt: // DEBUG
-					BlockPos lookAtPos = getLookAtPos(((EntityPlayer) sender.getCommandSenderEntity()));
+					BlockPos lookAtPos = DJ2ACommandUtils.getLookAtPos(((EntityPlayer) sender.getCommandSenderEntity()));
 					if (lookAtPos == null) {
 						m.sendError("Null pos");
 						return;
@@ -141,7 +135,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					}
 					NBTTagCompound nbt = new NBTTagCompound();
 					((TileEntityBase) tileEntity).writeSyncableNBT(nbt, NBTType.SYNC);
-					m.sendHeading("Syncable NBT for " + formatPos(lookAtPos));
+					m.sendHeading("Syncable NBT for " + DJ2ACommandUtils.formatPos(lookAtPos));
 					m.send(NBTUtils.getAppealingString(nbt.toString()));
 					break;
 				case networks: // DEBUG
@@ -302,7 +296,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				return;
 			}
 			
-			target = getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
+			target = DJ2ACommandUtils.getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
 			if (target == null) {
 				m.sendError("Command must specify coordinates or be executed while looking at a block.");
 				return;
@@ -317,7 +311,7 @@ public class CommandHandler extends CraftTweakerCommand {
 //			m.sendError("No block found at " + target);
 //			return;
 //		}
-		printBlockMeta(m, target, state);
+		DJ2ACommandUtils.printBlockMeta(m, target, state);
 	}
 	
 	private static void info_dumpTileCommand(MessageHelper m, ICommandSender sender, List<String> args) throws NumberFormatException, NumberInvalidException {
@@ -342,7 +336,7 @@ public class CommandHandler extends CraftTweakerCommand {
 			else 
 				numSupers = -1;
 			
-			target = getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
+			target = DJ2ACommandUtils.getLookAtPos((EntityPlayer)sender.getCommandSenderEntity());
 			if (target == null) {
 				m.sendError("Command must specify coordinates or be executed while looking at a block.");
 				return;
@@ -363,7 +357,7 @@ public class CommandHandler extends CraftTweakerCommand {
 		
 		if (dumperThread != null && dumperThread.isAlive()) {
 			m.sendError("Tile dump already in progress.");
-			m.sendRaw(SpecialMessagesChat.getClickableCommandText("Click to cancel current tile dump.", "/ct dj2addons info tiledump stop", true));
+			m.sendComponent(SpecialMessagesChat.getClickableCommandText("Click to cancel current tile dump.", "/ct dj2addons info tiledump stop", true));
 		}
 		
 		m.send("Starting tile data dump.");
@@ -402,7 +396,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				m.sendError("Command must either be run by a player looking at a block or must specify coordinates."); //TODO translate for OneOneTwoTwo
 				return;
 			}
-			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
+			target = DJ2ACommandUtils.getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
 			if (target == null) {
 				m.sendError("Command must either be run by a player looking at a block or must specify coordinates.");
 				return;
@@ -445,7 +439,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				m.sendError("Command must either be run by a player looking at a block or must specify coordinates."); //TODO translate for OneOneTwoTwo
 				return;
 			}
-			target = getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
+			target = DJ2ACommandUtils.getLookAtPos((EntityPlayer) sender.getCommandSenderEntity());
 			if (target == null) {
 				m.sendError("Command must either be run by a player looking at a block or must specify coordinates.");
 				return;
@@ -505,7 +499,7 @@ public class CommandHandler extends CraftTweakerCommand {
 		       .forEach(r -> m.sendPropertyWithCopy(null, r.getRegistryName() + ""));
 		
 		
-		if (Rituals.Internal.getRitualsToRemove().size() == 0) {
+		if (Rituals.Internal.getRitualsToRemove().isEmpty()) {
 			m.sendHeading("No removed rituals.");
 		} else {
 			m.sendHeading("Removed rituals:");
@@ -532,7 +526,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	private static void extrautilsHandler(MessageHelper m) {
 		m.enterSubCommand("extrautils");
 		Map<String, float[]> generators = ExtraUtilities.Internal.getCurrentScaling();
-		if (generators.size() != 0) {
+		if (!generators.isEmpty()) {
 			m.sendHeading("GP Mills:");
 			
 			generators.forEach((name, scaling) -> m.sendPropertyWithCopy(null, name, "Mills.setScaling(" + name + ", " + MessageHelper.listToAssociativeArrayPretty(Arrays.asList(ArrayUtils.toObject(scaling)), true, 0) + ");"));
@@ -550,14 +544,16 @@ public class CommandHandler extends CraftTweakerCommand {
 			EntityPlayer player = (EntityPlayer) sender.getCommandSenderEntity();
 			ItemStack heldItem = player.getHeldItemMainhand();
 			
+			
 			// Tries to get name of held item first
 			if (!heldItem.isEmpty()) {
 				int meta = heldItem.getMetadata();
 				String itemName = "<" + heldItem.getItem().getRegistryName() + (meta == 0 ? "" : ":" + meta) + ">";
 				
 				String withNBT = "";
-				if (heldItem.serializeNBT().hasKey("tag")) {
-					String nbt = NBTConverter.from(heldItem.serializeNBT().getTag("tag"), false).toString();
+				NBTTagCompound nbt1 = heldItem.serializeNBT();
+				if (nbt1.hasKey("tag")) {
+					String nbt = NBTConverter.from(nbt1.getTag("tag"), false).toString();
 					if (!nbt.isEmpty())
 						withNBT = ".withTag(" + nbt + ")";
 				}
@@ -568,7 +564,7 @@ public class CommandHandler extends CraftTweakerCommand {
 				
 				List<String> oreDictNames = CommandUtils.getOreDictOfItem(heldItem);
 				// adds the oredict names if it has some
-				printOreDictInfo(m, oreDictNames);
+				DJ2ACommandUtils.printOreDictInfo(m, oreDictNames);
 			} else {
 				// if hand is empty, tries to get oreDict of block
 				RayTraceResult rayTraceResult = CommandUtils.getPlayerLookat(player, 100);
@@ -577,7 +573,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					BlockPos blockPos = rayTraceResult.getBlockPos();
 					IBlockState block = server.getEntityWorld().getBlockState(blockPos);
 					
-					printBlockMeta(m, blockPos, block);
+					DJ2ACommandUtils.printBlockMeta(m, blockPos, block);
 				} else {
 					m.send("§4Please hold an Item in your hand or look at a Block.");
 				}
@@ -585,33 +581,6 @@ public class CommandHandler extends CraftTweakerCommand {
 		} else {
 			m.send("This command can only be cast by a player in-game.");
 		}
-	}
-	
-	private static void printBlockMeta(MessageHelper m, BlockPos blockPos, IBlockState block) {
-		m.sendHeading("Block State:");
-		int meta = block.getBlock().getMetaFromState(block);
-		String blockName = "<" + block.getBlock().getRegistryName() + (meta == 0 ? "" : ":" + meta) + ">";
-		
-		m.sendMessageWithCopy(formatPos(blockPos, blockName) + "§r", blockName);
-		
-		// adds the oreDict names if it has some
-		try {
-			List<String> oreDictNames = CommandUtils.getOreDictOfItem(new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(
-					block)));
-			printOreDictInfo(m, oreDictNames);
-			
-		} catch (IllegalArgumentException e) { // catches if it couldn't create a valid ItemStack for the Block
-			m.sendHeading("No OreDict Entries.");
-		}
-	}
-	
-	@NotNull
-	private static String formatPos(BlockPos blockPos, String blockName) {
-		return "Block §2" + blockName + " §rat §9" + formatPos(blockPos);
-	}
-	
-	private static String formatPos(BlockPos blockPos) {
-		return "§9" + Util.Format.formatPos(blockPos);
 	}
 	
 	private static void printLiquidInfo(MessageHelper m, ItemStack heldItem) {
@@ -622,21 +591,6 @@ public class CommandHandler extends CraftTweakerCommand {
 			if (IsModLoaded.bigreactors)
 				if (!printFluidReactorInteriorData(m, liquidStack.getName()))
 					m.sendHeading("No Reactor Interior Data.");
-		}
-	}
-	
-	private static void printOreDictInfo(MessageHelper m, List<String> oreDictNames) {
-		if (!oreDictNames.isEmpty()) {
-			m.sendHeading("OreDict Entries:");
-			
-			for (String oreName : oreDictNames) {
-				m.sendPropertyWithCopy(null, oreName, "<ore:" + oreName + ">");
-				if (IsModLoaded.bigreactors)
-					if (!printOreDictReactorInteriorData(m, oreName))
-						m.sendHeading("No Reactor Interior Data.");
-			}
-		} else {
-			m.sendHeading("No OreDict Entries");
 		}
 	}
 	
@@ -663,191 +617,5 @@ public class CommandHandler extends CraftTweakerCommand {
 		return false;
 	}
 	
-	static BlockPos getLookAtPos(EntityPlayer player) {
-		RayTraceResult rayTraceResult = CommandUtils.getPlayerLookat(player, 100);
-		
-		if (rayTraceResult != null && rayTraceResult.typeOfHit != Type.MISS) {
-			return rayTraceResult.getBlockPos();
-		}
-		
-		return null;
-	}
-	
-	
-	private static class MessageHelper {
-		private final ICommandSender sender;
-		private boolean doLog = false;
-		private boolean doChat = false;
-		private String usage = "usage";
-		private List<String> currentTranslationKey;
-		
-		public MessageHelper(ICommandSender sender, String baseTranslationKey) {
-			this.sender = sender;
-			this.currentTranslationKey = new LinkedList<>();
-			this.currentTranslationKey.add(baseTranslationKey);
-		}
-		
-		public MessageHelper withChat() {
-			doChat = true;
-			return this;
-		}
-		
-		public MessageHelper withLog() {
-			doLog = true;
-			return this;
-		}
-		
-		@SuppressWarnings("UnusedReturnValue")
-		public MessageHelper setUsage(String translationKey) {
-			this.usage = translationKey;
-			return this;
-		}
-		
-		/**
-		 * Set the default usage suffix for any translation key category.
-		 */
-		public MessageHelper setUsageSuffix(String usageSuffix) {
-			this.usage = usageSuffix;
-			return this;
-		}
-		
-		public MessageHelper enterSubCommand(String label) {
-			currentTranslationKey.add(label);
-			return this;
-		}
-		
-		public MessageHelper exitSubCommand() {
-			currentTranslationKey.remove(currentTranslationKey.size() - 1);
-			return this;
-		}
-		
-		private static final String INDENT = "    ";
-		private static final char[] HIGHLIGHTING = {'b', '2'};
-		
-		void send(String message) {
-			sendRaw(new TextComponentString(message));
-		}
-		
-		void sendRaw(ITextComponent textComponent) {
-			if (doChat)
-				sender.sendMessage(textComponent);
-			if (doLog)
-				log(textComponent.toString());
-		}
-		
-		void log(String message) {
-			CraftTweakerAPI.logCommand(message);
-		}
-		
-		void sendTranslation(String subKey) {
-			if (!currentTranslationKey.isEmpty()) {
-				sendRaw(new TextComponentTranslation(String.join(".", currentTranslationKey) + "." + subKey));
-			}
-		}
-		
-		void usage() {
-			sender.sendMessage(new TextComponentTranslation(String.join(".", currentTranslationKey) + "." + usage));
-		}
-		
-		void linkToLog() {
-			sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("Printed to CraftTweaker log.", sender));
-		}
-		
-		void sendHeading(String s) {
-			send("§3" + s);
-		}
-		
-		void sendError(String s) {
-			send("§4" + s);
-		}
-		
-		void sendPropertyWithCopy(String property, String value) {
-			sendPropertyWithCopy(property, value, 0);
-		}
-		
-		void sendPropertyWithCopy(String property, String value, int indent) {
-			sendPropertyWithCopy(property, value, value, indent);
-		}
-		
-		void sendPropertyWithCopy(String property, String value, String toCopy) {
-			sendPropertyWithCopy(property, value, toCopy, 0);
-		}
-		
-		void sendPropertyWithCopy(String property, String value, String toCopy, int indent) {
-			sendMessageWithCopy(getPropertyMessage(property, value, indent), toCopy);
-		}
-		
-		private void sendMessageWithCopy(String message, String toCopy) {
-			if (doChat) {
-				if (sender.getCommandSenderEntity() instanceof EntityPlayer)
-					ClipboardHelper.sendMessageWithCopy((EntityPlayer) sender.getCommandSenderEntity(), message, toCopy);
-				else
-					send(message);
-			}
-			if (doLog)
-				log(message);
-		}
-		
-		void sendProperty(String property, String value) {
-			sendProperty(property, value, 0);
-		}
-		
-		void sendProperty(String property, String value, int indent) {
-			send(getPropertyMessage(property, value, indent));
-		}
-		
-		private static String indent(int level) {
-			return StringUtils.repeat(INDENT, level + 1);
-		}
-		
-		static String getPropertyMessage(String property, String value, int indent) {
-			if (property == null || property.equals(""))
-				property = "";
-			else if (property.charAt(property.length() - 1) == ':') {
-				property += " ";
-			} else { //noinspection StatementWithEmptyBody
-				if (property.charAt(property.length() - 2) == ':' && property.charAt(property.length() - 1) == ' ') {} // leave alone
-				else property += ": ";
-			}
-			return indent(indent) + "§e- " + property + "§" + HIGHLIGHTING[indent] + value;
-		}
-		
-		static <T> String listToAssociativeArrayPretty(List<T> list, boolean raw, int indent) {
-			Map<T, T> map = new HashMap<>();
-			for (int i = 0; i < list.size(); i+=2) {
-				T o1 = list.get(i);
-				T o2;
-				try {
-					o2 = list.get(i+1);
-				} catch (Exception e) {
-					o2 = null;
-				}
-				map.put(o1, o2);
-			}
-			return mapToAssociativeArrayPretty(map, raw, indent);
-		}
-		
-		static <T> String mapToAssociativeArrayPretty(Map<T, T> map, boolean raw, int indent) {
-			StringBuilder sb = new StringBuilder();
-			if (!raw)
-				sb.append(TextFormatting.YELLOW);
-			sb.append("{\n");
-			if (!raw)
-				sb.append(indent(indent));
-			map.forEach((x, y) -> {
-				if (raw) {
-					sb.append("\t").append(x).append(": ").append(y).append(",\r\n");
-				} else {
-					sb.append(INDENT)
-					  .append(TextFormatting.GREEN).append(x).append(TextFormatting.YELLOW).append(": ")
-					  .append(TextFormatting.AQUA).append(y).append(TextFormatting.YELLOW).append(",\n").append(indent(indent));
-				}
-			});
-			if (!raw)
-				sb.append(indent(indent)).append(TextFormatting.YELLOW);
-			sb.append("}");
-			return sb.toString();
-		}
-	}
 	
 }
