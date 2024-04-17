@@ -1,55 +1,30 @@
 import glob
 import os
-import re
 import shutil
-from packaging import version
+from DJ2A_CommonBuildLogic import getLatestModBuild
 
-mods_path = os.path.expanduser('~') + "/Documents/curseforge/minecraft/Instances/DJ2 Addons Test/mods/"
-buildpath = "./build/libs/"
-
-def findnewestjar(modjars):
-	jarname = ''
-	for path in modjars:
-		if isinstance(path, str):
-			filename = re.split('[/\\\\]', path)[-1]
-			splitname = filename.split('-')
-			if (splitname[0] == 'dj2addons') and (not 'sources' in filename):
-				if not jarname:
-					jarname = filename
-				else:
-					current = version.parse(jarname.removesuffix('.jar'))
-					thisone = version.parse(splitname[1].removesuffix('.jar'))
-					if thisone > current:
-						jarname = filename
-	if not jarname:
-		print('No valid jars found in build path? All jars in build path:')
-		for path in modjars:
-			print(path)
-		return
-	else:
-		return jarname
+modpack_path = os.path.expanduser('~') + "/Documents/curseforge/minecraft/Instances/DJ2 Addons Test/mods/"
 
 def main():
-	for file in glob.glob(mods_path + "dj2addons*.jar"):
+	for file in (glob.glob(modpack_path + "dj2addons*.jar") + glob.glob(modpack_path + "/1.12.2/*.jar")):
 		try:
 			print('deleting ' + file)
-			# os.remove(file)
+			os.remove(file)
 		except FileNotFoundError or IndexError:
 			print('No mod file to delete found in mods dir.')
 			pass
 	
-	modjars = glob.glob(buildpath + 'dj2addons-*.jar')
+	jar_path = getLatestModBuild()
 	
-	jarname = findnewestjar(modjars)
-	assert jarname, "No valid jar found from build directory."
+	assert jar_path is not None, "No valid jar found from build directory."
 	
-	print(f'copying {jarname} to "{mods_path.split("/")[-3]}" mods folder')
-	shutil.copyfile(buildpath + jarname, mods_path + jarname)
+	print(f'copying {jar_path} to "{modpack_path.split("/")[-3]}" mods folder')
+	shutil.copyfile(jar_path, modpack_path + jar_path.name)
+	
 	try:
-		shutil.copyfile("./Test.zs", mods_path + "../scripts/Test.zs")
+		shutil.copyfile("./Test.zs", modpack_path + "../scripts/Test.zs")
 	except FileNotFoundError:
 		pass
 
+
 main()
-
-
