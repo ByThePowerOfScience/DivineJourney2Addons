@@ -12,7 +12,7 @@ public class CoreInfo {
 	private static boolean coreLoaded = false;
 	
 	/**
-	 * Called by {@link btpos.dj2addons.DJ2AMixinConfig#onLoad(String)}.
+	 * Called by {@link btpos.dj2addons.core.DJ2AMixinConfig#onLoad(String)}.
 	 */
 	public static void onLoadCore() {
 		if (!coreLoaded) {

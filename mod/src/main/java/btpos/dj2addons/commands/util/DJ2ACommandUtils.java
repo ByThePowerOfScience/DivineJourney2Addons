@@ -9,9 +9,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 
 import java.util.List;
+import java.util.UUID;
 
 // We depend on crafttweaker rn, but eventually this won't be the case so we'll have to do all of the "copy" logic in-house
 public final class DJ2ACommandUtils {
+	public static final UUID me_lol = UUID.fromString("48a5a976-9d08-421c-b4f3-1128c8f1aeba");
+	
 	private DJ2ACommandUtils() {}
 	
 	public static void printBlockMeta(MessageHelper m, BlockPos blockPos, IBlockState block) {

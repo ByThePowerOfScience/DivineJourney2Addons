@@ -216,7 +216,7 @@ tasks.register('runTests', JavaExec) {
 					+ coremodproject.sourceSets.test.runtimeClasspath
 	
 	main = 'GenerateTestZS'
-	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
+	setArgsString(rootProject.file("Tests/Test.zs").toString())
 }
 
 //idea.project {
@@ -239,22 +239,22 @@ tasks.register('buildTestJar', Jar) {
 
 tasks.register('generateModpackZip', Exec) {
 	group = 'dj2addons'
-	commandLine(rootProject.ext.pythonFile, "./python/GenerateModpackZip.py")
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/GenerateModpackZip.py').toString())
 }
 
 tasks.register('updateModpack', Exec) {
 	group = 'dj2addons'
 	dependsOn(build)
-	commandLine(rootProject.ext.pythonFile, "./python/UpdateModpack.py")
+	commandLine(rootProject.ext.pythonFile, rootProject.file('./python/UpdateModpack.py').toString())
 }
 
 tasks.register('updateCFModpack', Exec) {
 	group = 'dj2addons'
 	dependsOn(build)
-	commandLine(rootProject.ext.pythonFile, "./python/UpdateCFModpack.py")
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/UpdateCFModpack.py').toString())
 }
 
 tasks.register('copyTestZS', Copy) {
 	group = 'other_dj2addons'
-	from "./" include "Test.zs" into "./run/scripts"
+	from rootProject.projectDir include 'Tests/Test.zs' into project.file('run/scripts')
 }

@@ -79,11 +79,10 @@ subprojects { Project proj ->
 //		shadow("io.github.llamalad7:mixinextras-common:0.3.5")
 //		annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
 //		implementation("org.spongepowered:mixin:0.8.5")
-//		compileOnly('zone.rong:mixinbooter:9.1') {
-//			transitive = true
-//		}
-		// TODO add MixinBooter 8.8 to DJ2 mod manifest
-		deobfCompile("curse.maven:mixin-booter-419286:4828995")
+		implementation('zone.rong:mixinbooter:7.0') {
+			transitive = true
+		}
+//		deobfCompile("curse.maven:mixin-booter-419286:4090558")
 		
 		testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
 		testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")

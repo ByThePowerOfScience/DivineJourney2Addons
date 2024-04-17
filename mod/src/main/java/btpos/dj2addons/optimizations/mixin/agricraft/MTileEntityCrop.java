@@ -3,25 +3,28 @@ package btpos.dj2addons.optimizations.mixin.agricraft;
 import com.infinityraider.agricraft.api.v1.seed.AgriSeed;
 import com.infinityraider.agricraft.api.v1.seed.IAgriSeedProvider;
 import com.infinityraider.agricraft.tiles.TileEntityCrop;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import zone.rong.mixinextras.injector.wrapoperation.Operation;
+import zone.rong.mixinextras.injector.wrapoperation.WrapOperation;
 
 import java.util.List;
 
 @Mixin(value = TileEntityCrop.class, remap = false)
 public abstract class MTileEntityCrop {
-	
+	//import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+	//import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 	@Shadow private AgriSeed seed;
 	
 	/**
 	 * Removes needless checking for if neighbors that will never be overtaken have valid soil.
 	 * <p>Saves roughly 0.5% server time for large farms with Hydrators.</p>
 	 */
+	@Unique
 	@WrapOperation(
 			remap = false,
 			method = "spread",

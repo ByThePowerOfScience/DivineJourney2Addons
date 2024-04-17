@@ -1,4 +1,4 @@
-package btpos.dj2addons;
+package btpos.dj2addons.core;
 
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;

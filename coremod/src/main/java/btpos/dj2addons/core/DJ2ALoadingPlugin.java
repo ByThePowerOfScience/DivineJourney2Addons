@@ -1,10 +1,13 @@
-package btpos.dj2addons;
+package btpos.dj2addons.core;
 
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer;
 import btpos.dj2addons.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import btpos.dj2addons.common.CoreInfo;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 import zone.rong.mixinbooter.IEarlyMixinLoader;
 
 import java.util.Collections;
@@ -12,9 +15,14 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
+
+@Name("DJ2AddonsCore")
+@SortingIndex(10)
 @MCVersion("1.12.2")
+@TransformerExclusions({"btpos.dj2addons.asm", "btpos.dj2addons.core"}) // made a new package specifically so the rest of the mod could be transformed.
 public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
-	static { // Loads classes in the right order to avoid a circularity error.
+	static {
+		// Load classes in the right order to avoid a circularity error.
 		CoreInfo.class.getName();
 		JankConfig.class.getName();
 		DJ2APreStartHook.class.getName();
@@ -65,7 +73,7 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 	
 	@Override
 	public String getSetupClass() {
-		return "btpos.dj2addons.DJ2APreStartHook";
+		return "btpos.dj2addons.core.DJ2APreStartHook";
 	}
 	
 	@Override

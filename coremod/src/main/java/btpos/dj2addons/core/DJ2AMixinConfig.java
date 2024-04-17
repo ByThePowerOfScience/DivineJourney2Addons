@@ -1,4 +1,4 @@
-package btpos.dj2addons;
+package btpos.dj2addons.core;
 
 import btpos.dj2addons.common.CoreInfo;
 import net.minecraft.launchwrapper.Launch;

@@ -139,16 +139,7 @@ public class CommandHandler extends CraftTweakerCommand {
 					m.send(NBTUtils.getAppealingString(nbt.toString()));
 					break;
 				case networks: // DEBUG
-					m.sendHeading("Printing AA networks:");
-					m.sendHeading("From map:");
-					StringBuilder sb = new StringBuilder();
-					((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap.values().stream().distinct().forEach(n -> sb.append("\t").append(n).append("\n"));
-					m.send(sb.toString());
-					m.sendHeading("From world " + sender.getEntityWorld() + ":");
-					StringBuilder sb2 = new StringBuilder();
-					WorldData.get(sender.getEntityWorld()).laserRelayNetworks.forEach(n -> sb2.append("\t").append(n).append("\n"));
-					m.send(sb2.toString());
-					break;
+				
 				case clearnetworks:
 					Map<BlockPos, GraphNetwork> networkLookupMap = ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap;
 					networkLookupMap.values().forEach(network -> {
@@ -372,7 +363,10 @@ public class CommandHandler extends CraftTweakerCommand {
 		if (dumperThread == null || dumperThread.isAlive()) {
 			m.send("No tile dump in progress.");
 		} else {
-			dumperThread.stop();
+			try {
+				dumperThread.interrupt();
+			} catch (Exception ignored) {}
+			
 			if (dumperThread.isAlive()) {
 				m.sendError("Failed to kill dumper thread.");
 			} else {
@@ -551,11 +545,11 @@ public class CommandHandler extends CraftTweakerCommand {
 				String itemName = "<" + heldItem.getItem().getRegistryName() + (meta == 0 ? "" : ":" + meta) + ">";
 				
 				String withNBT = "";
-				NBTTagCompound nbt1 = heldItem.serializeNBT();
-				if (nbt1.hasKey("tag")) {
-					String nbt = NBTConverter.from(nbt1.getTag("tag"), false).toString();
-					if (!nbt.isEmpty())
-						withNBT = ".withTag(" + nbt + ")";
+				NBTTagCompound nbt = heldItem.serializeNBT();
+				if (nbt.hasKey("tag")) {
+					String nbtString = NBTConverter.from(nbt.getTag("tag"), false).toString();
+					if (!nbtString.isEmpty())
+						withNBT = ".withTag(" + nbtString + ")";
 				}
 				m.sendMessageWithCopy("Item §2" + itemName + "§a" + withNBT, itemName + withNBT);
 				

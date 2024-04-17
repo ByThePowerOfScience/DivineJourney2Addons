@@ -1,9 +1,9 @@
 package btpos.dj2addons.optimizations.mixin.actuallyadditions;
 
 import btpos.dj2addons.optimizations.impl.actuallyadditions.GraphNetwork;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.Share;
-import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
+//import com.llamalad7.mixinextras.sugar.Local;
+//import com.llamalad7.mixinextras.sugar.Share;
+//import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import de.ellpeck.actuallyadditions.api.laser.Network;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityLaserRelayEnergy;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityLaserRelayEnergy.Mode;
@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -52,6 +53,9 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 		};
 	}
 	
+	@Unique
+	private static int dj2addons$totalReceiverAmount;
+	
 	@Inject(
 			method="transferEnergyToReceiverInNeed",
 			at = @At(
@@ -61,9 +65,9 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 			locals = LocalCapture.CAPTURE_FAILSOFT
 	)
 	public void dj2addons$useGraphNetworkInsteadOfIterating(EnumFacing from, Network network, int maxTransfer, boolean simulate,
-	                                                        CallbackInfoReturnable<Integer> cir,
-	                                                        @Local(ordinal=1) Set<TileEntityLaserRelayEnergy> relaysThatWork,
-	                                                        @Share("dj2addons$totalReceiverAmount") LocalIntRef sharedTotalReceiverAmount)
+	                                                        CallbackInfoReturnable<Integer> cir, Set<TileEntityLaserRelayEnergy> relaysThatWork)
+//	                                                        @Local(ordinal=1) Set<TileEntityLaserRelayEnergy> relaysThatWork,
+//	                                                        @Share("dj2addons$totalReceiverAmount") LocalIntRef sharedTotalReceiverAmount)
 	{
 		if (!(network instanceof GraphNetwork)) {
 			throw new RuntimeException("Not a GraphNetwork! WTF!!!!");
@@ -108,7 +112,8 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 			}
 		});
 		
-		sharedTotalReceiverAmount.set(totalReceiverAmount.get());
+		dj2addons$totalReceiverAmount = totalReceiverAmount.get();
+//		sharedTotalReceiverAmount.set(totalReceiverAmount.get());
 	}
 	
 	@ModifyVariable(
@@ -121,8 +126,9 @@ public abstract class MTileEntityLaserRelayEnergy extends TileEntity {
 					by = 2
 			)
 	)
-	public int dj2addons$addBackTotalReceiverAmount(int value, @Share("dj2addons$totalReceiverAmount") LocalIntRef ref) {
-		return ref.get();
+	public int dj2addons$addBackTotalReceiverAmount(int value) {//, @Share("dj2addons$totalReceiverAmount") LocalIntRef ref) {
+		return dj2addons$totalReceiverAmount;
+		//		return ref.get();
 	}
 }
 

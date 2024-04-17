@@ -190,7 +190,8 @@ public final class MessageHelper {
 	}
 	
 	public void log(String message) {
-		loggerFunction.accept(message);
+		if (loggerFunction != null)
+			loggerFunction.accept(message);
 	}
 	
 	public void sendTranslation(String subKey) {

@@ -1,28 +1,31 @@
 package btpos.dj2addons;
 
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.Logger;
+import btpos.dj2addons.commands.DJ2AServerCommands;
 import btpos.dj2addons.common.CoreInfo;
 import btpos.dj2addons.common.modrefs.CCraftTweaker;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.custom.proxy.CommonProxy;
 import btpos.dj2addons.custom.registry.ModPotions;
-import zone.rong.mixinbooter.ILateMixinLoader;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionType;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.List;
-
-@Mod(modid = DJ2Addons.MOD_ID, name = DJ2Addons.MOD_NAME, version = DJ2Addons.VERSION, dependencies = DJ2Addons.DEPENDENCIES)
-public class DJ2Addons implements ILateMixinLoader  {
+@Mod(
+		modid = DJ2Addons.MOD_ID,
+		name = DJ2Addons.MOD_NAME,
+		version = DJ2Addons.VERSION,
+		dependencies = DJ2Addons.DEPENDENCIES
+)
+public class DJ2Addons  {
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
 	public static final String VERSION = "@VERSION@";
@@ -37,7 +40,7 @@ public class DJ2Addons implements ILateMixinLoader  {
 			"after:botania;" +
 			"before:actuallyadditions";
 	
-	public static final Logger LOGGER = DJ2AMixinConfig.LOGGER;
+	public static final Logger LOGGER = CoreInfo.LOGGER;
 	
 	/**
 	 * This is the instance of your mod as created by Forge. It will never be null.
@@ -45,7 +48,10 @@ public class DJ2Addons implements ILateMixinLoader  {
 	@Mod.Instance(MOD_ID)
 	public static DJ2Addons INSTANCE;
 	
-	@SidedProxy(clientSide="btpos.dj2addons.custom.proxy.ClientProxy", serverSide="btpos.dj2addons.custom.proxy.CommonProxy")
+	@SidedProxy(
+			clientSide="btpos.dj2addons.custom.proxy.ClientProxy",
+			serverSide="btpos.dj2addons.custom.proxy.CommonProxy"
+	)
 	public static CommonProxy proxy;
 	
 	/**
@@ -55,11 +61,8 @@ public class DJ2Addons implements ILateMixinLoader  {
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		CoreInfo.verifyCoreLoaded();
-		if (Loader.isModLoaded("crafttweaker"))
-			CCraftTweaker.loadCommandHandler();
+		proxy.registerCommands();
 	}
-	
-	
 	
 	/**
 	 * This is the second initialization event. Register custom recipes.
@@ -81,8 +84,11 @@ public class DJ2Addons implements ILateMixinLoader  {
 //	public static class Blocks {
 //      public static final Block resourcename = null;
 //	}
-
 	
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event) {
+		event.registerServerCommand(new DJ2AServerCommands());
+	}
 	
 	
 	/**
@@ -114,19 +120,5 @@ public class DJ2Addons implements ILateMixinLoader  {
 //		}
 	}
 	
-	@Override
-	public List<String> getMixinConfigs() {
-		return Arrays.asList(
-				"mixins.dj2addons.def.api.json",
-				"mixins.dj2addons.def.custom.json",
-				"mixins.dj2addons.def.optimizations.json",
-				"mixins.dj2addons.def.patches.json",
-				"mixins.dj2addons.def.tweaks.json"
-        );
-	}
 	
-	@Override
-	public void onMixinConfigQueued(String mixinConfig) {
-		CoreInfo.LOGGER.info("[MIXIN] Default phase config loaded: {}", mixinConfig);
-	}
 }

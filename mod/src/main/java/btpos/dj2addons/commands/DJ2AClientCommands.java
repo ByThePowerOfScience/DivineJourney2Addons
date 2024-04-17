@@ -1,34 +1,31 @@
 package btpos.dj2addons.commands;
 
+import btpos.dj2addons.commands.util.DJ2ACommandUtils;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.IClientCommand;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.command.CommandTreeBase;
+import net.minecraftforge.server.command.CommandTreeHelp;
 
-import java.util.UUID;
-
-@SideOnly(Side.CLIENT)
 public class DJ2AClientCommands extends CommandTreeBase implements IClientCommand {
-	
-	private static final UUID me_lol = UUID.fromString("48a5a976-9d08-421c-b4f3-1128c8f1aeba");
+	private static final String BASE_KEY = "dj2addons.command.client";
 	
 	public DJ2AClientCommands() {
-		this.addSubcommand(new AACommand());
+		this.addSubcommand(new ActuallyAdditionsCommand(BASE_KEY, true));
+		this.addSubcommand(new CommandTreeHelp(this));
 	}
 	
 	@Override
 	public String getName() {
-		return "dj2addons";
+		return "dj2addonsc";
 	}
 	
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "dj2addons.command.client.usage";
+		return BASE_KEY + ".usage";
 	}
 	
 	@Override
@@ -50,24 +47,13 @@ public class DJ2AClientCommands extends CommandTreeBase implements IClientComman
 		}
 		
 		if (e instanceof EntityPlayerMP) {
-			return me_lol.equals(((EntityPlayerMP) e).getGameProfile().getId())
+			// if they have crafttweaker permission then sure
+			// also if they're me :3
+			return DJ2ACommandUtils.me_lol.equals(((EntityPlayerMP) e).getGameProfile().getId())
 			       // if they have crafttweaker access then sure
 			       || sender.canUseCommand(4, "crafttweaker");
 		}
 		
 		return false;
-	}
-	
-	static class AACommand extends CommandTreeBase {
-		
-		@Override
-		public String getName() {
-			return "actuallyadditions";
-		}
-		
-		@Override
-		public String getUsage(ICommandSender sender) {
-			return "";
-		}
 	}
 }
