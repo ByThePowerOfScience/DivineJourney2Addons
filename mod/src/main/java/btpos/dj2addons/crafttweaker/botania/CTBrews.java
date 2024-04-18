@@ -87,7 +87,7 @@ public class CTBrews {
 	
 	@ZenMethod @Deprecated
 	public static ZenBrewWrapper makeBrew(String key, String name, int cost, int color, IPotionEffect... potionEffects) {
-		return newBrew(key, name, cost, color, (IPotionEffect[]) potionEffects);
+		return newBrew(key, name, cost, color, potionEffects);
 	}
 	
 	@ZenMethod @ZenDocMethod(order=2, args = {
@@ -114,7 +114,7 @@ public class CTBrews {
 		BotaniaAPI.brewRecipes.removeIf(recipeBrew -> key.equals(recipeBrew.getBrew().getKey()));
 	}
 	
-	@ZenMethod @ZenDocMethod(order=3, description="Removes a registered brew recipe by name and ingredients.", args = {
+	@ZenMethod @ZenDocMethod(order=4, description="Removes a registered brew recipe by name and ingredients.", args = {
 			@ZenDocArg(value="key", info="The key for the brew, e.g. \"botania.brews.warpWard\". Use \"/ct dj2addons brews\" in-game to get the keys for all registered brews."),
 			@ZenDocArg(value="ingredients", info="The set of ItemStacks/OreDict keys of the recipe to remove."),
 	})
@@ -127,7 +127,7 @@ public class CTBrews {
 		addStandardBrewRecipe(brew, ingredients);
 	}
 	
-	@ZenMethod @ZenDocMethod(order = 4, args = {
+	@ZenMethod @ZenDocMethod(order = 5, args = {
 			@ZenDocArg(value = "brew", info = "The Brew instance to register a recipe for."),
 			@ZenDocArg(value = "ingredients", info = "An array of item ingredients/oredict keys to set as the recipe.")
 	}, description = {
@@ -138,7 +138,7 @@ public class CTBrews {
 	}
 	
 	
-	@ZenMethod @ZenDocMethod(order = 5, args = {
+	@ZenMethod @ZenDocMethod(order = 6, args = {
 			@ZenDocArg(value = "brew", info = "The Brew instance to register a recipe for."),
 			@ZenDocArg(value = "allowedContainers", info="The containers that this brew recipe will be allowed for. (e.g. <botania:vial:0> = Managlass Vial, <botania:vial:1> = Alfglass Flask)"),
 			@ZenDocArg(value = "ingredients", info = "An array of item ingredients/oredict keys to set as the recipe.")
@@ -157,7 +157,7 @@ public class CTBrews {
 	}
 	
 	@ModOnly("thaumcraft")
-	@ZenMethod @ZenDocMethod(order=6, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.")
+	@ZenMethod @ZenDocMethod(order=7, description = "Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is installed.")
 	public static void enableWarpWardPendant() {
 		Brews.enableWarpWardPendant();
 	}
