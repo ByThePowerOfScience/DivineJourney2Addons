@@ -24,27 +24,28 @@ repositories {
 }
 
 dependencies {
-	compile project(":coremod")
+	implementation project(':coremod')
+//	embed project(path: ':coremod', configuration: 'obfJar')  I really tried, but I just can't figure out how to make this not janky as hell, so PYTHON IT IS!!!
 	
 	compile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
 	
 	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
 	
-	deobfCompile("curse.maven:ActuallyAdditions-228404:3117927")
-//	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
-//	deobfProvided(
-//			"curse.maven:EnderIO-64578:3328811",
-//			"curse.maven:ProjectIntelligence-306028:2833640",
-//			"curse.maven:EnderCore-231868:2972849",
-//			"curse.maven:BrandonsCore-231382:3408276",
-//			"curse.maven:CodeChickenLib-242818:2779848"
-//	)
-//	compile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	deobfProvided("curse.maven:ActuallyAdditions-228404:3117927")
+	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
+	deobfProvided(
+			"curse.maven:EnderIO-64578:3328811",
+			"curse.maven:ProjectIntelligence-306028:2833640",
+			"curse.maven:EnderCore-231868:2972849",
+			"curse.maven:BrandonsCore-231382:3408276",
+			"curse.maven:CodeChickenLib-242818:2779848"
+	)
+	provided "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	
 	deobfProvided("curse.maven:Erebus-220698:3211974")
 	
 	// **CRAFTTWEAKER HOOKS**
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Patchouli-306770:3162874",
 			"curse.maven:Baubles-227083:2518667"
 	)
@@ -91,7 +92,7 @@ dependencies {
 			"curse.maven:McJtyLib-233105:2745846"
 	)
 	
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Forgelin-248453:2785465",
 			"curse.maven:TeslaCoreLib-254602:3438487",
 			"curse.maven:IndustrialForegoing-266515:2745321"
@@ -106,6 +107,10 @@ dependencies {
 //			"curse.maven:MysticalAgriculture-246640:2704562"
 //	)
 	
+	provided(
+			"curse.maven:MysticalAgriculture-246640:2704562"
+	)
+	
 	deobfProvided(
 			"curse.maven:MoreTweaker-336569:3226142",
 			"curse.maven:MTLib-253211:3308160"
@@ -119,13 +124,9 @@ dependencies {
 			"curse.maven:ModularMagic-324318:2737623"
 	)
 	
-	provided(
-			"curse.maven:MysticalAgriculture-246640:2704562"
-	)
-	
 	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
 	
-	deobfProvided("curse.maven:Aether-255308:3280119")
+	deobfCompile("curse.maven:Aether-255308:3280119")
 
 //	deobfProvided(
 //			"curse.maven:Evilcraft-74610:2811267",
@@ -146,43 +147,78 @@ dependencies {
 			"curse.maven:Mekanism-268560:2835175"
 	)
 	
+	deobfProvided("curse.maven:RadixCore-77286:2483855")
+	
 	// Dev Tools
 	testImplementation( // For ZenDoc
 			"org.reflections:reflections:0.10.2"
 	)
 }
 
+mixin {
+	//noinspection GroovyAssignabilityCheck
+	add sourceSets.main, 'mixins.dj2addons.refmap.json'
+//    config 'mixins.dj2addons.json'
+//    	hotSwap = true
+}
+
 jar {
 	manifest {
 		attributes (
-				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"MixinConfigs": 'mixins.dj2addons.init.json'
+//				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+				'MixinConfigs': 'mixins.dj2addons.init.json',
+				'ContainedDeps': "dj2addonscore-${project(':coremod').version}.jar",
+//				'FMLCorePluginContainsFMLMod': true
 		)
 	}
 }
 
-build {
-	doLast {
-		project.tasks.injectCoremodJar.execute()
-	}
+
+build.finalizedBy('jankShadow')
+runClient.dependsOn('build', 'copyCoremodToRunDir')
+
+tasks.register('jankShadow', Exec) {
+	group = 'other_dj2addons'
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'))
 }
 
-task injectCoremodJar(type: Exec) {
-	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_InjectCoreMod.py'))
+tasks.register('copyCoremodToRunDir', Copy) {
+	group = 'other_dj2addons'
+
+	from project(':coremod').buildDir.toPath().resolve('libs')
+	include 'dj2addonscore-*.jar'
+	exclude 'dj2addonscore-*-sources.jar'
+	into project.projectDir.toPath().resolve('run/mods')
 }
 
-task generateTestZS(type: Copy) {
+sourceJar {
+	from project(':coremod').sourceSets.main.allJava
+}
+
+
+tasks.register('generateTestZS', Copy) {
+	group = 'other_dj2addons'
 	from rootProject.file('Test.zs')
 	into project.file('run/scripts')
 }
 
-task runTests(type: JavaExec, group: 'buildruns') {
+tasks.register('runTests', JavaExec) {
+	group = 'build_dj2addons'
 	dependsOn(build, generateTestZS)
+	
 	def modproject = project(":mod")
 	def coremodproject = project(":coremod")
-	classpath = modproject.sourceSets.main.output.classesDirs + modproject.sourceSets.main.compileClasspath + modproject.sourceSets.test.output.classesDirs + modproject.sourceSets.test.runtimeClasspath + coremodproject.sourceSets.main.output.classesDirs + coremodproject.sourceSets.main.compileClasspath + coremodproject.sourceSets.test.output.classesDirs + coremodproject.sourceSets.test.runtimeClasspath
+	classpath = modproject.sourceSets.main.output.classesDirs
+					+ modproject.sourceSets.main.compileClasspath
+					+ modproject.sourceSets.test.output.classesDirs
+					+ modproject.sourceSets.test.runtimeClasspath
+					+ coremodproject.sourceSets.main.output.classesDirs
+					+ coremodproject.sourceSets.main.compileClasspath
+					+ coremodproject.sourceSets.test.output.classesDirs
+					+ coremodproject.sourceSets.test.runtimeClasspath
+	
 	main = 'GenerateTestZS'
-	setArgsString(rootProject.projectDir.toPath().resolve("Test.zs").toString())
+	setArgsString(rootProject.file("Tests/Test.zs").toString())
 }
 
 //idea.project {
@@ -195,7 +231,32 @@ task runTests(type: JavaExec, group: 'buildruns') {
 //idea {
 //	
 //}
-task buildTestJar(type: Jar, group: 'buildruns') {
+
+tasks.register('buildTestJar', Jar) {
+	group = 'build_dj2addons'
 	from(sourceSets.test.output);
 	archiveName = 'dj2addons-test'
+}
+
+
+tasks.register('generateModpackZip', Exec) {
+	group = 'build_dj2addons'
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/GenerateModpackZip.py').toString())
+}
+
+tasks.register('updateModpack', Exec) {
+	group = 'build_dj2addons'
+	dependsOn(build)
+	commandLine(rootProject.ext.pythonFile, rootProject.file('./python/UpdateModpack.py').toString())
+}
+
+tasks.register('updateCFModpack', Exec) {
+	group = 'build_dj2addons'
+	dependsOn(build)
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/UpdateCFModpack.py').toString())
+}
+
+tasks.register('copyTestZS', Copy) {
+	group = 'other_dj2addons'
+	from rootProject.projectDir include 'Tests/Test.zs' into project.file('run/scripts')
 }

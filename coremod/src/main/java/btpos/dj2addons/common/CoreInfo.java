@@ -7,18 +7,18 @@ import org.apache.logging.log4j.Logger;
  * Intermediary between the ASM phase and the Mod phase of loading.
  */
 public class CoreInfo {
-	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
+	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons Core");
 	
 	private static boolean coreLoaded = false;
 	
-	public static boolean shouldWriteAerogelTooltip = false;
-	
 	/**
-	 * Called by {@link btpos.dj2addons.initmixins.MLoader#beforeConstructingMods MLoader.beforeConstructingMods}.
+	 * Called by {@link btpos.dj2addons.core.DJ2AMixinConfig#onLoad(String)}.
 	 */
 	public static void onLoadCore() {
-		coreLoaded = true;
-		LOGGER.info("DJ2Addons loaded!");
+		if (!coreLoaded) {
+			coreLoaded = true;
+			LOGGER.info("DJ2Addons Core loaded!");
+		}
 	}
 	
 	/**
@@ -28,17 +28,11 @@ public class CoreInfo {
 		if (!coreLoaded) {
 			try {
 				Class.forName("org.spongepowered.asm.mixin.Mixin");
-				throw new Error("DJ2Addons Mixins are not loaded! The config mixins.dj2addons.bootstrap.json was not executed.");
+				Class.forName("zone.rong.mixinbooter.IEarlyMixinLoader"); // hate that I have to depend on this guy...
 			} catch (ClassNotFoundException e) {
-				throw new Error("DJ2Addons requires Mixin to run.");
+				throw new Error("DJ2Addons requires MixinBooter to run.");
 			}
 		}
 	}
 	
-	/**
-	 * Called by {@link btpos.dj2addons.DJ2AMixinConfig#shouldApplyMixin DJ2AMixinConfig.shouldApplyMixin} if TickCentral is detected.
-	 */
-	public static void onDisableAerogelPatch() {
-		shouldWriteAerogelTooltip = true;
-	}
 }

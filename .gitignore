@@ -127,3 +127,6 @@ venv/
 gradlew
 gradlew.bat
 !/docs/zs/*
+/mod/testrun/
+/testrun/
+*.jks

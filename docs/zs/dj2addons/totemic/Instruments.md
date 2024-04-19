@@ -20,7 +20,7 @@ void modifyMusicValues(
 ```
 
 Changes the stats of the base Totemic musical instruments.
-Using integers will overwrite the original values, but using decimals (e.g. 1.2, 3.0) will multiply the original values by that amount.
+Using integers (e.g. 1, 2) will overwrite the original values, but using decimals (e.g. 1.2, 3.0) will multiply the original values by that amount.
 
 
 

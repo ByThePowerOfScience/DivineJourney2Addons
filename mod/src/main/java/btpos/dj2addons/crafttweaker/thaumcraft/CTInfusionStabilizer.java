@@ -1,18 +1,17 @@
 package btpos.dj2addons.crafttweaker.thaumcraft;
 
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.block.IBlock;
-import crafttweaker.api.data.IllegalDataException;
-import crafttweaker.api.minecraft.CraftTweakerMC;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.Loader;
 import btpos.dj2addons.common.util.zendoc.ZenDocArg;
 import btpos.dj2addons.common.util.zendoc.ZenDocClass;
 import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.block.IBlock;
+import crafttweaker.api.minecraft.CraftTweakerMC;
+import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 import thaumcraft.api.crafting.IInfusionStabiliserExt;
 
 @ZenRegister
@@ -33,10 +32,10 @@ public class CTInfusionStabilizer {
 	@ZenMethod @ZenDocMethod(description = "Gets an InfusionStabilizer object for a given block.", args=@ZenDocArg("block"))
 	public static CTInfusionStabilizer getInfusionStabilizer(IBlock block) {
 		Block b = CraftTweakerMC.getBlock(block);
-		if (Loader.isModLoaded("thaumcraft") && b instanceof IInfusionStabiliserExt) {
+		if (b instanceof IInfusionStabiliser) {
 			return new CTInfusionStabilizer((IInfusionStabiliserExt) b);
+		} else {
+			throw new IllegalArgumentException("Block " + block + " is not an infusion stabilizer.");
 		}
-		else
-			throw new IllegalDataException("Block is not an infusion stabilizer.");
 	}
 }

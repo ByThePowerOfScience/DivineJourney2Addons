@@ -1,6 +1,6 @@
-Thaumcraft uses Interfaces instead of Capabilities to handle its infusion stabilizers, and interfaces have to be patched on _extremely_ early in the loading phase, long before CraftTweaker is available for use.
+Thaumcraft uses Interfaces instead of Capabilities to handle its infusion stabilizers.  Problem is, interfaces have to be patched on EXTREMELY early in the loading phase, _long_ before CraftTweaker or any Forge configs are available for use.
 
-To get around this, there is a custom config file to use.
+Because of that, we have to use a custom config file for this API.
 
 ### Instructions
 1. Get the name of the class for the **Block** you wish to turn into an infusion stabilizer.
@@ -11,6 +11,7 @@ To get around this, there is a custom config file to use.
 4. These blocks will now be included as infusion stabilizers. This can be verified using `/ct dj2addons info classes` on the block again in-game.
 ### Example
 ```
+// infusion_stabilizers.txt:
 name.of.OneBlock, 0.5
 name.of.AnotherBlock, 2.54
 ```

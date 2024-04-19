@@ -1,11 +1,28 @@
+archivesBaseName = 'dj2addonscore'
+
 jar {
 	manifest {
 		attributes (
-				"FMLCorePlugin": 'btpos.dj2addons.DJ2ALoadingPlugin',
-				
-				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"MixinConfigs": 'mixins.dj2addons.bootstrap.json'
+				'FMLCorePlugin': 'btpos.dj2addons.core.DJ2ALoadingPlugin',
+				'Maven-Artifact': "btpos.dj2addons.core:DJ2AddonsCore:${version}",
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+//				"MixinConfigs": 'mixins.dj2addons.bootstrap.json'
 		)
-		archiveName 'dj2addons-core.jar'
 	}
+	finalizedBy('reobfJar')
 }
+
+
+mixin {
+	//noinspection GroovyAssignabilityCheck
+	add sourceSets.main, 'mixins.dj2addons.core.refmap.json'
+//    config 'mixins.dj2addons.json'
+//    	hotSwap = true
+}
+
+//build.finalizedBy('signJar')
+//
+//tasks.register('signJar', SignJar) {
+//
+//}
+// TODO sign jar

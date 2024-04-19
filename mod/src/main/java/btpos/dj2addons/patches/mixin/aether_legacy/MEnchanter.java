@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(TileEntityEnchanter.class)
 public abstract class MEnchanter {
-	@Shadow private AetherEnchantment currentEnchantment;
+	@Shadow(remap = false) private AetherEnchantment currentEnchantment;
 	
 	/**
 	 * Makes the enchanter consume buckets in crafting like it should.

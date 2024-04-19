@@ -14,7 +14,7 @@ cmd_template = ["zip", "-d", lib_path]
 def main():
 	for jar_path in offenders:
 		cmd = cmd_template.copy()
-		cmd.insert(2, deobf_path / jar_path)
+		cmd.insert(2, str(deobf_path / jar_path))
 		try:
 			subprocess.call(cmd)
 		except FileNotFoundError as e:

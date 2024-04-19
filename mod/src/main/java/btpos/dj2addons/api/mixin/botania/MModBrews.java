@@ -13,13 +13,16 @@ import vazkii.botania.api.brew.Brew;
 import vazkii.botania.common.brew.BrewMod;
 import vazkii.botania.common.brew.ModBrews;
 
-@Mixin({ModBrews.class})
-public class MModBrews {
-	public MModBrews() {
-	}
+@Mixin(value = ModBrews.class, remap = false)
+public abstract class MModBrews {
 	
-	@Redirect(remap = false, method = "initTC()V",
-			at = @At(target = "Lvazkii/botania/common/brew/BrewMod;setNotBloodPendantInfusable()Lvazkii/botania/api/brew/Brew;", value = "INVOKE"))
+	@Redirect(
+			method = "initTC()V",
+			at = @At(
+					target = "Lvazkii/botania/common/brew/BrewMod;setNotBloodPendantInfusable()Lvazkii/botania/api/brew/Brew;",
+					value = "INVOKE"
+			)
+	)
 	private static Brew enableWarpWardPendant(BrewMod instance) {
 		if (Brews.Internal.shouldEnableWarpWardPendant)
 			return instance;

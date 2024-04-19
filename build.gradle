@@ -1,5 +1,13 @@
 import org.apache.tools.ant.taskdefs.condition.Os;
 
+/*
+ * (all paths are relative to the project directory)
+ *
+
+ *
+ */
+
+
 buildscript {
 	repositories {
 		gradlePluginPortal()
@@ -14,8 +22,16 @@ buildscript {
 plugins {
 	id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
 }
+
+allprojects {
+	configurations {
+		embed
+	}
+}
+
+
 project.ext.pythonFile = Os.isFamily(Os.FAMILY_WINDOWS) ? project.file('venv/Scripts/python.exe') : project.file('venv/bin/python3')
-subprojects {
+subprojects { Project proj ->
 	apply plugin: 'net.minecraftforge.gradle.forge'
 	apply plugin: 'org.spongepowered.mixin'
 	apply plugin: 'idea'
@@ -23,7 +39,7 @@ subprojects {
 	
 	archivesBaseName = 'dj2addons'
 	group = 'btpos.dj2addons'
-	version = '1.2.2'
+	version = '1.3.0-BETA'
 	
 	sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 	compileJava {
@@ -34,6 +50,10 @@ subprojects {
 		args "--username=Dev"//, "--mixin.config=mixins.dj2addons.init.json"
 		jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
 	}
+	runServer {
+		args "--username=Dev"//, "--mixin.config=mixins.dj2addons.init.json"
+		jvmArgs "-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dmixin.hotSwap=true"
+	}
 	
 	minecraft {
 		version = "1.12.2-14.23.5.2847"
@@ -41,6 +61,7 @@ subprojects {
 		
 		mappings = "stable_39"
 		
+		//noinspection GroovyAssignabilityCheck
 		replace "@VERSION@", project.version
 //		replaceIn "DJ2Addons.java"
 	}
@@ -52,18 +73,30 @@ subprojects {
 	
 	repositories {
 		mavenCentral()
-		maven { url 'https://jitpack.io' }
+//		maven { url 'https://jitpack.io' }
+		maven {
+			url 'https://maven.cleanroommc.com'
+		}
+		maven {
+			url 'https://cursemaven.com'
+		}
 	}
 	
+	
 	dependencies {
-		implementation("com.github.LlamaLad7:MixinExtras:0.1.1")
+//		implementation("io.github.llamalad7:mixinextras-common:0.3.5")
+//		shadow("io.github.llamalad7:mixinextras-common:0.3.5")
 //		annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
-		implementation 'org.spongepowered:mixin:0.8.5'
-		testImplementation     "org.junit.jupiter:junit-jupiter-api:5.2.0"
+//		implementation("org.spongepowered:mixin:0.8.5")
+		implementation('zone.rong:mixinbooter:7.0') {
+			transitive = true
+		}
+//		deobfCompile("curse.maven:mixin-booter-419286:4090558")
+		
+		testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
 		testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
 		testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
 		testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
-		
 	}
 	
 	processResources {
@@ -88,37 +121,23 @@ subprojects {
 		//	rename '(.+_at.cfg)', 'META-INF/$1'
 	}
 	
-	task generateModpackZip(type: Exec, group: 'buildruns') {
-		commandLine(rootProject.ext.pythonFile, "./python/GenerateModpackZip.py")
-	}
 	
-	task updateModpack(type: Exec, group: 'buildruns') {
-		dependsOn(build)
-		commandLine(rootProject.ext.pythonFile, "./python/UpdateModpack.py")
-	}
-	
-	task updateCFModpack(type: Exec, group: 'buildruns') {
-		dependsOn(build)
-		commandLine(rootProject.ext.pythonFile, "./python/UpdateCFModpack.py")
-	}
-	
-	task copyTestZS(type: Copy) {
-		from "./" include "Test.zs" into "./run/scripts"
-	}
-	
-	
-	task removeShadedMixinLibraries(type: Exec, group: 'dependencies') {
-		commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
-	}
-	
-	jar.finalizedBy('reobfJar')
-	
-	mixin {
-		//noinspection GroovyAssignabilityCheck
-		add sourceSets.main, 'mixins.dj2addons.refmap.json'
-//    config 'mixins.dj2addons.json'
-//    hotSwap = true
-	}
+//	jar {
+//		into('/META-INF/libraries') {
+//			from configurations.embed
+//		}
+//
+//		doFirst {
+//			manifest {
+//				def contained = configurations.embed.collect { it.getName() };
+//				if (!contained.isEmpty()) {
+//					attributes([
+//							"ContainedDeps": contained.join(' ')
+//					])
+//				}
+//			}
+//		}
+//	}
 	
 	idea {
 		module {
@@ -127,6 +146,18 @@ subprojects {
 			downloadJavadoc = true
 		}
 	}
+	
+	javadoc {
+		options.addBooleanOption('Xdoclint:none', true)
+		((StandardJavadocDocletOptions) options).tags(
+				'apiNote:a:API Note:',
+				'implSpec:a:Implementation Requirements:',
+				'implNote:a:Implementation Note:',
+				'reason:a:Reason:'
+		)
+	}
+	
+	
 	
 }
 //ideaExt {
@@ -139,12 +170,36 @@ subprojects {
 //	}
 //}
 
-task zendoc(type: JavaExec, group: 'documentation') {
-	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath // + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
+tasks.register('removeShadedMixinLibraries', Exec) {
+	group = 'dependencies'
+	commandLine(rootProject.ext.pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
+}
+
+tasks.register('zendoc', JavaExec) {
+	group = 'documentation'
+	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath
+	// + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
 	main = 'ExportZenDocs'
 }
 
+tasks.register('sourcesJar', Jar) {
+	group = 'build_dj2addons'
+	from (project(':mod').sourceSets.main.allJava + project(':coremod').sourceSets.main.allJava)
+	classifier = 'sources'
+}
 
+tasks.register('javadocJar', Jar) {
+	group = 'build_dj2addons'
+	from subprojects.javadoc
+	classifier = 'javadoc'
+}
+
+//String getCN() {
+//	def firsts = ['Donald', 'Lex', 'The', 'Arthur', 'Bridget', 'Dorian', 'Ford', 'Guy', 'James', 'Jessica', 'John', 'Michael', 'Robinson', 'Zaphod', 'Bell', 'Penelope']
+//	def lasts = ['Duck', 'Luthor', 'Doctor', 'Master', 'Dent', 'Jones', 'Gray', 'Prefect', 'Montag', 'Moriarty', 'Rabbit', 'Watson', 'Smith', 'Corleone', 'Crusoe', 'Beeblebrox', 'Cranel', 'Akk']
+//	def rand = new Random()
+//	return firsts[rand.nextInt(firsts.size())] + ' ' + lasts[rand.nextInt(lasts.size())]
+//}
 
 
 

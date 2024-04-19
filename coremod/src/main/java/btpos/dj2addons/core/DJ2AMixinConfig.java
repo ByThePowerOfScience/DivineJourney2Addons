@@ -1,9 +1,8 @@
-package btpos.dj2addons;
+package btpos.dj2addons.core;
 
-import net.minecraft.launchwrapper.Launch;
+import btpos.dj2addons.common.CoreInfo;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Logger;
-import btpos.dj2addons.common.CoreInfo;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -24,12 +23,14 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void onLoad(String mixinPackage) {
-		LOGGER.debug("Loading mixins from " + mixinPackage);
+		CoreInfo.onLoadCore();
+		LOGGER.debug("Loading mixins from {}", mixinPackage);
 	}
 	
 	@Override
 	public String getRefMapperConfig() {
-		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
+		return null;
+//		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
 //		return "mixins.dj2addons.refmap.json";
 	}
 	
@@ -40,7 +41,6 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 		if (simplename.equals("MWorld")) {
 			if (hasTickProfiler()) {
 				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
-				CoreInfo.onDisableAerogelPatch();
 				return false;
 			}
 		}
@@ -73,6 +73,9 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	}
 	
+	/**
+	 * Add messages when a patch is applied. :D
+	 */
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		String[] splitName = mixinClassName.split("\\.");
@@ -103,7 +106,7 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				output = "Teaching hunger shanks to do The Wave.";
 				break;
 			case "MInputs":
-				output = "It's Florbin' Time.";
+				output = "Making Bewitchment say \"It's Florbin' Time.\" and florb all over the place.";
 				break;
 			case "MTileEssentiaOutput":
 				output = "Sealing those pesky leaks in the modular magical machineries.";
@@ -117,6 +120,9 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
  			case "MModBrews":
 				output = "Turning rivers into bacon.";
 				break;
+ 			case "MActuallyAdditions":
+				output = "Graphifying laser relays. (That sounds so COOL!)";
+				break;
 // 			case "":
 //				output = "";
 //				break;
@@ -124,6 +130,5 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 				return;
 		}
 		LOGGER.info(output);
-		
 	}
 }

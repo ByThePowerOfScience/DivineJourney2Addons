@@ -3,13 +3,17 @@ package btpos.dj2addons.common.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.World;
-import sun.reflect.generics.repository.ClassRepository;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Stack;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 /**
@@ -22,6 +26,7 @@ import java.util.function.Consumer;
  * @since   2013-08-24
  * @version 2015-09-19
  */
+@SuppressWarnings("ALL")
 public class StringDumpUtils {
 	
 	public static final String INDENT        = "  ";
@@ -33,10 +38,11 @@ public class StringDumpUtils {
 		dump(object, System.out::println);
 	}
 	
-	static final Object[] fieldTypeExclusions = new Object[] {
-			World.class,
-			"io.netty",
-			ClassRepository.class
+	static final Object[] fieldTypeExclusions = new Object[3];
+	static {
+		fieldTypeExclusions[0] = World.class;
+		fieldTypeExclusions[1] = "io.netty";
+		fieldTypeExclusions[2] = "sun.reflect.generics";
 	};
 	static final Map<String, List<String>> fieldNameExclusions = ImmutableMap.of(
 			"net.minecraftforge.registries.RegistryDelegate", ImmutableList.of("type")
@@ -70,7 +76,7 @@ public class StringDumpUtils {
 	public static void dump(Object object, boolean isIncludingStatics, Consumer<String> out, int maxSupers) {
 		StringBuilder                   builder    = new StringBuilder();
 		Stack<Object[]>                 stack      = new Stack<>();
-		IdentityHashMap<Object, Object> visitorMap = new IdentityHashMap<>();
+		Map<Object, Object> visitorMap             = new IdentityHashMap<>();
 		TreeMap<String, Field>          fieldMap   = new TreeMap<>();  // can modify this to change or omit the sort order
 		ArrayList<Entry<String, Field>> fieldList  = new ArrayList<>();
 		
