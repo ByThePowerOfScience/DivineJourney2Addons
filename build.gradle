@@ -146,19 +146,10 @@ subprojects { Project proj ->
 				'implSpec:a:Implementation Requirements:',
 				'implNote:a:Implementation Note:',
 				'reason:a:Reason:'
-				)
+		)
 	}
 	
-	tasks.register('sourcesJar', Jar) {
-		group = 'build_dj2addons'
-		from sourceSets.main.allJava
-		classifier = 'sources'
-	}
-	tasks.register('javadocJar', Jar) {
-		group = 'build_dj2addons'
-		from javadoc
-		classifier = 'javadoc'
-	}
+	
 	
 }
 //ideaExt {
@@ -181,6 +172,18 @@ tasks.register('zendoc', JavaExec) {
 	classpath = project(":mod").sourceSets.main.output.classesDirs + project(":mod").sourceSets.main.compileClasspath + project(":mod").sourceSets.test.output.classesDirs + project(":mod").sourceSets.test.runtimeClasspath
 	// + project(":coremod").sourceSets.main.output.classesDirs + project(":coremod").sourceSets.main.compileClasspath + project(":coremod").sourceSets.test.output.classesDirs + project(":coremod").sourceSets.test.runtimeClasspath
 	main = 'ExportZenDocs'
+}
+
+tasks.register('sourcesJar', Jar) {
+	group = 'build_dj2addons'
+	from (project(':mod').sourceSets.main.allJava + project(':coremod').sourceSets.main.allJava)
+	classifier = 'sources'
+}
+
+tasks.register('javadocJar', Jar) {
+	group = 'build_dj2addons'
+	from subprojects.javadoc
+	classifier = 'javadoc'
 }
 
 //String getCN() {

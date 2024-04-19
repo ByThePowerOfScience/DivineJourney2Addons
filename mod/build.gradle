@@ -177,7 +177,6 @@ jar {
 build.finalizedBy('jankShadow')
 runClient.dependsOn('build', 'copyCoremodToRunDir')
 
-
 tasks.register('jankShadow', Exec) {
 	group = 'other_dj2addons'
 	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'))
@@ -190,6 +189,10 @@ tasks.register('copyCoremodToRunDir', Copy) {
 	include 'dj2addonscore-*.jar'
 	exclude 'dj2addonscore-*-sources.jar'
 	into project.projectDir.toPath().resolve('run/mods')
+}
+
+sourceJar {
+	from project(':coremod').sourceSets.main.allJava
 }
 
 

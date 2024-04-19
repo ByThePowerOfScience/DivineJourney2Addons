@@ -533,7 +533,7 @@ public class CommandHandler extends CraftTweakerCommand {
 		if (!generators.isEmpty()) {
 			m.sendHeading("GP Mills:");
 			
-			generators.forEach((name, scaling) -> m.sendPropertyWithCopy(null, name, "Mills.setScaling(" + name + ", " + MessageHelper.listToAssociativeArrayPretty(Arrays.asList(ArrayUtils.toObject(scaling)), true, 0) + ");"));
+			generators.forEach((name, scaling) -> m.sendPropertyWithCopy(null, name, "Mills.setScaling(" + name + ", " + m.listToAssociativeArrayPretty(Arrays.asList(ArrayUtils.toObject(scaling)), true, 0) + ");"));
 		} else {
 			m.sendHeading("No GP mills found.");
 		}
