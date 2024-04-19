@@ -8,11 +8,11 @@ import dj2addons.astralsorcery.Crystals;
 
 ```zenscript
 void setStarmetalConversion(
-  IItemStack block // The IItemStack to set the block to. Must be a block type.
+  IItemStack block // The IItemStack to set the block to. Must be a Block type.
 );
 ```
 
-Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it.
+Sets the block that starmetal ore turns into when a celestial crystal is grown on top of it. Throws ClassCastException if `block` is not a Block.
 
 ```zenscript
 void scaleGrowthTime(

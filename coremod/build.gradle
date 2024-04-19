@@ -4,7 +4,7 @@ jar {
 	manifest {
 		attributes (
 				'FMLCorePlugin': 'btpos.dj2addons.core.DJ2ALoadingPlugin',
-				
+				'Maven-Artifact': "btpos.dj2addons.core:DJ2AddonsCore:${version}",
 				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 //				"MixinConfigs": 'mixins.dj2addons.bootstrap.json'
 		)

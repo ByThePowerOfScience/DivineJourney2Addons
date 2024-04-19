@@ -16,19 +16,22 @@ Brews.addBrewRecipe(luckBrew, [<minecraft:nether_wart>, <minecraft:cooked_beef>]
 // Enable the Tainted Blood Pendant of Warp Ward
 Brews.enableWarpWardPendant();
 
+
 // Give the Tainted Blood Pendant of Warp Ward a different recipe than the bottled versions:
+
+// Get the Warp Ward brew
 val warpWardBrew as Brew = Brews.getByName("botania.brews.warpWard");
-// remove the original recipe
+// Remove the original recipe
 Brews.removeRecipe("botania.brews.warpWard"); 
 
-// Keep the original recipe for non-pendants
+// Reregister the original recipe for non-pendants
 Brews.addOutputRestrictedBrewRecipe( 
 	warpWardBrew,
 	[<botania:vial:0>, <botania:vial:1>, <botania:incense_stick>],
 	[<minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bathing_salts>] // TODO: fact-check these names
 );
 
-// Make a harsher recipe for the pendant specifically
+// Register a more difficult recipe for the pendant specifically
 Brews.addOutputRestrictedBrewRecipe( 
 	warpWardBrew,
 	[<botania:blood_pendant>],

@@ -4,13 +4,24 @@
 import dj2addons.botania.Brews;
 ```
 
+APIs for handling Botania's brews, including adding and removing recipes, creating new brews, and making recipes that are only valid for specific output containers only.
+
+
 #### Static Methods
+
+```zenscript
+Brew getBrew(
+  string key // The key for the brew, e.g. "botania.brews.warpWard". Use "/ct dj2addons brews" in-game to get the keys for all registered brews.
+);
+```
+
+Gets a registered brew by name.
 
 ```zenscript
 Brew newBrew(
   string key,                    // The registry key to be assigned to the Brew.
   int cost,                      // The base mana cost of the brew. Amplified automatically for flasks, etc.
-  IPotionEffect[] potionEffects, // A/an array of potion effects.
+  IPotionEffect[] potionEffects, // An array of potion effects.
 );
 ```
 
@@ -23,16 +34,33 @@ Brew newBrew(
   string name,                   // The translation key for the display name of the Brew. e.g. "Flask of <name>"
   int cost,                      // The base mana cost of the brew. Amplified automatically by Botania for flasks, etc.
   int color,                     // The hexadecimal color of the brew.
-  IPotionEffect[] potionEffects, // A/an array of potion effects.
+  IPotionEffect[] potionEffects, // An array of potion effects.
 );
 ```
 
 Creates a Brew instance and registers its existence with Botania, then returns it.
 
 ```zenscript
+void removeRecipe(
+  string key // The key for the brew, e.g. "botania.brews.warpWard". Use "/ct dj2addons brews" in-game to get the keys for all registered brews.
+);
+```
+
+Remove all recipes for the given brew.
+
+```zenscript
+void removeRecipe(
+  string key,           // The key for the brew, e.g. "botania.brews.warpWard". Use "/ct dj2addons brews" in-game to get the keys for all registered brews.
+  Object[] ingredients, // The set of ItemStacks/OreDict keys of the recipe to remove.
+);
+```
+
+Removes a registered brew recipe by name and ingredients.
+
+```zenscript
 void addStandardBrewRecipe(
-  Brew brew,                // The Brew instance to register a recipe for.
-  IItemStack[] ingredients, // An array of item ingredients to set as the recipe.
+  Brew brew,            // The Brew instance to register a recipe for.
+  Object[] ingredients, // An array of item ingredients/oredict keys to set as the recipe.
 );
 ```
 
@@ -42,7 +70,7 @@ Registers the recipe for a given brew.
 void addOutputRestrictedBrewRecipe(
   Brew brew,                      // The Brew instance to register a recipe for.
   IItemStack[] allowedContainers, // The containers that this brew recipe will be allowed for. (e.g. <botania:vial:0> = Managlass Vial, <botania:vial:1> = Alfglass Flask)
-  IItemStack[] ingredients,       // An array of item ingredients to set as the recipe.
+  IItemStack[] ingredients,       // An array of item ingredients/oredict keys to set as the recipe.
 );
 ```
 
@@ -65,6 +93,9 @@ Enables the Tainted Blood Pendant of Warp Ward. Only valid if Thaumcraft is inst
 ```zenscript
 import dj2addons.botania.Brew;
 ```
+
+Represents a Brew for use in CraftTweaker.
+
 
 #### Instance Methods
 
@@ -97,4 +128,30 @@ luckBrew.disableIncenseStick().disableBloodPendant();
 
 // Registers the Luck I brew with a recipe.
 Brews.addBrewRecipe(luckBrew, [<minecraft:nether_wart>, <minecraft:cooked_beef>]);
+
+
+// Enable the Tainted Blood Pendant of Warp Ward
+Brews.enableWarpWardPendant();
+
+
+// Give the Tainted Blood Pendant of Warp Ward a different recipe than the bottled versions:
+
+// Get the Warp Ward brew
+val warpWardBrew as Brew = Brews.getByName("botania.brews.warpWard");
+// Remove the original recipe
+Brews.removeRecipe("botania.brews.warpWard"); 
+
+// Reregister the original recipe for non-pendants
+Brews.addOutputRestrictedBrewRecipe( 
+	warpWardBrew,
+	[<botania:vial:0>, <botania:vial:1>, <botania:incense_stick>],
+	[<minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bathing_salts>] // TODO: fact-check these names
+);
+
+// Register a more difficult recipe for the pendant specifically
+Brews.addOutputRestrictedBrewRecipe( 
+	warpWardBrew,
+	[<botania:blood_pendant>],
+	[<minecraft:nether_star>, <minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bathing_salts>]
+);
 ```

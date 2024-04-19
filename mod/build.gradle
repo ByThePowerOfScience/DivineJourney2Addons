@@ -31,7 +31,7 @@ dependencies {
 	
 	implementation("mezz.jei:jei_1.12.2:4.16.1.302")
 	
-	deobfCompile("curse.maven:ActuallyAdditions-228404:3117927")
+	deobfProvided("curse.maven:ActuallyAdditions-228404:3117927")
 	deobfProvided("curse.maven:DraconicEvolution-223565:3431261")
 	deobfProvided(
 			"curse.maven:EnderIO-64578:3328811",
@@ -45,7 +45,7 @@ dependencies {
 	deobfProvided("curse.maven:Erebus-220698:3211974")
 	
 	// **CRAFTTWEAKER HOOKS**
-	deobfCompile(
+	deobfProvided(
 			"curse.maven:Patchouli-306770:3162874",
 			"curse.maven:Baubles-227083:2518667"
 	)
@@ -126,7 +126,7 @@ dependencies {
 	
 	deobfProvided("curse.maven:Thaumcraft-223628:2629023")
 	
-	deobfProvided("curse.maven:Aether-255308:3280119")
+	deobfCompile("curse.maven:Aether-255308:3280119")
 
 //	deobfProvided(
 //			"curse.maven:Evilcraft-74610:2811267",
