@@ -1,5 +1,13 @@
 import org.apache.tools.ant.taskdefs.condition.Os;
 
+/*
+ * (all paths are relative to the project directory)
+ *
+
+ *
+ */
+
+
 buildscript {
 	repositories {
 		gradlePluginPortal()

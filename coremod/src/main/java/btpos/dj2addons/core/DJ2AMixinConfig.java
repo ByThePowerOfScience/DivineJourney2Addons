@@ -1,7 +1,6 @@
 package btpos.dj2addons.core;
 
 import btpos.dj2addons.common.CoreInfo;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
@@ -30,7 +29,8 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public String getRefMapperConfig() {
-		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
+		return null;
+//		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
 //		return "mixins.dj2addons.refmap.json";
 	}
 	
@@ -73,6 +73,9 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	}
 	
+	/**
+	 * Add messages when a patch is applied. :D
+	 */
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		String[] splitName = mixinClassName.split("\\.");

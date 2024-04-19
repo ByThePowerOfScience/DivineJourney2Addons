@@ -30,7 +30,7 @@ public class CoreInfo {
 				Class.forName("org.spongepowered.asm.mixin.Mixin");
 				Class.forName("zone.rong.mixinbooter.IEarlyMixinLoader"); // hate that I have to depend on this guy...
 			} catch (ClassNotFoundException e) {
-				throw new Error("DJ2Addons requires MixinBooter to run. Use MixinBooter ");
+				throw new Error("DJ2Addons requires MixinBooter to run.");
 			}
 		}
 	}
