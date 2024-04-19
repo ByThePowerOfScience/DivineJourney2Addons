@@ -5,6 +5,7 @@ import btpos.dj2addons.common.modrefs.IsModLoaded;
 import com.buuz135.industrial.proxy.FluidsRegistry;
 import com.buuz135.industrial.tile.agriculture.PlantInteractorTile;
 import com.buuz135.industrial.utils.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -30,7 +31,7 @@ import java.util.List;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Mixin(value=PlantInteractorTile.class, remap=false)
-public class MPlantInteractor {
+public class MPlantInteractor extends TileEntity {
 	@Shadow(remap=false)
 	private ItemStackHandler outItems;
 	
@@ -87,14 +88,17 @@ public class MPlantInteractor {
 	}
 	
 	
-	@SuppressWarnings("MixinAnnotationTarget")
 	@WrapOperation(
-			remap=false,
 			method="work()F",
-			constant={@Constant(classValue=IGrowable.class), @Constant(classValue=IPlantable.class)}
+			at= @At("CONSTANT"),
+			constant={
+					@Constant(classValue=IGrowable.class),
+					@Constant(classValue=IPlantable.class)
+			}
 	)
-	private boolean dj2addons$moveCanBlockBeBrokenCheck_insert(Object o, Operation<Boolean> operation) {
-			return operation.call(o) && BlockUtils.canBlockBeBroken(((PlantInteractorTile)(Object)this).getWorld(), dj2addons$pos);
+	private boolean dj2addons$moveCanBlockBeBrokenCheck_insert(Block o, Operation<Boolean> operation) {
+			return operation.call(o)
+					&& BlockUtils.canBlockBeBroken(this.getWorld(), dj2addons$pos);
 	}
 	
 }

@@ -296,7 +296,7 @@ public class OptimizedLaserRelayConnectionHandler implements ILaserRelayConnecti
 			LOGGER.debug("[addConnection|merge] {} into {}", secondNetwork, firstNetwork);
 			mergeNetworks(firstNetwork, secondNetwork, world);
 			Node first = firstNetwork.nodeLookupMap.get(firstRelayPos);
-			first.linkTo(secondNetwork.nodeLookupMap.get(secondRelayPos));
+			first.linkTo(firstNetwork.nodeLookupMap.get(secondRelayPos));
 		}
 		WorldData.get(world).markDirty();
 		return true;
