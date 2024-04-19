@@ -7,6 +7,6 @@ import vazkii.botania.api.BotaniaAPI;
 
 public class CBotania {
 	public static void printAllBrews(MessageHelper m) {
-		BotaniaAPI.brewMap.forEach((key, brew) -> m.sendComponent(MessageHelper.getPropertyMessage(new TextComponentTranslation(brew.getUnlocalizedName()), new TextComponentString(key), 0)));
+		BotaniaAPI.brewMap.forEach((key, brew) -> m.sendComponent(m.getPropertyMessage(new TextComponentTranslation(brew.getUnlocalizedName()), new TextComponentString(key), 0)));
 	}
 }

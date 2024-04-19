@@ -19,6 +19,69 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * Creates an object to help with messages, formatting, etc.  Mainly designed for CraftTweaker commands that (as far as I know) require manual "command tree" implementations.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public static void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+ *      MessageHelper m = new MessageHelper(sender, "dj2addons.command"); // sets base translation key to "dj2addons.command"
+ *      m.setLogger(CraftTweaker::logCommand).withChat().withLog(); // all output will be printed to both chat and the given logger
+ *
+ *      if (args.length == 0) {
+ *          m.usage(); // prints the translation key "dj2addons.command.usage" to the sender's chat
+ *          return;
+ *      }
+ *      switch (args[0]) {
+ *           case "hand":
+ *               m.enterSubCommand("hand") // makes any translatable text start with "dj2addons.commands.hand", including the .usage() function
+ *                .withoutLog(); // disables logging for this specifically
+ *               if (!(sender.getCommandSenderEntity() instanceof EntityPlayer)) {
+ *                   m.sendError("Command must be run by a player in-game.");
+ *                   return;
+ *               }
+ *               ItemStack heldItem = player.getHeldItemMainhand();
+ *               if (heldItem.isEmpty()) {
+ *                   m.sendError("You must hold something in your hand to use this command.");
+ *                   return;
+ *               }
+ *               m.sendHeading(heldItem.getDisplayName());
+ *               m.sendPropertyWithCopy("Metadata", heldItem.getMeta()); // the metadata will be copyable
+ *               NBTTagCompound nbt = heldItem.serializeNBT();
+ *               if (nbt.isEmpty()) {
+ *                   m.sendError("No NBT.");
+ *               } else {
+ *                  m.sendProperty("NBT", "{");
+ *                  for (String key : nbt.getKeySet()) {
+ *                      m.sendPropertyWithCopy(key, nbt.get(key), 1); // sends "Key: Value", with one indent, with the color of that indent, and the value is copyable
+ *                  }
+ *                  m.sendProperty("", "}");
+ *               }
+ *               break;
+ *           default:
+ *               m.usage();
+ *      }
+ * }
+ * }</pre>
+ * <p>Sends:</p>
+ * <pre>
+ * If hand is empty:
+ *
+ * <span style="color:#AA0000">You must hold something in your hand to use this command.</span>
+ *
+ *
+ * If holding a stone block with NBT {"x": "y"}:
+ *
+ * <span style="color:#0000AA">Stone:</span>
+ *     <span style="color:#FFFF55">- Metadata:</span> <span style="color:#55FFFF">0</span>
+ *     <span style="color:#FFFF55">- NBT:</span> <span style="color:#55FFFF">{</span>
+ *         <span style="color:#FFFF55">- x:</span> <span style="color:#00AA00">y</span>
+ *     <span style="color:#FFFF55">- </span><span style="color:#55FFFF">}</span>
+ * </pre>
+ * <p>Note: The {@link #usage()} method expects the "usage" key for any (sub)command to be nested under it. Default is ".usage". See {@link #setUsageSuffix(String)}.</p>
+ * <p>For example, if the "/dj2addons" command has a base translation key of "dj2addons.command", its usage key would be "dj2addons.command.usage".
+ * <p>Use {@link #enterSubCommand(String) enterSubCommand(name)} at the start of any subcommand's method to append that onto the translation key. E.g. {@code m.enterSubCommand("tile")} would make the new base key "dj2addons.command.tile(.usage)".</p>
+ */
 public final class MessageHelper {
 	public final ICommandSender sender;
 	private boolean doLog = false;
@@ -26,12 +89,14 @@ public final class MessageHelper {
 	
 	/** Contains the usage translation subkey if translated or just the usage string if not */
 	private String usage = "usage";
+	
 	private boolean isTranslated;
+	
 	private LinkedList<String> currentTranslationKey;
-	private Consumer<String> loggerFunction;
+	private Consumer<String> loggerFunction = System.out::println;
 	
 	/**
-	 * Creates a thing to help with messages, formatting, etc.  Not translated.
+	 * Creates an object to help with messages, formatting, etc.  Not translated.
 	 * @see #setUsage(String)
 	 * @see #setLogger(java.util.function.Consumer)
 	 * @see #withChat()
@@ -48,7 +113,7 @@ public final class MessageHelper {
 	}
 	
 	/**
-	 * Creates a thing to help with messages, formatting, etc.
+	 * Creates an object to help with messages, formatting, etc.
 	 *
 	 * <p>Example usage:</p>
 	 * <pre>{@code
@@ -111,7 +176,14 @@ public final class MessageHelper {
 	 * <p>Use {@link #enterSubCommand(String) enterSubCommand(name)} at the start of any subcommand's method to append that onto the translation key. E.g. {@code m.enterSubCommand("tile")} would make the new base key "dj2addons.command.tile(.usage)".</p>
 	 * @param sender The sender to send a message to.  Can be null if chat is disabled.
 	 * @param baseTranslationKey The translation key all (sub)commands will be nested under.
-	 * @see
+	 * @see #setUsage(String)
+	 * @see #setLogger(java.util.function.Consumer)
+	 * @see #withChat()
+	 * @see #withLog()
+	 * @see #send(String)
+	 * @see #sendError(String)
+	 * @see #sendHeading(String)
+	 * @see #sendMessageWithCopy(String, String)
 	 */
 	public MessageHelper(@Nullable ICommandSender sender, String baseTranslationKey) {
 		this.sender = sender;
@@ -120,35 +192,47 @@ public final class MessageHelper {
 		isTranslated = true;
 	}
 	
+	/**
+	 * Enables chat output for the "send" commands.
+	 * @return Self for chaining.
+	 */
 	public MessageHelper withChat() {
 		doChat = true;
 		return this;
 	}
 	
+	/**
+	 * Disables chat output for the "send" commands.
+	 * @return Self for chaining.
+	 */
 	public MessageHelper withoutChat() {
 		doChat = false;
 		return this;
 	}
 	
 	/**
-	 * Enables log output for this
-	 *
-	 * @return
+	 * Enables log output for the "send" commands.
+	 * @return Self for chaining.
 	 */
 	public MessageHelper withLog() {
 		doLog = true;
 		return this;
 	}
 	
+	/**
+	 * Disables log output for the "send" commands.
+	 * @return Self for chaining.
+	 */
 	public MessageHelper withoutLog() {
 		doLog = false;
 		return this;
 	}
 	
 	/**
-	 * Sets the function any logging should call.
+	 * Sets the function any log output should be routed through. Default is {@code System.out::println}.
 	 *
 	 * @param loggerFunction e.g. {@code CraftTweaker::logCommand} or {@code (s) -> LOGGER.info("[COMMAND] {}", s)}
+	 * @return Self for chaining.
 	 * @see #withLog()
 	 */
 	public MessageHelper setLogger(Consumer<String> loggerFunction) {
@@ -158,26 +242,44 @@ public final class MessageHelper {
 	
 	/**
 	 * Set the default usage suffix for any translation key category.
+	 * @return Self for chaining.
 	 */
 	public MessageHelper setUsageSuffix(String usageSuffix) {
 		this.usage = usageSuffix;
 		return this;
 	}
 	
+	/**
+	 *
+	 * @param label
+	 * @return Self for chaining.
+	 */
 	public MessageHelper enterSubCommand(String label) {
 		currentTranslationKey.add(label);
 		return this;
 	}
 	
+	/**
+	 *
+	 * @return Self for chaining.
+	 */
 	public MessageHelper exitSubCommand() {
 		currentTranslationKey.removeLast();
 		return this;
 	}
 	
-	private static final String INDENT = "    ";
-	private static CharArrayList INDENT_HIGHLIGHTING = new CharArrayList(new char[] {'b', '2'});
-	public static void setIndentHighlighting(char[] highlightingCodes) {
-		INDENT_HIGHLIGHTING = new CharArrayList(highlightingCodes);
+	
+	// TODO finish up the javadoc and refactor this to be Style instances and more configurable
+	//      Also make a non-static subclass: "Styling" for all of these things, and make the main class only have sending-related things
+	private final String INDENT = "    ";
+	private CharArrayList INDENT_HIGHLIGHTING = new CharArrayList(new char[] {'b', '2'});
+	
+	/**
+	 * Sets the colors that property values should have for each layer when nested
+	 * @param colorCodes
+	 */
+	public void setNestedPropertyColors(char[] colorCodes) {
+		INDENT_HIGHLIGHTING = new CharArrayList(colorCodes);
 	}
 	
 	public void send(String message) {
@@ -262,14 +364,14 @@ public final class MessageHelper {
 		send(getPropertyMessage(property, value, indent));
 	}
 	
-	public static String makeIndent(int level) {
+	public String makeIndent(int level) {
 		return StringUtils.repeat(INDENT, level + 1);
 	}
 	
 	static final List<TextFormatting> INDENT_COLORS = Arrays.asList(TextFormatting.AQUA, TextFormatting.DARK_GREEN);
 	static final ITextComponent PROPERTY_BULLET = new TextComponentString("- ").setStyle(new Style().setColor(TextFormatting.YELLOW));
 	
-	public static ITextComponent getPropertyMessage(ITextComponent property, ITextComponent value, int indent) {
+	public ITextComponent getPropertyMessage(ITextComponent property, ITextComponent value, int indent) {
 		return TCS(makeIndent(indent)).appendSibling(PROPERTY_BULLET.createCopy())
 		                              .appendSibling(property)
 		                              .appendText(": ")
@@ -280,7 +382,7 @@ public final class MessageHelper {
 		return new TextComponentString(s);
 	}
 	
-	public static String getPropertyMessage(String property, String value, int indent) {
+	public String getPropertyMessage(String property, String value, int indent) {
 		if (property == null || property.isEmpty())
 			property = "";
 		else if (property.charAt(property.length() - 1) == ':') {
@@ -294,7 +396,7 @@ public final class MessageHelper {
 		return makeIndent(indent) + "§e- " + property + "§" + INDENT_HIGHLIGHTING.getChar(indent % INDENT_HIGHLIGHTING.size()) + value;
 	}
 	
-	public static <T> String listToAssociativeArrayPretty(List<T> list, boolean raw, int indent) {
+	public <T> String listToAssociativeArrayPretty(List<T> list, boolean raw, int indent) {
 		Map<T, T> map = new Object2ObjectOpenHashMap<>();
 		for (int i = 0; i < list.size(); i += 2) {
 			T o1 = list.get(i);
@@ -309,7 +411,7 @@ public final class MessageHelper {
 		return mapToAssociativeArrayPretty(map, raw, indent);
 	}
 	
-	public static <T> String mapToAssociativeArrayPretty(Map<T, T> map, boolean raw, int indent) {
+	public <T> String mapToAssociativeArrayPretty(Map<T, T> map, boolean raw, int indent) {
 		StringBuilder sb = new StringBuilder();
 		if (!raw)
 			sb.append(TextFormatting.YELLOW);
