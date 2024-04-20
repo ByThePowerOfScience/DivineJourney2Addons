@@ -144,14 +144,14 @@ Brews.removeRecipe("botania.brews.warpWard");
 // Reregister the original recipe for non-pendants
 Brews.addOutputRestrictedBrewRecipe( 
 	warpWardBrew,
-	[<botania:vial:0>, <botania:vial:1>, <botania:incense_stick>],
-	[<minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bathing_salts>] // TODO: fact-check these names
+	[<botania:vial:0>, <botania:vial:1>, <botania:incensestick>],
+	[<minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bath_salts>]
 );
 
 // Register a more difficult recipe for the pendant specifically
 Brews.addOutputRestrictedBrewRecipe( 
 	warpWardBrew,
-	[<botania:blood_pendant>],
-	[<minecraft:nether_star>, <minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bathing_salts>]
+	[<botania:bloodpendant>],
+	[<minecraft:nether_star>, <minecraft:nether_wart>, <thaumcraft:amber>, <thaumcraft:salis_mundus>, <thaumcraft:bath_salts>]
 );
 ```
