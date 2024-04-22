@@ -1,7 +1,7 @@
 package btpos.dj2addons.api.mixin.bewitchment;
 
 import btpos.dj2addons.api.bewitchment.Rituals;
-import btpos.dj2addons.util.fastutilutils.FastUtilCollectors;
+import btpos.dj2addons.common.util.CollectionsUtils.FastUtilCollectors;
 import com.bewitchment.api.registry.Ritual;
 import com.bewitchment.client.integration.jei.BewitchmentJEI;
 import net.minecraftforge.registries.IForgeRegistry;

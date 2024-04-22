@@ -1,4 +1,4 @@
-package btpos.dj2addons.patches.mixin.vanillafix;
+package btpos.dj2addons.initmixins.patches.vanillafix;
 
 import org.dimdev.vanillafix.crashes.StacktraceDeobfuscator;
 import org.spongepowered.asm.mixin.Mixin;

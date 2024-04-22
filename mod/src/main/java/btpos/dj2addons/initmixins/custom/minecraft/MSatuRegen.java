@@ -48,9 +48,6 @@ public abstract class MSatuRegen extends GuiIngame  {
 			y -= 2;
 		instance.drawTexturedModalRect(x, y, textureX, textureY, width, height);
 	}
-	
-	
-	
 }
 
 

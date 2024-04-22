@@ -9,7 +9,7 @@ import btpos.dj2addons.common.util.zendoc.ZenDocInclude;
 import btpos.dj2addons.common.util.zendoc.ZenDocMethod;
 import btpos.dj2addons.crafttweaker.CraftTweakerHelpers;
 import btpos.dj2addons.crafttweaker.botania.CTBrews.ZenBrewWrapper;
-import btpos.dj2addons.util.fastutilutils.FastUtilCollectors;
+import btpos.dj2addons.common.util.CollectionsUtils.FastUtilCollectors;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
