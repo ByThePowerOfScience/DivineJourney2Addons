@@ -130,3 +130,6 @@ gradlew.bat
 /mod/testrun/
 /testrun/
 *.jks
+/temp/
+/logs/
+/libsources/

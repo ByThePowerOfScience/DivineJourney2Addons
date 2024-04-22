@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "dj2addons",
+    "name": "Divine Journey 2 Addons",
+    "description": "A collection of patches and tweaks to support the Divine Journey 2 modpack.",
+    "version": "${modVersion}",
+    "mcversion": "${minecraftVersion}",
+    "url": "https://www.curseforge.com/project/605280",
+    "updateUrl": "",
+    "authorList": [
+      "ByThePowerOfScience (AKA ABadHaiku)"
+    ],
+    "credits": "Atricos - Divine Journey 2",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

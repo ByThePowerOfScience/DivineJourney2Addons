@@ -1,0 +1,20 @@
+{
+  "required": false,
+  "package": "btpos.dj2addons.initmixins",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "btpos.dj2addons.core.DJ2AMixinConfig",
+  "target": "@env(INIT)",
+  "mixins": [
+    "dj2addons.initmixins.api.minecraft.MItemHangingEntity",
+    "dj2addons.initmixins.custom.minecraft.MSatuRegen",
+    "patches.minecraft.MItemBucket",
+    "dj2addons.initmixins.patches.minecraft.MWorld",
+    "dj2addons.initmixins.patches.minecraftforge.IngredientNBTAccessor",
+    "patches.vanillafix.MStacktraceDeobfuscator"
+  ],
+  "client": [],
+  "minVersion": "0.6",
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}
