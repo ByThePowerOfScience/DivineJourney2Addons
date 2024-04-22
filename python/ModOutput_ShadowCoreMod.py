@@ -1,3 +1,4 @@
+import sys
 import zipfile
 
 from DJ2A_CommonBuildLogic import getLatestModBuild, getLatestCoremodBuild
@@ -12,17 +13,18 @@ from DJ2A_CommonBuildLogic import getLatestModBuild, getLatestCoremodBuild
 # 					continue
 # 				coremodJar.writestr(name, mixExtJar.read(name))
 
-def jankShadowCoremodIntoMod():
-	mod_jar = getLatestModBuild()
-	coremod_jar = getLatestCoremodBuild()
+def jankShadowCoremodIntoMod(projectDir: str):
+	mod_jar = getLatestModBuild(projectDir)
+	coremod_jar = getLatestCoremodBuild(projectDir)
 	print(f"Copying {coremod_jar} to {mod_jar}")
 	with zipfile.ZipFile(mod_jar, mode='a') as file:
 		file.write(coremod_jar, f'/META-INF/libraries/{coremod_jar.name}')  # keep same name
 		# file.write(mixinextras, '/META-INF/libraries/_mixinextras-common-0.3.5.jar')  # only way I could find to rename it when copying
 
+
 def main():
 	# jankShadowMixinExtrasIntoCoremod()
-	jankShadowCoremodIntoMod()
+	jankShadowCoremodIntoMod(sys.argv[1])
 
 
 main()

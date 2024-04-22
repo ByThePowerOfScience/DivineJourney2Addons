@@ -181,7 +181,7 @@ runClient.dependsOn('build', 'copyCoremodToRunDir')
 
 tasks.register('jankShadow', Exec) {
 	group = 'other_dj2addons'
-	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'))
+	commandLine(rootProject.ext.pythonFile, rootProject.file('python/ModOutput_ShadowCoreMod.py'), rootProject.projectDir)
 }
 
 tasks.register('copyCoremodToRunDir', Copy) {
