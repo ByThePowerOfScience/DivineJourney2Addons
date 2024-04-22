@@ -1,6 +1,8 @@
 ## All Rights Reserved
 
-Minecraft copyright Mojang AB, Microsoft. 
+Minecraft © Mojang AB, Microsoft. 
+
+"Divine Journey 2", DJ2 icon © Atricos.
 
 Divine Journey 2 Addons contains some code from the mods it targets due to implementation restrictions.  Those sections are governed by the source projects' licenses.
 
