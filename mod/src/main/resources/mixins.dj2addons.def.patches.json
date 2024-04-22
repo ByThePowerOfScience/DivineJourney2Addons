@@ -12,7 +12,8 @@
     "modularmagic.MRequirementLifeEssence",
     "moretweaker.MInputs",
     "packagedauto.MMiscUtil",
-    "rftools.MNBTMatchingRecipe"
+    "rftools.MNBTMatchingRecipe",
+    "vanillafix.MStacktraceDeobfuscator"
   ],
   "client": [
     "immersiveengineering.MTileEntityMultiblockPart",

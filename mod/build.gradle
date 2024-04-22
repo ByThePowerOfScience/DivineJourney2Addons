@@ -149,6 +149,8 @@ dependencies {
 	
 	deobfProvided("curse.maven:RadixCore-77286:2483855")
 	
+	deobfProvided("curse.maven:VanillaFix-292785:2915154")
+	
 	// Dev Tools
 	testImplementation( // For ZenDoc
 			"org.reflections:reflections:0.10.2"
