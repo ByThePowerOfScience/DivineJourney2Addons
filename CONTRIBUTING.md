@@ -3,7 +3,7 @@ If you're reading this because you're contributing to this project:
 - Second: This project is very janky (which is unfortunately NECESSARY), so you'll need to learn some things about it before you start contributing.
   - (NOTE: I have spent over ***200 HOURS*** working on this stupid buildscript, and every piece of jank is only there because I literally could not figure out a way to do it otherwise.)
 
-# Buildscript
+# ~~Buildscript~~ Outdated, subprojects have been unified
 1. The Gradle "project" is actually just two subprojects: `:mod` and `:coremod`.
    - The coremod jar gets moved into the mod jar's "/META-INF/libraries" directory by a Python script after the `:mod:build` task. More on that later.
    - The only tasks you care about are in the `:mod` subproject, and the only outputs you care about are in `/mod/build/libs`. This is because this version of Gradle is kinda dumb.
