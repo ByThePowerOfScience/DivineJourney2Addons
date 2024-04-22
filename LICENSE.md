@@ -32,3 +32,6 @@ Attempts to make a separate LTS version of this mod are not permitted under this
 1. This mod is made to fix things for _everyone_ in the 1.12 ecosystem, and forking the project splits the number of people who benefit from any changes. 
 2. We have 3 different versions of UniversalTweaks that all conflict with one another and are missing some features from the others.  I don't want that to happen to this.
 3. Honestly I just like keeping my name on it :P
+
+
+THIS MOD IS PROVIDED 'AS IS' WITH NO WARRANTIES, IMPLIED OR OTHERWISE. THE OWNER OF THIS MOD TAKES NO RESPONSIBILITY FOR ANY DAMAGES INCURRED FROM THE USE OF THIS MOD. THIS MOD ALTERS FUNDAMENTAL PARTS OF THE MINECRAFT GAME, PARTS OF MINECRAFT MAY NOT WORK WITH THIS MOD INSTALLED. ALL DAMAGES CAUSED FROM THE USE OR MISUSE OF THIS MOD FALL ON THE USER.

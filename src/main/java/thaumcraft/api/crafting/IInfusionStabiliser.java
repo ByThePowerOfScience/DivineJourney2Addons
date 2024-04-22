@@ -1,7 +1,5 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
+// Thaumcraft © Azanor13, All Rights Reserved
+// TODO manually classload these specific classes early so as not to violate license
 
 package thaumcraft.api.crafting;
 

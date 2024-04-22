@@ -1,3 +1,6 @@
+// Thaumcraft © Azanor13, All Rights Reserved
+// TODO manually classload these specific classes early so as not to violate license
+
 package thaumcraft.api.crafting;
 
 import net.minecraft.util.math.BlockPos;
