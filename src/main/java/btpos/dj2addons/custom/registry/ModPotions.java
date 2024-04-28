@@ -5,12 +5,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 import btpos.dj2addons.custom.impl.StatusEffects.SatuRegen;
 import btpos.dj2addons.common.util.Util;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 

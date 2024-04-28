@@ -1,6 +1,6 @@
 package btpos.dj2addons.optimizations.impl.actuallyadditions;
 
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 import de.ellpeck.actuallyadditions.api.laser.IConnectionPair;
 import de.ellpeck.actuallyadditions.api.laser.LaserType;
 import de.ellpeck.actuallyadditions.api.laser.Network;

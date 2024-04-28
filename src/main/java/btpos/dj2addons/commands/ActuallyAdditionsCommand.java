@@ -9,7 +9,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.server.command.CommandTreeHelp;
 
-import static btpos.dj2addons.DJ2Addons.LOGGER;
+import static btpos.dj2addons.core.DJ2Addons.LOGGER;
 
 public class ActuallyAdditionsCommand extends AbstractDJ2ATreeCommand {
 	

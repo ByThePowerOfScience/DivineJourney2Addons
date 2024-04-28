@@ -1,6 +1,6 @@
 package btpos.dj2addons.crafttweaker;
 
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 import btpos.dj2addons.api.bewitchment.Rituals;
 import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import btpos.dj2addons.commands.util.DJ2ACommandUtils;

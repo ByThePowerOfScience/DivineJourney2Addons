@@ -1,20 +1,14 @@
 package btpos.dj2addons.common.util;
 
-import btpos.dj2addons.DJ2Addons;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import btpos.dj2addons.core.DJ2Addons;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collector.Characteristics;
 
 public final class Util {
 	

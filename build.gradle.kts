@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "btpos.dj2addons"
-version = "1.3.0-BETA"
+version = "1.2.1.1.1"
 
 java {
     toolchain {
@@ -32,6 +32,12 @@ idea {
     }
 }
 
+
+tasks.register<Copy>("copyModToModpack") {
+    group = "dj2addons"
+    from(tasks.reobfJar)
+    into(File("C:\\Users\\impro_000\\AppData\\Roaming\\.mineyourmind\\instances\\divinejourney2\\minecraft\\mods"))
+}
 
 
 

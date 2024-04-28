@@ -1,5 +1,6 @@
-package btpos.dj2addons;
+package btpos.dj2addons.core;
 
+import btpos.dj2addons.Tags;
 import btpos.dj2addons.api.client.SatuRegen;
 import btpos.dj2addons.commands.DJ2AServerCommands;
 import btpos.dj2addons.common.CoreInfo;
@@ -28,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 		dependencies = DJ2Addons.DEPENDENCIES
 )
 public class DJ2Addons  {
-	public static final String MOD_ID = "btpos/dj2addons";
+	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
 	public static final String VERSION = Tags.VERSION;
 	
@@ -62,6 +63,7 @@ public class DJ2Addons  {
 	 */
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
+		LOGGER.info("DJ2Addons Loaded!");
 		//noinspection DataFlowIssue
 		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(Registered.saturegen));
 		CoreInfo.verifyCoreLoaded();
