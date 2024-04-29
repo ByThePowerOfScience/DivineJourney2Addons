@@ -34,7 +34,7 @@ public abstract class MAbilityAccessories {
 	
 	
 	/**
-	 * @author ByThePowerOfScience
+	 * @author GildedGames
 	 * @reason Prevent a hundred itemstacks from being created and discarded per tick and lagging the server to a halt.
 	 */
 	@Overwrite(remap = false)

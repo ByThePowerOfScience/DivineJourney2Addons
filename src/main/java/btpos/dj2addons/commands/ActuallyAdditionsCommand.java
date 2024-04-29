@@ -9,8 +9,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.server.command.CommandTreeHelp;
 
-import static btpos.dj2addons.core.DJ2Addons.LOGGER;
-
 public class ActuallyAdditionsCommand extends AbstractDJ2ATreeCommand {
 	
 	public ActuallyAdditionsCommand(String parentTranslationKey, boolean isRemote) {
@@ -28,14 +26,14 @@ public class ActuallyAdditionsCommand extends AbstractDJ2ATreeCommand {
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 			MessageHelper m = new MessageHelper(sender, baseTranslationKey).withChat()
-			                                                               .setLogger(LOGGER::info)
+			                                                               .setLogger(isRemote ? DJ2AClientCommands.LOG_ACTION : DJ2AServerCommands.LOG_ACTION)
 			                                                               .withLog();
 			
 			
 			m.sendHeading("Printing AA networks:");
 			m.sendHeading("From map:");
 			if (!(ActuallyAdditionsAPI.connectionHandler instanceof OptimizedLaserRelayConnectionHandler)) {
-				m.sendError("Handler isn't a DJ2A handler!");
+				m.sendError("Map's handler isn't a DJ2A handler!");
 			} else {
 				StringBuilder sb = new StringBuilder();
 				((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap.values()

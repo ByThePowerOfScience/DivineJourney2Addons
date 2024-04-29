@@ -37,7 +37,7 @@ public abstract class MConnectionPair {
 	}
 	
 	/**
-	 * @author ByThePowerOfScience
+	 * @author Ellpeck
 	 * @reason Commutative (non-directional) pair equality for hashtables.
 	 */
 	@Overwrite @Override

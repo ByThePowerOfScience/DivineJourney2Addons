@@ -65,7 +65,7 @@ public class MPlantInteractor extends WorkingAreaElectricMachine {
 	}
 	
 	/**
-	 * @author
+	 * @author Buuz
 	 * @reason
 	 */
 	@Overwrite

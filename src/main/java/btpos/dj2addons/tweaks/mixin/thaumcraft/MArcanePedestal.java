@@ -13,7 +13,7 @@ public abstract class MArcanePedestal extends TileThaumcraftInventory {
 	}
 	
 	/**
-	 * @author ByThePowerOfScience
+	 * @author Azanor
 	 * @reason Allows infusion recipes to output multiple items.
 	 */
 	@Overwrite(remap=false)

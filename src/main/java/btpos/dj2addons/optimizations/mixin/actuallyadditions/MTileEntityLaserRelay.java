@@ -33,7 +33,7 @@ public abstract class MTileEntityLaserRelay extends TileEntityInventoryBase {
 	
 	/**
 	 * Updates the client's idea of the current state of the tile.
-	 * @author ByThePowerOfScience
+	 * @author Ellpeck
 	 * @reason Implement optimized network handler
 	 */
 	@Overwrite(remap=false) @Override
