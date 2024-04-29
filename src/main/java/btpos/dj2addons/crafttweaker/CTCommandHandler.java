@@ -1,6 +1,5 @@
 package btpos.dj2addons.crafttweaker;
 
-import btpos.dj2addons.core.DJ2Addons;
 import btpos.dj2addons.api.bewitchment.Rituals;
 import btpos.dj2addons.api.extrautils2.ExtraUtilities;
 import btpos.dj2addons.commands.util.DJ2ACommandUtils;
@@ -13,8 +12,7 @@ import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.common.util.StringDumpUtils;
 import btpos.dj2addons.common.util.Util;
 import btpos.dj2addons.common.util.Util.DevTools;
-import btpos.dj2addons.optimizations.impl.actuallyadditions.GraphNetwork;
-import btpos.dj2addons.optimizations.impl.actuallyadditions.OptimizedLaserRelayConnectionHandler;
+import btpos.dj2addons.core.DJ2Addons;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -25,8 +23,6 @@ import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import crafttweaker.mc1120.commands.NBTUtils;
 import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import crafttweaker.mc1120.data.NBTConverter;
-import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
-import de.ellpeck.actuallyadditions.mod.data.WorldData;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityBase;
 import de.ellpeck.actuallyadditions.mod.tile.TileEntityBase.NBTType;
 import net.minecraft.block.Block;
@@ -59,10 +55,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused", "Inspection", "Guava"})
-public class CommandHandler extends CraftTweakerCommand {
+public class CTCommandHandler extends CraftTweakerCommand {
 	private static Thread dumperThread = null;
 	
-	public CommandHandler() {
+	public CTCommandHandler() {
 		super(DJ2Addons.MOD_ID);
 	}
 	
@@ -87,7 +83,18 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	private enum SubCommand {
-		hand, info, mods, bewitchment, extrautils2, totemic, findextending, networks, clearnetworks, syncablenbt, breakdebug, botania
+		hand,
+		info,
+		mods,
+		bewitchment,
+		botania,
+		extrautils2,
+		totemic,
+		findextending,
+		networks,
+		clearnetworks,
+		syncablenbt,
+		breakdebug
 //		,validate
 	}
 	
@@ -141,20 +148,6 @@ public class CommandHandler extends CraftTweakerCommand {
 					m.sendHeading("Syncable NBT for " + DJ2ACommandUtils.formatPos(lookAtPos));
 					m.send(NBTUtils.getAppealingString(nbt.toString()));
 					break;
-				case clearnetworks:
-					Map<BlockPos, GraphNetwork> networkLookupMap = ((OptimizedLaserRelayConnectionHandler) ActuallyAdditionsAPI.connectionHandler).networkLookupMap;
-					networkLookupMap.values().forEach(network -> {
-						network.nodeLookupMap.values().forEach(node -> {
-							node.connections.clear();
-							node.network = null;
-						});
-					});
-					GraphNetwork.debug$idCount = 0;
-					networkLookupMap.clear();
-					WorldData worldData = WorldData.get(sender.getEntityWorld());
-					worldData.laserRelayNetworks.clear();
-					worldData.markDirty();
-					break;
 				case mods:
 				case bewitchment:
 					if (Loader.isModLoaded("bewitchment"))
@@ -202,7 +195,7 @@ public class CommandHandler extends CraftTweakerCommand {
 	}
 	
 	
-	private static void executeBlockInfoCommand(MessageHelper m, ICommandSender sender, List<String> args) {
+	public static void executeBlockInfoCommand(MessageHelper m, ICommandSender sender, List<String> args) {
 		m.enterSubCommand("info").withChat().withLog();
 		if (args.isEmpty()) {
 			m.usage();

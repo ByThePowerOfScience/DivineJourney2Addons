@@ -25,13 +25,13 @@ import org.apache.logging.log4j.Logger;
 @Mod(
 		modid = DJ2Addons.MOD_ID,
 		name = DJ2Addons.MOD_NAME,
-		version = DJ2Addons.VERSION,
-		dependencies = DJ2Addons.DEPENDENCIES
+		version = Tags.VERSION,
+		dependencies = DJ2Addons.DEPENDENCIES//,
+//		certificateFingerprint = Tags.CERT_FINGERPRINT
 )
 public class DJ2Addons  {
 	public static final String MOD_ID = "dj2addons";
 	public static final String MOD_NAME = "Divine Journey 2 Addons";
-	public static final String VERSION = Tags.VERSION;
 	
 	public static final String DEPENDENCIES =
 			"after:crafttweaker;" +
@@ -81,7 +81,8 @@ public class DJ2Addons  {
 	 */
 	@Mod.EventHandler
 	public void postinit(FMLPostInitializationEvent event) {
-		if (IsModLoaded.crafttweaker) { // also finalizes all IsModLoaded checks
+		IsModLoaded.update();
+		if (IsModLoaded.crafttweaker) {
 			CCraftTweaker.postInit();
 		}
 	}
