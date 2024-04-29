@@ -143,7 +143,6 @@ dependencies {
     
     compileOnly(rfg.deobf("curse.maven:Bewitchment-285439:3256343") as String) {
         exclude(group="org.spongepowered")
-        
     }
     
     
@@ -225,19 +224,28 @@ minecraft {
     
     // Generate a field named VERSION with the mod version in the injected Tags class
     injectedTags.put("VERSION", project.version)
+//    injectedTags.put("CERT_FINGERPRINT", project.property("dj2addons_signSHA1").toString())
     
     // If you need the old replaceIn mechanism, prefer the injectTags task because it doesn't inject a javac plugin.
     // tagReplacementFiles.add("RfgExampleMod.java")
     
     // Enable assertions in the mod's package when running the client or server
     extraRunJvmArguments.add("-ea:${project.group}")
-    extraRunJvmArguments.addAll(listOf("-Dforge.logging.console.level=debug", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
+    extraRunJvmArguments.addAll(listOf(
+        "-Dforge.logging.console.level=debug",
+        "-Dmixin.debug.verbose=true",
+        "-Dmixin.debug.export=true"
+    ))
     
     // If needed, add extra tweaker classes like for mixins
     extraTweakClasses.add("org.spongepowered.asm.launch.MixinTweaker")
     
     // Exclude some Maven dependency groups from being automatically included in the reobfuscated runs
-    groupsToExcludeFromAutoReobfMapping.addAll("com.diffplug", "com.diffplug.durian", "net.industrial-craft")
+    groupsToExcludeFromAutoReobfMapping.addAll(
+        "com.diffplug",
+        "com.diffplug.durian",
+        "net.industrial-craft"
+    )
 }
 
 // Generates a class named rfg.examplemod.Tags with the mod version in it, you can find it at
@@ -271,12 +279,17 @@ configurations.testImplementation {
 // Put the version from gradle into mcmod.info
 tasks.processResources.configure {
     val projVersion = project.version.toString() // Needed for configuration cache to work
-    inputs.property("version", projVersion)
     val mcVersion = "1.12.2"
-    inputs.property("mc_version", mcVersion)
+    inputs.properties(mapOf(
+        "version" to projVersion,
+        "mc_version" to mcVersion
+    ))
     
     filesMatching("mcmod.info") {
-        expand(mapOf("modVersion" to projVersion, "minecraftVersion" to mcVersion))
+        expand(mapOf(
+            "modVersion" to projVersion,
+            "minecraftVersion" to mcVersion
+        ))
     }
 }
 
@@ -301,6 +314,45 @@ tasks.javadoc {
         )
     }
 }
+
+//tasks.register("signJar") {
+//    onlyIf {
+//        project.hasProperty("dj2addons_keyStore")
+//    }
+//    dependsOn(tasks.reobfJar)
+//
+//    val keystore = project.property("dj2addons_keyStore").toString()
+//    val keystore_alias = project.property("dj2addons_keyStoreAlias").toString()
+//    val keystore_pass = project.property("dj2addons_keyStorePass").toString()
+//    val signSha1 = project.property("dj2addons_signSHA1").toString()
+//
+//    inputs.properties(mapOf(
+//        "keystore" to keystore,
+//        "keystore_alias" to keystore_alias,
+//        "keystore_pass" to keystore_pass,
+//        "signSHA1" to signSha1,
+//        "toSign" to tasks.reobfJar.get().outputs
+//    ))
+//
+//    doLast {
+//        ant.withGroovyBuilder {
+//            "signjar"(
+//                "jar" to tasks.reobfJar.get().outputs.files,
+//                "destDir" to tasks.reobfJar.get().outputs.files,
+//                "alias" to keystore_alias,
+//                "storetype" to "jks",
+//                "keystore" to keystore,
+//                "storepass" to keystore_pass,
+//                "verbose" to "true",
+//                "preservelastmodified" to "true"
+//            )
+//        }
+//    }
+//}
+//
+//tasks.reobfJar.configure {
+//    finalizedBy("signJar")
+//}
 
 
 
