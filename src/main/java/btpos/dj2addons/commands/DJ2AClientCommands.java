@@ -6,14 +6,15 @@ import btpos.dj2addons.core.DJ2Addons;
 import btpos.dj2addons.crafttweaker.CTCommandHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.IClientCommand;
 import net.minecraftforge.server.command.CommandTreeBase;
 import net.minecraftforge.server.command.CommandTreeHelp;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class DJ2AClientCommands extends CommandTreeBase implements IClientCommand {
@@ -61,23 +62,17 @@ public class DJ2AClientCommands extends CommandTreeBase implements IClientComman
 	}
 	
 	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		Entity e = sender.getCommandSenderEntity();
-		
-		// ok for use in singleplayer
-		if (server.isSinglePlayer())
-			return true;
+	public boolean checkPermission(@Nullable MinecraftServer server, ICommandSender sender) {
 		
 		// ok for use by server console or operators
-		if (sender.canUseCommand(4, "op")) {
+		if (sender.canUseCommand(4, "crafttweaker")) {
 			return true;
 		}
 		
-		if (e instanceof EntityPlayerMP) {
+		if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
 			// if they're me :3 (because I need to debug certain things in prod)
-			return DJ2ACommandUtils.me_lol.equals(((EntityPlayerMP) e).getGameProfile().getId())
-			       // also if they have crafttweaker access, since they can use the /ct dj2addons commands there too
-			       || sender.canUseCommand(4, "crafttweaker");
+			UUID senderID = ((EntityPlayerMP) sender.getCommandSenderEntity()).getGameProfile().getId();
+			return DJ2ACommandUtils.me_lol.equals(senderID);
 		}
 		
 		return false;
