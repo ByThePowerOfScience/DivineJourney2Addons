@@ -22,7 +22,7 @@ public class CoreInfo {
 	}
 	
 	/**
-	 * Called by {@link btpos.dj2addons.core.DJ2Addons#preinit DJ2Addons.preinit}
+	 * Called by {@link btpos.dj2addons.DJ2Addons#preinit DJ2Addons.preinit}
 	 */
 	public static void verifyCoreLoaded() {
 		if (!coreLoaded) {

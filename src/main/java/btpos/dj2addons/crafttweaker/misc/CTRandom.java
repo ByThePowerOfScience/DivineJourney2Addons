@@ -10,7 +10,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.Random;
 
 @ZenRegister
-@ZenClass("dj2addons.Random") @ZenDocClass(value="dj2addons.Random", description="Helper object for getting random numbers before world load.")
+@ZenClass("dj2addons.Random") @ZenDocClass(value="dj2addons.Random", description="CT wrapper for getting random numbers before world load.")
 public class CTRandom {
 	private final java.util.Random rand;
 	
@@ -19,10 +19,17 @@ public class CTRandom {
 	}
 	
 	@ZenMethod
-	@ZenDocMethod(description = "Creates a new Random object with a default seed.")
-	public static CTRandom newRandom() {
-		return new CTRandom(0x118999);
+	@ZenDocMethod(description = "Creates a new Random object with a default, consistent seed.")
+	public static CTRandom newConstantRandom() {
+		return new CTRandom(0x118999); // that stupid bit will forever live rent-free inside my head
 	}
+	
+	@ZenMethod
+	@ZenDocMethod(description="Creates a new Random object seeded with the current time.")
+	public static CTRandom newRandom() {
+		return new CTRandom((int) System.currentTimeMillis());
+	}
+	
 	@ZenMethod
 	@ZenDocMethod(order=1,description = "Creates a new Random object with a set seed.", args=@ZenDocArg(value ="seed"))
 	public static CTRandom newRandom(int seed) {

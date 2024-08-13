@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import btpos.dj2addons.core.DJ2Addons;
+import btpos.dj2addons.DJ2Addons;
 import org.jetbrains.annotations.NotNull;
 
 public class StatusEffects {

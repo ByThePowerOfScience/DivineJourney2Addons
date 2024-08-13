@@ -2,6 +2,7 @@
   "required": true,
   "package": "btpos.dj2addons.api.mixin",
   "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.6",
   "plugin": "btpos.dj2addons.core.DJ2AMixinConfig",
   "mixins": [
     "bloodmagic.TileSoulForgeAccessor",

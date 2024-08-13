@@ -33,7 +33,7 @@ public final class CollectionsUtils {
 	}
 	
 	/**
-	 * Collectors that generate fastutil Collections instead of the awful Java ones.
+	 * Collectors that generate fastutil Collections instead of the Java ones.
 	 */
 	public static final class FastUtilCollectors {
 		

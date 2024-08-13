@@ -12,7 +12,7 @@ import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.common.util.StringDumpUtils;
 import btpos.dj2addons.common.util.Util;
 import btpos.dj2addons.common.util.Util.DevTools;
-import btpos.dj2addons.core.DJ2Addons;
+import btpos.dj2addons.DJ2Addons;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;

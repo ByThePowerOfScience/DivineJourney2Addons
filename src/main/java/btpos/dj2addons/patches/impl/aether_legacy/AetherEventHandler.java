@@ -10,6 +10,9 @@ import btpos.dj2addons.common.modrefs.IsModLoaded;
 
 @EventBusSubscriber
 public class AetherEventHandler {
+	/**
+	 * Attempt to stop aerogel automation crashing servers
+	 */
 	@SubscribeEvent
 	public void onPlaceBlock(EntityPlaceEvent event) {
 		if (IsModLoaded.aether_legacy

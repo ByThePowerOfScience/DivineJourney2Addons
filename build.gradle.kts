@@ -87,20 +87,22 @@ dependencies {
         "org.spongepowered:mixin:${project.properties["mixin_version"]}:processor",
         "mixins.dj2addons.refmap.json"
     ))
-	compileOnly("zone.rong:mixinbooter:7.0") {
+    
+	compileOnly("zone.rong:mixinbooter:7.0") { // bleugh please get it out of this package cleanroom
         isTransitive = false
     }
-    runtimeOnly(rfg.deobf("curse.maven:mixin-booter-419286:4090558"))
+    runtimeOnly(rfg.deobf("curse.maven:mixin-booter-419286:4090558")) // ensure compatibility with the one used in the modpack
     
+    implementation("com.cleanroommc:configanytime:1.0") // init configs for mixins
     
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-+")
     
     implementation("mezz.jei:jei_1.12.2:4.16.1.302")
     
-    implementation(rfg.deobf("curse.maven:ActuallyAdditions-228404:3117927"))
-    
     compileOnly(rfg.deobf("curse.maven:DraconicEvolution-223565:3431261"))
     
+    
+    compileOnly(rfg.deobf("curse.maven:ActuallyAdditions-228404:3117927"))
     compileOnly(rfg.deobf("curse.maven:EnderIO-64578:3328811"))
     compileOnly(rfg.deobf("curse.maven:ProjectIntelligence-306028:2833640"))
     compileOnly(rfg.deobf("curse.maven:EnderCore-231868:2972849"))
@@ -158,10 +160,6 @@ dependencies {
     
     compileOnly(rfg.deobf("curse.maven:AgriCraft-225635:3317747"))
     compileOnly(rfg.deobf("curse.maven:InfinityLib-251396:3317119"))
-
-//	compileOnly(
-//			rfg.deobf("curse.maven:MysticalAgriculture-246640:2704562")
-//	)
     
     compileOnly(rfg.deobf("curse.maven:MysticalAgriculture-246640:2704562"))
     
@@ -207,7 +205,7 @@ dependencies {
 
 configurations.compileClasspath {
     this.allDependencies.forEach {
-        if (it.group != "org.spongepowered")
+        if (it.group != "org.spongepowered") // trying to stop the shaded mixin dep in Bewitchment from being what IDEA links to
             (it as ExternalDependency).exclude(group="org.spongepowered")
     }
 }
@@ -220,7 +218,7 @@ minecraft {
     mcVersion.set("1.12.2")
     
     // Username for client run configurations
-    username.set("Developer")
+//    username.set("Developer")
     
     // Generate a field named VERSION with the mod version in the injected Tags class
     injectedTags.put("VERSION", project.version)

@@ -1,5 +1,6 @@
-package btpos.dj2addons.core;
+package btpos.dj2addons;
 
+import btpos.dj2addons.core.DJ2APreStartHook;
 import btpos.dj2addons.core.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer;
 import btpos.dj2addons.core.asm.api.thaumcraft.infusionstabilizers.JankConfig;
 import btpos.dj2addons.common.CoreInfo;
@@ -20,7 +21,7 @@ import java.util.Map;
 @SortingIndex(10)
 @MCVersion("1.12.2")
 @TransformerExclusions({"btpos.dj2addons.core"})
-public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
+public class DJ2ACoremod implements IFMLLoadingPlugin, IEarlyMixinLoader {
 	static {
 		// Load classes in the right order to avoid a circularity error.
 		CoreInfo.class.getName();
@@ -29,7 +30,7 @@ public class DJ2ALoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 		InfusionStabilizerClassTransformer.class.getName();
 	}
 	
-	public DJ2ALoadingPlugin() {
+	public DJ2ACoremod() {
 		CoreInfo.LOGGER.info("DJ2Addons Coremod started!");
 //		MixinBootstrap.init();
 		

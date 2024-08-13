@@ -1,6 +1,6 @@
 package btpos.dj2addons.common.util;
 
-import btpos.dj2addons.core.DJ2Addons;
+import btpos.dj2addons.DJ2Addons;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
