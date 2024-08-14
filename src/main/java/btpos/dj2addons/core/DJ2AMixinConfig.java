@@ -2,6 +2,7 @@ package btpos.dj2addons.core;
 
 import btpos.dj2addons.DJ2AConfig;
 import btpos.dj2addons.common.CoreInfo;
+import btpos.dj2addons.config.CfgOptimizations;
 import btpos.dj2addons.config.CfgPatches;
 import btpos.dj2addons.config.CfgTweaks;
 import net.minecraftforge.fml.common.Loader;
@@ -42,21 +43,70 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 		String[] split = mixinClassName.split("\\.");
 		String simplename = split[split.length - 1];
 		
-		
 		switch (split[3]) {
 			case "tweaks":
 				return checkTweaksConfigs(simplename);
 			case "patches":
 				return checkPatches(simplename);
+			case "optimizations":
+				return checkOptimizations(simplename);
+			case "initmixins":
+				return checkInitMixins(simplename);
 		}
 		
 		if (simplename.equals("MWorld")) {
 			if (hasTickProfiler()) {
-				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
+				LOGGER.fatal("TickProfiler is detected, but the Aerogel patch is enabled! Disable it in the config or it will cause crashes!");
 				return false;
 			}
 		}
 		return !simplename.contains("JEI") || Loader.isModLoaded("jei");
+	}
+	
+	private boolean checkInitMixins(String name) {
+		switch (name) {
+			case "MItemBucket":
+			case "MWorld":
+				return !DJ2AConfig.disable_patches && DJ2AConfig.patches.aether_legacy.stopAerogelCrash;
+			case "MStacktraceDeobfuscator":
+				return !DJ2AConfig.disable_patches && DJ2AConfig.patches.vanillafix.fixStackTraceDeobfuscator;
+		}
+		return true;
+	}
+	
+	private boolean checkOptimizations(String name) {
+		if (DJ2AConfig.disable_optimizations)
+			return false;
+		
+		CfgOptimizations config = DJ2AConfig.optimizations;
+		
+		switch (name) {
+			case "MActuallyAdditions":
+			case "MConnectionPair":
+			case "MLaserRelayConnectionHandler":
+			case "MTileEntityLaserRelay":
+			case "MTileEntityLaserRelayEnergy":
+			case "MTileEntityLaserRelayItem":
+			case "MWorldData":
+				return config.actually_additions.useOptimizedLaserNetwork;
+			case "MAbilityAccessories":
+			case "MInventoryAccessories":
+				return config.aether_legacy.changeAccessoriesHandler;
+			case "MAetherEventHandler":
+				return config.aether_legacy.onBucketUsed_checkDimensionFirst;
+			case "MTileEntityCrop":
+				return config.agricraft.noOvertakeIfNotAggressive;
+			case "MNullHelper":
+				return config.enderio.optimizeNullHelper;
+			case "MProf":
+				return config.enderio.cacheProfilerRegex;
+			case "MPlantInteractor":
+				return config.industrial_foregoing.plantInteractor_takeFromCropSticksDirectly;
+			case "MIOInventory":
+				return config.modular_machinery.ioports_useLargerMaps;
+		}
+		
+		return true;
 	}
 	
 	private static boolean checkPatches(String name) {

@@ -8,6 +8,7 @@ import btpos.dj2addons.config.patches.CfgModularMagic;
 import btpos.dj2addons.config.patches.CfgMoreTweaker;
 import btpos.dj2addons.config.patches.CfgPackagedAuto;
 import btpos.dj2addons.config.patches.CfgRFTools;
+import btpos.dj2addons.config.patches.CfgVanillaFix;
 
 public final class CfgPatches {
 	public CfgAetherLegacy aether_legacy = new CfgAetherLegacy();
@@ -18,4 +19,5 @@ public final class CfgPatches {
 	public CfgMoreTweaker moretweaker = new CfgMoreTweaker();
 	public CfgPackagedAuto packagedauto = new CfgPackagedAuto();
 	public CfgRFTools rftools = new CfgRFTools();
+	public CfgVanillaFix vanillafix = new CfgVanillaFix();
 }

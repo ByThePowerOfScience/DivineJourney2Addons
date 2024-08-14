@@ -15,7 +15,6 @@ public abstract class MIOInventory {
 	@Unique private static int[] dj2addons$inSlots;
 	@Unique private static int[] dj2addons$outSlots;
 	
-	
 	/**
 	 * Make initial capacity of hashmaps the correct size from the start.
 	 * <p>Saves ~1.79% server time from resize calls:

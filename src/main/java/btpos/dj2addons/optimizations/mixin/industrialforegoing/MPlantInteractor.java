@@ -19,7 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
@@ -32,10 +31,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -87,7 +83,6 @@ public class MPlantInteractor extends WorkingAreaElectricMachine {
 				for (int i = 0; i < BlockRegistry.plantInteractorBlock.getHeight() + 1; ++i) {
 					BlockPos tempPos = new BlockPos(pointerPos.getX(), pointerPos.getY() + i, pointerPos.getZ());
 					TileEntity te = world.getTileEntity(tempPos);
-					//noinspection PointlessNullCheck
 					if (te != null && IsModLoaded.agricraft && CAgricraft.isAgriHarvestable(te)) {
 						CAgricraft.callOnHarvest(te, this::insertStack);
 						continue;
@@ -100,25 +95,10 @@ public class MPlantInteractor extends WorkingAreaElectricMachine {
 						FakePlayer player = IndustrialForegoing.getFakePlayer(this.world, tempPos.up());
 						player.inventory.clear();
 						WORKING_TILES.add(this);
-						tempState.getBlock()
-						         .onBlockActivated(this.world,
-						                           tempPos,
-						                           tempState,
-						                           player,
-						                           EnumHand.MAIN_HAND,
-						                           EnumFacing.UP,
-						                           0.0F,
-						                           0.0F,
-						                           0.0F);
-						ForgeHooks.onRightClickBlock(player,
-						                             EnumHand.MAIN_HAND,
-						                             tempPos,
-						                             EnumFacing.UP,
-						                             new Vec3d(0.0, 0.0, 0.0));
-						Iterator var7 = player.inventory.mainInventory.iterator();
+						tempState.getBlock().onBlockActivated(this.world, tempPos, tempState, player, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0F, 0.0F, 0.0F);
+						ForgeHooks.onRightClickBlock(player, EnumHand.MAIN_HAND, tempPos, EnumFacing.UP, new Vec3d(0.0, 0.0, 0.0));
 						
-						while (var7.hasNext()) {
-							ItemStack stack = (ItemStack) var7.next();
+						for (ItemStack stack : player.inventory.mainInventory) {
 							if (!stack.isEmpty()) {
 								insertStack(stack);
 							}
