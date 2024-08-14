@@ -1,4 +1,4 @@
-package btpos.dj2addons.initmixins.patches.minecraftforge;
+package btpos.dj2addons.initmixins.patches.minecraftforge.rftools;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.crafting.IngredientNBT;

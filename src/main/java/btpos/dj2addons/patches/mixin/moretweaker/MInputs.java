@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Inputs.class)
 public abstract class MInputs {
-	
 	@Inject(method= "getPart", at=@At(value="HEAD"), remap=false, cancellable = true)
 	private static void getPart(IIngredient stack, CallbackInfoReturnable<CraftingPart> cir) {
 		cir.setReturnValue(new CraftingPart(CraftTweakerMC.getIngredient(stack), stack.getAmount()));

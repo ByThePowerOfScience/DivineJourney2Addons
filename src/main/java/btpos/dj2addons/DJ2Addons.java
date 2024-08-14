@@ -7,6 +7,7 @@ import btpos.dj2addons.common.modrefs.CCraftTweaker;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.custom.proxy.CommonProxy;
 import btpos.dj2addons.custom.registry.ModPotions.Registered;
+import btpos.dj2addons.patches.impl.aether_legacy.AetherEventHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -63,6 +64,8 @@ public class DJ2Addons  {
 		CoreInfo.verifyCoreLoaded();
 		LOGGER.info("DJ2Addons Loaded!");
 		proxy.registerCommands();
+		// event.getAsmData() // this is a thing you should use sometime
+		AetherEventHandler.tryEnable();
 	}
 	
 	/**

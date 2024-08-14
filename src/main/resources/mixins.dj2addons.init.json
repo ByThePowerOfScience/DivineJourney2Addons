@@ -7,9 +7,9 @@
   "mixins": [
     "api.minecraft.MItemHangingEntity",
     "custom.minecraft.MSatuRegen",
-    "patches.minecraft.MItemBucket",
-    "patches.minecraft.MWorld",
-    "patches.minecraftforge.IngredientNBTAccessor",
+    "patches.minecraft.aether_legacy.aerogel.MItemBucket",
+    "patches.minecraft.aether_legacy.aerogel.MWorld",
+    "patches.minecraftforge.rftools.IngredientNBTAccessor",
     "patches.vanillafix.MStacktraceDeobfuscator"
   ],
   "client": [],

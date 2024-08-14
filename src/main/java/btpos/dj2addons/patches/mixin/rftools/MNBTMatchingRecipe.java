@@ -3,7 +3,7 @@ package btpos.dj2addons.patches.mixin.rftools;
 import mcjty.rftools.crafting.NBTMatchingRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import btpos.dj2addons.initmixins.patches.minecraftforge.IngredientNBTAccessor;
+import btpos.dj2addons.initmixins.patches.minecraftforge.rftools.IngredientNBTAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

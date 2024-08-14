@@ -12,6 +12,7 @@
     "actuallyadditions.MTileEntityLaserRelayItem",
     "actuallyadditions.MWorldData",
     "actuallyadditions.TileEntityLaserRelayEnergyAccessor",
+    "aether_legacy.MAetherEventHandler",
     "aether_legacy.accessories.MAbilityAccessories",
     "aether_legacy.accessories.MInventoryAccessories",
     "agricraft.MTileEntityCrop",

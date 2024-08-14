@@ -2,7 +2,8 @@ package btpos.dj2addons.core;
 
 import btpos.dj2addons.DJ2AConfig;
 import btpos.dj2addons.common.CoreInfo;
-import btpos.dj2addons.config.Tweaks;
+import btpos.dj2addons.config.CfgPatches;
+import btpos.dj2addons.config.CfgTweaks;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
@@ -45,6 +46,8 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 		switch (split[3]) {
 			case "tweaks":
 				return checkTweaksConfigs(simplename);
+			case "patches":
+				return checkPatches(simplename);
 		}
 		
 		if (simplename.equals("MWorld")) {
@@ -56,13 +59,49 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 		return !simplename.contains("JEI") || Loader.isModLoaded("jei");
 	}
 	
+	private static boolean checkPatches(String name) {
+		if (DJ2AConfig.disable_patches)
+			return false;
+		
+		CfgPatches config = DJ2AConfig.patches;
+		
+		switch (name) {
+			case "MAetherEventHandler":
+				return config.aether_legacy.stopAerogelCrash;
+			case "MEnchanter":
+				return config.aether_legacy.enchanterBucketFix;
+			case "MOvenRecipe":
+				return config.bewitchment.witchesOven_fixJarOverflow;
+			case "MPoppetHandler":
+				return config.bewitchment.poppetHandler_addNullCheck;
+			case "MSoulForge":
+				return config.blood_magic.hellfireForge_preventInputtingIntoOutputSlot;
+			case "MTileEntityMultiblockPart":
+			case "MTileEntityMultiblockPartSubclasses":
+				return config.immersive_engineering.client_stopMultiblockCrash;
+			case "MRequirementLifeEssence":
+				return config.modular_magic.fixBloodOrbCrash;
+			case "MInputs":
+				return config.moretweaker.useCraftTweakerRecipeApi;
+			case "MMiscUtil":
+				return config.packagedauto.forceCheckNBT;
+			case "MNBTMatchingRecipe":
+				return config.rftools.useNbtIngredients;
+		}
+		
+		return true;
+	}
+	
 	private static boolean checkTweaksConfigs(String name) {
-		final Tweaks config = DJ2AConfig.tweaks;
+		if (DJ2AConfig.disable_tweaks)
+			return false;
+		
+		final CfgTweaks config = DJ2AConfig.tweaks;
 		switch (name) {
 			case "MBlockMechanicalUser":
-				return config.extraUtils2.MECHANICAL_USER.enableComparatorOutput;
+				return config.extraUtils2.mechanicalUser.enableComparatorOutput;
 			case "MTileUse":
-				return config.extraUtils2.MECHANICAL_USER.usePlacersThaumcraftResearch;
+				return config.extraUtils2.mechanicalUser.usePlacersThaumcraftResearch;
 			case "MArcanePedestal":
 				return config.thaumcraft.runicMatrix_enableStackOutput;
 			case "MTileEssentiaOutput":

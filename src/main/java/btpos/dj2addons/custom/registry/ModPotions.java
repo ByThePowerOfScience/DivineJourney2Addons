@@ -12,7 +12,7 @@ import btpos.dj2addons.common.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// TODO figure out why this isn't registering
 @SuppressWarnings("SameParameterValue")
 public class ModPotions {
 	@ObjectHolder(DJ2Addons.MOD_ID)

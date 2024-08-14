@@ -1,5 +1,7 @@
-package btpos.dj2addons.initmixins.patches.minecraft;
+package btpos.dj2addons.initmixins.patches.minecraft.aether_legacy.aerogel;
 
+import btpos.dj2addons.common.modrefs.CAetherLegacy;
+import btpos.dj2addons.common.modrefs.IsModLoaded;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,8 +11,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import btpos.dj2addons.common.modrefs.CAetherLegacy;
-import btpos.dj2addons.common.modrefs.IsModLoaded;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ItemBucket.class)
 abstract class MItemBucket {
-	@Shadow(aliases="containedBlock")
+	@Shadow(aliases = "containedBlock")
 	@Final
 	private Block containedBlock;
 	
