@@ -26,7 +26,6 @@ public abstract class MTileSoulForge {
 	)
 	private EnumDemonWillType modifyDemonWillTypeUsed(EnumDemonWillType type) {
 		if (Internal.shouldCraftWithAllWillTypes()) {
-			
 			ItemStack soulStack = ((TileSoulForge)(Object)this).getStackInSlot(soulSlot);
 			Item soul = soulStack.getItem();
 			if (soul instanceof ItemSoulGem)

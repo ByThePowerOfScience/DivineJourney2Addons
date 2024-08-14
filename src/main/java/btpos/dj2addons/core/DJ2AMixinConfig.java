@@ -1,6 +1,8 @@
 package btpos.dj2addons.core;
 
+import btpos.dj2addons.DJ2AConfig;
 import btpos.dj2addons.common.CoreInfo;
+import btpos.dj2addons.config.Tweaks;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
@@ -30,14 +32,21 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public String getRefMapperConfig() {
 		return null;
-//		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
-//		return "mixins.dj2addons.refmap.json";
+		//		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
+		//		return "mixins.dj2addons.refmap.json";
 	}
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 		String[] split = mixinClassName.split("\\.");
 		String simplename = split[split.length - 1];
+		
+		
+		switch (split[3]) {
+			case "tweaks":
+				return checkTweaksConfigs(simplename);
+		}
+		
 		if (simplename.equals("MWorld")) {
 			if (hasTickProfiler()) {
 				LOGGER.info("TickProfiler detected! Disabling Aerogel patch.");
@@ -45,6 +54,21 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 			}
 		}
 		return !simplename.contains("JEI") || Loader.isModLoaded("jei");
+	}
+	
+	private static boolean checkTweaksConfigs(String name) {
+		final Tweaks config = DJ2AConfig.tweaks;
+		switch (name) {
+			case "MBlockMechanicalUser":
+				return config.extraUtils2.MECHANICAL_USER.enableComparatorOutput;
+			case "MTileUse":
+				return config.extraUtils2.MECHANICAL_USER.usePlacersThaumcraftResearch;
+			case "MArcanePedestal":
+				return config.thaumcraft.runicMatrix_enableStackOutput;
+			case "MTileEssentiaOutput":
+				return config.thaumcraft.transfuser_noDrainModularMagic;
+		}
+		return true;
 	}
 	
 	private boolean hasTickProfiler() {
@@ -58,7 +82,6 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	}
 	
 	
-	
 	@Override
 	public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
 	
@@ -69,8 +92,8 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-//		LOGGER.debug("Attempting to apply mixin {} to target class {}", mixinClassName, targetClassName);
-	
+		//		LOGGER.debug("Attempting to apply mixin {} to target class {}", mixinClassName, targetClassName);
+		
 	}
 	
 	/**
@@ -117,15 +140,15 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 			case "MArcanePedestal":
 				output = "Making arcane pedestals bigger (on the inside).";
 				break;
- 			case "MModBrews":
+			case "MModBrews":
 				output = "Turning rivers into bacon.";
 				break;
- 			case "MActuallyAdditions":
+			case "MActuallyAdditions":
 				output = "Graphifying laser relays. (That sounds so COOL!)";
 				break;
-// 			case "":
-//				output = "";
-//				break;
+			// 			case "":
+			//				output = "";
+			//				break;
 			default:
 				return;
 		}
