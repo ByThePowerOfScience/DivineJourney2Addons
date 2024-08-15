@@ -46,6 +46,8 @@ public class CraftTweakerHelpers {
 		// make a new exception of the same type
 		T exception;
 		try {
+			
+			//noinspection unchecked
 			exception = (T) originalExc.getClass()
 			                           .getConstructor(String.class)
 			                           .newInstance(String.format("[%s#%s] %s", zcName, zMethodName, originalExc.getMessage()));

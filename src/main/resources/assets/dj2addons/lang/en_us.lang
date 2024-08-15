@@ -4,11 +4,26 @@
 dj2addons.effect.regenerateHunger=Nourishment
 dj2addons.brew.saturegen=Fullness
 
+potion.effect.dj2addons.saturegen=Potion of Saturation
+potion.effect.dj2addons.strong_saturegen=Potion of Saturation
+potion.effect.dj2addons.long_saturegen=Potion of Saturation
+
+splash_potion.effect.dj2addons.saturegen=Splash Potion of Saturation
+splash_potion.effect.dj2addons.strong_saturegen=Splash Potion of Saturation
+splash_potion.effect.dj2addons.long_saturegen=Splash Potion of Saturation
+
+lingering_potion.effect.dj2addons.saturegen=Lingering Potion of Saturation
+lingering_potion.effect.dj2addons.strong_saturegen=Lingering Potion of Saturation
+lingering_potion.effect.dj2addons.long_saturegen=Lingering Potion of Saturation
+
+tipped_arrow.effect.dj2addons.saturegen=Tipped Arrow of Saturation
+tipped_arrow.effect.dj2addons.long_saturegen=Tipped Arrow of Saturation
+tipped_arrow.effect.dj2addons.strong_saturegen=Tipped Arrow of Saturation
 
 
 # Commands
 dj2addons.commands.desc=§2/ct dj2addons [category] §3Prints data relevant to CraftTweaker extensions.
 dj2addons.commands.usage=Usage: §2/ct dj2addons [arg] §3Args: hand | info | mods | bewitchment | extrautils2 | totemic
-dj2addons.commands.info.usage=Usage: §2/ct dj2addons info [operation] (<X> <Y> <Z>) §3Operations: blockmeta | capabilities | class | dumptile (admins only)
+dj2addons.commands.info.usage=Usage: §2/ct dj2addons info [operation] (<X> <Y> <Z>) §3Operations: blockmeta | capabilities | classes | dumptile (admins only)
 dj2addons.commands.info.capabilities.usage=Usage: §2/ct dj2addons info capabilities (<X> <Y> <Z>) 
 dj2addons.commands.info.tile.dump.usage=Usage: §2/ct dj2addons info dumptile [stop | number of superclasses to scan (-1 = ∞)] (<X> <Y> <Z>)

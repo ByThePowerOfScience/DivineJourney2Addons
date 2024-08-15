@@ -24,6 +24,7 @@ public abstract class MWorldData {
 	@Redirect(
 			method = "readFromNBT",
 			at = @At(
+					remap=false,
 					target = "Lde/ellpeck/actuallyadditions/mod/misc/apiimpl/LaserRelayConnectionHandler;readNetworkFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lde/ellpeck/actuallyadditions/api/laser/Network;",
 					value = "INVOKE"
 			)

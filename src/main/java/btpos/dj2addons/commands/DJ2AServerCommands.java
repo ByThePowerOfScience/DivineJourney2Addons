@@ -1,6 +1,6 @@
 package btpos.dj2addons.commands;
 
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.server.command.CommandTreeBase;
 

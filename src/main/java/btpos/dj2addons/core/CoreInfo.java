@@ -1,13 +1,17 @@
-package btpos.dj2addons.common;
+package btpos.dj2addons.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 /**
  * Intermediary between the ASM phase and the Mod phase of loading.
  */
 public class CoreInfo {
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons Core");
+	public static boolean RUNTIME_DEOBF = false;
+	public static File MC_LOCATION = null;
 	
 	private static boolean coreLoaded = false;
 	
@@ -22,7 +26,7 @@ public class CoreInfo {
 	}
 	
 	/**
-	 * Called by {@link btpos.dj2addons.DJ2Addons#preinit DJ2Addons.preinit}
+	 * Called by {@link btpos.dj2addons.core.DJ2Addons#preinit DJ2Addons.preinit}
 	 */
 	public static void verifyCoreLoaded() {
 		if (!coreLoaded) {

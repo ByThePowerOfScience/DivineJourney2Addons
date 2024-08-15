@@ -28,9 +28,9 @@ import org.spongepowered.asm.mixin.Shadow;
  */
 @Mixin(AbilityAccessories.class)
 public abstract class MAbilityAccessories {
-	@Shadow @Final private PlayerAether playerAether;
-	@Shadow private boolean stepUpdate;
-	@Shadow private boolean invisibilityUpdate;
+	@Shadow(remap=false) @Final private PlayerAether playerAether;
+	@Shadow(remap=false) private boolean stepUpdate;
+	@Shadow(remap=false) private boolean invisibilityUpdate;
 	
 	
 	/**

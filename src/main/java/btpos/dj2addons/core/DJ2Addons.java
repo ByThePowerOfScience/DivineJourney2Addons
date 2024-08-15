@@ -1,13 +1,14 @@
-package btpos.dj2addons;
+package btpos.dj2addons.core;
 
+import btpos.dj2addons.DJ2AEventListeners;
+import btpos.dj2addons.Tags;
 import btpos.dj2addons.api.client.SatuRegen;
 import btpos.dj2addons.commands.DJ2AServerCommands;
-import btpos.dj2addons.common.CoreInfo;
 import btpos.dj2addons.common.modrefs.CCraftTweaker;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.custom.proxy.CommonProxy;
-import btpos.dj2addons.custom.registry.ModPotions.Registered;
 import btpos.dj2addons.patches.impl.aether_legacy.AetherEventHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -41,7 +43,7 @@ public class DJ2Addons  {
 			"after:botania;" +
 			"before:actuallyadditions";
 	
-	public static final Logger LOGGER = CoreInfo.LOGGER;
+	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons");
 	
 	/**
 	 * This is the instance of your mod as created by Forge. It will never be null.
@@ -54,6 +56,10 @@ public class DJ2Addons  {
 			serverSide="btpos.dj2addons.custom.proxy.CommonProxy"
 	)
 	public static CommonProxy proxy;
+	
+	public DJ2Addons() {
+		MinecraftForge.EVENT_BUS.register(DJ2AEventListeners.class);
+	}
 	
 	/**
 	 * This is the first initialization event. Register tile entities here.
@@ -74,7 +80,7 @@ public class DJ2Addons  {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		//noinspection DataFlowIssue
-		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(Registered.saturegen));
+		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(ModPotions.SATUREGEN));
 	}
 	
 	/**

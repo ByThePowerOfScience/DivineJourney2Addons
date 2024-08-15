@@ -1,6 +1,6 @@
 package btpos.dj2addons;
 
-import btpos.dj2addons.common.CoreInfo;
+import btpos.dj2addons.core.CoreInfo;
 import zone.rong.mixinbooter.ILateMixinLoader;
 
 import java.util.Arrays;

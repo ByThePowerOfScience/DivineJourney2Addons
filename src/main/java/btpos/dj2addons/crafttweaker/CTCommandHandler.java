@@ -12,7 +12,7 @@ import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.common.util.StringDumpUtils;
 import btpos.dj2addons.common.util.Util;
 import btpos.dj2addons.common.util.Util.DevTools;
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -206,7 +206,7 @@ public class CTCommandHandler extends CraftTweakerCommand {
 			case "blockmeta":
 				info_printBlockMeta(m, sender, args);
 				break;
-			case "class":
+			case "classes":
 				info_printBlockClasses(m, sender, args);
 				break;
 			case "capabilities":
@@ -401,9 +401,9 @@ public class CTCommandHandler extends CraftTweakerCommand {
 		}
 		Class<? extends Block> bc = sender.getEntityWorld().getBlockState(target).getBlock().getClass();
 		m.sendHeading("Block:");
-		m.sendPropertyWithCopy("Class", bc.getName());
+		m.sendPropertyWithCopy("Class (Use this for Infusion Stabilizers!)", bc.getName());
 		m.sendPropertyWithCopy("Extends Class", bc.getSuperclass().getName());
-		if (bc.getDeclaringClass() != bc)
+		if (bc.getDeclaringClass() != null && bc.getDeclaringClass() != bc)
 			m.sendPropertyWithCopy("Declared Inside", bc.getDeclaringClass().getName());
 		m.sendProperty(null, "Implements Interfaces:");
 		Arrays.stream(bc.getInterfaces()).forEach(c -> m.sendPropertyWithCopy(null, c.getName(), 1));

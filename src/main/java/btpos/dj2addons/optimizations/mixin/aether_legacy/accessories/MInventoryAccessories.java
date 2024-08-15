@@ -13,15 +13,11 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(InventoryAccessories.class)
 abstract class MInventoryAccessories implements IInventory, Duck_Accessories {
 	
-	@Shadow public abstract ItemStack getStackInSlot(int slotID);
-	
-	@Shadow public abstract ItemStack getStackFromItem(Item item);
-	
-	@Shadow public EntityPlayer player;
-	
-	@Shadow public abstract int breakItem(Item item);
-	
-	@Shadow public abstract int getSizeInventory();
+	@Shadow(remap=false) public abstract ItemStack getStackInSlot(int slotID);
+	@Shadow(remap=false) public abstract ItemStack getStackFromItem(Item item);
+	@Shadow(remap=false) public EntityPlayer player;
+	@Shadow(remap=false) public abstract int breakItem(Item item);
+	@Shadow(remap=false) public abstract int getSizeInventory();
 	
 	@Override
 	public boolean wearingAccessory(Item item) {

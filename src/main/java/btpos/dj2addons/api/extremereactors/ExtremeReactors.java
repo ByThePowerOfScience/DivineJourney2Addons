@@ -1,6 +1,6 @@
 package btpos.dj2addons.api.extremereactors;
 
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 
 /**
  * APIs for ExtremeReactors by erogenousbeef

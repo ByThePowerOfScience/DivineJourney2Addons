@@ -1,7 +1,6 @@
 package btpos.dj2addons.core;
 
 import btpos.dj2addons.DJ2AConfig;
-import btpos.dj2addons.common.CoreInfo;
 import btpos.dj2addons.config.CfgOptimizations;
 import btpos.dj2addons.config.CfgPatches;
 import btpos.dj2addons.config.CfgTweaks;
@@ -34,8 +33,6 @@ public class DJ2AMixinConfig implements IMixinConfigPlugin {
 	@Override
 	public String getRefMapperConfig() {
 		return null;
-		//		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE ? null : "mixins.dj2addons.refmap.json";
-		//		return "mixins.dj2addons.refmap.json";
 	}
 	
 	@Override

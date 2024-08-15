@@ -7,7 +7,7 @@ plugins {
     idea
     id("maven-publish")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.8"
-    id("com.gtnewhorizons.retrofuturagradle") version "1.3.35"
+    id("com.gtnewhorizons.retrofuturagradle") version "1.4.1"
 }
 
 group = "btpos.dj2addons"
@@ -36,7 +36,7 @@ idea {
 tasks.register<Copy>("copyModToModpack") {
     group = "dj2addons"
     from(tasks.reobfJar)
-    into(File("C:\\Users\\impro_000\\AppData\\Roaming\\.mineyourmind\\instances\\divinejourney2\\minecraft\\mods"))
+    into(File("%APPDATA%\\.mineyourmind\\instances\\divinejourney2\\minecraft\\mods"))
 }
 
 
@@ -230,6 +230,7 @@ minecraft {
     // Enable assertions in the mod's package when running the client or server
     extraRunJvmArguments.add("-ea:${project.group}")
     extraRunJvmArguments.addAll(listOf(
+        "-Dforge.logging.markers=REGISTRIES,REGISTRYDUMP",
         "-Dforge.logging.console.level=debug",
         "-Dmixin.debug.verbose=true",
         "-Dmixin.debug.export=true"
@@ -295,7 +296,7 @@ tasks.jar.configure {
     manifest {
         attributes(mapOf(
             "FMLCorePluginContainsFMLMod" to true,
-            "FMLCorePlugin" to "btpos.dj2addons.core.DJ2ALoadingPlugin",
+            "FMLCorePlugin" to "btpos.dj2addons.core.DJ2ACoremod",
             "TweakerClass" to "org.spongepowered.asm.launch.MixinTweaker"
         ))
     }

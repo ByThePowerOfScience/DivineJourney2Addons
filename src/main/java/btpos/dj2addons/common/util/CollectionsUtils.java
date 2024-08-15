@@ -11,6 +11,14 @@ import java.util.stream.Collector.Characteristics;
 
 public final class CollectionsUtils {
 	
+	public static String map_toString(Map<?, ?> map) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\n");
+		map.forEach((x, y) -> sb.append("\t").append(x.toString()).append(" : ").append(y.toString()).append("\n"));
+		sb.append("}");
+		return sb.toString();
+	}
+	
 	/**
 	 * Same as {@link java.util.Map#getOrDefault} but with a functional generator like in Java 9+.
 	 * Saves some memory by only constructing the objects if it's actually needed.
@@ -36,7 +44,6 @@ public final class CollectionsUtils {
 	 * Collectors that generate fastutil Collections instead of the Java ones.
 	 */
 	public static final class FastUtilCollectors {
-		
 		public static <T> Collector<T, ?, Set<T>> toObjectOpenHashSet() {
 			return Collector.<T, ObjectOpenHashSet<T>, Set<T>>of(
 					ObjectOpenHashSet::new,

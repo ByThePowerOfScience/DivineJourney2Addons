@@ -1,7 +1,7 @@
-package btpos.dj2addons.core;
+package btpos.dj2addons;
 
-import btpos.dj2addons.DJ2Addons;
-import btpos.dj2addons.custom.registry.ModPotions;
+import btpos.dj2addons.core.DJ2Addons;
+import btpos.dj2addons.custom.registry.PotionRegistrar;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraft.util.text.ITextComponent;
@@ -10,23 +10,33 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
+import net.minecraftforge.common.config.Config.Type;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = DJ2Addons.MOD_ID)
-public class DJ2ARegistryEvents {
+//@EventBusSubscriber(modid = DJ2Addons.MOD_ID)
+public final class DJ2AEventListeners {
 	@SubscribeEvent
 	public static void addPotions(RegistryEvent.Register<Potion> evt) {
-		ModPotions.registerPotions(evt.getRegistry());
+		DJ2Addons.LOGGER.debug("Registering potions!");
+		PotionRegistrar.registerPotions(evt.getRegistry());
 	}
 	
 	@SubscribeEvent
 	public static void addPotionTypes(RegistryEvent.Register<PotionType> evt) {
-		ModPotions.registerPotionTypes(evt.getRegistry());
+		DJ2Addons.LOGGER.debug("Registering potions types!");
+		PotionRegistrar.registerPotionTypes(evt.getRegistry());
 	}
 	
+	@SubscribeEvent
+	public static void onConfigChangedEvent(OnConfigChangedEvent event) {
+		if (event.getModID().equals(DJ2Addons.MOD_ID)) {
+			ConfigManager.sync(DJ2Addons.MOD_ID, Type.INSTANCE);
+		}
+	}
 	
 	private ITextComponent getBetaAdmonition() {
 		Style defStyle = new Style().setUnderlined(true).setBold(true);

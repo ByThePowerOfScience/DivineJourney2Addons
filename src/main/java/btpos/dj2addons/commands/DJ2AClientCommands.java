@@ -2,7 +2,7 @@ package btpos.dj2addons.commands;
 
 import btpos.dj2addons.commands.util.DJ2ACommandUtils;
 import btpos.dj2addons.commands.util.MessageHelper;
-import btpos.dj2addons.DJ2Addons;
+import btpos.dj2addons.core.DJ2Addons;
 import btpos.dj2addons.crafttweaker.CTCommandHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

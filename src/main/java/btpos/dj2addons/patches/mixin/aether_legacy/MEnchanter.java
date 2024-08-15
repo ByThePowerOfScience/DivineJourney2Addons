@@ -19,6 +19,7 @@ public abstract class MEnchanter {
 	@Redirect(
 			method="update()V",
 			at=@At(
+					remap=false,
 					target="Lnet/minecraft/item/Item;hasContainerItem(Lnet/minecraft/item/ItemStack;)Z",
 					value = "INVOKE")) //TODO expand check to only consume buckets if the output is in a bucket, otherwise leave bucket behind
 	private boolean noCheckContainerItem(Item instance, ItemStack stack) {
