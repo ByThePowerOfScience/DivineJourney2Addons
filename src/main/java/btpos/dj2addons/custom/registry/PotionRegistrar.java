@@ -11,7 +11,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class PotionRegistrar {
 	public static void registerPotions(IForgeRegistry<Potion> registry) {
-		registry.register(new PotionSatuRegen());
+		registry.register(DJ2APotions.saturegen = new PotionSatuRegen());
 	}
 	
 	public static void registerPotionTypes(IForgeRegistry<PotionType> registry) {
