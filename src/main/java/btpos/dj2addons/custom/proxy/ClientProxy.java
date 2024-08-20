@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.model.ModelLoader;
 
+@SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerTexture(Item item, String variant) {

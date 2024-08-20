@@ -4,12 +4,30 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 import java.lang.reflect.Array;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collector.Characteristics;
 
 public final class CollectionsUtils {
+	
+	public static <T> boolean anyMatch(T[] arr, Predicate<T> toCheck) {
+		for (int i = 0; i < arr.length; i++) {
+			if (toCheck.test(arr[i]))
+				return true;
+		}
+		return false;
+	}
+	
+	public static <T> boolean anyMatch(T[] arr, T toCheck) {
+		for (int i = 0; i < arr.length; i++) {
+			if (Objects.equals(arr[i], toCheck))
+				return true;
+		}
+		return false;
+	}
 	
 	public static String map_toString(Map<?, ?> map) {
 		StringBuilder sb = new StringBuilder();

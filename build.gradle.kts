@@ -172,7 +172,7 @@ dependencies {
     compileOnly(rfg.deobf("curse.maven:ModularMachinery-270790:2713714"))
     compileOnly(rfg.deobf("curse.maven:ModularMagic-324318:2737623"))
     
-    compileOnly(rfg.deobf("curse.maven:Thaumcraft-223628:2629023"))
+    implementation(rfg.deobf("curse.maven:Thaumcraft-223628:2629023"))
     
     compileOnly(rfg.deobf("curse.maven:Aether-255308:3280119"))
     

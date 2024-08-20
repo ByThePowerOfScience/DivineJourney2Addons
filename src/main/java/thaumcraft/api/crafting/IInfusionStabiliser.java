@@ -9,5 +9,5 @@ import net.minecraft.world.World;
 /** @deprecated */
 @Deprecated
 public interface IInfusionStabiliser {
-	boolean canStabaliseInfusion(World var1, BlockPos var2);
+	boolean canStabaliseInfusion(World world, BlockPos pos);
 }

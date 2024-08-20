@@ -7,6 +7,7 @@ import btpos.dj2addons.commands.DJ2AServerCommands;
 import btpos.dj2addons.common.modrefs.CCraftTweaker;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
 import btpos.dj2addons.custom.proxy.CommonProxy;
+import btpos.dj2addons.custom.registry.holders.DJ2APotions;
 import btpos.dj2addons.patches.impl.aether_legacy.AetherEventHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -21,7 +22,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * The only reason this is here is because the mod class has to be in the same package as the coremod for some reason.
+ * The only reason this is here is because the mod class has to be in the same package as the coremod for some reason,
+ *      and the only way to get the coremod to work is to have `btpos.dj2addons.core` as a transformer exclusion.
  */
 @Mod(
 		modid = DJ2Addons.MOD_ID,
@@ -58,6 +60,7 @@ public class DJ2Addons  {
 	public static CommonProxy proxy;
 	
 	public DJ2Addons() {
+		// it never wants to register my event listeners...
 		MinecraftForge.EVENT_BUS.register(DJ2AEventListeners.class);
 	}
 	
@@ -80,7 +83,7 @@ public class DJ2Addons  {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		//noinspection DataFlowIssue
-		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(ModPotions.SATUREGEN));
+		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(DJ2APotions.saturegen));
 	}
 	
 	/**

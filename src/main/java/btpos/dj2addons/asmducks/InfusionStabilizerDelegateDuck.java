@@ -29,7 +29,7 @@ public interface InfusionStabilizerDelegateDuck extends IInfusionStabiliserExt {
 	}
 	
 	@Override
-	default boolean canStabaliseInfusion(World var1, BlockPos var2) {
-		return getDelegate().canStabaliseInfusion(var1, var2);
+	default boolean canStabaliseInfusion(World world, BlockPos var2) {
+		return getDelegate().canStabaliseInfusion(world, var2);
 	}
 }
