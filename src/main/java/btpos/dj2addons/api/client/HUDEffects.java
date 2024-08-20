@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.function.Predicate;
 
-public class SatuRegen {
+public class HUDEffects {
 	public static void addHungerShankWaveActivator(Predicate<EntityPlayer> checker) {
 		if (Internal.SINGLETON == null) { // if nothing has been registered, use the singleton
 			Internal.SINGLETON = checker;

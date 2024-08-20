@@ -1,6 +1,6 @@
 package btpos.dj2addons.initmixins.custom.minecraft;
 
-import btpos.dj2addons.api.client.SatuRegen;
+import btpos.dj2addons.api.client.HUDEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +31,7 @@ public abstract class MSatuRegen extends GuiIngame  {
 	@Inject(method= "renderFood(II)V", locals= LocalCapture.CAPTURE_FAILSOFT, at=@At(target = "Lnet/minecraft/client/renderer/GlStateManager;enableBlend()V", value="INVOKE"))
 	private void getRegenValue(int width, int height, CallbackInfo ci, EntityPlayer player) {
 		dj2addons$regen = -1;
-		if (SatuRegen.Internal.shouldActivateHungerShankWave(player)) {
+		if (HUDEffects.Internal.shouldActivateHungerShankWave(player)) {
 			dj2addons$regen = updateCounter % 25;
 		}
 	}

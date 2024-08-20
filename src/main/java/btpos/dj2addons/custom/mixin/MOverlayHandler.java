@@ -1,6 +1,6 @@
 package btpos.dj2addons.custom.mixin;
 
-import btpos.dj2addons.api.client.SatuRegen;
+import btpos.dj2addons.api.client.HUDEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +34,7 @@ abstract class MOverlayHandler {
 	)
 	private static void getRegenValue(float saturationGained, float saturationLevel, Minecraft mc, int left, int top, float alpha, CallbackInfo ci) {
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
-		if (player == null || SatuRegen.Internal.shouldActivateHungerShankWave(player)) {
+		if (player == null || HUDEffects.Internal.shouldActivateHungerShankWave(player)) {
 			dj2addons$regen = -1;
 		} else {
 			dj2addons$regen = mc.ingameGUI.getUpdateCounter() % 25;

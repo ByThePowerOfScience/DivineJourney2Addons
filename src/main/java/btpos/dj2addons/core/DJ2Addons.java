@@ -2,7 +2,7 @@ package btpos.dj2addons.core;
 
 import btpos.dj2addons.DJ2AEventListeners;
 import btpos.dj2addons.Tags;
-import btpos.dj2addons.api.client.SatuRegen;
+import btpos.dj2addons.api.client.HUDEffects;
 import btpos.dj2addons.commands.DJ2AServerCommands;
 import btpos.dj2addons.common.modrefs.CCraftTweaker;
 import btpos.dj2addons.common.modrefs.IsModLoaded;
@@ -82,7 +82,7 @@ public class DJ2Addons  {
 	 */
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(DJ2APotions.saturegen));
+		HUDEffects.addHungerShankWaveActivator(player -> player.isPotionActive(DJ2APotions.saturegen));
 	}
 	
 	/**
