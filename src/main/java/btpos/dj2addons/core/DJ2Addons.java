@@ -82,7 +82,6 @@ public class DJ2Addons  {
 	 */
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		//noinspection DataFlowIssue
 		SatuRegen.addHungerShankWaveActivator(player -> player.isPotionActive(DJ2APotions.saturegen));
 	}
 	
@@ -107,7 +106,4 @@ public class DJ2Addons  {
 	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new DJ2AServerCommands());
 	}
-	
-	
-	
 }
