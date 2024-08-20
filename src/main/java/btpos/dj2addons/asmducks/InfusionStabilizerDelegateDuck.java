@@ -1,17 +1,26 @@
 package btpos.dj2addons.asmducks;
 
 import btpos.dj2addons.api.thaumcraft.InfusionStabilizers;
+import btpos.dj2addons.core.CoreInfo;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thaumcraft.api.crafting.IInfusionStabiliserExt;
 
 @SuppressWarnings("unused")
 public interface InfusionStabilizerDelegateDuck extends IInfusionStabiliserExt {
-	default IInfusionStabiliserExt retrieveLogic() {
-		return InfusionStabilizers.Internal.getLogic(this.getClass());
+	default void addToList() {
+		CoreInfo.objectsToSetLogicFor.add(this);
 	}
 	
+	default void retrieveLogic() {
+		setLogicDelegate(InfusionStabilizers.Internal.getLogic(this.getClass()));
+	}
+	
+	void setLogicDelegate(IInfusionStabiliserExt logic);
+	
 	IInfusionStabiliserExt getDelegate();
+	
+	
 	
 	@Override
 	default float getStabilizationAmount(World var1, BlockPos var2) {

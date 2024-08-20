@@ -1,9 +1,12 @@
 package btpos.dj2addons.core;
 
+import btpos.dj2addons.asmducks.InfusionStabilizerDelegateDuck;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Intermediary between the ASM phase and the Mod phase of loading.
@@ -12,6 +15,8 @@ public class CoreInfo {
 	public static final Logger LOGGER = LogManager.getLogger("Divine Journey 2 Addons Core");
 	public static boolean RUNTIME_DEOBF = false;
 	public static File MC_LOCATION = null;
+	
+	public static List<InfusionStabilizerDelegateDuck> objectsToSetLogicFor = new LinkedList<>();
 	
 	private static boolean coreLoaded = false;
 	

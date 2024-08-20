@@ -5,6 +5,7 @@ import btpos.dj2addons.common.util.zendoc.ZenDocClass;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenDoc;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.block.IBlockState;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -22,10 +23,11 @@ import java.util.function.Predicate;
 @ModOnly("thaumcraft")
 @ZenClass("dj2addons.thaumcraft.InfusionStabilizers")
 @ZenDocClass(value = "dj2addons.thaumcraft.InfusionStabilizers", description = {
-		"Utilities for blocks that stabilize Thaumcraft's Runic Matrix crafting operations."
+		"Utilities for blocks that stabilize Thaumcraft's Runic Matrix crafting operations.",
+		"See docs on GitHub."
 })
 public final class CTInfusionStabilizers {
-	@ZenMethod
+	@ZenMethod @ZenDoc("See docs on GitHub.")
 	public static CTInfusionStabilizerLogicBuilder newInfusionStabilizer(String className) {
 		return new CTInfusionStabilizerLogicBuilder(className);
 	}
@@ -63,7 +65,7 @@ public final class CTInfusionStabilizers {
 		
 		/**
 		 * Logic for a single block that's under that class name
-		 * <p>Converted to immutable for memory reasons
+		 * <p>Converted to immutable version {@link SingleBlockLogic} for memory's sake
 		 */
 		@ZenClass(SubBuilder.ZENCLASSNAME)
 		public final class SubBuilder {
@@ -87,7 +89,7 @@ public final class CTInfusionStabilizers {
 				return this;
 			}
 			
-			@ZenMethod
+			@ZenMethod @ZenDoc("Takes in the opposing blockstate as an argument.")
 			public SubBuilder hasSymmetryPenalty(Predicate<IBlockState> hasSymmetryPenalty) {
 				this.hasSymmetryPenalty = hasSymmetryPenalty;
 				return this;

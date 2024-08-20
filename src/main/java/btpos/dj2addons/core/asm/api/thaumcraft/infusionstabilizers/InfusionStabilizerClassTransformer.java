@@ -1,14 +1,13 @@
 package btpos.dj2addons.core.asm.api.thaumcraft.infusionstabilizers;
 
-import btpos.dj2addons.core.CoreInfo;
 import btpos.dj2addons.config.CfgAPI;
+import btpos.dj2addons.core.CoreInfo;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -91,9 +90,7 @@ public class InfusionStabilizerClassTransformer implements IClassTransformer, Op
 					public void visitInsn(int opcode) {
 						if (opcode == RETURN) {
 							mv.visitVarInsn(ALOAD, 0);
-							mv.visitVarInsn(ALOAD, 0);
-							mv.visitMethodInsn(INVOKEVIRTUAL, ourClassName, "retrieveLogic", "()Lthaumcraft/api/crafting/IInfusionStabiliserExt;", false);
-							mv.visitFieldInsn(PUTFIELD, ourClassName, logicHolderName, "Lthaumcraft/api/crafting/IInfusionStabiliserExt;");
+							mv.visitMethodInsn(INVOKEVIRTUAL, ourClassName, "addToList", "()V", false);
 						}
 						super.visitInsn(opcode);
 					}
@@ -106,13 +103,14 @@ public class InfusionStabilizerClassTransformer implements IClassTransformer, Op
 		@Override
 		public void visitEnd() {
 			addLogicHolderField();
-			visitMethod_stabilizerDelegateGet();
+			visitMethod_getStabilizerDelegate();
+			visitMethod_setStabilizerDelegate();
 			super.visitEnd();
 		}
 		
 		private void addLogicHolderField() {
 			FieldVisitor fv = super.visitField(
-					ACC_PRIVATE + ACC_FINAL,
+					ACC_PRIVATE + ACC_STATIC,
 					logicHolderName,
 					logicHolderDesc,
 					null,
@@ -121,27 +119,25 @@ public class InfusionStabilizerClassTransformer implements IClassTransformer, Op
 		}
 		
 		private void visitMethod_getStabilizerDelegate() {
-			MethodVisitor mv = super.visitMethod(ACC_PUBLIC, "getDelegate", "()Lthaumcraft/api/crafting/IInfusionStabiliserExt;",  null, null);
+			MethodVisitor mv = super.visitMethod(ACC_PUBLIC, "getDelegate", "()Lthaumcraft/api/crafting/IInfusionStabiliserExt;", null, null);
 			mv.visitCode();
-			Label opener = new Label();
-			mv.visitLabel(opener);
-			mv.visitVarInsn(ALOAD, 0);
-			mv.visitFieldInsn(GETFIELD, ourClassName, logicHolderName, logicHolderDesc);
+			visitLogicHolder(mv, GETSTATIC);
 			mv.visitInsn(ARETURN);
-			Label closer = new Label();
-			mv.visitLabel(closer);
-			mv.visitLocalVariable("this", "L" + duckType + ";", null, opener, closer, 0);
-			mv.visitMaxs(0, 0);
+			mv.visitMaxs(1, 1);
 			mv.visitEnd();
 		}
 		
-		private void visitMethod_stabilizerDelegateGet() {
-			MethodVisitor mv = super.visitMethod(ACC_PUBLIC, "getDelegate", "()Lthaumcraft/api/crafting/IInfusionStabiliserExt;", null, null);
+		private void visitLogicHolder(MethodVisitor mv, int opcode) {
+			mv.visitFieldInsn(opcode, ourClassName, logicHolderName, logicHolderDesc);
+		}
+		
+		private void visitMethod_setStabilizerDelegate() {
+			MethodVisitor mv = super.visitMethod(ACC_PUBLIC, "setLogicDelegate", "(Lthaumcraft/api/crafting/IInfusionStabiliserExt;)V", null, null);
 			mv.visitCode();
-			mv.visitVarInsn(ALOAD, 0);
-			mv.visitFieldInsn(GETFIELD, ourClassName, logicHolderName, "Lthaumcraft/api/crafting/IInfusionStabiliserExt;");
-			mv.visitInsn(ARETURN);
-			mv.visitMaxs(1, 1);
+			mv.visitVarInsn(ALOAD, 1);
+			visitLogicHolder(mv, PUTSTATIC);
+			mv.visitInsn(RETURN);
+			mv.visitMaxs(1, 2);
 			mv.visitEnd();
 		}
 	}

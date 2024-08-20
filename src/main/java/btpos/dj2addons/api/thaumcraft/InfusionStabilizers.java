@@ -3,6 +3,8 @@ package btpos.dj2addons.api.thaumcraft;
 import btpos.dj2addons.asmducks.InfusionStabilizerDelegateDuck;
 import btpos.dj2addons.common.util.CollectionsUtils;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import thaumcraft.api.crafting.IInfusionStabiliserExt;
 
 import java.util.Map;
@@ -26,5 +28,21 @@ public final class InfusionStabilizers {
 		public static IInfusionStabiliserExt getLogic(Class<?> c) {
 			return LOGIC.get(c);
 		}
+		
+		public static void giveBlocksLogic() {
+		
+		}
+		
+		static final IInfusionStabiliserExt DEFAULT = new IInfusionStabiliserExt() {
+			@Override
+			public float getStabilizationAmount(World var1, BlockPos var2) {
+				return 0;
+			}
+			
+			@Override
+			public boolean canStabaliseInfusion(World world, BlockPos pos) {
+				return false;
+			}
+		};
 	}
 }

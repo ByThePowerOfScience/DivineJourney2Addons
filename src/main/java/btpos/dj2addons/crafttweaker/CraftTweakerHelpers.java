@@ -5,7 +5,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Arrays;
 import java.util.Objects;
-
+@SuppressWarnings("unchecked")
 public class CraftTweakerHelpers {
 	/**
 	 * Formats the exception cause with the ZenClass and ZenMethod names so the pack dev knows where in the script it came from.
@@ -46,8 +46,6 @@ public class CraftTweakerHelpers {
 		// make a new exception of the same type
 		T exception;
 		try {
-			
-			//noinspection unchecked
 			exception = (T) originalExc.getClass()
 			                           .getConstructor(String.class)
 			                           .newInstance(String.format("[%s#%s] %s", zcName, zMethodName, originalExc.getMessage()));
