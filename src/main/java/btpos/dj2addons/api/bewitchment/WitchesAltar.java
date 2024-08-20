@@ -70,16 +70,14 @@ public class WitchesAltar {
 	/**
 	 * Internal implementation for this API.
 	 */
-	@Deprecated
 	public static class Internal {
-		
 		private static Set<BlockWorldState> toRemove = new ObjectOpenHashSet<>();
 		
 		/**
 		 * Nullifies the set after being called to prevent a memory leak, so DON'T CALL THIS.
 		 */
 		public static void executeUpgradeRemoval() {
-			toRemove.forEach(dws -> CBewitchment.getAltarUpgrades().keySet().removeIf(p -> p.test(dws)));
+			toRemove.forEach(bws -> CBewitchment.getAltarUpgrades().keySet().removeIf(p -> p.test(bws)));
 			toRemove = null;
 		}
 		
