@@ -5,6 +5,7 @@ import blusunrize.immersiveengineering.common.blocks.stone.TileEntityAlloySmelte
 import blusunrize.immersiveengineering.common.blocks.stone.TileEntityBlastFurnace;
 import blusunrize.immersiveengineering.common.blocks.stone.TileEntityCokeOven;
 import blusunrize.immersiveengineering.common.blocks.metal.TileEntityExcavator;
+import blusunrize.immersiveengineering.common.blocks.metal.TileEntityArcFurnace;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 		TileEntityAlloySmelter.class,
 		TileEntityBlastFurnace.class,
 		TileEntityCokeOven.class,
-		TileEntityExcavator.class
+		TileEntityExcavator.class,
+		TileEntityArcFurnace.class
 }, remap=false)
 public abstract class MTileEntityMultiblockPartSubclasses<T extends TileEntityMultiblockPart<T>> extends TileEntityMultiblockPart<T> {
 	protected MTileEntityMultiblockPartSubclasses(int[] structureDimensions) {
