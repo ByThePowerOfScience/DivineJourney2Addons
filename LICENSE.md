@@ -21,6 +21,7 @@ THIS MOD IS PROVIDED 'AS IS' WITH NO WARRANTIES, IMPLIED OR OTHERWISE. THE AUTHO
 ### You may:
 
 - Use any APIs in this mod and reference its code in works that depend on it, obviously;
+- Contribute to this repository;
 - Ask to be a maintainer if I’ve stopped working on it (99% chance I say yes);
 - Make a fork of this repository, solely to contribute back to this repository via Pull Request;
 - Copy portions of individual methods solely when @Overwriting the copied methods in a Mixin that targets this mod (because I know how finicky Mixin targeting can be sometimes and I’m all for soft-patching my code);
