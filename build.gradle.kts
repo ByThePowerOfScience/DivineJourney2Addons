@@ -11,13 +11,13 @@ plugins {
 }
 
 group = "btpos.dj2addons"
-version = "1.2.1.1.1"
+version = "1.3.0-BETA.3"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
         // Azul covers the most platforms for Java 8 toolchains, crucially including MacOS arm64
-        vendor.set(JvmVendorSpec.AZUL)
+//        vendor.set(JvmVendorSpec.AZUL)
     }
     // Generate sources and javadocs jars when building and publishing
     withSourcesJar()
@@ -33,18 +33,16 @@ idea {
 }
 
 
-tasks.register<Copy>("copyModToModpack") {
-    group = "dj2addons"
-    from(tasks.reobfJar)
-    into(File("%APPDATA%\\.mineyourmind\\instances\\divinejourney2\\minecraft\\mods"))
-}
-
-
 
 val pythonFile: File = if (Os.isFamily(Os.FAMILY_WINDOWS)) {
     project.file("venv/Scripts/python.exe")
 } else {
     project.file("venv/bin/python3")
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun AbstractExecTask<*>.runPythonFile(fileName: String) {
+    commandLine(pythonFile, rootProject.file("python/$fileName").toString())
 }
 
 
@@ -144,7 +142,7 @@ dependencies {
     
     
     compileOnly(rfg.deobf("curse.maven:Bewitchment-285439:3256343") as String) {
-        exclude(group="org.spongepowered")
+        exclude(group="org.spongepowered") // trying to stop my IDE from indexing this over the actual documented source
     }
     
     
@@ -224,10 +222,8 @@ minecraft {
     injectedTags.put("VERSION", project.version)
 //    injectedTags.put("CERT_FINGERPRINT", project.property("dj2addons_signSHA1").toString())
     
-    // If you need the old replaceIn mechanism, prefer the injectTags task because it doesn't inject a javac plugin.
     // tagReplacementFiles.add("RfgExampleMod.java")
     
-    // Enable assertions in the mod's package when running the client or server
     extraRunJvmArguments.add("-ea:${project.group}")
     extraRunJvmArguments.addAll(listOf(
         "-Dforge.logging.markers=REGISTRIES,REGISTRYDUMP",
@@ -236,15 +232,14 @@ minecraft {
         "-Dmixin.debug.export=true"
     ))
     
-    // If needed, add extra tweaker classes like for mixins
     extraTweakClasses.add("org.spongepowered.asm.launch.MixinTweaker")
     
     // Exclude some Maven dependency groups from being automatically included in the reobfuscated runs
-    groupsToExcludeFromAutoReobfMapping.addAll(
-        "com.diffplug",
-        "com.diffplug.durian",
-        "net.industrial-craft"
-    )
+//    groupsToExcludeFromAutoReobfMapping.addAll(
+//        "com.diffplug",
+//        "com.diffplug.durian",
+//        "net.industrial-craft"
+//    )
 }
 
 // Generates a class named rfg.examplemod.Tags with the mod version in it, you can find it at
@@ -354,29 +349,32 @@ tasks.javadoc {
 //}
 
 
-
+tasks.register<JavaExec>("zendoc") {
+    dependsOn(tasks.build)
+    group = "documentation"
+    classpath(project.sourceSets.main.get().compileClasspath, project.sourceSets.test.get().compileClasspath, project.sourceSets.main.get().runtimeClasspath, project.sourceSets.test.get().runtimeClasspath)
+    mainClass = "ExportZenDocs"
+}
 
 tasks.register<Exec>("generateModpackZip") {
-    commandLine(pythonFile, "./python/GenerateModpackZip.py")
+    runPythonFile("GenerateModpackZip.py")
 }
 
 tasks.register<Exec>("updateModpack") {
     dependsOn(tasks.build)
-    commandLine(pythonFile, "./python/UpdateModpack.py")
+    runPythonFile("UpdateModpack.py")
 }
 
 tasks.register<Exec>("updateCFModpack") {
     dependsOn(tasks.build)
-    commandLine(pythonFile, "./python/UpdateCFModpack.py")
+    runPythonFile("UpdateCFModpack.py")
 }
 
 
 
 tasks.register<Exec>("removeShadedMixinLibraries") {
-    commandLine(pythonFile, rootProject.file("python/RemoveShadedMixinLibraries.py").toString())
+    runPythonFile("RemoveShadedMixinLibraries.py")
 }
-
-
 
 tasks.register<Copy>("generateTestZS") {
     from(rootProject.file("Test.zs"))

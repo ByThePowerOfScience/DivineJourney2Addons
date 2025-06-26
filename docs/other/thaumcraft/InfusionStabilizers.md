@@ -5,13 +5,15 @@ Because of that, we have to use a custom config file for this API.
 ### Instructions
 1. Get the name of the class for the **Block** you wish to turn into an infusion stabilizer.
    * This can be done using `/ct dj2addons info classes` on a block in-game.
-2. Create the file `<mc dir>\dj2addons\infusion_stabilizers.txt` (or `\overrides\dj2addons\infusion_stabilizers.txt` for a modpack zip).
-3. On each line, put the name of the class, then a comma, then the decimal amount of stability it should have.
-    * Comments can be included by starting them with `//`.
-4. These blocks will now be included as infusion stabilizers. This can be verified using `/ct dj2addons info classes` on the block again in-game.
+2. Add the class name to `config/dj2addons/features.cfg` in thaumcraft/"Infusion Stabilizers: Class Names"
+3. Use the [CraftTweaker API](/docs/zs/dj2addons/thaumcraft/InfusionStabilizer.md) to set the infusion stabilizer value.
+
 ### Example
+In `MCDIR/config/dj2addons/features.cfg`:
 ```
-// infusion_stabilizers.txt:
-name.of.OneBlock, 0.5
-name.of.AnotherBlock, 2.54
+thaumcraft {
+   S:"Infusion Stabilizers: Class Names" <
+     net.minecraft.block.BlockDirt
+   >
+}
 ```

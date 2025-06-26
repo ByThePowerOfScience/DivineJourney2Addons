@@ -132,4 +132,5 @@ gradlew.bat
 *.jks
 /temp/
 /logs/
-/libsources/
+/librarysources/
+/Tests/

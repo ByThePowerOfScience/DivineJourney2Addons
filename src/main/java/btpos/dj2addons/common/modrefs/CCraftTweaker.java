@@ -15,6 +15,7 @@ public class CCraftTweaker {
 	public static void postInit() {
 		if (Loader.isModLoaded("bewitchment"))
 			WitchesAltar.Internal.executeUpgradeRemoval();
-		CoreInfo.objectsToSetLogicFor.forEach(InfusionStabilizerDelegateDuck::retrieveLogic);
+		if (Loader.isModLoaded("thaumcraft"))
+			CoreInfo.objectsToSetLogicFor.forEach(InfusionStabilizerDelegateDuck::retrieveLogic);
 	}
 }

@@ -6,6 +6,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thaumcraft.api.crafting.IInfusionStabiliserExt;
 
+/**
+ * Patched onto the classes specified in the {@link btpos.dj2addons.config.CfgAPI config}.
+ *
+ * @see btpos.dj2addons.core.asm.api.thaumcraft.infusionstabilizers.InfusionStabilizerClassTransformer Transformer applying this
+ * @see btpos.dj2addons.api.thaumcraft.InfusionStabilizers Implementation
+ */
 @SuppressWarnings("unused")
 public interface InfusionStabilizerDelegateDuck extends IInfusionStabiliserExt {
 	default void addToList() {

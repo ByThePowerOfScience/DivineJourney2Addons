@@ -29,10 +29,6 @@ public final class InfusionStabilizers {
 			return LOGIC.get(c);
 		}
 		
-		public static void giveBlocksLogic() {
-		
-		}
-		
 		static final IInfusionStabiliserExt DEFAULT = new IInfusionStabiliserExt() {
 			@Override
 			public float getStabilizationAmount(World var1, BlockPos var2) {
