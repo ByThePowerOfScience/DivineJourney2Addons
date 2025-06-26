@@ -10,6 +10,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import crafttweaker.annotations.ZenDoc;
 import crafttweaker.api.block.IBlockState;
+import crafttweaker.api.block.IBlockStateMatcher;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -87,8 +88,8 @@ public final class CTInfusionStabilizerLogicBuilder {
 		@ZenMethod
 		@ZenDoc("Takes in the opposing blockstate as an argument.")
 		@ZenDocMethod(order = 2, description = {"Set logic for symmetry: check if the block opposite it is ok, or if it should add a symmetry penalty to the infusion for not being symmetrical.", "Defaults to false."}, args = @ZenDocArg(value = "predicate", info = "Takes in the opposing blockstate and returns 'true' if it should add a penalty."))
-		public SubBuilder hasSymmetryPenalty(Predicate<IBlockState> hasSymmetryPenalty) {
-			this.hasSymmetryPenalty = hasSymmetryPenalty;
+		public SubBuilder hasSymmetryPenalty(IBlockStateMatcher hasSymmetryPenalty) {
+			this.hasSymmetryPenalty = hasSymmetryPenalty::matches;
 			return this;
 		}
 		
@@ -112,4 +113,5 @@ public final class CTInfusionStabilizerLogicBuilder {
 			return new SingleBlockLogic(stabAmt, hasSymmetryPenalty, symmetryPenalty);
 		}
 	}
+	
 }

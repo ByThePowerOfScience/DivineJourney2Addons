@@ -93,6 +93,14 @@ void addUpgradeSword(
 
 
 ```zenscript
+void addUpgradePentacle(
+  IBlock block,      // The Block to add.
+  double multiplier, // Flat multiplier to MP.
+);
+```
+
+
+```zenscript
 void addUpgradeSword(
   IOreDictEntry oreDict, // The OreDict key to add.
   double multiplier,     // Flat multiplier to MP.
@@ -105,14 +113,6 @@ void removeAllUpgrades();
 ```
 
 Removes all registered altar upgrades.
-
-```zenscript
-void addUpgradePentacle(
-  IBlock block,      // The Block to add.
-  double multiplier, // Flat multiplier to MP.
-);
-```
-
 
 ```zenscript
 void removeUpgrade(IItemStack iItemStack);

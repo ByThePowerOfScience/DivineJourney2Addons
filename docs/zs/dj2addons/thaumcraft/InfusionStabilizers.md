@@ -66,7 +66,7 @@ How much this block stabilizes the infusion on its own.
 
 ```zenscript
 BlockBuilder hasSymmetryPenalty(
-  Predicate<IBlockState> predicate // Takes in the opposing blockstate and returns 'true' if it should add a penalty.
+  IBlockStateMatcher predicate // Takes in the opposing blockstate and returns 'true' if it should add a penalty.
 );
 ```
 

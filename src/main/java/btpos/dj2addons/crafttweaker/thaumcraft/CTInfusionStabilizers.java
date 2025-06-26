@@ -75,7 +75,7 @@ public final class CTInfusionStabilizers {
 		public final Predicate<IBlockState> hasSymmetryPenalty;
 		public final float symmetryPenalty;
 		
-		protected SingleBlockLogic(float stabilizationAmount, Predicate<IBlockState> hasSymmetryPenalty, float symmetryPenalty) {
+		SingleBlockLogic(float stabilizationAmount, Predicate<IBlockState> hasSymmetryPenalty, float symmetryPenalty) {
 			this.stabilizationAmount = stabilizationAmount;
 			this.hasSymmetryPenalty = hasSymmetryPenalty;
 			this.symmetryPenalty = symmetryPenalty;
