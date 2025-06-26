@@ -115,19 +115,19 @@ void addUpgradePentacle(
 
 
 ```zenscript
-void removeUpgrade(iItemStack);
+void removeUpgrade(IItemStack iItemStack);
 ```
 
 Removes altar upgrades matching the item parameter.
 
 ```zenscript
-void removeUpgrade(oreDictEntry);
+void removeUpgrade(IOreDictEntry oreDictEntry);
 ```
 
 Removes altar upgrades matching an oredict entry.
 
 ```zenscript
-void removeUpgrade(block);
+void removeUpgrade(IBlock block);
 ```
 
 Removes altar upgrades matching a block state.

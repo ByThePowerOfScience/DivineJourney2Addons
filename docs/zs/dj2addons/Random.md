@@ -4,7 +4,7 @@
 import dj2addons.Random;
 ```
 
-Helper object for getting random numbers before world load.
+CT wrapper for getting random numbers before world load.
 
 
 #### Static Methods
@@ -13,10 +13,16 @@ Helper object for getting random numbers before world load.
 Random newRandom();
 ```
 
-Creates a new Random object with a default seed.
+Creates a new Random object seeded with the current time.
 
 ```zenscript
-Random newRandom(seed);
+Random newConstantRandom();
+```
+
+Creates a new Random object with a default, consistent seed.
+
+```zenscript
+Random newRandom(int seed);
 ```
 
 Creates a new Random object with a set seed.
